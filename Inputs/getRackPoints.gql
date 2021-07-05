@@ -1,0 +1,20 @@
+ query rackSensorPoints {
+            site {
+              groups: children(selector: {type: Group,name: "GRP00"}) @skip(if:false) {
+                oid name
+               racks: children(selector:{type: Rack},){
+
+                  oid
+                  displayName
+              points: children{
+                oid
+                name
+              }
+
+
+
+                }
+
+                }
+              }
+            }
