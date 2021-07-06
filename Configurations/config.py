@@ -1,7 +1,7 @@
 #Automation setup configuration
 url="https://10.252.9.11/vems/vx.php"
 url_cx="https://10.252.9.11/vems/cx.php"
-browser="chrome"
+browser="headlesschrome"
 #Regulate speed based on system response time delay
 low_speed="60 seconds"
 medium_speed="30 seconds"
