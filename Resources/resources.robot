@@ -9,7 +9,7 @@ Variables    ../Configurations/config.py
 *** Keywords ***
 startBrowserAndAccessAIEngineWebUI
         #[Arguments]    ${url}    ${browser}    ${expectedTitle}
-        open browser    ${url}    ${browser}    options=add_argument("--disable-popup-blocking"); add_argument("--ignore-certificate-errors")
+        open browser    ${url}    ${browser}    options=add_argument("--disable-popup-blocking"); add_argument("--ignore-certificate-errors");add_argument("--no-sandbox"); add_argument("--disable-extensions"); add_argument("--disable-dev-shm-usage")
         maximize browser window
         set browser implicit wait    ${high_speed}
         log to console    Accessed AI Engine
