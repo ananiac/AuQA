@@ -2,6 +2,7 @@
 Library    SeleniumLibrary
 Variables    ../PageObjects/loginPage.py
 Variables    ../Configurations/config.py
+Variables    ../Resources/variables/globalVariables.py
 
 *** Variables ***
 
@@ -88,16 +89,6 @@ changeAbsoluteHotGuardTemperatureTo34Degree
     press keys    xpath://*[contains(text(),'GuardHotAbsTemp')]    \\13
     log to console    Absolute Hot Guard temperature changed to 34 degree------!
     log to console    ***********************************************************
-
-#trial
-create folder
-    [Arguments]    ${name}
-    create_folder1    ${name}
-    create_subfolder
-concatinate values
-    [Arguments]    ${v1}    ${v2}
-    ${v3}    concatinate_values1    ${v1}    ${v2}
-    log    ${v3}
 
 
 

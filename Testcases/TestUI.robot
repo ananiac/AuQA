@@ -3,6 +3,7 @@ Library    SeleniumLibrary
 Resource    ../Resources/resources.robot
 Variables    ../PageObjects/loginPage.py
 Variables    ../Configurations/config.py
+
 Test Setup    startBrowserAndLoginToAIEngine
 Test Teardown    close browser
 

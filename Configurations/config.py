@@ -1,15 +1,12 @@
 #Automation setup configuration
 url="https://10.252.9.11/vems/vx.php"
-url_cx="https://10.252.9.11/vems/cx.php"
-browser="headlesschrome"
-#Regulate speed based on system response time delay
-low_speed="60 seconds"
-medium_speed="30 seconds"
-high_speed="5 seconds"
+url_cx="https://10.252.9.37/vems/cx.php"
+browser="chrome"
+
 
 #Credentials to login
-ui_username="admin"
-ui_password="admin"
+ui_username="ideavat"
+ui_password="Crick3t!"
 #Other username and password is vx/vx,admin/admin
 
 #API Headers
