@@ -1,7 +1,10 @@
 #Automation setup configuration
 url="https://10.252.9.11/vems/vx.php"
 url_cx="https://10.252.9.37/vems/cx.php"
-browser="chrome"
+
+
+#use headlessmode to run in ubuntu
+browser="headlesschrome"
 
 
 #Credentials to login
