@@ -14,8 +14,5 @@ guard_hot_abs_temp_default=90
 percent_deadsensor_threshold_default=30
 sensor_point_cooling_temp=65.50
 sensor_point_hot_temp=100
-#UI->Cx->DASHM->Load Template
-template_option="xpath=//li[contains(text(),'DASHAM_MIX')]"
-temperature_scale_option="Fahrenheit"
 
 

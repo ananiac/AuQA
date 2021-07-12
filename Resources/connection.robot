@@ -4,7 +4,7 @@ Documentation          This demonstrates executing a command on a remote machine
 ...
 Library                SSHLibrary
 Variables    ../Configurations/config.py
-Variables    ./variables/globalVariables.py
+Variables    ./Variables/globalVariables.py
 
 *** Variables ***
 ${host}               10.252.9.37

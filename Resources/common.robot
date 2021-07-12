@@ -4,7 +4,7 @@ Library    JSONLibrary
 Library    Collections
 Library    OperatingSystem
 Variables    ../Configurations/config.py
-Library    ../externalKeywords/common.py
+Library    ../ExternalKeywords/common.py
 
 *** Variables ***
 

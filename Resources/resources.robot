@@ -2,7 +2,7 @@
 Library    SeleniumLibrary
 Variables    ../PageObjects/loginPage.py
 Variables    ../Configurations/config.py
-Variables    ../Resources/variables/globalVariables.py
+Variables    ../Resources/Variables/globalVariables.py
 
 *** Variables ***
 
