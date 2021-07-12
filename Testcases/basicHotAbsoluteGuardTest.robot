@@ -9,7 +9,7 @@ Library    Collections
 Resource    ../Resources/apiresources.robot
 Resource    ../Resources/uiresources.robot
 Resource    ../Resources/connection.robot
-Variables    ../Resources/variables/basicHotAbsoluteGuardVariables.py
+Variables    ../Inputs/basicHotAbsoluteGuardInputs.py
 
 
 *** Variables ***

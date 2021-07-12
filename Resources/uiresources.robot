@@ -2,9 +2,10 @@
 Library    SeleniumLibrary
 Variables    ../PageObjects/loginPage.py
 Variables    ../Configurations/config.py
-Variables    ../Resources/variables/globalVariables.py
+Variables    ../Resources/Variables/globalVariables.py
 Variables    ../PageObjects/siteEditorHomePage.py
-Variables    ../Resources/variables/basicHotAbsoluteGuardVariables.py
+Variables    ../Inputs/basicHotAbsoluteGuardInputs.py
+Variables   ../PageObjects/toolsConfigsPage.py
 
 *** Variables ***
 ${url_cx}    ${url_cx}
