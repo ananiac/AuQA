@@ -5,7 +5,7 @@ Library    Collections
 Library    OperatingSystem
 Library    DateTime
 Variables    ../Configurations/config.py
-Variables    ./Variables/globalVariables.py
+Variables    ../ResourceVariables/globalVariables.py
 Variables    ../JsonPath/basicHotAbsoluteGuard.py
 Resource    common.robot
 
