@@ -2,13 +2,11 @@
 url="https://10.252.9.11/vems/vx.php"
 url_cx="https://10.252.9.37/vems/cx.php"
 
-
 #use headlessmode to run in ubuntu
-#browser="headlesschrome"
+browser="headlesschrome"
 
 #use this to run on windows
-browser="chrome"
-
+#browser="chrome"
 
 #Credentials to login
 ui_username="ideavat"
