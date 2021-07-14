@@ -9,6 +9,8 @@ Test Teardown    close browser
 
 *** Variables ***
 
+# Added this for test
+#added step2
 
 *** Test Cases ***
 AbsHotGuardSmokeTest
