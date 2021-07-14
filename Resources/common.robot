@@ -14,10 +14,12 @@ checkResponseStatusCode
         [Arguments]    ${statusCode}
         ${status_code}=     convert to string   ${statusCode} #status code extraction from response
         should be equal as strings   ${status_code}      200
+
 incrementingByOne
     [Arguments]     ${before_val}
     ${value}    incrementByOne    ${before_val}
     return from keyword    ${value}
+
 waitForMinutes
     [Arguments]    ${minutes}
     log to console    !------------Waiting for ${minutes} minutes------------!

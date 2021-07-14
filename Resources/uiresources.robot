@@ -16,9 +16,11 @@ startBrowserAndAccessAIEngineCXWebUI
         maximize browser window
         set browser implicit wait    ${high_speed}
         log to console    Accessed AI Engine
+
 verifyTitle
         title should be    ${page_title}
         log to console    Title verified---!
+
 loginByEnteringUsernameAndPassword
     #[Arguments]    ${username}    ${password}
     log to console    Entering user name and password
@@ -30,9 +32,11 @@ loginByEnteringUsernameAndPassword
     wait until element is enabled    ${tools_button}
     capture page screenshot    ./Reports/Screenshots/siteEditorHomePage_2.png
     log to console    Logged in succesfully
+
 startBrowserAndLoginToAIEngine
     startBrowserAndAccessAIEngineCXWebUI
     loginByEnteringUsernameAndPassword
+
 resetGroupPropertiesUsingLoadTemplateOptionWithOverwrite
     startBrowserAndLoginToAIEngine
     click element    ${tools_button}

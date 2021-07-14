@@ -9,6 +9,7 @@
               points: children{
                 oid
                 name
+                  type
               }
 
 
