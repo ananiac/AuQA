@@ -17,3 +17,8 @@ ui_password="Crick3t!"
 content_type="application/json"
 write_api_token="Q9uPuYdzSev9x5ww8RWDsW6P"
 query_api_token="EekHfQugKTtGuy3yWhKt6WN9"
+
+#Terminal Configuration
+host_ip="10.252.9.37"
+ssh_username="fc"
+ssh_password="Id3aV@tAcc3ss" #Id3aV@tAcc3ss

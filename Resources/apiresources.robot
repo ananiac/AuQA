@@ -5,8 +5,8 @@ Library    Collections
 Library    OperatingSystem
 Library    DateTime
 Variables    ../Configurations/config.py
-Variables    ./ResourceVariables/globalVariables.py
-Variables    ../JsonPath/basicHotAbsoluteGuard.py
+Variables    ./Variables/globalVariables.py
+Variables    ../JsonPath/basicHotAbsoluteGuardJsonpath.py
 Resource    common.robot
 
 
@@ -24,15 +24,15 @@ ${sensor_B_oid}    0
 *** Keywords ***
 changeCxConfigsDashm_NumGuardUnits_NumMinutesGuardTimer_PercentDeadSensorThreshold_AndSystem_NumMinutesPast
     [Arguments]    ${num_guard_units_val}    ${num_minutes_guard_timer_val}    ${percent_dead_sensor_threshold_val}    ${num_minutes_past_val}
-    ${time_frequency_of_ahus_in_guard}=    convert to integer   ${num_minutes_guard_timer_val}
-    ${no_of_ahus_to_be_in_guard}=       convert to integer      ${num_guard_units_val}
     changeCxConfigsTabModuleFieldValues    DASHM    NumGuardUnits    ${num_guard_units_val}
     changeCxConfigsTabModuleFieldValues    DASHM    NumMinutesGuardTimer    ${num_minutes_guard_timer_val}
     changeCxConfigsTabModuleFieldValues    DASHM    PercentDeadSensorThreshold    ${percent_dead_sensor_threshold_val}
     changeCxConfigsTabModuleFieldValues    SYSTEM   NumMinutesPast  ${num_minutes_past_val}
+
 setPercentDeadSensorThresholdInDASHMConfig
     [Arguments]    ${percent_dead_sensor_threshold_val}
     changeCxConfigsTabModuleFieldValues    DASHM    PercentDeadSensorThreshold    ${percent_dead_sensor_threshold_val}
+
 changeCxConfigsTabModuleFieldValues
     [Arguments]    ${module_name}    ${field_name}    ${value}
     ${headers}=       create dictionary    Content-Type=${content_type}    Vigilent-Api-Token=${write_api_token}
@@ -42,21 +42,6 @@ changeCxConfigsTabModuleFieldValues
     should be equal as strings    ${result.status_code}    200
     log to console    Config module :${module_name}->Field:${field_name}->Value:${value}-is updated
 
-changeNumGuardUnitsAndNumMinutesGuardTimer     #not used
-    log to console    Set Guard Units and Guard timer under CX->Tools->Config->DASHM-------->
-    [Arguments]    ${units}    ${timer}    ${percentage}
-    ${headers}=       create dictionary    Content-Type=${content_type}    Vigilent-Api-Token=${write_api_token}
-    ${body}=          create dictionary    query= mutation configWrite { configSet(requests: [{module: "DASHM", name: "NumGuardUnits", value: "${units}"},{module: "DASHM",name:"NumMinutesGuardTimer",value:"${timer}"},{module: "DASHM",name:"PercentDeadSensorThreshold",value:"${percentage}"}]) { index reason }}
-    create session    AIEngine    ${base_url}     disable_warnings=1
-    ${result}=  post on session    AIEngine  /public/graphql  headers=${headers}    json=${body}
-    log to console    ${result.json()}
-setGuardHotAbsTemp
-    [Arguments]    ${temp}
-    ${headers}=       create dictionary    Content-Type=${content_type}    Vigilent-Api-Token=${write_api_token}
-    ${body}=          create dictionary    query= mutation setGrpProp { propertyWrite(requests: [{oid: 17, name: "GuardHotAbsTemp", float: ${temp}}]) { index reason }}
-    create session    AIEngine    ${base_url}     disable_warnings=1
-    ${result}=  post on session    AIEngine  /public/graphql  headers=${headers}    json=${body}
-    log to console    ${result.json()}
 setGroupPropertiesGuardHotAbsTempAllowNumExceedencesGuardAndControl
     #log to console    Set the Group properties values->Grp GRP00->Properties->AllowNumExceedencesGuard = 10 AllowNumExceedencesControl = 10
     #log to console    AlmHotAbsTemp = 200(degree F) GuardHotAbsTemp = 90 (degrees F)---------->
@@ -69,24 +54,9 @@ setGroupPropertiesGuardHotAbsTempAllowNumExceedencesGuardAndControl
     #log to console    ${result.json()}
     #sleep    ${medium_speed}
 
-setRackPointTemp
-    [Arguments]    ${temp}
-    ${headers}=       create dictionary    Content-Type=${content_type}    Vigilent-Api-Token=${write_api_token}
-    ${mutation}     get binary file    ./Inputs/GraphQL/setRackPointTemperature.gql
-    ${body}=          create dictionary    query= ${mutation}
-    create session    AIEngine    ${base_url}     disable_warnings=1
-    ${result}=  post on session    AIEngine  /public/graphql  headers=${headers}    json=${body}
-    log to console    ${result.json()}
-setAllRackPointSensorTempCool    #not used
-    [Arguments]    ${temp}
-    ${headers}=       create dictionary    Content-Type=${content_type}    Vigilent-Api-Token=${write_api_token}
-    ${body}=          create dictionary    query= mutation pointWrite { pointWrite(requests: [{oid: 26279, value: ${temp}}]) { index reason }}
-    create session    AIEngine    ${base_url}     disable_warnings=1
-    ${result}=  post on session    AIEngine  /public/graphql  headers=${headers}    json=${body}
-    log to console    ${result.json()}
 checkGroupControlStatusValueNotInGuard
     ${headers}=       create dictionary    Content-Type=${content_type}    Vigilent-Api-Token=${query_api_token}
-    ${file}    get binary file   ./Inputs/GraphQL/getGroupControlStatusValue.gql
+    ${file}    get binary file    ./Inputs/GraphQL/getGroupControlStatusValue.gql
     ${body}=    create dictionary    query= ${file}
     create session    AIEngine    ${base_url}     disable_warnings=1
     ${result}=  post on session    AIEngine  /public/graphql  headers=${headers}    json=${body}
@@ -96,6 +66,7 @@ checkGroupControlStatusValueNotInGuard
     log to console    *********Validating the Ctrl Status is not Guard(expect any other value than 2)******
     should not be equal as integers    ${value}    2    System should not be in guard(2)
     log to console    ---------Status value is ${value}-Not in Guard--Validated Successfully------------------------
+
 checkGroupControlStausValueInGuard
     log to console    Checking Group Control Status for the value to be in guard.
     ${headers}=       create dictionary    Content-Type=${content_type}    Vigilent-Api-Token=${query_api_token}
@@ -108,8 +79,7 @@ checkGroupControlStausValueInGuard
     should be equal as integers    ${value}    2    System should be in guard(2)
     log to console    Validated and the Group is in Guard
 
-
-setRackPointSensorTempCool
+setRackPointSensorTemperature
     [Arguments]    ${oid}    ${temp}
     ${headers}=       create dictionary    Content-Type=${content_type}    Vigilent-Api-Token=${write_api_token}
     ${body}=          create dictionary    query= mutation pointWrite { pointWrite(requests: [{oid: ${oid}, value: ${temp}}]) { index reason }}
@@ -117,10 +87,11 @@ setRackPointSensorTempCool
     ${result}=  post on session    AIEngine  /public/graphql  headers=${headers}    json=${body}
     should be equal as strings    ${result.status_code}    200
     log to console   Temperature ${temp} F set for ${oid}
-setRackPointsTemperature    #Contain both query and mutation
+
+setRackSensorPointsTemperature    #Contain both query and mutation
     [Arguments]    ${tempF}
     log to console    Fetch the number of rack sensors ----------------->
-    ${json_dict}    fetchTheRackSensorsFromGroupUsingGraphQLQuery
+    ${json_dict}    queryToFetchJsonResponseContainingTheRackSensorsFromGroup
     ${total}=    fetchTheNumberOfItemsInDictionary    ${json_dict}    ${racks_in_group}
     log to console    Setting temperature for all sensor points----------------->
     FOR    ${i}    IN RANGE    0    ${total}
@@ -129,11 +100,12 @@ setRackPointsTemperature    #Contain both query and mutation
         ${rack_type2}    fetchValueOfFieldFromJsonDictionary    ${json_dict}    $.data.site.groups[0].racks[${i}].points[1].name
         ${oid1}    fetchValueOfFieldFromJsonDictionary    ${json_dict}    $.data.site.groups[0].racks[${i}].points[0].oid
         ${oid2}     fetchValueOfFieldFromJsonDictionary    ${json_dict}    $.data.site.groups[0].racks[${i}].points[1].oid
-        run keyword if    '${rack_type1}'!='Humidity Monitor'    setRackPointSensorTempCool    ${oid1}    ${tempF}
-        run keyword if    '${rack_type2}'!='Internal Thermistor'     setRackPointSensorTempCool    ${oid2}    ${tempF}
-        END
+        run keyword if    '${rack_type1}'!='Humidity Monitor'    setRackPointSensorTemperature    ${oid1}    ${tempF}
+        run keyword if    '${rack_type2}'!='Internal Thermistor'     setRackPointSensorTemperature    ${oid2}    ${tempF}
+    END
     log to console    ******************************Temperature set for all rack sensors*********************************
-fetchTheRackSensorsFromGroupUsingGraphQLQuery
+
+queryToFetchJsonResponseContainingTheRackSensorsFromGroup
     ${headers}=       create dictionary    Content-Type=${content_type}   Vigilent-Api-Token=${query_api_token}
     ${file}    get binary file    ./Inputs/GraphQL/getRackPoints.gql
     ${body}=          create dictionary    query= ${file}
@@ -142,21 +114,38 @@ fetchTheRackSensorsFromGroupUsingGraphQLQuery
     should be equal as strings    ${result.status_code}     200
     ${json_dict}=   set variable    ${result.json()}
     return from keyword    ${json_dict}
+
 setTemperatureForSensorsAandB
     [Arguments]    ${temp}
-    ${json_dict}    fetchTheRackSensorsFromGroupUsingGraphQLQuery
-    #First two sensor points are picked as Sensor A and Sensor B
-    ${sensor_A_oid}    fetchValueOfFieldFromJsonDictionary    ${json_dict}    $.data.site.groups[0].racks[0].points[0].oid
-    ${sensor_B_oid}    fetchValueOfFieldFromJsonDictionary    ${json_dict}    $.data.site.groups[0].racks[0].points[1].oid
-    setRackPointSensorTempCool  ${sensor_A_oid}    ${temp}
-    setRackPointSensorTempCool  ${sensor_B_oid}    ${temp}
+    ${json_dict}    queryToFetchJsonResponseContainingTheRackSensorsFromGroup
+    #First two sensor points are picked as Sensor A and Sensor B if they are Rack Top or Rack Bottom
+    ${total}=    fetchTheNumberOfItemsInDictionary    ${json_dict}    ${racks_in_group}
+    log to console    Setting temperature for Sensor A and B----------------->
+    FOR    ${i}    IN RANGE    0    ${total}
+        log to console    ${i} Rack Sensor
+        ${rack_type1}    fetchValueOfFieldFromJsonDictionary    ${json_dict}    $.data.site.groups[0].racks[${i}].points[0].type
+        ${rack_type2}    fetchValueOfFieldFromJsonDictionary    ${json_dict}    $.data.site.groups[0].racks[${i}].points[1].type
+        ${oid1}    fetchValueOfFieldFromJsonDictionary    ${json_dict}    $.data.site.groups[0].racks[${i}].points[0].oid
+        ${oid2}     fetchValueOfFieldFromJsonDictionary    ${json_dict}    $.data.site.groups[0].racks[${i}].points[1].oid
+        IF   '${rack_type1}'=='CBot'
+            IF    '${rack_type2}'=='CTop'    #Excluding RHUM and ZNT
+                 ${sensor_A_oid}=    set variable    ${oid1}
+                 ${sensor_B_oid}=    set variable    ${oid2}
+                 exit for loop
+            END
+        END
+    END
+    setRackPointSensorTemperature  ${sensor_A_oid}    ${temp}
+    setRackPointSensorTemperature  ${sensor_B_oid}    ${temp}
     #${time_at_sensor_is_100F}    get current date
     log to console    ${time_at_sensor_is_100F}
+
 waitForTwoMinutes
     log to console    Waiting for Two minutes
-    sleep    ${low_speed}
-    log to console    **************in progress - one minute done***************
-    sleep    ${low_speed}
+    #sleep    ${low_speed}
+    sleep    2 minutes
+    log to console    **************two minutes waiting done***************
+
 fetchTheNumberOfItemsInDictionary
     [Arguments]    ${dictionary}    ${json_of_required_node}
     #log to console    ---find number of Items in Dictionary for JSonpath ${json_of_required_node}----
@@ -165,11 +154,13 @@ fetchTheNumberOfItemsInDictionary
     ${total}=    convert to integer    ${total_points_to_write}
     #log to console      ${total}
     return from keyword    ${total}
+
 fetchValueOfFieldFromJsonDictionary
         [Arguments]    ${json_dictionary}     ${json_path_of_required_field}
         ${field_value_list}    get value from json    ${json_dictionary}    ${json_path_of_required_field}
         ${field_value}    get from list    ${field_value_list}    0
         return from keyword    ${field_value}
+
 checkForAHUToBeInGuardAtRegularIntervalUntilFourAHUsReached
     [Arguments]    ${num_guard_units_val}    ${num_minutes_guard_timer_val}
     log to console    <----Validation on the AHUs going on guard at regular interval----->
@@ -190,10 +181,14 @@ checkForAHUToBeInGuardAtRegularIntervalUntilFourAHUsReached
             should be equal as integers    ${current_ahus_in_guard}    ${expected_ahus_in_guard}
             exit for loop if    ${current_ahus_in_guard}==${ahus_to_be_on}
             waitForMinutes    ${num_minutes_guard_timer_val}
+        ELSE
+            log to console    Sufficient AHUs are not present to cool the system
+            should be true    ${total_no_ahus} >= ${expected_ahus_in_guard}     #need to check failure scenario
         END
     END
     #run keyword if    ${total_no_ahus}>=
     log to console    *************************************************************
+
 checkForAllAHUsToBeGuardCleared
     log to console    <----Validating AHU Guard is cleared ----->
     ${json_dictionary}=     queryToFetchJsonResponseContaingTheCurrentAHUStatus
@@ -223,11 +218,19 @@ fetchNumberOfAHUsWithGuardON
                     log to console    !V-------Status value for AHU:${ahu} control:${controls} is ${ahu_status_ctrl_value}-----!V
                     IF  "${ahu_status_ctrl_value}"=="GUARD"         #Do we need to check both to be in Guard?
                         ${counter}=    incrementingByOne    ${counter}
+                        IF    ${no_of_controls} > 1
+                                FOR    ${remaining_controls}  IN RANGE  1   ${no_of_controls}
+                                    ${ahu_status_ctrl_value}     fetchValueOfFieldFromJsonDictionary    ${json_dictionary}    $.data.site.groups[0].ahus[${ahu}].controls[${remaining_controls}].status.origin
+                                    log to console    !V-------Status value for AHU:${ahu} control:${remaining_controls} is ${ahu_status_ctrl_value}-----!V
+                                    should be equal as strings    ${ahu_status_ctrl_value}    GUARD
+                                END
+                        END
                         exit for loop
                     END
                 END
     END
     return from keyword    ${counter}
+
 confirmStatusOfAHUs
     [Arguments]    ${total}     ${json_dictionary}    ${expected_status}
     log to console    !---Intial counter value is ${counter}---!
@@ -244,6 +247,7 @@ confirmStatusOfAHUs
                         should be equal as strings    ${ahu_status_ctrl_value}    ${expected_status}    AHUS are expected with Status ${expected_status}
                 END
     END
+
 confirmStatusOfAHUsNotGuard
    [Arguments]    ${total}     ${json_dictionary}
     FOR    ${ahu}   IN RANGE    0    ${total}
