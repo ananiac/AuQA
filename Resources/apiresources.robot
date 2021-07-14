@@ -86,7 +86,7 @@ setAllRackPointSensorTempCool    #not used
     log to console    ${result.json()}
 checkGroupControlStatusValueNotInGuard
     ${headers}=       create dictionary    Content-Type=${content_type}    Vigilent-Api-Token=${query_api_token}
-    ${file}    get binary file   /GraphQL/getGroupControlStatusValue.gql
+    ${file}    get binary file   ./Inputs/GraphQL/getGroupControlStatusValue.gql
     ${body}=    create dictionary    query= ${file}
     create session    AIEngine    ${base_url}     disable_warnings=1
     ${result}=  post on session    AIEngine  /public/graphql  headers=${headers}    json=${body}
