@@ -1,4 +1,4 @@
-#!c:\users\grees\pycharmprojects\auqa\venv\scripts\python.exe
+#!C:\Users\grees\PycharmProjects\AuQA\venv\Scripts\python.exe
 # EASY-INSTALL-ENTRY-SCRIPT: 'jsonpath-rw==1.4.0','console_scripts','jsonpath.py'
 import re
 import sys
