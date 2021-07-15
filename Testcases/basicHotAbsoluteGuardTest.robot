@@ -6,10 +6,10 @@ Documentation          This testcase validates the Guard mode feature of AI Engi
 Library    RequestsLibrary
 Library    JSONLibrary
 Library    Collections
-Resource    ../Resources/apiresources.robot
-Resource    ../Resources/uiresources.robot
-Resource    ../Resources/connection.robot
-Variables    ../Inputs/basicHotAbsoluteGuardInputs.py
+Resource    ${EXECDIR}/Resources/apiresources.robot
+Resource    ${EXECDIR}/Resources/uiresources.robot
+Resource    ${EXECDIR}/Resources/connection.robot
+Variables    ${EXECDIR}/Inputs/basicHotAbsoluteGuardInputs.py
 
 
 *** Variables ***
