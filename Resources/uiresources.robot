@@ -1,11 +1,12 @@
 *** Settings ***
 Library    SeleniumLibrary
-Variables    ${EXECDIR}/PageObjects/loginPage.py
-Variables    ${EXECDIR}/Configurations/config.py
-Variables    ${EXECDIR}/Resources/ResourceVariables/globalVariables.py
-Variables    ${EXECDIR}/PageObjects/siteEditorHomePage.py
-Variables    ${EXECDIR}/Inputs/basicHotAbsoluteGuardInputs.py
+Variables   ${EXECDIR}/PageObjects/loginPage.py
+Variables   ${EXECDIR}/Configurations/config.py
+Variables   ${EXECDIR}/Resources/ResourceVariables/globalVariables.py
+Variables   ${EXECDIR}/PageObjects/siteEditorHomePage.py
+Variables   ${EXECDIR}/Inputs/basicHotAbsoluteGuardInputs.py
 Variables   ${EXECDIR}/PageObjects/toolsConfigsPage.py
+Resource    common.robot
 
 *** Variables ***
 ${url_cx}    ${url_cx}
@@ -26,11 +27,11 @@ loginByEnteringUsernameAndPassword
     log to console    Entering user name and password
     input text    ${uname}    ${ui_username}
     input text    ${upwd}    ${ui_password}
-    capture page screenshot    ./Reports/Screenshots/inputUserNameAndPwd_1.png
+    takeScreenshot  inputUserNameAndPwd
     click element    ${login_button}
     wait until page contains element   ${banner}
     wait until element is enabled    ${tools_button}
-    capture page screenshot    ./Reports/Screenshots/siteEditorHomePage_2.png
+    takeScreenshot  siteEditorHomePage
     log to console    Logged in succesfully
 
 startBrowserAndLoginToAIEngine
