@@ -4,8 +4,8 @@ Library    JSONLibrary
 Library    Collections
 Library    OperatingSystem
 Library    DateTime
-Variables    ../Configurations/config.py
-Variables    ../ExternalKeywords/common.py
+Variables    ${EXECDIR}/Configurations/config.py
+Variables    ${EXECDIR}/ExternalKeywords/common.py
 
 
 *** Variables ***

@@ -1,11 +1,11 @@
 *** Settings ***
 Library    SeleniumLibrary
-Variables    ../PageObjects/loginPage.py
-Variables    ../Configurations/config.py
-Variables    ./ResourceVariables/globalVariables.py
-Variables    ../PageObjects/siteEditorHomePage.py
-Variables    ../Inputs/basicHotAbsoluteGuardInputs.py
-Variables   ../PageObjects/toolsConfigsPage.py
+Variables   ${EXECDIR}/PageObjects/loginPage.py
+Variables   ${EXECDIR}/Configurations/config.py
+Variables   ${EXECDIR}/Resources/ResourceVariables/globalVariables.py
+Variables   ${EXECDIR}/PageObjects/siteEditorHomePage.py
+Variables   ${EXECDIR}/Inputs/basicHotAbsoluteGuardInputs.py
+Variables   ${EXECDIR}/PageObjects/toolsConfigsPage.py
 Resource    common.robot
 
 *** Variables ***
