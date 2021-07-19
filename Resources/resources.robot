@@ -3,8 +3,6 @@ Library    SeleniumLibrary
 Variables    ${EXECDIR}/PageObjects/loginPage.py
 Variables    ${EXECDIR}/Configurations/config.py
 Variables    ${EXECDIR}/Resources/ResourceVariables/globalVariables.py
-Resource    common.robot
-
 
 *** Variables ***
 
@@ -24,11 +22,11 @@ loginByEnteringUsernameAndPassword
     log to console    Entering user name and password
     input text    ${uname}    ${ui_password}
     input text    ${upwd}    ${ui_password}
-    takeScreenshot  inputUserNameAndPwd
+    capture page screenshot    ./Reports/Screenshots/inputUserNameAndPwd_1.png
     click element    ${login_button}
     set selenium timeout    ${low_speed}
     wait until page contains    All Groups in Control
-    takeScreenshot  systemConsoleHomePage
+    capture page screenshot    ./Reports/Screenshots/systemConsoleHomePage_2.png
     log to console    Logged in succesfully
 startBrowserAndLoginToAIEngine
     startBrowserAndAccessAIEngineWebUI
@@ -38,7 +36,7 @@ openEquipmentTabToCheckTheCoolingUnitStatus
     wait until element is enabled    css:span#tab-1311-btnInnerEl
     click element    css:span#tab-1311-btnInnerEl
     wait until page contains    CONTROL
-    takeScreenshot  systemConsoleEquipmentTab
+    capture page screenshot    ./Reports/Screenshots/systemConsoleEquipmentTab_3.png
     page should not contain element    xpath://div[contains(text(),'GUARD')]
 openSystemConsoleEquipmentTabToCheckGuardModeONForCoolingUnits
     gotoSystemConsolePage
@@ -52,7 +50,7 @@ openSystemConsoleEquipmentTabToCheckGuardModeONForCoolingUnits
     wait until page contains element    xpath://div[text()='GUARD']
     page should contain element   xpath://div[text()='GUARD']
     sleep    ${high_speed}
-    takeScreenshot  GuardMode
+    capture page screenshot    ./Reports/Screenshots/GuardMode_5.png
 openEquipmentTab
     click link    Equipment
     wait until page contains    CONTROL
@@ -62,7 +60,7 @@ openSiteEditorPage
     click element    css:span#button-1306-btnIconEl
     wait until page contains    Site Model
     wait until page contains    Rack
-    takeScreenshot  siteEditor
+    capture page screenshot    ./Reports/Screenshots/siteEditor_4.png
     ${urls}    get location
     log to console    ${urls}
     log to console    Site Editor is open --->
