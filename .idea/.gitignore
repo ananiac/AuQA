@@ -2,3 +2,14 @@
 /shelf/
 /workspace.xml
 /venv
+venv* 
+.venv* 
+.env 
+*~ 
+.idea 
+*.pyc 
+*$py.class 
+*.iml 
+log.html 
+output.xml 
+report.html __pycache__

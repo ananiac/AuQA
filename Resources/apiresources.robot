@@ -12,7 +12,7 @@ Resource    common.robot
 
 
 *** Variables ***
-${base_url}    https://10.252.9.37/api
+${base_url}    ${graphql_base_url}
 #${increment_counter}=       1
 #${current_ahus_in_guard}=    0
 ${current_ahus_in_guard}    0
@@ -20,6 +20,9 @@ ${counter}      0
 ${total_no_ahus}    0
 ${sensor_A_oid}    0
 ${sensor_B_oid}    0
+${flag0}    0    #default when no writing required
+${flag1}    1    #65F
+${flag2}    2   #100F and 65F
 
 *** Keywords ***
 changeCxConfigsDashm_NumGuardUnits_NumMinutesGuardTimer_PercentDeadSensorThreshold_AndSystem_NumMinutesPast
@@ -103,6 +106,8 @@ setRackSensorPointsTemperature    #Contain both query and mutation
         run keyword if    '${rack_type1}'!='Humidity Monitor'    setRackPointSensorTemperature    ${oid1}    ${tempF}
         run keyword if    '${rack_type2}'!='Internal Thermistor'     setRackPointSensorTemperature    ${oid2}    ${tempF}
     END
+    ${flag}=    evaluate   ${flag1}
+    set global variable    ${flag}
     log to console    ******************************Temperature set for all rack sensors*********************************
 
 queryToFetchJsonResponseContainingTheRackSensorsFromGroup
@@ -137,14 +142,75 @@ setTemperatureForSensorsAandB
     END
     setRackPointSensorTemperature  ${sensor_A_oid}    ${temp}
     setRackPointSensorTemperature  ${sensor_B_oid}    ${temp}
+    ${flag}    evaluate    ${flag2}
+    set global variable    ${flag}
     #${time_at_sensor_is_100F}    get current date
-    log to console    ${time_at_sensor_is_100F}
+    #log to console    ${time_at_sensor_is_100F}
+
+getCurrentTemperatureOfSensorsAandB
+    ${json_dict}    queryToFetchJsonResponseContainingTheRackSensorsFromGroup
+    #First two sensor points are picked as Sensor A and Sensor B if they are Rack Top or Rack Bottom
+    ${total}=    fetchTheNumberOfItemsInDictionary    ${json_dict}    ${racks_in_group}
+    log to console    Getting temperature of Sensor A and B----------------->
+    FOR    ${i}    IN RANGE    0    ${total}
+        log to console    ${i} Rack Sensor
+        ${rack_type1}    fetchValueOfFieldFromJsonDictionary    ${json_dict}    $.data.site.groups[0].racks[${i}].points[0].type
+        ${rack_type2}    fetchValueOfFieldFromJsonDictionary    ${json_dict}    $.data.site.groups[0].racks[${i}].points[1].type
+        ${oid1}    fetchValueOfFieldFromJsonDictionary    ${json_dict}    $.data.site.groups[0].racks[${i}].points[0].oid
+        ${oid2}     fetchValueOfFieldFromJsonDictionary    ${json_dict}    $.data.site.groups[0].racks[${i}].points[1].oid
+        ${current_temp}    fetchValueOfFieldFromJsonDictionary    ${json_dict}    $.data.site.groups[0].racks[${i}].points[0].pointCurrent.value
+        IF   '${rack_type1}'=='CBot'
+            IF    '${rack_type2}'=='CTop'    #Excluding RHUM and ZNT
+                 ${sensor_A_oid}=    set variable    ${oid1}
+                 ${sensor_B_oid}=    set variable    ${oid2}
+                 exit for loop
+            END
+        END
+    END
+    return from keyword    ${current_temp}
+
+setTwoSetOfSensorTemperatureForRack
+    [Arguments]    ${tempH}    ${tempC}
+    ${json_dict}    queryToFetchJsonResponseContainingTheRackSensorsFromGroup
+    #First two sensor points are picked as Sensor A and Sensor B if they are Rack Top or Rack Bottom
+    ${total}=    fetchTheNumberOfItemsInDictionary    ${json_dict}    ${racks_in_group}
+    log to console    Setting temperature for Sensor A and B----------------->
+    FOR    ${i}    IN RANGE    0    ${total}
+        log to console    ${i} Rack Sensor
+        ${rack_type1}    fetchValueOfFieldFromJsonDictionary    ${json_dict}    $.data.site.groups[0].racks[${i}].points[0].type
+        ${rack_type2}    fetchValueOfFieldFromJsonDictionary    ${json_dict}    $.data.site.groups[0].racks[${i}].points[1].type
+        ${oid1}    fetchValueOfFieldFromJsonDictionary    ${json_dict}    $.data.site.groups[0].racks[${i}].points[0].oid
+        ${oid2}     fetchValueOfFieldFromJsonDictionary    ${json_dict}    $.data.site.groups[0].racks[${i}].points[1].oid
+        IF   '${rack_type1}'=='CBot'
+            IF    '${rack_type2}'=='CTop'    #Excluding RHUM and ZNT
+                 ${sensor_A_oid}=    set variable    ${oid1}
+                 ${sensor_B_oid}=    set variable    ${oid2}
+                 exit for loop
+            END
+        END
+    END
+    setRackPointSensorTemperature  ${sensor_A_oid}    ${tempH}
+    setRackPointSensorTemperature  ${sensor_B_oid}    ${tempH}
+    log to console    Setting temperature for other Sensors----------------->
+    FOR    ${i}    IN RANGE    0    ${total}
+        ${rack_type1}    fetchValueOfFieldFromJsonDictionary    ${json_dict}    $.data.site.groups[0].racks[${i}].points[0].type
+        ${rack_type2}    fetchValueOfFieldFromJsonDictionary    ${json_dict}    $.data.site.groups[0].racks[${i}].points[1].type
+        ${oid1}    fetchValueOfFieldFromJsonDictionary    ${json_dict}    $.data.site.groups[0].racks[${i}].points[0].oid
+        ${oid2}     fetchValueOfFieldFromJsonDictionary    ${json_dict}    $.data.site.groups[0].racks[${i}].points[1].oid
+        run keyword if
+        ...    ('${rack_type1}'=='CBot' and '${oid1}'!='${sensor_A_oid}')   setRackPointSensorTemperature    ${oid1}    ${tempC}
+        run keyword if
+        ...   ('${rack_type2}'=='CTop' and '${oid2}'!='${sensor_B_oid}')   setRackPointSensorTemperature    ${oid2}    ${tempC}
+    END
 
 waitForTwoMinutes
     log to console    Waiting for Two minutes
     #sleep    ${low_speed}
     sleep    2 minutes
     log to console    **************two minutes waiting done***************
+
+waitForOneMinute
+    common.waitForMinutes    1
 
 fetchTheNumberOfItemsInDictionary
     [Arguments]    ${dictionary}    ${json_of_required_node}

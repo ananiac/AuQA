@@ -12,7 +12,7 @@ allow_num_exceedences_guard_default=1
 alm_hot_abs_temp_default=90
 guard_hot_abs_temp_default=90
 percent_deadsensor_threshold_default=30
-sensor_point_cooling_temp=65.50
+sensor_point_cooling_temp=65.00
 sensor_point_hot_temp=100
 
 
