@@ -25,7 +25,9 @@ takeScreenshot
     ${date}=  getDateTime
     set global variable  ${path}  Reports/Screenshots/${date}
     set screenshot directory  ${path}
+    wait until page contains  Element
     capture page screenshot  ${filename}.${type_of_file}
+    log to console  ${\n}Screenshots
 
 checkResponseStatusCode
     [Arguments]  ${statusCode}
