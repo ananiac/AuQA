@@ -2,7 +2,7 @@
 banner="css:#banner"
 tools_button="css:#button-1267-btnEl"
 configs_option_in_tools="css:#menuitem-1235-itemEl"
-load_template_in_config_popup="css:#button-1299-btnIconEl"
+load_template_in_config_popup="xpath=//span[contains(text(),'Load Template')]"
 overwrite_checkbox="css:#checkbox-1360-inputEl"
 template_dropbox_picker="css:#combo-1358-trigger-picker"
 template_option="xpath=//li[contains(text(),'DASHAM_MIX')]"

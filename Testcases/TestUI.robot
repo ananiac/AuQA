@@ -2,7 +2,7 @@
 Library    SeleniumLibrary
 Resource    ${EXECDIR}/Resources/resources.robot
 Variables    ${EXECDIR}/PageObjects/loginPage.py
-Variables    ${EXECDIR}/Configurations/config.py
+Variables    ${EXECDIR}/Configurations/${environment}.py
 
 Test Setup    startBrowserAndLoginToAIEngine
 Test Teardown    close browser

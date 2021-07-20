@@ -3,7 +3,7 @@ Library    RequestsLibrary
 Library    JSONLibrary
 Library    Collections
 Library    OperatingSystem
-Variables    ${EXECDIR}/Configurations/config.py
+Variables    ${EXECDIR}/Configurations/${environment}.py
 Library    ${EXECDIR}/ExternalKeywords/common.py
 
 
