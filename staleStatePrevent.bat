@@ -1,1 +1,0 @@
-robot C:\Users\grees\PycharmProjects\AuQA\Testcases\staleStatePrevention.robot
