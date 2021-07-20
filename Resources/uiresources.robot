@@ -37,7 +37,7 @@ startBrowserAndLoginToAIEngine
     startBrowserAndAccessAIEngineCXWebUI
     loginByEnteringUsernameAndPassword
 
-resetGroupPropertiesUsingLoadTemplateOptionWithOverwrite
+resetSystemPropertiesUsingLoadTemplateOptionWithOverwrite
     startBrowserAndLoginToAIEngine
     click element    ${tools_button}
     click element    ${configs_option_in_tools}
@@ -52,7 +52,9 @@ resetGroupPropertiesUsingLoadTemplateOptionWithOverwrite
     select checkbox    ${overwrite_checkbox}
     click element    ${apply_button_load_template}
     click element    ${save_button}
+    log to console    Loaded default template succesfully
     sleep    ${high_speed}
     click element    ${close_button}
     wait until element is not visible    ${close_button}
+    log to console    Closed config popup
     close browser
