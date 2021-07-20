@@ -17,9 +17,9 @@ ui_password="Crick3t!"
 #API Headers
 content_type="application/json"
 write_api_token="vd2R6aDXgz5e9zkmf7TfZzqN"
-   # "Q9uPuYdzSev9x5ww8RWDsW6P"
+
 query_api_token="bZVd43sS4Y9WZfZ7du3kY6ST"
-    #"EekHfQugKTtGuy3yWhKt6WN9"
+
 
 #Terminal Configuration
 host_ip="10.252.9.64"
