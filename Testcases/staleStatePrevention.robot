@@ -2,9 +2,9 @@
 Library    RequestsLibrary
 Library    JSONLibrary
 Library    Collections
-Resource    ../Resources/apiresources.robot
-#Variables    ../Resources/ResourceVariables/globalVariables.py
-Variables    ../Inputs/basicHotAbsoluteGuardInputs.py
+Resource    ${EXECDIR}/Resources/apiresources.robot
+Variables    ${EXECDIR}/Resources/ResourceVariables/globalVariables.py
+Variables    ${EXECDIR}/Inputs/basicHotAbsoluteGuardInputs.py
 
 *** Variables ***
 
