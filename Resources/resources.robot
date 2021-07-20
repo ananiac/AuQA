@@ -1,7 +1,7 @@
 *** Settings ***
 Library    SeleniumLibrary
 Variables    ${EXECDIR}/PageObjects/loginPage.py
-Variables    ${EXECDIR}/Configurations/config.py
+Variables    ${EXECDIR}/Configurations/${environment}.py
 Variables    ${EXECDIR}/Resources/ResourceVariables/globalVariables.py
 
 *** Variables ***
@@ -9,8 +9,8 @@ Variables    ${EXECDIR}/Resources/ResourceVariables/globalVariables.py
 
 *** Keywords ***
 startBrowserAndAccessAIEngineWebUI
-        #[Arguments]    ${url}    ${browser}    ${expectedTitle}
-        open browser    ${url}    ${browser}    options=add_argument("--disable-popup-blocking"); add_argument("--ignore-certificate-errors"); add_argument("--no-sandbox"); add_argument("--disable-extensions"); add_argument("--disable-dev-shm-usage")
+        #[Arguments]    ${url_vx}    ${browser}    ${expectedTitle}
+        open browser    ${url_vx}    ${browser}    options=add_argument("--disable-popup-blocking"); add_argument("--ignore-certificate-errors"); add_argument("--no-sandbox"); add_argument("--disable-extensions"); add_argument("--disable-dev-shm-usage")
         maximize browser window
         set browser implicit wait    ${high_speed}
         log to console    Accessed AI Engine
@@ -65,7 +65,7 @@ openSiteEditorPage
     log to console    ${urls}
     log to console    Site Editor is open --->
 gotoSystemConsolePage
-    go to    ${url}
+    go to    ${url_vx}
     sleep    ${medium_speed}    #Need to check the timing
     log to console    System Console is open
 gotoSiteEditorPage

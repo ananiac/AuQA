@@ -4,7 +4,7 @@ Library    JSONLibrary
 Library    Collections
 Library    OperatingSystem
 Library    DateTime
-Variables    ${EXECDIR}/Configurations/config.py
+Variables    ${EXECDIR}/Configurations/${environment}.py
 Variables    ${EXECDIR}/Resources/ResourceVariables/globalVariables.py
 Variables    ${EXECDIR}/JsonPath/basicHotAbsoluteGuardJsonpath.py
 Resource    common.robot
@@ -12,7 +12,7 @@ Resource    common.robot
 
 
 *** Variables ***
-${base_url}    https://10.252.9.37/api
+${base_url}    ${graphql_base_url}
 #${increment_counter}=       1
 #${current_ahus_in_guard}=    0
 ${current_ahus_in_guard}    0
