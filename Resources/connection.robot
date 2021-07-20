@@ -3,7 +3,7 @@ Documentation          This demonstrates executing a command on a remote machine
 ...                    and getting its output.
 ...
 Library                SSHLibrary
-Variables    ${EXECDIR}/Configurations/config.py
+Variables    ${EXECDIR}/Configurations/${environment}.py
 Variables    ${EXECDIR}/Resources/ResourceVariables/globalVariables.py
 
 *** Variables ***

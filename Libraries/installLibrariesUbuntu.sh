@@ -5,4 +5,4 @@ sudo pip install robotframework-SeleniumLibrary
 sudo pip install robotframework-requests
 sudo pip install robotframework-jsonlibrary
 sudo pip install robotframework-sshlibrary
-sudo pip install -u robotframework-pabot
+sudo pip install -U robotframework-pabot

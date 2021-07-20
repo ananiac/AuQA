@@ -4,4 +4,4 @@ pip install robotframework-SeleniumLibrary
 pip install robotframework-requests
 pip install robotframework-jsonlibrary
 pip install robotframework-sshlibrary
-pip install -u robotframework-pabot
+pip install -U robotframework-pabot
