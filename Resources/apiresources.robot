@@ -7,6 +7,7 @@ Library    DateTime
 Variables    ${EXECDIR}/Configurations/config.py
 Variables    ${EXECDIR}/Resources/ResourceVariables/globalVariables.py
 Variables    ${EXECDIR}/JsonPath/basicHotAbsoluteGuardJsonpath.py
+Variables    ${EXECDIR}/Inputs/GraphQL/gqlQueries.py
 Resource    common.robot
 
 
@@ -56,8 +57,8 @@ setGroupPropertiesGuardHotAbsTempAllowNumExceedencesGuardAndControl
 
 checkGroupControlStatusValueNotInGuard
     ${headers}=       create dictionary    Content-Type=${content_type}    Vigilent-Api-Token=${query_api_token}
-    ${file}    get binary file    ${EXECDIR}/Inputs/GraphQL/getGroupControlStatusValue.gql
-    ${body}=    create dictionary    query= ${file}
+    #${file}    get binary file    ${EXECDIR}/Inputs/GraphQL/getGroupControlStatusValue.gql
+    ${body}=    create dictionary    query= ${getCtrlStateValue}
     create session    AIEngine    ${base_url}     disable_warnings=1
     ${result}=  post on session    AIEngine  /public/graphql  headers=${headers}    json=${body}
     #log to console    ${result.json()}
@@ -70,8 +71,7 @@ checkGroupControlStatusValueNotInGuard
 checkGroupControlStausValueInGuard
     log to console    Checking Group Control Status for the value to be in guard.
     ${headers}=       create dictionary    Content-Type=${content_type}    Vigilent-Api-Token=${query_api_token}
-    ${file}    get binary file    ${EXECDIR}/Inputs/GraphQL/getGroupControlStatusValue.gql
-    ${body}=          create dictionary    query= ${file}
+    ${body}=          create dictionary    query= ${getCtrlStateValue}
     create session    AIEngine    ${base_url}     disable_warnings=1
     ${result}=  post on session    AIEngine  /public/graphql  headers=${headers}    json=${body}
     @{ctrl_state_value}    get value from json    ${result.json()}    ${trends_groupStatus_controlStatus_value_path}
@@ -107,8 +107,7 @@ setRackSensorPointsTemperature    #Contain both query and mutation
 
 queryToFetchJsonResponseContainingTheRackSensorsFromGroup
     ${headers}=       create dictionary    Content-Type=${content_type}   Vigilent-Api-Token=${query_api_token}
-    ${file}    get binary file    ${EXECDIR}/Inputs/GraphQL/getRackPoints.gql
-    ${body}=          create dictionary    query= ${file}
+    ${body}=          create dictionary    query= ${rackSensorPoints}
     create session    AIEngine    ${base_url}     disable_warnings=1
     ${result}=  post on session    AIEngine  /public/graphql  headers=${headers}    json=${body}
     should be equal as strings    ${result.status_code}     200
@@ -198,8 +197,7 @@ checkForAllAHUsToBeGuardCleared
 
 queryToFetchJsonResponseContaingTheCurrentAHUStatus
     ${headers}=       create dictionary    Content-Type=${content_type}   Vigilent-Api-Token=${query_api_token}
-    ${file}    get binary file    ${EXECDIR}/Inputs/GraphQL/getGroupAHUControlsStatus.gql
-    ${body}=          create dictionary    query= ${file}
+    ${body}=          create dictionary    query= ${getAHUStatusInGroupGRP00}
     create session    AIEngine    ${base_url}     disable_warnings=1
     ${result}=  post on session    AIEngine  /public/graphql  headers=${headers}    json=${body}
     should be equal as strings    ${result.status_code}   200
