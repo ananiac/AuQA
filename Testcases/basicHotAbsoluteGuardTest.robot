@@ -20,7 +20,7 @@ BasicHotAbsoluteGuardTest
     connection.establishConnectionAndStartProcesses
     #2)In the CX UI, open the Configs and load the DASHAM template (with overwrite) and hit Save button then close
     uiresources.resetSystemPropertiesUsingLoadTemplateOptionWithOverwrite
-    #3)Set System DASHM:: configs NumGuardUnits = 1,NumMinutesGuardTimer = 3, PercentDeadSensorThreshold=20
+    #3)Set System DASHM:: configs NumGuardUnits = 1,NumMinutesGuardTimer = 3, PercentDeadSensorThreshold=100
     #4)Set System SYSTEM::NumMinutesPast=5
     apiresources.changeCxConfigsDashm_NumGuardUnits_NumMinutesGuardTimer_PercentDeadSensorThreshold_AndSystem_NumMinutesPast    ${num_guard_units}    ${num_minutes_guard_timer}   ${percent_deadsensor_threshold}    ${num_minutes_past}
     #5).Set the Group properties values->Grp GRP00->Properties->AllowNumExceedencesGuard = 10 AllowNumExceedencesControl = 10
