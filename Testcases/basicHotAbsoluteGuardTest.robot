@@ -51,9 +51,9 @@ BasicHotAbsoluteGuardTest
     apiresources.waitForTwoMinutes
     #17)Confirm the group GRP00 exits guard
     apiresources.checkGroupControlStatusValueNotInGuard
-    #18)Reset Group configs for group  GRP00 AllowNumExceedencesGuard = blank AllowNumExceedencesControl = blank
-    #AlmHotAbsTemp = blank
-    #GuardHotAbsTemp = blank
+    #18)Reset Group configs for group  GRP00 AllowNumExceedencesGuard = 1 AllowNumExceedencesControl = 0
+    #AlmHotAbsTemp = 90
+    #GuardHotAbsTemp = 90
     #Set System config DASHM:: PercentDeadSensorThreshold=30
     apiresources.setGroupPropertiesGuardHotAbsTempAllowNumExceedencesGuardAndControl    ${allow_num_exceedences_control_default}   ${allow_num_exceedences_guard_default}   ${alm_hot_abs_temp_default}  ${guard_hot_abs_temp_default}
     setPercentDeadSensorThresholdInDASHMConfig    ${percent_deadsensor_threshold_default}

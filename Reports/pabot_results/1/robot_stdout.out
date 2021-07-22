@@ -1,0 +1,162 @@
+==============================================================================
+Suites                                                                        
+==============================================================================
+Suites.staleStatePrevention                                                   
+==============================================================================
+StaleStatePreventionForSensors                                        11:54:35
+12:14:35
+Getting temperature of Sensor A----------------->
+Current temperature of Sensor A is:65
+Fetch the number of rack sensors ----------------->
+Setting temperature for all sensor points----------------->
+0 Rack Sensor
+Temperature 65.0 F set for 12010
+Temperature 65.0 F set for 12018
+1 Rack Sensor
+Temperature 65.0 F set for 12026
+Temperature 65.0 F set for 12034
+2 Rack Sensor
+Temperature 65.0 F set for 12042
+Temperature 65.0 F set for 12050
+3 Rack Sensor
+Temperature 65.0 F set for 12058
+Temperature 65.0 F set for 12066
+4 Rack Sensor
+Temperature 65.0 F set for 12074
+Temperature 65.0 F set for 12082
+5 Rack Sensor
+Temperature 65.0 F set for 12090
+Temperature 65.0 F set for 12098
+6 Rack Sensor
+Temperature 65.0 F set for 27363
+Temperature 65.0 F set for 27372
+7 Rack Sensor
+Temperature 65.0 F set for 26270
+Temperature 65.0 F set for 26279
+8 Rack Sensor
+9 Rack Sensor
+10 Rack Sensor
+******************************Temperature set for all rack sensors*********************************
+!------------Waiting for 1 minutes------------!
+!!---------Waiting - Done--------------------!!
+00:18:39
+1119
+Getting temperature of Sensor A----------------->
+Current temperature of Sensor A is:65
+Fetch the number of rack sensors ----------------->
+Setting temperature for all sensor points----------------->
+0 Rack Sensor
+Temperature 65.0 F set for 12010
+Temperature 65.0 F set for 12018
+1 Rack Sensor
+Temperature 65.0 F set for 12026
+Temperature 65.0 F set for 12034
+2 Rack Sensor
+Temperature 65.0 F set for 12042
+Temperature 65.0 F set for 12050
+3 Rack Sensor
+Temperature 65.0 F set for 12058
+Temperature 65.0 F set for 12066
+4 Rack Sensor
+Temperature 65.0 F set for 12074
+Temperature 65.0 F set for 12082
+5 Rack Sensor
+Temperature 65.0 F set for 12090
+Temperature 65.0 F set for 12098
+6 Rack Sensor
+Temperature 65.0 F set for 27363
+Temperature 65.0 F set for 27372
+7 Rack Sensor
+Temperature 65.0 F set for 26270
+Temperature 65.0 F set for 26279
+8 Rack Sensor
+9 Rack Sensor
+10 Rack Sensor
+******************************Temperature set for all rack sensors*********************************
+!------------Waiting for 1 minutes------------!
+!!---------Waiting - Done--------------------!!
+00:17:22
+1042
+Getting temperature of Sensor A----------------->
+Current temperature of Sensor A is:65
+Fetch the number of rack sensors ----------------->
+Setting temperature for all sensor points----------------->
+0 Rack Sensor
+Temperature 65.0 F set for 12010
+Temperature 65.0 F set for 12018
+1 Rack Sensor
+Temperature 65.0 F set for 12026
+Temperature 65.0 F set for 12034
+2 Rack Sensor
+Temperature 65.0 F set for 12042
+Temperature 65.0 F set for 12050
+3 Rack Sensor
+Temperature 65.0 F set for 12058
+Temperature 65.0 F set for 12066
+4 Rack Sensor
+Temperature 65.0 F set for 12074
+Temperature 65.0 F set for 12082
+5 Rack Sensor
+Temperature 65.0 F set for 12090
+Temperature 65.0 F set for 12098
+6 Rack Sensor
+Temperature 65.0 F set for 27363
+Temperature 65.0 F set for 27372
+7 Rack Sensor
+Temperature 65.0 F set for 26270
+Temperature 65.0 F set for 26279
+8 Rack Sensor
+9 Rack Sensor
+10 Rack Sensor
+******************************Temperature set for all rack sensors*********************************
+!------------Waiting for 1 minutes------------!
+!!---------Waiting - Done--------------------!!
+00:16:04
+964
+Getting temperature of Sensor A----------------->
+Current temperature of Sensor A is:100
+Setting temperature for Sensor A and B----------------->
+0 Rack Sensor
+Temperature 100 F set for 12010
+Temperature 100 F set for 12018
+Setting temperature for other Sensors----------------->
+Temperature 65.0 F set for 12026
+Temperature 65.0 F set for 12034
+Temperature 65.0 F set for 12042
+Temperature 65.0 F set for 12050
+Temperature 65.0 F set for 12058
+Temperature 65.0 F set for 12066
+Temperature 65.0 F set for 12074
+Temperature 65.0 F set for 12082
+Temperature 65.0 F set for 12090
+Temperature 65.0 F set for 12098
+Temperature 65.0 F set for 27363
+Temperature 65.0 F set for 27372
+Temperature 65.0 F set for 26270
+Temperature 65.0 F set for 26279
+!------------Waiting for 1 minutes------------!
+!!---------Waiting - Done--------------------!!
+00:14:46
+886
+Getting temperature of Sensor A----------------->
+Current temperature of Sensor A is:100
+Setting temperature for Sensor A and B----------------->
+0 Rack Sensor
+Temperature 100 F set for 12010
+Temperature 100 F set for 12018
+Setting temperature for other Sensors----------------->
+Temperature 65.0 F set for 12026
+Temperature 65.0 F set for 12034
+Temperature 65.0 F set for 12042
+Temperature 65.0 F set for 12050
+Temperature 65.0 F set for 12058
+Temperature 65.0 F set for 12066
+Temperature 65.0 F set for 12074
+Temperature 65.0 F set for 12082
+Temperature 65.0 F set for 12090
+Temperature 65.0 F set for 12098
+Temperature 65.0 F set for 27363
+Temperature 65.0 F set for 27372
+Temperature 65.0 F set for 26270
+Temperature 65.0 F set for 26279
+!------------Waiting for 1 minutes------------!

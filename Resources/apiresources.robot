@@ -8,6 +8,7 @@ Variables    ${EXECDIR}/Configurations/${environment}.py
 Variables    ${EXECDIR}/Resources/ResourceVariables/globalVariables.py
 Variables    ${EXECDIR}/JsonPath/basicHotAbsoluteGuardJsonpath.py
 Variables    ${EXECDIR}/Inputs/GraphQL/gqlQueries.py
+Variables    ${EXECDIR}/Inputs/expectedMutationJsonResponses.py
 Resource    common.robot
 
 
@@ -41,18 +42,23 @@ changeCxConfigsTabModuleFieldValues
     ${body}=          create dictionary    query= mutation configWrite { configSet(requests: [{module: "${module_name}", name: "${field_name}", value: "${value}"}]) { index reason }}
     create session    AIEngine    ${base_url}     disable_warnings=1
     ${result}=  post on session    AIEngine  /public/graphql  headers=${headers}    json=${body}
+    #log to console  ${result.json()}
     should be equal as strings    ${result.status_code}    200
+    should be equal as strings  ${result.json()}  ${configSetResponse}
     log to console    Config module :${module_name}->Field:${field_name}->Value:${value}-is updated
 
+
 setGroupPropertiesGuardHotAbsTempAllowNumExceedencesGuardAndControl
-    #log to console    Set the Group properties values->Grp GRP00->Properties->AllowNumExceedencesGuard = 10 AllowNumExceedencesControl = 10
-    #log to console    AlmHotAbsTemp = 200(degree F) GuardHotAbsTemp = 90 (degrees F)---------->
     [Arguments]    ${allow_num_excd_ctrl}    ${allow_num_excd_guard}    ${alm_hot_abs_temp}    ${guard_hot_abs_temp}
+    log to console    Set the Group properties values->Grp GRP00->Properties->AllowNumExceedencesGuard = ${allow_num_excd_guard} AllowNumExceedencesControl = ${allow_num_excd_ctrl}
+    log to console    AlmHotAbsTemp = ${alm_hot_abs_temp}(degree F) GuardHotAbsTemp = ${guard_hot_abs_temp} (degrees F)---------->
     ${headers}=       create dictionary    Content-Type=${content_type}    Vigilent-Api-Token=${write_api_token}
     ${body}=          create dictionary    query= mutation setGrpProp { propertyWrite(requests: [{oid: 17, name: "AllowNumExceedencesGuard", int: ${allow_num_excd_guard}},{oid: 17, name: "AllowNumExceedencesControl", int: ${allow_num_excd_ctrl}},{oid: 17, name: "GuardHotAbsTemp", float: ${guard_hot_abs_temp}},{oid: 17, name: "AlmHotAbsTemp", float: ${alm_hot_abs_temp}}]) { index reason }}
     create session    AIEngine    ${base_url}     disable_warnings=1
     ${result}=  post on session    AIEngine  /public/graphql  headers=${headers}    json=${body}
+    #log to console  ${result.json()}
     should be equal as strings    ${result.status_code}     200
+    should be equal as strings  ${result.json()}  ${propertyWriteResponse}
     #log to console    ${result.json()}
     #sleep    ${medium_speed}
 
@@ -78,7 +84,7 @@ checkGroupControlStausValueInGuard
     @{ctrl_state_value}    get value from json    ${result.json()}    ${trends_groupStatus_controlStatus_value_path}
     ${value}    get from list    ${ctrl_state_value}    0
     should be equal as integers    ${value}    2    System should be in guard(2)
-    log to console    Validated and the Group is in Guard
+    log to console    Validated and the Group is in Guard -${value}
 
 setRackPointSensorTemperature
     [Arguments]    ${oid}    ${temp}
@@ -86,14 +92,20 @@ setRackPointSensorTemperature
     ${body}=          create dictionary    query= mutation pointWrite { pointWrite(requests: [{oid: ${oid}, value: ${temp}}]) { index reason }}
     create session    AIEngine    ${base_url}     disable_warnings=1
     ${result}=  post on session    AIEngine  /public/graphql  headers=${headers}    json=${body}
+    #log to console  ${result.json()}
     should be equal as strings    ${result.status_code}    200
+    should be equal as strings  ${result.json()}  ${pointWriteResponse}
     log to console   Temperature ${temp} F set for ${oid}
+
+setExitCriteriaTemperature
+    setRackSensorPointsTemperature  ${test_exit_sensor_temp}
 
 setRackSensorPointsTemperature    #Contain both query and mutation
     [Arguments]    ${tempF}
     log to console    Fetch the number of rack sensors ----------------->
     ${json_dict}    queryToFetchJsonResponseContainingTheRackSensorsFromGroup
     ${total}=    fetchTheNumberOfItemsInDictionary    ${json_dict}    ${racks_in_group}
+    log to console  No: of rack sensors is ${total}
     log to console    Setting temperature for all sensor points----------------->
     FOR    ${i}    IN RANGE    0    ${total}
         log to console    ${i} Rack Sensor
@@ -267,7 +279,7 @@ queryToFetchJsonResponseContaingTheCurrentAHUStatus
 
 fetchNumberOfAHUsWithGuardON
     [Arguments]    ${total}     ${json_dictionary}
-    log to console    !---Intial counter value is ${counter}---!
+    #log to console    !---Intial counter value is ${counter}---!
     FOR    ${ahu}   IN RANGE    0    ${total}
                 log to console    !!---Checking ahu at position ${ahu}---!!s
                 ${no_of_controls}=    fetchTheNumberOfItemsInDictionary    ${json_dictionary}    $.data.site.groups[0].ahus[${ahu}].controls

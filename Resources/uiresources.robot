@@ -31,7 +31,7 @@ loginByEnteringUsernameAndPassword
     wait until page contains element   ${banner}
     wait until element is enabled    ${tools_button}
     capture page screenshot    ${EXECDIR}/Reports/Screenshots/siteEditorHomePage_2.png
-    log to console    Logged in succesfully
+    log to console    Logged in successfully
 
 startBrowserAndLoginToAIEngine
     startBrowserAndAccessAIEngineCXWebUI
@@ -56,5 +56,5 @@ resetSystemPropertiesUsingLoadTemplateOptionWithOverwrite
     sleep    ${high_speed}
     click element    ${close_button}
     wait until element is not visible    ${close_button}
-    log to console    Closed config popup
+    log to console    !-----------Closed config popup------------------!
     close browser

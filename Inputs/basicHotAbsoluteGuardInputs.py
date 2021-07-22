@@ -14,5 +14,7 @@ guard_hot_abs_temp_default=90
 percent_deadsensor_threshold_default=30
 sensor_point_cooling_temp=65.00
 sensor_point_hot_temp=100
+test_exit_sensor_temp=63.22
+test_entry_sensor_temp=61.11
 
 
