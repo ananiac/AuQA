@@ -20,7 +20,7 @@ verifyTitle
 loginByEnteringUsernameAndPassword
     #[Arguments]    ${username}    ${password}
     log to console    Entering user name and password
-    input text    ${uname}    ${ui_password}
+    input text    ${uname}    ${ui_username}
     input text    ${upwd}    ${ui_password}
     capture page screenshot    ${EXECDIR}/Reports/Screenshots/inputUserNameAndPwd_1.png
     click element    ${login_button}
