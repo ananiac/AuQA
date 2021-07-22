@@ -1,6 +1,0 @@
-datasources:ca8889b0351c00a621ea2a198ee59e19d87e75dc
-commandlineoptions:6e08534f4b8fdc08cc772c04b427247ea4759c17
-suitesfrom:no-suites-from-option
-file:ecc67c7f58f04a9fa95533d2ab2cd116fc067d00
---suite Suites.basicHotAbsoluteGuardTest
---suite Suites.staleStatePrevention
