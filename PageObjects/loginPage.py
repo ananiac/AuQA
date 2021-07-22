@@ -1,9 +1,9 @@
 #Login page elements
-uname="css:#textfield-1009-inputEl"
 
-upwd="css:#textfield-1010-inputEl"
+uname="xpath=//input[@autocomplete='username']"
 
-login_button="css:span#button-1011-btnInnerEl"
+upwd="xpath=//input[@autocomplete='current-password']"
 
-page_title="Vigilent® System 7.10.3r01"
+login_button="xpath=//span[contains(text(),'Login')]"
 
+page_title="Vigilent®"
