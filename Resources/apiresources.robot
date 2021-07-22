@@ -43,7 +43,6 @@ changeCxConfigsTabModuleFieldValues
     create session    AIEngine    ${base_url}     disable_warnings=1
     ${result}=  post on session    AIEngine  /public/graphql  headers=${headers}    json=${body}
     #log to console  ${result.json()}
-    should be equal as strings    ${result.status_code}    200
     should be equal as strings  ${result.json()}  ${configSetResponse}
     log to console    Config module :${module_name}->Field:${field_name}->Value:${value}-is updated
 
@@ -57,7 +56,6 @@ setGroupPropertiesGuardHotAbsTempAllowNumExceedencesGuardAndControl
     create session    AIEngine    ${base_url}     disable_warnings=1
     ${result}=  post on session    AIEngine  /public/graphql  headers=${headers}    json=${body}
     #log to console  ${result.json()}
-    should be equal as strings    ${result.status_code}     200
     should be equal as strings  ${result.json()}  ${propertyWriteResponse}
     #log to console    ${result.json()}
     #sleep    ${medium_speed}
@@ -93,7 +91,6 @@ setRackPointSensorTemperature
     create session    AIEngine    ${base_url}     disable_warnings=1
     ${result}=  post on session    AIEngine  /public/graphql  headers=${headers}    json=${body}
     #log to console  ${result.json()}
-    should be equal as strings    ${result.status_code}    200
     should be equal as strings  ${result.json()}  ${pointWriteResponse}
     log to console   Temperature ${temp} F set for ${oid}
 
@@ -123,7 +120,6 @@ queryToFetchJsonResponseContainingTheRackSensorsFromGroup
     ${body}=          create dictionary    query= ${rackSensorPoints}
     create session    AIEngine    ${base_url}     disable_warnings=1
     ${result}=  post on session    AIEngine  /public/graphql  headers=${headers}    json=${body}
-    should be equal as strings    ${result.status_code}     200
     ${json_dict}=   set variable    ${result.json()}
     return from keyword    ${json_dict}
 
@@ -273,7 +269,6 @@ queryToFetchJsonResponseContaingTheCurrentAHUStatus
     ${body}=          create dictionary    query= ${getAHUStatusInGroupGRP00}
     create session    AIEngine    ${base_url}     disable_warnings=1
     ${result}=  post on session    AIEngine  /public/graphql  headers=${headers}    json=${body}
-    should be equal as strings    ${result.status_code}   200
     ${json_dictionary}=     set variable    ${result.json()}
     return from keyword    ${json_dictionary}
 
