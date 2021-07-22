@@ -16,3 +16,4 @@ sensor_point_cooling_temp=65.00
 sensor_point_hot_temp=100
 
 
+
