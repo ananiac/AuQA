@@ -42,7 +42,7 @@ changeCxConfigsTabModuleFieldValues
     ${body}=          create dictionary    query= mutation configWrite { configSet(requests: [{module: "${module_name}", name: "${field_name}", value: "${value}"}]) { index reason }}
     create session    AIEngine    ${base_url}     disable_warnings=1
     ${result}=  post on session    AIEngine  /public/graphql  headers=${headers}    json=${body}
-    #log to console  ${result.json()}
+#    log to console  ${result.json()}
     should be equal as strings  ${result.json()}  ${configSetResponse}
     log to console    Config module :${module_name}->Field:${field_name}->Value:${value}-is updated
 
@@ -57,6 +57,7 @@ setGroupPropertiesGuardHotAbsTempAllowNumExceedencesGuardAndControl
     ${result}=  post on session    AIEngine  /public/graphql  headers=${headers}    json=${body}
     #log to console  ${result.json()}
     should be equal as strings  ${result.json()}  ${propertyWriteResponse}
+    log to console  !!------------------Group ->Properties updated successfully----------------!!
     #log to console    ${result.json()}
     #sleep    ${medium_speed}
 
@@ -258,7 +259,7 @@ checkForAHUToBeInGuardAtRegularIntervalUntilFourAHUsReached
     log to console    *************************************************************
 
 checkForAllAHUsToBeGuardCleared
-    log to console    <----Validating AHU Guard is cleared ----->
+    log to console    <----Validating AHU Status ----->
     ${json_dictionary}=     queryToFetchJsonResponseContaingTheCurrentAHUStatus
     ${total_no_ahus}=    fetchTheNumberOfItemsInDictionary    ${json_dictionary}    ${ahus_list_path}
     confirmStatusOfAHUsNotGuard     ${total_no_ahus}     ${json_dictionary}
@@ -331,4 +332,24 @@ confirmStatusOfAHUsNotGuard
     END
     log to console    *********All AHUS are cleared of GUARD*****************
 
+writeTestEntryTemperatureToSensorsAfterVXServerStarted
+    ${current_status_of_vx_server}=  connection.establishConnectionAndCheckVX_ServerProcesseStatus
+    log to console  Current status is ${current_status_of_vx_server}
+    IF  '${current_status_of_vx_server}'=='vx_server_up'
+        setTestEntryTemperatureToSensorPoints
+    ELSE
+        log to console  !!--------Need to start vx_server and write test_entry_sensor_temp---------------!!
+        connection.startVXServerForTestEntry
+        setTestEntryTemperatureToSensorPoints
 
+    END
+    log to console  !!!--------------------Test Setup done------------------------------!!!
+
+setTestEntryTemperatureToSensorPoints
+    log to console  !!--------Test started and writing test_entry_sensor_temp ${test_entry_sensor_temp} ---------------!!
+    setRackSensorPointsTemperature  ${test_entry_sensor_temp}
+
+setTestExitTemperatureToFirstSensorPoint
+    log to console  !!--------Test finished and writing test_exit_sensor_temp ${test_exit_sensor_temp} ---------------!!
+    setRackSensorPointsTemperature  ${test_exit_sensor_temp}
+    log to console  !!!--------------------Test Teardown done------------------------------!!!

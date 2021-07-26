@@ -20,7 +20,7 @@ openConnectionAndLogIn
 
 closeAllConnections
     execute command    exit
-    log to console    *******************Processes(start or stop) completed and Closed ssh connection********************
+    log to console    *******************Processes(start or stop or status check) completed and Closed ssh connection********************
 
 executeProcessCommandWithoutTraceInHistory
     [Arguments]    ${process_name}
@@ -49,9 +49,22 @@ establishConnectionAndStartCoolingControlProcess
 
 executeSTOPProcessCommandWithoutTraceInHistory
     [Arguments]    ${process_name}
-    log to console    !!------Connection opened and now stopping the processes----!!
+    log to console    !!------Connection opened and now stopping the-${process_name} process----!!
     execute command     export HISTIGNORE='*sudo -S*'
     execute command     echo "Id3aV@tAcc3ss" | sudo -S -k systemctl stop ${process_name}
+
+executeCommandToCheckProcessStatus
+    [Arguments]  ${process_name}
+    log to console  !!-----Checking the status of process ${process_name} now------!!
+    ${pid}=  execute command  pidof ${process_name}
+    log to console  PID of process-${process_name} is -${pid}
+    IF  '${pid}'!=''
+        ${ps_output}=  execute command  ps ${pid}
+        #log to console  Process Status for ${process_name} is ${ps_output}  #additional chk for Ssl required?
+        return from keyword  vx_server_up
+    ELSE
+        return from keyword  vx_server_down
+    END
 
 establishConnectionAndStopCoolingControlProcess
     [Documentation]    Establish connection and start processes on the remote machine.
@@ -60,5 +73,18 @@ establishConnectionAndStopCoolingControlProcess
     ExecuteSTOPProcessCommandWithoutTraceInHistory    facs_dash
     sleep    ${high_speed}
     CloseAllConnections
+
+
+establishConnectionAndCheckVX_ServerProcesseStatus
+    OpenConnectionAndLogIn
+    ${current_status}=  executeCommandToCheckProcessStatus  vx_server
+    CloseAllConnections
+    return from keyword  ${current_status}
+
+startVXServerForTestEntry
+    OpenConnectionAndLogIn
+    ExecuteProcessCommandWithoutTraceInHistory    vx_server
+    CloseAllConnections
+
 
 

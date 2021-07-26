@@ -11,6 +11,9 @@ Resource    ${EXECDIR}/Resources/uiresources.robot
 Resource    ${EXECDIR}/Resources/connection.robot
 Variables    ${EXECDIR}/Inputs/basicHotAbsoluteGuardInputs.py
 
+Test Setup  apiresources.writeTestEntryTemperatureToSensorsAfterVXServerStarted  #Move this to Suite level
+Test Teardown    apiresources.setTestExitTemperatureToFirstSensorPoint  #Move this to Suite level
+
 
 *** Variables ***
 
