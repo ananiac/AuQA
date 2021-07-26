@@ -31,5 +31,7 @@ ssh_password="Id3aV@tAcc3ss" #Id3aV@tAcc3ss
 duration_of_test="0 hours 20 minutes"
 #1 hours
 
+# group_name="GRP00"
+
 #Execution command
 #robot --variable environment:config64 Testcases/basicHotAbsoluteGuardTest.robot
