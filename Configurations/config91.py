@@ -1,13 +1,13 @@
 #Automation setup configuration
-url_vx="https://10.252.9.37/vems/vx.php"
-url_cx="https://10.252.9.37/vems/cx.php"
-graphql_base_url="https://10.252.9.37/api"
+url_vx="https://10.252.9.91/vems/vx.php"
+url_cx="https://10.252.9.91/vems/cx.php"
+graphql_base_url="https://10.252.9.91/api"
 
 
 #use headlessmode to run in ubuntu
-browser="headlesschrome"
+#browser="headlesschrome"
 #use this to run on windows
-#browser="chrome"
+browser="chrome"
 
 
 #Credentials to login
@@ -18,12 +18,12 @@ ui_password="Crick3t!"
 
 #API Headers
 content_type="application/json"
-write_api_token="Q9uPuYdzSev9x5ww8RWDsW6P"
-query_api_token="EekHfQugKTtGuy3yWhKt6WN9"
+write_api_token="psmY4cNdE7mMEQnrSQ4NGXpr"
+query_api_token="EnT4yUynyr2ckUMPfHaSzzwK"
 
 
 #Terminal Configuration
-host_ip="10.252.9.37"
+host_ip="10.252.9.91"
 ssh_username="fc"
 ssh_password="Id3aV@tAcc3ss" #Id3aV@tAcc3ss
 
@@ -31,7 +31,8 @@ ssh_password="Id3aV@tAcc3ss" #Id3aV@tAcc3ss
 duration_of_test="0 hours 20 minutes"
 #1 hours
 
-# group_name="GRP00"
+# group_name="SADC"
+
 
 #Execution command
-#robot --variable environment:config37 Testcases/basicHotAbsoluteGuardTest.robot
+#robot --variable environment:config91 Testcases/basicHotAbsoluteGuardTest.robot
