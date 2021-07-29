@@ -20,6 +20,8 @@ BasicHotAbsoluteGuardTest
     connection.establishConnectionAndStartProcesses
     #2)In the CX UI, open the Configs and load the DASHAM template (with overwrite) and hit Save button then close
     uiresources.resetSystemPropertiesUsingLoadTemplateOptionWithOverwrite
+    #2.1) to get Oid [Abhijit-mutation branch-29 Jul 2021]
+    apiresources.getOid   ${group_name}
     #3)Set System DASHM:: configs NumGuardUnits = 1,NumMinutesGuardTimer = 3, PercentDeadSensorThreshold=100
     #4)Set System SYSTEM::NumMinutesPast=5
     apiresources.changeCxConfigsDashm_NumGuardUnits_NumMinutesGuardTimer_PercentDeadSensorThreshold_AndSystem_NumMinutesPast    ${num_guard_units}    ${num_minutes_guard_timer}   ${percent_deadsensor_threshold}    ${num_minutes_past}
@@ -62,5 +64,6 @@ BasicHotAbsoluteGuardTest
     #20)Stop facs_dash (Cooling Control)
     connection.establishConnectionAndStopCoolingControlProcess
     #21)End Test
+
 
 

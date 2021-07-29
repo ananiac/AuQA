@@ -7,8 +7,9 @@ Library    DateTime
 Variables    ${EXECDIR}/Configurations/${environment}.py
 Variables    ${EXECDIR}/Resources/ResourceVariables/globalVariables.py
 Variables    ${EXECDIR}/JsonPath/basicHotAbsoluteGuardJsonpath.py
-Variables    ${EXECDIR}/Inputs/GraphQL/gqlQueries.py
+#Variables    ${EXECDIR}/Inputs/GraphQL/gqlQueries.py
 Resource    common.robot
+Resource    ${EXECDIR}/Inputs/GraphQL/gqlMutation.robot
 
 
 
@@ -38,7 +39,11 @@ setPercentDeadSensorThresholdInDASHMConfig
 changeCxConfigsTabModuleFieldValues
     [Arguments]    ${module_name}    ${field_name}    ${value}
     ${headers}=       create dictionary    Content-Type=${content_type}    Vigilent-Api-Token=${write_api_token}
-    ${body}=          create dictionary    query= mutation configWrite { configSet(requests: [{module: "${module_name}", name: "${field_name}", value: "${value}"}]) { index reason }}
+    #${body}=          create dictionary    query= mutation configWrite { configSet(requests: [{module: "${module_name}", name: "${field_name}", value: "${value}"}]) { index reason }}
+    gqlMutation.configWriteMutation    ${module_name}    ${field_name}    ${value}
+    #log to console  ${configWrite}
+    ${body}=          create dictionary    query= ${configWrite}
+    #log to console  ${body}
     create session    AIEngine    ${base_url}     disable_warnings=1
     ${result}=  post on session    AIEngine  /public/graphql  headers=${headers}    json=${body}
     should be equal as strings    ${result.status_code}    200
@@ -49,7 +54,11 @@ setGroupPropertiesGuardHotAbsTempAllowNumExceedencesGuardAndControl
     #log to console    AlmHotAbsTemp = 200(degree F) GuardHotAbsTemp = 90 (degrees F)---------->
     [Arguments]    ${allow_num_excd_ctrl}    ${allow_num_excd_guard}    ${alm_hot_abs_temp}    ${guard_hot_abs_temp}
     ${headers}=       create dictionary    Content-Type=${content_type}    Vigilent-Api-Token=${write_api_token}
-    ${body}=          create dictionary    query= mutation setGrpProp { propertyWrite(requests: [{oid: 17, name: "AllowNumExceedencesGuard", int: ${allow_num_excd_guard}},{oid: 17, name: "AllowNumExceedencesControl", int: ${allow_num_excd_ctrl}},{oid: 17, name: "GuardHotAbsTemp", float: ${guard_hot_abs_temp}},{oid: 17, name: "AlmHotAbsTemp", float: ${alm_hot_abs_temp}}]) { index reason }}
+
+    #${body}=          create dictionary    query= mutation setGrpProp { propertyWrite(requests: [{oid: 17, name: "AllowNumExceedencesGuard", int: ${allow_num_excd_guard}},{oid: 17, name: "AllowNumExceedencesControl", int: ${allow_num_excd_ctrl}},{oid: 17, name: "GuardHotAbsTemp", float: ${guard_hot_abs_temp}},{oid: 17, name: "AlmHotAbsTemp", float: ${alm_hot_abs_temp}}]) { index reason }}
+    gqlMutation.setGrpPropMutation  ${allow_num_excd_ctrl}  ${allow_num_excd_guard}  ${alm_hot_abs_temp}  ${guard_hot_abs_temp}
+    ${body}=          create dictionary    query= ${setGrpProp}
+
     create session    AIEngine    ${base_url}     disable_warnings=1
     ${result}=  post on session    AIEngine  /public/graphql  headers=${headers}    json=${body}
     should be equal as strings    ${result.status_code}     200
@@ -59,7 +68,10 @@ setGroupPropertiesGuardHotAbsTempAllowNumExceedencesGuardAndControl
 checkGroupControlStatusValueNotInGuard
     ${headers}=       create dictionary    Content-Type=${content_type}    Vigilent-Api-Token=${query_api_token}
     #${file}    get binary file    ${EXECDIR}/Inputs/GraphQL/getGroupControlStatusValue.gql
-    ${body}=    create dictionary    query= ${getCtrlStateValue}
+    #${body}=    create dictionary    query=getCtrlStateValue
+    gqlMutation.getCtrlStateValueQuery  ${group_name}
+    ${body}=          create dictionary    query= ${getCtrlStateValue}
+
     create session    AIEngine    ${base_url}     disable_warnings=1
     ${result}=  post on session    AIEngine  /public/graphql  headers=${headers}    json=${body}
     #log to console    ${result.json()}
@@ -72,7 +84,11 @@ checkGroupControlStatusValueNotInGuard
 checkGroupControlStausValueInGuard
     log to console    Checking Group Control Status for the value to be in guard.
     ${headers}=       create dictionary    Content-Type=${content_type}    Vigilent-Api-Token=${query_api_token}
+    #${body}=          create dictionary    query= ${getCtrlStateValue}
+
+    gqlMutation.getCtrlStateValueQuery  ${group_name}
     ${body}=          create dictionary    query= ${getCtrlStateValue}
+
     create session    AIEngine    ${base_url}     disable_warnings=1
     ${result}=  post on session    AIEngine  /public/graphql  headers=${headers}    json=${body}
     @{ctrl_state_value}    get value from json    ${result.json()}    ${trends_groupStatus_controlStatus_value_path}
@@ -83,7 +99,12 @@ checkGroupControlStausValueInGuard
 setRackPointSensorTemperature
     [Arguments]    ${oid}    ${temp}
     ${headers}=       create dictionary    Content-Type=${content_type}    Vigilent-Api-Token=${write_api_token}
-    ${body}=          create dictionary    query= mutation pointWrite { pointWrite(requests: [{oid: ${oid}, value: ${temp}}]) { index reason }}
+    #${body}=          create dictionary    query= mutation pointWrite { pointWrite(requests: [{oid: ${oid}, value: ${temp}}]) { index reason }}
+    gqlMutation.pointWriteMutation    ${oid}    ${temp}
+    #log to console  ${pointWrite}
+    ${body}=          create dictionary    query= ${pointWrite}
+    #log to console  ${body}
+
     create session    AIEngine    ${base_url}     disable_warnings=1
     ${result}=  post on session    AIEngine  /public/graphql  headers=${headers}    json=${body}
     should be equal as strings    ${result.status_code}    200
@@ -108,7 +129,11 @@ setRackSensorPointsTemperature    #Contain both query and mutation
 
 queryToFetchJsonResponseContainingTheRackSensorsFromGroup
     ${headers}=       create dictionary    Content-Type=${content_type}   Vigilent-Api-Token=${query_api_token}
+    #${body}=          create dictionary    query= ${rackSensorPoints}
+
+    gqlMutation.rackSensorPointsMutation  ${group_name}
     ${body}=          create dictionary    query= ${rackSensorPoints}
+
     create session    AIEngine    ${base_url}     disable_warnings=1
     ${result}=  post on session    AIEngine  /public/graphql  headers=${headers}    json=${body}
     should be equal as strings    ${result.status_code}     200
@@ -258,7 +283,9 @@ checkForAllAHUsToBeGuardCleared
 
 queryToFetchJsonResponseContaingTheCurrentAHUStatus
     ${headers}=       create dictionary    Content-Type=${content_type}   Vigilent-Api-Token=${query_api_token}
-    ${body}=          create dictionary    query= ${getAHUStatusInGroupGRP00}
+    #${body}=          create dictionary    query= ${getAHUStatusInGroupGRP00}
+    gqlMutation.getAHUStatusInGroupQuery  ${group_name}
+    ${body}=          create dictionary    query= ${getAHUStatusInGroup}
     create session    AIEngine    ${base_url}     disable_warnings=1
     ${result}=  post on session    AIEngine  /public/graphql  headers=${headers}    json=${body}
     should be equal as strings    ${result.status_code}   200
@@ -324,4 +351,15 @@ confirmStatusOfAHUsNotGuard
     END
     log to console    *********All AHUS are cleared of GUARD*****************
 
-
+getOid
+    [Arguments]    ${group_name}
+    ${headers}=       create dictionary    Content-Type=${content_type}    Vigilent-Api-Token=${write_api_token}
+    gqlMutation.getOidQuery  ${group_name}
+    ${body}=  create dictionary  query= ${groupNameOid}
+    create session    AIEngine    ${base_url}     disable_warnings=1
+    ${result}=  post on session    AIEngine  /public/graphql  headers=${headers}    json=${body}
+    ${result_dict}=    evaluate     json.loads("""${result.content}""")    json
+    ${responseOidStr}=    set variable    ${result_dict}[data][site][groups][0][oid]
+    ${responseOid}=    convert to integer  ${responseOidStr}
+    set global variable  ${responseOid}
+    log to console    Group Name : ${group_name} and Oid : ${responseOid}
