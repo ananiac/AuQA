@@ -13,3 +13,11 @@ apply_button_load_template="xpath=//span[contains(text(),'Apply')]"
 save_button="xpath=//span[contains(text(),'Save')]"
 close_button="xpath=//span[contains(text(),'Close')]"
 
+# 2 Aug 2021 - Step 2 - Testcase 2 - SetProperties
+# Git Branch - AUQA-14_Step2_Testcase2_SetProperties
+# ControlDeadSensorThreshold
+controlDeadSensorThresholdTxtBox="""xpath=//*[@id="gridview-1185-record-517"]/tbody/tr/td[2]/div"""
+# AlarmDeadSensorHysteresis
+alarmDeadSensorHysteresisTxtBox="""xpath=//*[@id="gridview-1185-record-510"]/tbody/tr/td[2]/div"""
+# AlarmDeadSensorThreshold
+alarmDeadSensorThresholdTxtBox="""xpath=//*[@id="gridview-1185-record-509"]/tbody/tr/td[2]/div"""

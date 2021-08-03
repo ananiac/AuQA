@@ -3,9 +3,10 @@ Library    SeleniumLibrary
 Variables    ${EXECDIR}/PageObjects/loginPage.py
 Variables    ${EXECDIR}/Configurations/${environment}.py
 Variables    ${EXECDIR}/Resources/ResourceVariables/globalVariables.py
+Variables    ${EXECDIR}/PageObjects/siteEditorHomePage.py
 
 *** Variables ***
-
+${reset}=  CTRL+BACKSPACE+BACKSPACE+BACKSPACE+BACKSPACE
 
 *** Keywords ***
 startBrowserAndAccessAIEngineWebUI
@@ -89,6 +90,45 @@ changeAbsoluteHotGuardTemperatureTo34Degree
     press keys    xpath://*[contains(text(),'GuardHotAbsTemp')]    \\13
     log to console    Absolute Hot Guard temperature changed to 34 degree------!
     log to console    ***********************************************************
+
+# 2 Aug 2021 - Step 2 - Testcase 2 - SetProperties
+# Git Branch - AUQA-14_Step2_Testcase2_SetProperties
+selectGroupAndSetProperties
+    log to console    Select SADC group
+    sleep    5 seconds
+    # Group drop down list
+    click element  xpath=/html/body/div[1]/div/div[1]/div[2]/div/div[2]/div/div/div[2]
+    sleep    5 seconds
+
+    # Click on 'SADC' group
+    click element      xpath=//li[contains(text(),'SADC')]
+    sleep    5 seconds
+
+    #Click 'All Properties' button to display all properties
+    click element  id=button-1172-btnInnerEl
+    sleep    5 seconds
+
+    # Reset ControlDeadSensorThreshold property to empty
+    wait until page contains  ControlDeadSensorThreshold
+    log to console  Reset ControlDeadSensorThreshold property to empty
+    press keys  ${controlDeadSensorThresholdTxtBox}  ${reset}
+    sleep  2 seconds
+
+    # Reset AlarmDeadSensorHysteresis property to empty
+    wait until page contains  AlarmDeadSensorHysteresis
+    log to console  Reset AlarmDeadSensorHysteresis property to empty
+    press keys  ${alarmDeadSensorHysteresisTxtBox}  ${reset}
+    sleep  2 seconds
+
+    # Reset AlarmDeadSensorThreshold property to empty
+    wait until page contains  AlarmDeadSensorThreshold
+    log to console  Reset AlarmDeadSensorThreshold property to empty
+    press keys  ${alarmDeadSensorThresholdTxtBox}  ${reset}
+    sleep  2 seconds
+
+    # Focus changed to Search textbox
+    press keys  xpath=//*[@id="textfield-1220-inputEl"]  ENTER
+
 
 
 
