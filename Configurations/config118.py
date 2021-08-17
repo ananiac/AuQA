@@ -32,7 +32,7 @@ duration_of_test="0 hours 20 minutes"
 #1 hours
 
 #Group Name
-group_name="Imputes-test"
+group_name="General-test"
 
 
 #Execution command
