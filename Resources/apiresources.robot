@@ -7,7 +7,6 @@ Library    DateTime
 Variables    ${EXECDIR}/Configurations/${environment}.py
 Variables    ${EXECDIR}/Resources/ResourceVariables/globalVariables.py
 Variables    ${EXECDIR}/JsonPath/basicHotAbsoluteGuardJsonpath.py
-#Variables    ${EXECDIR}/Inputs/GraphQL/gqlQueries.py
 Variables    ${EXECDIR}/Inputs/expectedMutationJsonResponses.py
 Resource    common.robot
 Resource    ${EXECDIR}/Inputs/GraphQL/gqlMutation.robot
