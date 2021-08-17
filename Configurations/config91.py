@@ -31,7 +31,7 @@ ssh_password="Id3aV@tAcc3ss" #Id3aV@tAcc3ss
 duration_of_test="0 hours 20 minutes"
 #1 hours
 
-# group_name="SADC"
+group_name="Imputes-test"
 
 
 #Execution command

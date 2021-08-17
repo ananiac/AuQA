@@ -18,8 +18,8 @@ ui_password="Crick3t!"
 
 #API Headers
 content_type="application/json"
-write_api_token="Q9uPuYdzSev9x5ww8RWDsW6P"
-query_api_token="EekHfQugKTtGuy3yWhKt6WN9"
+write_api_token="psmY4cNdE7mMEQnrSQ4NGXpr"
+query_api_token="EnT4yUynyr2ckUMPfHaSzzwK"
 
 
 #Terminal Configuration
@@ -31,7 +31,7 @@ ssh_password="Id3aV@tAcc3ss" #Id3aV@tAcc3ss
 duration_of_test="0 hours 20 minutes"
 #1 hours
 
-# group_name="GRP00"
+group_name="General-test"
 
 #Execution command
 #robot --variable environment:config37 Testcases/basicHotAbsoluteGuardTest.robot
