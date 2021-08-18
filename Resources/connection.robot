@@ -6,6 +6,7 @@ Library                SSHLibrary
 Variables    ${EXECDIR}/Configurations/${environment}.py
 Variables    ${EXECDIR}/Resources/ResourceVariables/globalVariables.py
 
+
 *** Variables ***
 ${host}               ${host_ip}
 ${username}            ${ssh_username}
@@ -31,21 +32,21 @@ executeProcessCommandWithoutTraceInHistory
 establishConnectionAndStartProcessesVx_serverFacs_trendAndFacs_launcher
     [Documentation]    Establish connection and start processes on the remote machine.
     ...                HISTIGNORE command is used to avoid saving the password in history
-    OpenConnectionAndLogIn
+    openConnectionAndLogIn
     log to console    !!------Connection opened and now starting the processes----!!
-    ExecuteProcessCommandWithoutTraceInHistory    vx_server
-    ExecuteProcessCommandWithoutTraceInHistory    facs_trend
-    ExecuteProcessCommandWithoutTraceInHistory    facs_launcher
+    executeProcessCommandWithoutTraceInHistory    vx_server
+    executeProcessCommandWithoutTraceInHistory    facs_trend
+    executeProcessCommandWithoutTraceInHistory    facs_launcher
     sleep    ${high_speed}
-    CloseAllConnections
+    closeAllConnections
 
 establishConnectionAndStartCoolingControlProcess
     [Documentation]    Establish connection and start processes on the remote machine.
     ...                HISTIGNORE command is used to avoid saving the password in history
-    OpenConnectionAndLogIn
-    ExecuteProcessCommandWithoutTraceInHistory    facs_dash
+    openConnectionAndLogIn
+    executeProcessCommandWithoutTraceInHistory    facs_dash
     sleep    ${high_speed}
-    CloseAllConnections
+    closeAllConnections
     #sleep    ${medium_speed}
 
 executeSTOPProcessCommandWithoutTraceInHistory
@@ -58,46 +59,46 @@ executeSTOPProcessCommandWithoutTraceInHistory
 establishConnectionAndStopCoolingControlProcess
     [Documentation]    Establish connection and start processes on the remote machine.
     ...                HISTIGNORE command is used to avoid saving the password in history
-    OpenConnectionAndLogIn
-    ExecuteSTOPProcessCommandWithoutTraceInHistory    facs_dash
+    openConnectionAndLogIn
+    executeSTOPProcessCommandWithoutTraceInHistory    facs_dash
     sleep    ${high_speed}
-    CloseAllConnections
+    closeAllConnections
 
 startVXServerProcess
-    OpenConnectionAndLogIn
-    ExecuteProcessCommandWithoutTraceInHistory    vx_server
-    CloseAllConnections
+    openConnectionAndLogIn
+    executeProcessCommandWithoutTraceInHistory    vx_server
+    closeAllConnections
 
 establishConnectionAndStopAllVEMProcessesExceptVx_serverAndFacs_trends
     log to console    !--------------Stopping all 13 processes except vx_Server and facs_trends----------!
-    OpenConnectionAndLogIn
-    ExecuteSTOPProcessCommandWithoutTraceInHistory    dcsim
+    openConnectionAndLogIn
+    executeSTOPProcessCommandWithoutTraceInHistory    dcsim
     log to console    !!----1.Simulator Stopped----!!
-    ExecuteSTOPProcessCommandWithoutTraceInHistory    facs_cleanup
+    executeSTOPProcessCommandWithoutTraceInHistory    facs_cleanup
     log to console    !!----2.CleanUp Stopped----!!
-    ExecuteSTOPProcessCommandWithoutTraceInHistory    vems-snmp
+    executeSTOPProcessCommandWithoutTraceInHistory    vems-snmp
     log to console    !!----3.SNMP Stopped----!!
-    ExecuteSTOPProcessCommandWithoutTraceInHistory    facs_cp
+    executeSTOPProcessCommandWithoutTraceInHistory    facs_cp
     log to console    !!----4.Calibration Stopped----!!
-    ExecuteSTOPProcessCommandWithoutTraceInHistory    facs_cl
+    executeSTOPProcessCommandWithoutTraceInHistory    facs_cl
     log to console    !!----5.Learning Stopped----!!
-    ExecuteSTOPProcessCommandWithoutTraceInHistory    facs_dash
+    executeSTOPProcessCommandWithoutTraceInHistory    facs_dash
     log to console    !!----6.Cooling Control Stopped----!!
-    ExecuteSTOPProcessCommandWithoutTraceInHistory    facs_sift
+    executeSTOPProcessCommandWithoutTraceInHistory    facs_sift
     log to console    !!----7.Application Metrics Stopped----!!
-    ExecuteSTOPProcessCommandWithoutTraceInHistory    vems-plugin-smart-mesh-ip
+    executeSTOPProcessCommandWithoutTraceInHistory    vems-plugin-smart-mesh-ip
     log to console    !!----8.Plugin: SmartMesh IP Stopped----!!
-    ExecuteSTOPProcessCommandWithoutTraceInHistory    facs_launcher
+    executeSTOPProcessCommandWithoutTraceInHistory    facs_launcher
     log to console    !!----9.Script Laucnher Stopped----!!
-    ExecuteSTOPProcessCommandWithoutTraceInHistory    vx_report
+    executeSTOPProcessCommandWithoutTraceInHistory    vx_report
     log to console    !!----10.Reports Stopped----!!
-    ExecuteSTOPProcessCommandWithoutTraceInHistory    vems-plugin-dust
+    executeSTOPProcessCommandWithoutTraceInHistory    vems-plugin-dust
     log to console    !!----11.Plugin:DUST Stopped----!!
-    ExecuteSTOPProcessCommandWithoutTraceInHistory    vems-plugin-modbus
+    executeSTOPProcessCommandWithoutTraceInHistory    vems-plugin-modbus
     log to console    !!----12.Plugin:Modbus/TCP Stopped----!!
-    ExecuteSTOPProcessCommandWithoutTraceInHistory    vems-plugin-bacnet
+    executeSTOPProcessCommandWithoutTraceInHistory    vems-plugin-bacnet
     log to console    !!----13.Plugin:BACnet Stopped----!!
-    CloseAllConnections
+    closeAllConnections
 
 executeCommandToCheckProcessStatus
     [Arguments]  ${process_name}
@@ -113,8 +114,8 @@ executeCommandToCheckProcessStatus
     END
 
 establishConnectionAndCheckVX_ServerProcesseStatus
-    OpenConnectionAndLogIn
+    openConnectionAndLogIn
     ${current_status}=  executeCommandToCheckProcessStatus  vx_server
-    CloseAllConnections
+    closeAllConnections
     return from keyword  ${current_status}
 
