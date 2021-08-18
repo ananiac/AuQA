@@ -9,6 +9,7 @@ Variables    ${EXECDIR}/Resources/ResourceVariables/globalVariables.py
 Variables    ${EXECDIR}/JsonPath/basicHotAbsoluteGuardJsonpath.py
 Variables    ${EXECDIR}/Inputs/expectedMutationJsonResponses.py
 Resource    common.robot
+Resource    connection.robot
 Resource    ${EXECDIR}/Inputs/GraphQL/gqlMutation.robot
 
 
@@ -49,7 +50,7 @@ changeCxConfigsTabModuleFieldValues
 
 setGroupPropertiesGuardHotAbsTempAllowNumExceedencesGuardAndControl
     [Arguments]    ${allow_num_excd_ctrl}    ${allow_num_excd_guard}    ${alm_hot_abs_temp}    ${guard_hot_abs_temp}
-    log to console    Set the Group properties values->Grp GRP00->Properties->AllowNumExceedencesGuard = ${allow_num_excd_guard} AllowNumExceedencesControl = ${allow_num_excd_ctrl}
+    log to console    Set the Group properties values->Group>Properties->AllowNumExceedencesGuard = ${allow_num_excd_guard} AllowNumExceedencesControl = ${allow_num_excd_ctrl}
     log to console    AlmHotAbsTemp = ${alm_hot_abs_temp}(degree F) GuardHotAbsTemp = ${guard_hot_abs_temp} (degrees F)---------->
     ${headers}=       create dictionary    Content-Type=${content_type}    Vigilent-Api-Token=${write_api_token}
 #    ${body}=          create dictionary    query= mutation setGrpProp { propertyWrite(requests: [{oid: 17, name: "AllowNumExceedencesGuard", int: ${allow_num_excd_guard}},{oid: 17, name: "AllowNumExceedencesControl", int: ${allow_num_excd_ctrl}},{oid: 17, name: "GuardHotAbsTemp", float: ${guard_hot_abs_temp}},{oid: 17, name: "AlmHotAbsTemp", float: ${alm_hot_abs_temp}}]) { index reason }}
@@ -357,3 +358,25 @@ getOid
 
 queryToFetchGroupOid
     getOid  ${group_name}
+
+setTestEntryTemperatureToSensorPoints
+    log to console  !!--------Test started and writing test_entry_sensor_temp ${test_entry_sensor_temp} ---------------!!
+    setRackSensorPointsTemperature  ${test_entry_sensor_temp}
+
+writeTestEntryTemperatureToSensorsAfterVXServerStarted
+    ${current_status_of_vx_server}=  connection.establishConnectionAndCheckVX_ServerProcesseStatus
+    log to console  Current status of vx server is ${current_status_of_vx_server}
+    IF  '${current_status_of_vx_server}'=='process_up'
+        setTestEntryTemperatureToSensorPoints
+    ELSE
+        log to console  !!--------Need to start vx_server and write test_entry_sensor_temp---------------!!
+        connection.startVXServerProcess
+        setTestEntryTemperatureToSensorPoints
+
+    END
+    log to console  !!!--------------------Test Setup done------------------------------!!!
+
+setTestExitTemperatureToFirstSensorPoint
+    log to console  *************Test finished and writing test_exit_sensor_temp ${test_exit_sensor_temp}************
+    setRackSensorPointsTemperature  ${test_exit_sensor_temp}
+    log to console  !!!--------------------Test Teardown done------------------------------!!!

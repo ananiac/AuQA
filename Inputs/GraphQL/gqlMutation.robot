@@ -37,7 +37,7 @@ groupNameOidMutation
 
 getAHUStatusInGroupQuery
     [Arguments]    ${group_name}
-    ${getAHUStatusInGroup}=  set variable  query getAHUStatusInGroupGRP00 {site {groups : children(selector:{type: Group,name:"${group_name}"}) {oid type displayName ahus: children(selector:{type: AHU}) {oid type displayName name controls: search(selector: {target: CONTROL}, pruneDepth: false){oid type displayName name status:targetStatus(target: CONTROL) {origin}}}}}}
+    ${getAHUStatusInGroup}=  set variable  query getAHUStatusInGroup {site {groups : children(selector:{type: Group,name:"${group_name}"}) {oid type displayName ahus: children(selector:{type: AHU}) {oid type displayName name controls: search(selector: {target: CONTROL}, pruneDepth: false){oid type displayName name status:targetStatus(target: CONTROL) {origin}}}}}}
     set global variable  ${getAHUStatusInGroup}
 
 getCtrlStateValueQuery
