@@ -9,6 +9,7 @@ Library    Collections
 Resource    ${EXECDIR}/Resources/apiresources.robot
 Resource    ${EXECDIR}/Resources/uiresources.robot
 Resource    ${EXECDIR}/Resources/connection.robot
+Resource    ${EXECDIR}/Resources/basicHotAbsoluteGuardTestResources.robot
 Variables    ${EXECDIR}/Inputs/basicHotAbsoluteGuardInputs.py
 
 
@@ -16,8 +17,9 @@ Variables    ${EXECDIR}/Inputs/basicHotAbsoluteGuardInputs.py
 
 *** Test Cases ***
 BasicHotAbsoluteGuardTest
-    #1).Start vx_server,fac_dash and facs_trend
-    connection.establishConnectionAndStartProcesses
+    [Setup]    basicHotAbsoluteGuardTestResources.basicHotAbsoluteGuardTestSetup
+    #1).Start only vx_server, facs_launcher and facs_trend should be running
+    connection.establishConnectionAndStartProcessesVx_serverFacs_trendAndFacs_launcher
     #2)In the CX UI, open the Configs and load the DASHAM template (with overwrite) and hit Save button then close
     uiresources.resetSystemPropertiesUsingLoadTemplateOptionWithOverwrite
     #3)Set System DASHM:: configs NumGuardUnits = 1,NumMinutesGuardTimer = 3, PercentDeadSensorThreshold=100
@@ -62,5 +64,6 @@ BasicHotAbsoluteGuardTest
     #20)Stop facs_dash (Cooling Control)
     connection.establishConnectionAndStopCoolingControlProcess
     #21)End Test
+    [Teardown]    apiresources.setTestExitTemperatureToFirstSensorPoint
 
 
