@@ -10,7 +10,7 @@ Variables    ${EXECDIR}/JsonPath/basicHotAbsoluteGuardJsonpath.py
 Variables    ${EXECDIR}/Inputs/expectedMutationJsonResponses.py
 Resource    common.robot
 Resource    connection.robot
-Resource    ../Inputs/GraphQL/gqlMutation.robot    #${EXECDIR}
+Resource    ${EXECDIR}/Inputs/GraphQL/gqlMutation.robot    
 
 
 *** Variables ***
