@@ -15,8 +15,6 @@ Resource    ${EXECDIR}/Inputs/GraphQL/gqlMutation.robot
 
 *** Variables ***
 ${base_url}    ${graphql_base_url}
-#${increment_counter}=       1
-#${current_ahus_in_guard}=    0
 ${current_ahus_in_guard}    0
 ${counter}      0
 ${total_no_ahus}    0
@@ -60,8 +58,7 @@ setGroupPropertiesGuardHotAbsTempAllowNumExceedencesGuardAndControl
     ${result}=  post on session    AIEngine  /public/graphql  headers=${headers}    json=${body}
     #log to console  ${result.json()}
     should be equal as strings  ${result.json()}  ${propertyWriteResponse}
-    #log to console    ${result.json()}
-    #sleep    ${medium_speed}
+
 
 checkGroupControlStatusValueNotInGuard
     ${headers}=       create dictionary    Content-Type=${content_type}    Vigilent-Api-Token=${query_api_token}
@@ -115,12 +112,12 @@ setRackSensorPointsTemperature    #Contain both query and mutation
     log to console    Setting temperature for all sensor points----------------->
     FOR    ${i}    IN RANGE    0    ${total}
         log to console    ${i} Rack Sensor
-        ${rack_type1}    fetchValueOfFieldFromJsonDictionary    ${json_dict}    $.data.site.groups[0].racks[${i}].points[0].name
-        ${rack_type2}    fetchValueOfFieldFromJsonDictionary    ${json_dict}    $.data.site.groups[0].racks[${i}].points[1].name
+        ${rack_type1}    fetchValueOfFieldFromJsonDictionary    ${json_dict}    $.data.site.groups[0].racks[${i}].points[0].type
+        ${rack_type2}    fetchValueOfFieldFromJsonDictionary    ${json_dict}    $.data.site.groups[0].racks[${i}].points[1].type
         ${oid1}    fetchValueOfFieldFromJsonDictionary    ${json_dict}    $.data.site.groups[0].racks[${i}].points[0].oid
         ${oid2}     fetchValueOfFieldFromJsonDictionary    ${json_dict}    $.data.site.groups[0].racks[${i}].points[1].oid
-        run keyword if    '${rack_type1}'!='Humidity Monitor'    setRackPointSensorTemperature    ${oid1}    ${tempF}
-        run keyword if    '${rack_type2}'!='Internal Thermistor'     setRackPointSensorTemperature    ${oid2}    ${tempF}
+        run keyword if    '${rack_type1}'=='CBot'    setRackPointSensorTemperature    ${oid1}    ${tempF}
+        run keyword if    '${rack_type2}'=='CTop'     setRackPointSensorTemperature    ${oid2}    ${tempF}
     END
     log to console    ******************************Temperature set for all rack sensors*********************************
 
@@ -380,3 +377,74 @@ setTestExitTemperatureToFirstSensorPoint
     log to console  *************Test finished and writing test_exit_sensor_temp ${test_exit_sensor_temp}************
     setRackSensorPointsTemperature  ${test_exit_sensor_temp}
     log to console  !!!--------------------Test Teardown done------------------------------!!!
+
+    #Created by Greeshma on 19 Aug 2021
+changeGroupPropertiesFloatParameterValue
+    [Arguments]    ${property_name}  ${property_value}
+    ${headers}=       create dictionary    Content-Type=${content_type}    Vigilent-Api-Token=${write_api_token}
+    gqlMutation.setGroupPropertyFloat    ${property_name}  ${property_value}
+    ${body}=          create dictionary    query= ${setGroupPropertyFloatValueMutation}
+#    log to console    ${body}
+    create session    AIEngine    ${base_url}     disable_warnings=1
+    ${result}=  post on session    AIEngine  /public/graphql  headers=${headers}    json=${body}
+    #log to console  ${result.json()}
+    should be equal as strings  ${result.json()}  ${propertyWriteResponse}
+    log to console  !!------------------Group ->Propertie ${property_name} updated successfully with ${property_value}----------------!!
+
+    #Created by Greeshma on 19 Aug 2021
+changeGroupPropertiesIntParameterValue
+    [Arguments]    ${property_name}  ${property_value}
+    ${headers}=       create dictionary    Content-Type=${content_type}    Vigilent-Api-Token=${write_api_token}
+    gqlMutation.setGroupPropertyInt    ${property_name}  ${property_value}
+    ${body}=          create dictionary    query= ${setGroupPropertyIntValueMutation}
+    log to console    ${body}
+    create session    AIEngine    ${base_url}     disable_warnings=1
+    ${result}=  post on session    AIEngine  /public/graphql  headers=${headers}    json=${body}
+    #log to console  ${result.json()}
+    should be equal as strings  ${result.json()}  ${propertyWriteResponse}
+    log to console  !!------------------Group ->Propertie ${property_name} updated successfully with ${property_value}----------------!!
+
+    #Created by Greeshma on 19 Aug 2021
+queryToFetchJsonResponseForSpecificAlarmType
+    [Arguments]    ${alarm_type}
+    ${headers}=       create dictionary    Content-Type=${content_type}   Vigilent-Api-Token=${query_api_token}
+    gqlMutation.getAlarmStatusQuery    ${group_name}    ${alarm_type}
+#    log to console    ${getAlarmStatusOfGroupQuery}
+    ${body}=          create dictionary    query= ${getAlarmStatusOfGroupQuery}
+    create session    AIEngine    ${base_url}     disable_warnings=1
+    ${result}=  post on session    AIEngine  /public/graphql  headers=${headers}    json=${body}
+    ${json_dictionary}=     set variable    ${result.json()}
+    return from keyword    ${json_dictionary}
+
+    #Created by Greeshma on 19 Aug 2021
+setConfigAlarmGroupDeadSensorHysteresis
+    [Arguments]    ${value}
+    apiresources.changeCxConfigsTabModuleFieldValues  ALARM    GrpDeadSensorHysteresis    ${value}
+
+    #Created by Greeshma on 19 Aug 2021
+setConfigAlarmGroupDeadSensorThreshold
+    [Arguments]    ${value}
+    apiresources.changeCxConfigsTabModuleFieldValues  ALARM    GrpDeadSensorThreshold    ${value}
+
+    #Created by Greeshma on 19 Aug 2021
+setTemperatureForAllExceptDeadSensor    #Contain both query and mutation, 25% of the total rack should be made as stale
+    [Arguments]    ${tempF}
+    log to console    Fetch the number of rack sensors ----------------->
+    ${json_dict}    queryToFetchJsonResponseContainingTheRackSensorsFromGroup
+    ${total}=    fetchTheNumberOfItemsInDictionary    ${json_dict}    ${racks_in_group}
+    log to console  No: of rack sensors is ${total}
+    ${stale_sensor_count}=    evaluate    ${total} / 4       #25% of the total rack should be made as stale
+    ${live_sensor_count}=    evaluate    ${total} - ${stale_sensor_count}
+    ${count}=    convert to integer    ${live_sensor_count}
+    log to console    Setting temperature for ${count} Racks except the last ${stale_sensor_count} rack/racks----------------->
+    FOR    ${i}    IN RANGE    0    ${count}
+        log to console    ${i} Rack Sensor
+        ${rack_type1}    fetchValueOfFieldFromJsonDictionary    ${json_dict}    $.data.site.groups[0].racks[${i}].points[0].type
+        ${rack_type2}    fetchValueOfFieldFromJsonDictionary    ${json_dict}    $.data.site.groups[0].racks[${i}].points[1].type
+        ${oid1}    fetchValueOfFieldFromJsonDictionary    ${json_dict}    $.data.site.groups[0].racks[${i}].points[0].oid
+        ${oid2}     fetchValueOfFieldFromJsonDictionary    ${json_dict}    $.data.site.groups[0].racks[${i}].points[1].oid
+        run keyword if    '${rack_type1}'=='CBot'    setRackPointSensorTemperature    ${oid1}    ${tempF}
+        run keyword if    '${rack_type2}'=='CTop'     setRackPointSensorTemperature    ${oid2}    ${tempF}
+    END
+    log to console    ******************************Temperature set for all, except ${stale_sensor_count} rack/racks*********************************
+

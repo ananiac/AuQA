@@ -26,7 +26,7 @@ closeAllConnections
 executeProcessCommandWithoutTraceInHistory
     [Arguments]    ${process_name}
     execute command     export HISTIGNORE='*sudo -S*'
-    execute command     echo "Id3aV@tAcc3ss" | sudo -S -k systemctl start ${process_name}
+    execute command     echo "${password}" | sudo -S -k systemctl start ${process_name}
     log to console    =============Process:${process_name} Started================
 
 establishConnectionAndStartProcessesVx_serverFacs_trendAndFacs_launcher
@@ -37,6 +37,24 @@ establishConnectionAndStartProcessesVx_serverFacs_trendAndFacs_launcher
     executeProcessCommandWithoutTraceInHistory    vx_server
     executeProcessCommandWithoutTraceInHistory    facs_trend
     executeProcessCommandWithoutTraceInHistory    facs_launcher
+    sleep    ${high_speed}
+    closeAllConnections
+
+establishConnectionAndStartProcessesVx_serverFacs_launcherFacs_siftFacs_dashAndFacs_trends
+    [Documentation]    Establish connection and start processes on the remote machine.
+    ...                HISTIGNORE command is used to avoid saving the password in history
+    openConnectionAndLogIn
+    log to console    !!------Connection opened and now starting the processes----!!
+    executeProcessCommandWithoutTraceInHistory    vx_server
+    log to console    ----****1.done***---------
+    executeProcessCommandWithoutTraceInHistory    facs_launcher
+    log to console    ---------****2.done****---------
+    executeProcessCommandWithoutTraceInHistory    facs_sift
+    log to console    ---------****3.done****---------
+    executeProcessCommandWithoutTraceInHistory    facs_dash
+    log to console    ---------****4.done****---------
+    executeProcessCommandWithoutTraceInHistory    facs_trend
+    log to console    ---------****5.done****---------
     sleep    ${high_speed}
     closeAllConnections
 
@@ -53,7 +71,7 @@ executeSTOPProcessCommandWithoutTraceInHistory
     [Arguments]    ${process_name}
     log to console    !!------Connection opened and now stopping the process ${process_name}----!!
     execute command     export HISTIGNORE='*sudo -S*'
-    execute command     echo "Id3aV@tAcc3ss" | sudo -S -k systemctl stop ${process_name}
+    execute command     echo "${password}" | sudo -S -k systemctl stop ${process_name}
     log to console    ***********Process ${process_name} Stopped**********
 
 establishConnectionAndStopCoolingControlProcess
