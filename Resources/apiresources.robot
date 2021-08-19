@@ -10,13 +10,11 @@ Variables    ${EXECDIR}/JsonPath/basicHotAbsoluteGuardJsonpath.py
 Variables    ${EXECDIR}/Inputs/expectedMutationJsonResponses.py
 Resource    common.robot
 Resource    connection.robot
-Resource    ${EXECDIR}/Inputs/GraphQL/gqlMutation.robot    
+Resource    ${EXECDIR}/Inputs/GraphQL/gqlMutation.robot
 
 
 *** Variables ***
 ${base_url}    ${graphql_base_url}
-#${increment_counter}=       1
-#${current_ahus_in_guard}=    0
 ${current_ahus_in_guard}    0
 ${counter}      0
 ${total_no_ahus}    0
@@ -380,7 +378,7 @@ setTestExitTemperatureToFirstSensorPoint
     setRackSensorPointsTemperature  ${test_exit_sensor_temp}
     log to console  !!!--------------------Test Teardown done------------------------------!!!
 
-#Created by Greeshma on 19 Aug 2021
+    #Created by Greeshma on 19 Aug 2021
 changeGroupPropertiesFloatParameterValue
     [Arguments]    ${property_name}  ${property_value}
     ${headers}=       create dictionary    Content-Type=${content_type}    Vigilent-Api-Token=${write_api_token}
@@ -393,7 +391,7 @@ changeGroupPropertiesFloatParameterValue
     should be equal as strings  ${result.json()}  ${propertyWriteResponse}
     log to console  !!------------------Group ->Propertie ${property_name} updated successfully with ${property_value}----------------!!
 
-#Created by Greeshma on 19 Aug 2021
+    #Created by Greeshma on 19 Aug 2021
 changeGroupPropertiesIntParameterValue
     [Arguments]    ${property_name}  ${property_value}
     ${headers}=       create dictionary    Content-Type=${content_type}    Vigilent-Api-Token=${write_api_token}
@@ -406,7 +404,7 @@ changeGroupPropertiesIntParameterValue
     should be equal as strings  ${result.json()}  ${propertyWriteResponse}
     log to console  !!------------------Group ->Propertie ${property_name} updated successfully with ${property_value}----------------!!
 
-#Created by Greeshma on 19 Aug 2021
+    #Created by Greeshma on 19 Aug 2021
 queryToFetchJsonResponseForSpecificAlarmType
     [Arguments]    ${alarm_type}
     ${headers}=       create dictionary    Content-Type=${content_type}   Vigilent-Api-Token=${query_api_token}
@@ -418,17 +416,17 @@ queryToFetchJsonResponseForSpecificAlarmType
     ${json_dictionary}=     set variable    ${result.json()}
     return from keyword    ${json_dictionary}
 
-#Created by Greeshma on 19 Aug 2021
+    #Created by Greeshma on 19 Aug 2021
 setConfigAlarmGroupDeadSensorHysteresis
     [Arguments]    ${value}
     apiresources.changeCxConfigsTabModuleFieldValues  ALARM    GrpDeadSensorHysteresis    ${value}
 
-#Created by Greeshma on 19 Aug 2021
+    #Created by Greeshma on 19 Aug 2021
 setConfigAlarmGroupDeadSensorThreshold
     [Arguments]    ${value}
     apiresources.changeCxConfigsTabModuleFieldValues  ALARM    GrpDeadSensorThreshold    ${value}
 
-#Created by Greeshma on 19 Aug 2021
+    #Created by Greeshma on 19 Aug 2021
 setTemperatureForAllExceptDeadSensor    #Contain both query and mutation, 25% of the total rack should be made as stale
     [Arguments]    ${tempF}
     log to console    Fetch the number of rack sensors ----------------->
