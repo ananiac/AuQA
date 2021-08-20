@@ -9,6 +9,11 @@ Resource    ${EXECDIR}/Resources/apiresources.robot
 Resource    ${EXECDIR}/Resources/uiresources.robot
 Resource    ${EXECDIR}/Resources/connection.robot
 
+Library    SeleniumLibrary
+Variables    ${EXECDIR}/Configurations/${environment}.py
+Variables    ${EXECDIR}/PageObjects/siteEditorHomePage.py
+
+
 *** Variables ***
 ${expected_count_of_dead_sensor_guard_alarm}    1
 ${expected_alarm_cleared_response}    None
@@ -113,3 +118,45 @@ setAlarmDeadSensorHysteresisOfGroupProperties
 setAlarmDeadSensorThresholdOfGroupProperties
     [Arguments]    ${property_value}
     apiresources.changeGroupPropertiesFloatParameterValue    AlarmDeadSensorThreshold  ${property_value}
+
+setDeadSensorGuardGroupPropertiesToEmpty
+    uiresources.startBrowserAndLoginToAIEngine
+    selectAndClickGroupName
+    setGroupPropertyToEmpty  ControlDeadSensorThreshold
+    setGroupPropertyToEmpty  AlarmDeadSensorHysteresis
+    setGroupPropertyToEmpty  AlarmDeadSensorThreshold
+    close browser
+
+# Select and click Group Name and click on 'All Properties' button to display all properties
+selectAndClickGroupName
+    log to console  '${group_name}' group selected
+    sleep  5 seconds
+    # Group drop down list
+    click element  ${group_dropdown_list}
+    sleep  5 seconds
+
+    # Select a Group from drop down list
+    ${select_group}=  set variable  xpath=//li[contains(text(),'${group_name}')]
+
+    click element  ${select_group}
+    sleep  5 seconds
+    # Click a Group Name
+    ${select_and_click_group}=  set variable  xpath=//span[contains(.,'${group_name}')]
+    click element  ${select_and_click_group}
+    sleep  10 seconds
+    # Click 'All Properties' button to display all properties
+    clickAllPropertiesButton
+
+# Click 'All Properties' button to display all properties
+clickAllPropertiesButton
+    click element  ${all_properties_button}
+    sleep    5 seconds
+
+# Set Group Property to empty
+setGroupPropertyToEmpty
+    [Arguments]    ${property}
+    ${group_property}=  set variable  //div[contains(text(),'${property}')]/following::td[1]
+    log to console  Set ${property} property to empty
+    wait until page contains element  ${group_property}
+    press keys  ${group_property}  CTRL+a+BACKSPACE
+    sleep  2 seconds

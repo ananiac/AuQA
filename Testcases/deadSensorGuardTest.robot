@@ -27,11 +27,13 @@ DeadSensorGuardTestSetupSteps
     #2)Ensure (manually) that the following group properties are Null for SADC :-     #Abhijit code to be merged here
            ##ControlDeadSensorThreshold
            ##AlarmDeadSensorHysteresis
-           #AlarmDeadSensorThreshold
+           ##AlarmDeadSensorThreshold
+    setDeadSensorGuardGroupPropertiesToEmpty
+
     #3)Load the DASHAM_MIX template in the CX configs (with overwrite) (UI)
     deadSensorGuardResources.reloadDefaultDASHMTemplateFromUI
-    #4)Set SYSTEM::NumMinutesPast=2
-    #5)Set DASHM::PercentDeadSensorThreshold = 30%, NumMinutesGuardTimer=2, NumGuardUnits=1
+    4)Set SYSTEM::NumMinutesPast=2
+    5)Set DASHM::PercentDeadSensorThreshold = 30%, NumMinutesGuardTimer=2, NumGuardUnits=1
     deadSensorGuardResources.setIntialCxConfigParameters  ${ds_num_minutes_past_value}    ${ds_percent_deadsensor_threshold_default_value}   ${ds_num_minutes_guard_timer_value}    ${ds_num_guard_units_value}
     #6)Set ALARM::GrpDeadSensorHysteresis=10%
     apiresources.setConfigAlarmGroupDeadSensorHysteresis    ${grp_dead_sensor_hysteresis_value_default_value}
@@ -136,7 +138,8 @@ Cleanup
     #c)Set group property AlarmDeadSensorHysteresis=0
     #d)Set group property AlarmDeadSensorThreshold=0
      #Abhijit code to be merged here -Norm prefer blank value-19 Aug 2021 comment in confluence
-#    deadSensorGuardResources.setGroupPropertiesForDeadSensorTest    ${control_dead_densor_threshold_cleanup_value}    ${alarm_dead_sensor_hysteresis_cleanup_value}    ${alarm_dead_sensor_threshold_cleanup_value}
+    setDeadSensorGuardGroupPropertiesToEmpty
+    deadSensorGuardResources.setGroupPropertiesForDeadSensorTest    ${control_dead_densor_threshold_cleanup_value}    ${alarm_dead_sensor_hysteresis_cleanup_value}    ${alarm_dead_sensor_threshold_cleanup_value}
     #18)Exit test
 
 
