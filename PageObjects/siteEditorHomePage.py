@@ -1,7 +1,7 @@
 #Site Editor Web Elements
 banner="css:#banner"
 tools_button="xpath=//span[contains(text(),'Tools')]"
-# configs_option_in_tools="xpath=//span[contains(text(),'Configs')][1]"
+configs_option_in_tools="xpath=//span[contains(text(),'Configs')][1]"
 load_template_in_config_popup="xpath=//span[contains(text(),'Load Template')]"
 overwrite_checkbox="xpath=//div[13]/div[2]/div/div/div/div[1]/div/div/div[3]/div[1]/div/span/input"
 template_dropbox_picker="xpath=//div[13]/div[2]/div/div/div/div[1]/div/div/div[1]/div[1]/div/div[2]"
