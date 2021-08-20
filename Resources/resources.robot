@@ -4,8 +4,13 @@ Variables    ${EXECDIR}/PageObjects/loginPage.py
 Variables    ${EXECDIR}/Configurations/${environment}.py
 Variables    ${EXECDIR}/Resources/ResourceVariables/globalVariables.py
 
-*** Variables ***
+Variables    ${EXECDIR}/PageObjects/siteEditorHomePage.py
 
+
+*** Variables ***
+#${reset}=  CTRL+BACKSPACE+BACKSPACE+BACKSPACE+BACKSPACE
+#${selectGroup}=  xpath=//li[contains(text(),'${group_name}')]
+#${selectAndClickGroup}=  xpath=//span[contains(.,'${group_name}')]
 
 *** Keywords ***
 startBrowserAndAccessAIEngineWebUI
@@ -90,6 +95,37 @@ changeAbsoluteHotGuardTemperatureTo34Degree
     log to console    Absolute Hot Guard temperature changed to 34 degree------!
     log to console    ***********************************************************
 
+# Select and click Group Name and click on 'All Properties' button to display all properties
+selectAndClickGroupName
+    log to console  '${group_name}' group selected
+    sleep  5 seconds
+    # Group drop down list
+    click element  ${group_dropdown_list}
+    sleep  5 seconds
 
+    # Select a Group from drop down list
+    ${select_group}=  set variable  xpath=//li[contains(text(),'${group_name}')]
 
+    click element  ${select_group}
+    sleep  5 seconds
+    # Click a Group Name
+    ${select_and_click_group}=  set variable  xpath=//span[contains(.,'${group_name}')]
+    click element  ${select_and_click_group}
+    sleep  5 seconds
+    # Click 'All Properties' button to display all properties
+    clickAllPropertiesButton
+
+# Click 'All Properties' button to display all properties
+clickAllPropertiesButton
+    click element  ${all_properties_button}
+    sleep    5 seconds
+
+# Set Group Property to empty
+setGroupPropertyToEmpty
+    [Arguments]    ${property}
+    ${group_property}=  set variable  //div[contains(text(),'${property}')]/following::td[1]
+    log to console  Set ${property} property to empty
+    wait until page contains element  ${group_property}
+    press keys  ${group_property}  CTRL+a+BACKSPACE
+    sleep  2 seconds
 

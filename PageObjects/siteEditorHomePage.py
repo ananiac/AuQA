@@ -1,3 +1,6 @@
+#import ${EXECDIR}/Configurations/${environment}.py
+#import C:\Users\abhij\PycharmProjects\AuQA\Configurations\${environment}.py
+
 #Site Editor Web Elements
 banner="css:#banner"
 tools_button="xpath=//span[contains(text(),'Tools')]"
@@ -13,3 +16,11 @@ apply_button_load_template="xpath=//span[contains(text(),'Apply')]"
 save_button="xpath=//span[contains(text(),'Save')]"
 close_button="xpath=//span[contains(text(),'Close')]"
 
+# 'All Properties' button to display all properties
+all_properties_button="id=button-1172-btnInnerEl"
+
+# Group drop down list
+group_dropdown_list="xpath=/html/body/div[1]/div/div[1]/div[2]/div/div[2]/div/div/div[2]"
+
+#Select group_name variable is kept aside we will revisit once group_name is used in terminal
+#select_group="xpath=//li[contains(text(),'"+"${group_name}"+"')]"
