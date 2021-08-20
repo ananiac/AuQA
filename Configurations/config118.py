@@ -32,8 +32,8 @@ duration_of_test="0 hours 20 minutes"
 #1 hours
 
 #Group Name
-group_name="General-test"
+group_name= "${groupname}"
 
 
 #Execution command
-#robot --variable environment:config91 Testcases/basicHotAbsoluteGuardTest.robot
+#robot --variable environment:config91 -v groupname:General-test Testcases/basicHotAbsoluteGuardTest.robot

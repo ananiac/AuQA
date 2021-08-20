@@ -31,8 +31,8 @@ ssh_password="Id3aV@tAcc3ss" #Id3aV@tAcc3ss
 duration_of_test="0 hours 20 minutes"
 #1 hours
 
-group_name="Imputes-test"
+group_name= "${groupname}"
 
 
 #Execution command
-#robot --variable environment:config91 Testcases/basicHotAbsoluteGuardTest.robot
+#robot --variable environment:config91  -v groupname:Imputes-test Testcases/deadSensorGuardTest.robot
