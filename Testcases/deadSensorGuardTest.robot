@@ -24,16 +24,15 @@ DeadSensorGuardTestSetupSteps
     #1)Start system 10.252.9.91 … this has the FTB database on it with the SADC group
     #Only vx_server, facs_launcher, facs_trends, and facs_sift should be running    (facs_dash also)
     deadSensorGuardResources.startVx_serverFacs_launcherFacs_siftFacs_dashAndFacs_trend
-    #2)Ensure (manually) that the following group properties are Null for SADC :-     #Abhijit code to be merged here
+    #2)Ensure (manually) that the following group properties are Null for SADC :-
            ##ControlDeadSensorThreshold
            ##AlarmDeadSensorHysteresis
            ##AlarmDeadSensorThreshold
     setDeadSensorGuardGroupPropertiesToEmpty
-
     #3)Load the DASHAM_MIX template in the CX configs (with overwrite) (UI)
     deadSensorGuardResources.reloadDefaultDASHMTemplateFromUI
-    4)Set SYSTEM::NumMinutesPast=2
-    5)Set DASHM::PercentDeadSensorThreshold = 30%, NumMinutesGuardTimer=2, NumGuardUnits=1
+    #4)Set SYSTEM::NumMinutesPast=2
+    #5)Set DASHM::PercentDeadSensorThreshold = 30%, NumMinutesGuardTimer=2, NumGuardUnits=1
     deadSensorGuardResources.setIntialCxConfigParameters  ${ds_num_minutes_past_value}    ${ds_percent_deadsensor_threshold_default_value}   ${ds_num_minutes_guard_timer_value}    ${ds_num_guard_units_value}
     #6)Set ALARM::GrpDeadSensorHysteresis=10%
     apiresources.setConfigAlarmGroupDeadSensorHysteresis    ${grp_dead_sensor_hysteresis_value_default_value}
@@ -112,7 +111,7 @@ Test6_AlarmDeadSensorHysteresis
     apiresources.setConfigAlarmGroupDeadSensorHysteresis    25
     #c)Set  group property AlarmDeadSensorThreshold=24% … wait one minute -  no guard and the GroupDeadSensor alarm is raised
     deadSensorGuardResources.checkGuardAndGroupDeadSensorAlarmStatusForAlarmDeadSensorThreshold    24    ${guard_off}    ${group_dead_sensor_alarm_on}
-   #d)Set group property AlarmDeadSensorThreshold=45% … wait one minute -  no guard but GroupDeadSensor alarm clears
+    #d)Set group property AlarmDeadSensorThreshold=45% … wait one minute -  no guard but GroupDeadSensor alarm clears
     deadSensorGuardResources.checkGuardAndGroupDeadSensorAlarmStatusForAlarmDeadSensorThreshold    45    ${guard_off}    ${group_dead_sensor_alarm_off}
     #e)Set config ALARM::GrpDeadSensorHysteresis=15%
     apiresources.setConfigAlarmGroupDeadSensorHysteresis    15
@@ -137,9 +136,8 @@ Cleanup
     #b)Set group property ControlDeadSensorThreshold=0
     #c)Set group property AlarmDeadSensorHysteresis=0
     #d)Set group property AlarmDeadSensorThreshold=0
-     #Abhijit code to be merged here -Norm prefer blank value-19 Aug 2021 comment in confluence
     setDeadSensorGuardGroupPropertiesToEmpty
-    deadSensorGuardResources.setGroupPropertiesForDeadSensorTest    ${control_dead_densor_threshold_cleanup_value}    ${alarm_dead_sensor_hysteresis_cleanup_value}    ${alarm_dead_sensor_threshold_cleanup_value}
+    #deadSensorGuardResources.setGroupPropertiesForDeadSensorTest    ${control_dead_densor_threshold_cleanup_value}    ${alarm_dead_sensor_hysteresis_cleanup_value}    ${alarm_dead_sensor_threshold_cleanup_value}
     #18)Exit test
 
 
