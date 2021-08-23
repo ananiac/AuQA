@@ -49,8 +49,7 @@ Test1_PercentDeadSensorThreshold_SingleSensorHysteresis
    deadSensorGuardResources.checkGuardAndGroupDeadSensorAlarmStatusForPerecntDeadSensorThreshold    24.9    ${guard_on}    ${group_dead_sensor_alarm_on}
     #b)Set DASHM::PercentDeadSensorThreshold=25.1% … wait one minute - the group exits guard and the GroupDeadSensor alarm is still raised
    deadSensorGuardResources.checkGuardAndGroupDeadSensorAlarmStatusForPerecntDeadSensorThreshold    25.1    ${guard_off}    ${group_dead_sensor_alarm_on}
-    #c)Set DASHM::PercentDeadSensorThreshold=37.4% … wait one minute - the group is not in guard but the GroupDeadSensor alarm is still raised
-   deadSensorGuardResources.checkGuardAndGroupDeadSensorAlarmStatusForPerecntDeadSensorThreshold    37.4    ${guard_off}    ${group_dead_sensor_alarm_on}
+     #c)Set DASHM::PercentDeadSensorThreshold=37.4% … wait one minute - the group is not in guard but the GroupDeadSensor alarm is still raised   deadSensorGuardResources.checkGuardAndGroupDeadSensorAlarmStatusForPerecntDeadSensorThreshold    37.4    ${guard_off}    ${group_dead_sensor_alarm_on}
     #d)Set DASHM::PercentDeadSensorThreshold=37.5% … wait one minute - the group is not in guard and now the alarm clears
    deadSensorGuardResources.checkGuardAndGroupDeadSensorAlarmStatusForPerecntDeadSensorThreshold    37.5    ${guard_off}    ${group_dead_sensor_alarm_off}
     #11)Test 2 … testing group property ControlDeadSensorThreshold and single sensor hysteresis
@@ -137,7 +136,6 @@ Cleanup
     #c)Set group property AlarmDeadSensorHysteresis=0
     #d)Set group property AlarmDeadSensorThreshold=0
     setDeadSensorGuardGroupPropertiesToEmpty
-    #deadSensorGuardResources.setGroupPropertiesForDeadSensorTest    ${control_dead_densor_threshold_cleanup_value}    ${alarm_dead_sensor_hysteresis_cleanup_value}    ${alarm_dead_sensor_threshold_cleanup_value}
     #18)Exit test
 
 
