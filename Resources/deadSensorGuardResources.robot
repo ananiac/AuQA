@@ -125,6 +125,7 @@ setDeadSensorGuardGroupPropertiesToEmpty
     setGroupPropertyToEmpty  ControlDeadSensorThreshold
     setGroupPropertyToEmpty  AlarmDeadSensorHysteresis
     setGroupPropertyToEmpty  AlarmDeadSensorThreshold
+    reload page
     close browser
 
 # Select and click Group Name and click on 'All Properties' button to display all properties
@@ -158,5 +159,5 @@ setGroupPropertyToEmpty
     ${group_property}=  set variable  //div[contains(text(),'${property}')]/following::td[1]
     log to console  Set ${property} property to empty
     wait until page contains element  ${group_property}
-    press keys  ${group_property}  CTRL+a+BACKSPACE
+    press keys  ${group_property}  CTRL+a+BACKSPACE+ENTER
     sleep  2 seconds
