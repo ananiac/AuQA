@@ -146,7 +146,7 @@ selectAndClickGroupName
     click element  ${select_and_click_group}
     sleep  10 seconds
     # Click 'All Properties' button to display all properties
-    clickAllPropertiesButton
+#    clickAllPropertiesButton
 
 # Click 'All Properties' button to display all properties
 clickAllPropertiesButton
@@ -157,7 +157,13 @@ clickAllPropertiesButton
 setGroupPropertyToEmpty
     [Arguments]    ${property}
     ${group_property}=  set variable  //div[contains(text(),'${property}')]/following::td[1]
-    log to console  Set ${property} property to empty
-    wait until page contains element  ${group_property}
-    press keys  ${group_property}  CTRL+a+BACKSPACE+ENTER
     sleep  2 seconds
+    ${IsElementVisible}=  Run Keyword And Return Status    Element Should Be Visible   ${group_property}
+    sleep  5 seconds
+    log to console  ${IsElementVisible}
+    IF  ${IsElementVisible}
+        press keys  ${group_property}  CTRL+a+BACKSPACE+ENTER
+        sleep  2 seconds
+    ELSE
+        log to console  ${property} property is empty
+    END

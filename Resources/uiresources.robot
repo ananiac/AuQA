@@ -12,7 +12,7 @@ ${url_cx}    ${url_cx}
 *** Keywords ***
 startBrowserAndAccessAIEngineCXWebUI
         #[Arguments]    ${url}    ${browser}    ${expectedTitle}
-        open browser    ${url_cx}    ${browser}    options=add_argument("--disable-popup-blocking"); add_argument("--ignore-certificate-errors"); add_argument("--no-sandbox"); add_argument("--disable-extensions"); add_argument("--disable-dev-shm-usage")
+        open browser    ${url_cx}    ${browser}    options=add_argument("--disable-popup-blocking"); add_argument("--ignore-certificate-errors"); add_argument("--no-sandbox"); add_argument("--disable-extensions"); add_argument("--disable-dev-shm-usage"); add_argument("--window-size=1200,1100")
         maximize browser window
         set browser implicit wait    ${high_speed}
         log to console    Accessed AI Engine
