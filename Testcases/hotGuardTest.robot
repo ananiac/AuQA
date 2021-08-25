@@ -1,11 +1,11 @@
 *** Settings ***
 Documentation          This testcase validates the Hot Guard mode feature of AI Engine
 ...                    Created by Greeshma on 20th August 2021
-Resource    ../Resources/apiresources.robot         #${EXECDIR}
-Resource    ../Resources/uiresources.robot
-Resource    ../Resources/connection.robot
-Resource    ../Resources/hotGuardTestResources.robot
-Variables    ../Inputs/hotGuardTestInputs.py
+Resource    ${EXECDIR}/Resources/apiresources.robot
+Resource    ${EXECDIR}/Resources/uiresources.robot
+Resource    ${EXECDIR}/Resources/connection.robot
+Resource    ${EXECDIR}/Resources/hotGuardTestResources.robot
+Variables    ${EXECDIR}/Inputs/hotGuardTestInputs.py
 
 
 *** Test Cases ***

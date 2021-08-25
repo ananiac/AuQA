@@ -4,10 +4,10 @@ Documentation          This resource file provides the keyword definition specif
 Library    RequestsLibrary
 Library    JSONLibrary
 Library    Collections
-Variables    ../Resources/ResourceVariables/globalVariables.py      #${EXECDIR}
-Resource    ../Resources/apiresources.robot
-Resource    ../Resources/uiresources.robot
-Resource    ../Resources/connection.robot
+Variables    ${EXECDIR}/Resources/ResourceVariables/globalVariables.py
+Resource    ${EXECDIR}/Resources/apiresources.robot
+Resource    ${EXECDIR}/Resources/uiresources.robot
+Resource    ${EXECDIR}/Resources/connection.robot
 Resource    common.robot
 
 
@@ -41,7 +41,7 @@ setconfigNumGuardUnitsNumMinutesGuardTimerAndGuardHysteresisBand
 checkGuardAndGroupHotAlarmForTemperatureChangeOnFirstRack
     [Arguments]    ${temp}    ${expected_guard_status_value}    ${expected_alarm_status_value}
     apiresources.setTemperatureForSensorsAandB    ${temp}    #write
-    waitForSeconds    35
+    common.waitForMinutes    1
     apiresources.checkingGuardModeOfGroup    ${expected_guard_status_value}                         #query
     apiresources.checkingAlarmStatusForGroup    GroupHot    ${expected_alarm_status_value}                  #query
 
@@ -49,13 +49,13 @@ checkGuardAndGroupHotAlarmForConfigAllowNumExceedencesGuardValueChange
     [Arguments]    ${allow_num_exceedences_guard_value}    ${expected_guard_status_value}    ${expected_alarm_status_value}
 
     apiresources.setConfigAllowNumExceedencesGuard    ${allow_num_exceedences_guard_value}    #write
-    waitForSeconds    30
+    common.waitForMinutes    1
     apiresources.checkingGuardModeOfGroup    ${expected_guard_status_value}                         #query
     apiresources.checkingAlarmStatusForGroup    GroupHot    ${expected_alarm_status_value}                  #query
 
 checkGuardAndGroupHotAlarmForGroupAllowNumExceedencesGuardValueChange
     [Arguments]    ${allow_num_exceedences_guard_value}    ${expected_guard_status_value}    ${expected_alarm_status_value}
     apiresources.setAllowNumExceedencesGuardOfGroupProperties    ${allow_num_exceedences_guard_value}    #write
-    waitForSeconds    55
+    common.waitForMinutes    1
     apiresources.checkingGuardModeOfGroup    ${expected_guard_status_value}                         #query
     apiresources.checkingAlarmStatusForGroup    GroupHot    ${expected_alarm_status_value}                  #query

@@ -10,7 +10,7 @@ Variables    ${EXECDIR}/JsonPath/basicHotAbsoluteGuardJsonpath.py
 Variables    ${EXECDIR}/Inputs/expectedMutationJsonResponses.py
 Resource    common.robot
 Resource    connection.robot
-Resource    ../Inputs/GraphQL/gqlMutation.robot     #${EXECDIR}
+Resource    ${EXECDIR}/Inputs/GraphQL/gqlMutation.robot
 
 
 *** Variables ***
@@ -387,7 +387,7 @@ changeGroupPropertiesFloatParameterValue
 #    log to console    ${body}
     create session    AIEngine    ${base_url}     disable_warnings=1
     ${result}=  post on session    AIEngine  /public/graphql  headers=${headers}    json=${body}
-#    log to console  ${result.json()}
+     #log to console  ${result.json()}
     should be equal as strings  ${result.json()}  ${propertyWriteResponse}
     log to console  !!------------------Group ->Propertie ${property_name} updated successfully with ${property_value}----------------!!
 
@@ -397,7 +397,7 @@ changeGroupPropertiesIntParameterValue
     ${headers}=       create dictionary    Content-Type=${content_type}    Vigilent-Api-Token=${write_api_token}
     gqlMutation.setGroupPropertyInt    ${property_name}  ${property_value}
     ${body}=          create dictionary    query= ${setGroupPropertyIntValueMutation}
-#    log to console    ${body}
+     #log to console    ${body}
     create session    AIEngine    ${base_url}     disable_warnings=1
     ${result}=  post on session    AIEngine  /public/graphql  headers=${headers}    json=${body}
     #log to console  ${result.json()}
@@ -448,7 +448,7 @@ setTemperatureForAllExceptDeadSensor    #Contain both query and mutation, 25% of
     END
     log to console    ******************************Temperature set for all, except ${stale_sensor_count} rack/racks*********************************
 
-    #Moved from deadSensorGuardResources to apiresources on 20 Aug 2021 by Greeshma
+    #Copied from deadSensorGuardResources to apiresources on 20 Aug 2021 by Greeshma
 checkingGuardModeOfGroup
     [Arguments]    ${expected_guard_status}
      IF    '${expected_guard_status}'=='GUARD_ON'    #Checking Group is in guard
@@ -465,7 +465,6 @@ setHighAndLowSetPointValues
     ${body}=          create dictionary    query= ${mutation}
     create session    AIEngine    ${base_url}     disable_warnings=1
     ${result}=  post on session    AIEngine  /public/graphql  headers=${headers}    json=${body}
-#    log to console  ${result.json()}
     should be equal as strings  ${result.json()}  ${setSetPointLimitsResponse}
     log to console   Limits set for Setpoint on ctop ${ctop_oid} -> high_limit: ${high_value} and low_limit:${low_value}
 
@@ -516,7 +515,7 @@ checkingAlarmStatusForGroup
     #Created by Greeshma on 23 Aug 2021
 checkForAHUToBeInGuardAtRegularIntervalUntilExpectedNoOfAHUsIntoGuard
     [Arguments]    ${ahus_to_be_on}   ${num_guard_units_val}    ${num_minutes_guard_timer_val}
-    log to console    <----Validation on the  ${num_guard_units_val} AHUs going into guard at every ${num_minutes_guard_timer_val}minutes----->
+    log to console    <----Validation on the->${num_guard_units_val} AHUs going into guard at every->${num_minutes_guard_timer_val}minutes----->
     FOR    ${reps}  IN RANGE    1    5
         log to console    XX----------Entering--${reps}-Cycle of Checking AHUs in Guard----------------XX
         ${json_dictionary}=     queryToFetchJsonResponseContaingTheCurrentAHUStatus
