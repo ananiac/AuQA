@@ -28,6 +28,7 @@ DeadSensorGuardTestSetupSteps
            ##ControlDeadSensorThreshold
            ##AlarmDeadSensorHysteresis
            #AlarmDeadSensorThreshold
+    setDeadSensorGuardGroupPropertiesToEmpty
     #3)Load the DASHAM_MIX template in the CX configs (with overwrite) (UI)
     deadSensorGuardResources.reloadDefaultDASHMTemplateFromUI
     #4)Set SYSTEM::NumMinutesPast=2
@@ -132,11 +133,11 @@ Cleanup
     [Teardown]   apiresources.setTestExitTemperatureToFirstSensorPoint
     #a)In the CX UI, open the Configs and load the DASHAM template (with overwrite) and hit Save button then close    #confirm this steps
     deadSensorGuardResources.reloadDefaultDASHMTemplateFromUI
+    sleep  5 seconds
     #b)Set group property ControlDeadSensorThreshold=0
     #c)Set group property AlarmDeadSensorHysteresis=0
     #d)Set group property AlarmDeadSensorThreshold=0
-     #Abhijit code to be merged here -Norm prefer blank value-19 Aug 2021 comment in confluence
-#    deadSensorGuardResources.setGroupPropertiesForDeadSensorTest    ${control_dead_densor_threshold_cleanup_value}    ${alarm_dead_sensor_hysteresis_cleanup_value}    ${alarm_dead_sensor_threshold_cleanup_value}
+    setDeadSensorGuardGroupPropertiesToEmpty
     #18)Exit test
 
 

@@ -13,3 +13,9 @@ apply_button_load_template="xpath=//span[contains(text(),'Apply')]"
 save_button="xpath=//span[contains(text(),'Save')]"
 close_button="xpath=//span[contains(text(),'Close')]"
 
+# 'All Properties' button to display all properties
+all_properties_button="xpath=//span[contains(text(),'All Properties')]"
+
+# Group drop down list
+group_dropdown_list="xpath=/html/body/div[1]/div/div[1]/div[2]/div/div[2]/div/div/div[2]"
+
