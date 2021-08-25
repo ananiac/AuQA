@@ -121,6 +121,7 @@ setAlarmDeadSensorThresholdOfGroupProperties
 
 setDeadSensorGuardGroupPropertiesToEmpty
     uiresources.startBrowserAndLoginToAIEngine
+    setGroupPropertiesForDeadSensorTo0
     selectAndClickGroupName
     setGroupPropertyToEmpty  ControlDeadSensorThreshold
     setGroupPropertyToEmpty  AlarmDeadSensorHysteresis
@@ -163,7 +164,14 @@ setGroupPropertyToEmpty
     log to console  ${IsElementVisible}
     IF  ${IsElementVisible}
         press keys  ${group_property}  CTRL+a+BACKSPACE+ENTER
+        log to console  Set ${property} property to empty
         sleep  2 seconds
     ELSE
         log to console  ${property} property is empty
     END
+
+setGroupPropertiesForDeadSensorTo0
+    apiresources.changeGroupPropertiesFloatParameterValue    ControlDeadSensorThreshold    ${control_dead_densor_threshold_cleanup_value}
+    apiresources.changeGroupPropertiesFloatParameterValue    AlarmDeadSensorHysteresis     ${alarm_dead_sensor_hysteresis_cleanup_value}
+    apiresources.changeGroupPropertiesFloatParameterValue    AlarmDeadSensorThreshold   ${alarm_dead_sensor_threshold_cleanup_value}
+
