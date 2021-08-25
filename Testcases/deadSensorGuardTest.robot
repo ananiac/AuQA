@@ -133,7 +133,6 @@ Cleanup
     [Teardown]   apiresources.setTestExitTemperatureToFirstSensorPoint
     #a)In the CX UI, open the Configs and load the DASHAM template (with overwrite) and hit Save button then close    #confirm this steps
     deadSensorGuardResources.reloadDefaultDASHMTemplateFromUI
-    sleep  5 seconds
     #b)Set group property ControlDeadSensorThreshold=0
     #c)Set group property AlarmDeadSensorHysteresis=0
     #d)Set group property AlarmDeadSensorThreshold=0

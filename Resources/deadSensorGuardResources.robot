@@ -120,8 +120,9 @@ setAlarmDeadSensorThresholdOfGroupProperties
     apiresources.changeGroupPropertiesFloatParameterValue    AlarmDeadSensorThreshold  ${property_value}
 
 setDeadSensorGuardGroupPropertiesToEmpty
+    sleep  5 seconds
     uiresources.startBrowserAndLoginToAIEngine
-    setGroupPropertiesForDeadSensorTo0
+    setGroupPropertiesForDeadSensorToZero
     selectAndClickGroupName
     setGroupPropertyToEmpty  ControlDeadSensorThreshold
     setGroupPropertyToEmpty  AlarmDeadSensorHysteresis
@@ -170,7 +171,7 @@ setGroupPropertyToEmpty
         log to console  ${property} property is empty
     END
 
-setGroupPropertiesForDeadSensorTo0
+setGroupPropertiesForDeadSensorToZero
     apiresources.changeGroupPropertiesFloatParameterValue    ControlDeadSensorThreshold    ${control_dead_densor_threshold_cleanup_value}
     apiresources.changeGroupPropertiesFloatParameterValue    AlarmDeadSensorHysteresis     ${alarm_dead_sensor_hysteresis_cleanup_value}
     apiresources.changeGroupPropertiesFloatParameterValue    AlarmDeadSensorThreshold   ${alarm_dead_sensor_threshold_cleanup_value}
