@@ -10,7 +10,7 @@ Variables    ${EXECDIR}/JsonPath/basicHotAbsoluteGuardJsonpath.py
 Variables    ${EXECDIR}/Inputs/expectedMutationJsonResponses.py
 Resource    common.robot
 Resource    connection.robot
-Resource    ${EXECDIR}/Inputs/GraphQL/gqlMutation.robot
+Resource    ../Inputs/GraphQL/gqlMutation.robot     #${EXECDIR}
 
 
 *** Variables ***
@@ -73,7 +73,7 @@ checkGroupControlStatusValueNotInGuard
     ${value}    get from list    ${ctrl_state_value}    0
     log to console    *********Validating the Ctrl Status is not Guard(expect any other value than 2)******
     should not be equal as integers    ${value}    2    System should not be in guard(2)
-    log to console    ---------Status value is ${value}-Not in Guard--Validated Successfully------------------------
+    log to console    ==============Status value is ${value}-Not in Guard--Validated Successfully===================
 
 checkGroupControlStausValueInGuard
     log to console    Checking Group Control Status for the value to be in guard.
@@ -86,7 +86,7 @@ checkGroupControlStausValueInGuard
     @{ctrl_state_value}    get value from json    ${result.json()}    ${trends_groupStatus_controlStatus_value_path}
     ${value}    get from list    ${ctrl_state_value}    0
     should be equal as integers    ${value}    2    System should be in guard(2)
-    log to console    Validated and the Group is in Guard -${value}
+    log to console    =============Validated and the Group is in Guard -${value}==================
 
 setRackPointSensorTemperature
     [Arguments]    ${oid}    ${temp}
@@ -124,7 +124,7 @@ setRackSensorPointsTemperature    #Contain both query and mutation
 queryToFetchJsonResponseContainingTheRackSensorsFromGroup
     ${headers}=       create dictionary    Content-Type=${content_type}   Vigilent-Api-Token=${query_api_token}
     #${body}=          create dictionary    query= ${rackSensorPoints}
-    gqlMutation.rackSensorPointsMutation  ${group_name}
+    gqlMutation.rackSensorPointsMutation  ${group_name}                         #Change the name to query
     ${body}=          create dictionary    query= ${rackSensorPoints}
     create session    AIEngine    ${base_url}     disable_warnings=1
     ${result}=  post on session    AIEngine  /public/graphql  headers=${headers}    json=${body}
@@ -387,7 +387,7 @@ changeGroupPropertiesFloatParameterValue
 #    log to console    ${body}
     create session    AIEngine    ${base_url}     disable_warnings=1
     ${result}=  post on session    AIEngine  /public/graphql  headers=${headers}    json=${body}
-    #log to console  ${result.json()}
+#    log to console  ${result.json()}
     should be equal as strings  ${result.json()}  ${propertyWriteResponse}
     log to console  !!------------------Group ->Propertie ${property_name} updated successfully with ${property_value}----------------!!
 
@@ -397,7 +397,7 @@ changeGroupPropertiesIntParameterValue
     ${headers}=       create dictionary    Content-Type=${content_type}    Vigilent-Api-Token=${write_api_token}
     gqlMutation.setGroupPropertyInt    ${property_name}  ${property_value}
     ${body}=          create dictionary    query= ${setGroupPropertyIntValueMutation}
-    log to console    ${body}
+#    log to console    ${body}
     create session    AIEngine    ${base_url}     disable_warnings=1
     ${result}=  post on session    AIEngine  /public/graphql  headers=${headers}    json=${body}
     #log to console  ${result.json()}
@@ -448,3 +448,127 @@ setTemperatureForAllExceptDeadSensor    #Contain both query and mutation, 25% of
     END
     log to console    ******************************Temperature set for all, except ${stale_sensor_count} rack/racks*********************************
 
+    #Moved from deadSensorGuardResources to apiresources on 20 Aug 2021 by Greeshma
+checkingGuardModeOfGroup
+    [Arguments]    ${expected_guard_status}
+     IF    '${expected_guard_status}'=='GUARD_ON'    #Checking Group is in guard
+        apiresources.checkGroupControlStausValueInGuard
+     ELSE                                            #Checking Group is in guard
+        apiresources.checkGroupControlStatusValueNotInGuard
+     END
+
+    #Created by Greeshma on 20 Aug 2021
+setHighAndLowSetPointValues
+    [Arguments]    ${ctop_oid}    ${high_value}    ${low_value}
+    ${headers}=       create dictionary    Content-Type=${content_type}    Vigilent-Api-Token=${write_api_token}
+    ${mutation}=    gqlMutation.setSetPointLimits    ${ctop_oid}  ${high_value}  ${low_value}
+    ${body}=          create dictionary    query= ${mutation}
+    create session    AIEngine    ${base_url}     disable_warnings=1
+    ${result}=  post on session    AIEngine  /public/graphql  headers=${headers}    json=${body}
+#    log to console  ${result.json()}
+    should be equal as strings  ${result.json()}  ${setSetPointLimitsResponse}
+    log to console   Limits set for Setpoint on ctop ${ctop_oid} -> high_limit: ${high_value} and low_limit:${low_value}
+
+    #Created by Greeshma on 20 Aug 2021
+setAllHighAndLowSetPointLimits
+    [Arguments]    ${high_limit}    ${low_limit}
+    log to console    Fetch the number of rack sensors ----------------->
+    ${json_dict}    queryToFetchJsonResponseContainingTheRackSensorsFromGroup
+    ${total}=    fetchTheNumberOfItemsInDictionary    ${json_dict}    ${racks_in_group}
+    log to console    Setting SetPoint High and Low Limits for all ${total} Racks----------------->
+    FOR    ${i}    IN RANGE    0    ${total}
+        ${rack_type2}    fetchValueOfFieldFromJsonDictionary    ${json_dict}    $.data.site.groups[0].racks[${i}].points[1].type
+        ${oid2}     fetchValueOfFieldFromJsonDictionary    ${json_dict}    $.data.site.groups[0].racks[${i}].points[1].oid
+        ${rack_name}    fetchValueOfFieldFromJsonDictionary    ${json_dict}    $.data.site.groups[0].racks[${i}].displayName
+        run keyword if    '${rack_type2}'=='CTop'     setHighAndLowSetPointValues    ${oid2}    ${high_limit}    ${low_limit}
+        log to console    ===========-----Done for ${rack_name}---===============
+    END
+    log to console    ******************************SetPoint Limits are set for all Racks *********************************
+
+    #Created by Greeshma on 20 Aug 2021
+checkStatusOfAlarmIsRaised
+    [Arguments]    ${alarm_name}
+    log to console    !--------Checking for the ${alarm_name} Alarm to be Raised-------!
+    ${json_response}=    apiresources.queryToFetchJsonResponseForSpecificAlarmType    ${alarm_name}
+    ${no_of_alarms}    apiresources.fetchTheNumberOfItemsInDictionary   ${json_response}    $.data.alarms
+    log to console    Total no: of ${alarm_name} is ${no_of_alarms}
+    should be equal as integers  ${no_of_alarms}  1
+    log to console    =================${alarm_name} Alarm raised=======================
+
+    #Created by Greeshma on 20 Aug 2021
+checkStatusOfAlarmIsCleared
+    [Arguments]    ${alarm_name}
+    log to console    !--------Checking for the ${alarm_name} Alarm to be Cleared-------!
+    ${json_response}=    apiresources.queryToFetchJsonResponseForSpecificAlarmType    ${alarm_name}
+    ${actual_value}    apiresources.fetchValueOfFieldFromJsonDictionary   ${json_response}  $.data
+    should be equal as strings   ${actual_value}  None
+    log to console    ===============${alarm_name} Alarm Cleared====================
+
+    #Created by Greeshma on 20 Aug 2021
+checkingAlarmStatusForGroup
+    [Arguments]    ${alarm_name}    ${exepected_alarm_status}
+    IF  '${exepected_alarm_status}'=='ALARM_ON'
+        apiresources.checkStatusOfAlarmIsRaised    ${alarm_name}
+    ELSE
+        apiresources.checkStatusOfAlarmIsCleared    ${alarm_name}
+    END
+
+    #Created by Greeshma on 23 Aug 2021
+checkForAHUToBeInGuardAtRegularIntervalUntilExpectedNoOfAHUsIntoGuard
+    [Arguments]    ${ahus_to_be_on}   ${num_guard_units_val}    ${num_minutes_guard_timer_val}
+    log to console    <----Validation on the  ${num_guard_units_val} AHUs going into guard at every ${num_minutes_guard_timer_val}minutes----->
+    FOR    ${reps}  IN RANGE    1    5
+        log to console    XX----------Entering--${reps}-Cycle of Checking AHUs in Guard----------------XX
+        ${json_dictionary}=     queryToFetchJsonResponseContaingTheCurrentAHUStatus
+        IF    "${reps}"=="1"
+            ${total_no_ahus}=    fetchTheNumberOfItemsInDictionary    ${json_dictionary}    ${ahus_list_path}
+            log to console    !---Total Number of Ahus is ${total_no_ahus}------!
+#            ${ahus_to_be_on}=    evaluate    4 * 1
+            log to console    !!----We need to wait until ${ahus_to_be_on} AHUs are in Guard-----!!
+        END
+        ${expected_ahus_in_guard}=    evaluate    ${num_guard_units_val} * ${reps}
+        log to console    LL------We Expect ${expected_ahus_in_guard} to be in guard now---LL
+        IF    ${total_no_ahus} >= ${expected_ahus_in_guard}
+            ${current_ahus_in_guard}=    fetchNumberOfAHUsWithGuardON    ${total_no_ahus}    ${json_dictionary}
+            log to console    !!-----===============Currently ${current_ahus_in_guard} ahus in Guard============----!!
+            should be equal as integers    ${current_ahus_in_guard}    ${expected_ahus_in_guard}
+            log to console    *******Validation passed for the expected AHU count into Guard for the current cycle********
+            exit for loop if    ${current_ahus_in_guard}==${ahus_to_be_on}
+            waitForMinutes    ${num_minutes_guard_timer_val}
+        ELSE
+            log to console    Sufficient AHUs are not present to cool the system
+            should be true    ${total_no_ahus} >= ${expected_ahus_in_guard}     #need to check failure scenario
+        END
+    END
+    log to console    *********============================================*******
+
+    #Created by Greeshma on 23 Aug 2021
+setConfigAllowNumExceedencesGuard
+    [Arguments]    ${value}
+    apiresources.changeCxConfigsTabModuleFieldValues  DASHM    AllowNumExceedencesGuard    ${value}
+
+    #Created by Greeshma on 23 Aug 2021
+setConfigNumGuardUnits
+    [Arguments]    ${value}
+    apiresources.changeCxConfigsTabModuleFieldValues  DASHM    NumGuardUnits    ${value}
+
+    #Created by Greeshma on 23 Aug 2021
+setConfigNumMinutesGuardTimer
+    [Arguments]    ${value}
+    apiresources.changeCxConfigsTabModuleFieldValues  DASHM    NumMinutesGuardTimer    ${value}
+
+    #Created by Greeshma on 23 Aug 2021
+setAllowNumExceedencesGuardOfGroupProperties
+    [Arguments]    ${property_value}
+    apiresources.changeGroupPropertiesParameterValue    AllowNumExceedencesGuard  int   ${property_value}
+
+    #Created by Greeshma on 23 Aug 2021
+changeGroupPropertiesParameterValue
+    [Arguments]    ${property_name}  ${property_type}  ${property_value}
+    ${headers}=       create dictionary    Content-Type=${content_type}    Vigilent-Api-Token=${write_api_token}
+    ${mutation}=    gqlMutation.setGroupPropertymutation    ${property_name}    ${property_type}    ${property_value}
+    ${body}=          create dictionary    query= ${mutation}
+    create session    AIEngine    ${base_url}     disable_warnings=1
+    ${result}=  post on session    AIEngine  /public/graphql  headers=${headers}    json=${body}
+    should be equal as strings  ${result.json()}  ${propertyWriteResponse}
+    log to console  !!------------------Group ->Propertie ${property_name} updated successfully with ${property_value}----------------!!
