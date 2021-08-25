@@ -40,7 +40,7 @@ getCtrlStateValueQuery
     ${getCtrlStateValue}=  set variable  query getCtrlStateValue{site {groups: children(selector:{type: Group, name: "${group_name}"}) {children(selector:{type: GroupStatus, name: "Group Status"}){children(selector:{type: State, name: "CtrlState"}){name pointCurrent{value}}}}}}
     set global variable  ${getCtrlStateValue}
 
-rackSensorPointsMutation     #changeName as this is a query ,not mutation
+rackSensorPointsMutation
     [Arguments]    ${group_name}
     ${rackSensorPoints}=  set variable  query rackSensorPoints {site {groups: children(selector: {type: Group,name: "${group_name}"}) @skip(if:false) {oid name racks: children(selector:{type: Rack},){oid displayName points: children{oid name type pointCurrent{value}}}}}}
     set global variable  ${rackSensorPoints}

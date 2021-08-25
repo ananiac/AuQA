@@ -124,7 +124,7 @@ setRackSensorPointsTemperature    #Contain both query and mutation
 queryToFetchJsonResponseContainingTheRackSensorsFromGroup
     ${headers}=       create dictionary    Content-Type=${content_type}   Vigilent-Api-Token=${query_api_token}
     #${body}=          create dictionary    query= ${rackSensorPoints}
-    gqlMutation.rackSensorPointsMutation  ${group_name}                         #Change the name to query
+    gqlMutation.rackSensorPointsMutation  ${group_name}
     ${body}=          create dictionary    query= ${rackSensorPoints}
     create session    AIEngine    ${base_url}     disable_warnings=1
     ${result}=  post on session    AIEngine  /public/graphql  headers=${headers}    json=${body}
