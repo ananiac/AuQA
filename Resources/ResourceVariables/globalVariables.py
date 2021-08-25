@@ -6,4 +6,4 @@ high_speed="5 seconds"
 #time to overcome Clickable exception
 load_time="10 seconds"
 test_entry_sensor_temp=61.11
-test_exit_sensor_temp=63.22
+test_exit_sensor_temp=66.72

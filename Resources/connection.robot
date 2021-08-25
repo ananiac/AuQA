@@ -137,3 +137,29 @@ establishConnectionAndCheckVX_ServerProcesseStatus
     closeAllConnections
     return from keyword  ${current_status}
 
+    #Created by Greeshma on 20 Aug 2021
+establishConnectionAndStopAllVEMProcessesExceptVx_serverFacsLauncherFacsSiftFacsDashAndFacs_trends
+    log to console    !----------Stopping all processes except vx_server, facs_launcher, facs_dash, facs_trends, and facs_sift----------!
+    openConnectionAndLogIn
+    executeSTOPProcessCommandWithoutTraceInHistory    dcsim
+    log to console    !!----1.Simulator Stopped----!!
+    executeSTOPProcessCommandWithoutTraceInHistory    facs_cleanup
+    log to console    !!----2.CleanUp Stopped----!!
+    executeSTOPProcessCommandWithoutTraceInHistory    vems-snmp
+    log to console    !!----3.SNMP Stopped----!!
+    executeSTOPProcessCommandWithoutTraceInHistory    facs_cp
+    log to console    !!----4.Calibration Stopped----!!
+    executeSTOPProcessCommandWithoutTraceInHistory    facs_cl
+    log to console    !!----5.Learning Stopped----!!
+    executeSTOPProcessCommandWithoutTraceInHistory    vems-plugin-smart-mesh-ip
+    log to console    !!----6.Plugin: SmartMesh IP Stopped----!!
+    executeSTOPProcessCommandWithoutTraceInHistory    vx_report
+    log to console    !!----7.Reports Stopped----!!
+    executeSTOPProcessCommandWithoutTraceInHistory    vems-plugin-dust
+    log to console    !!----8.Plugin:DUST Stopped----!!
+    executeSTOPProcessCommandWithoutTraceInHistory    vems-plugin-modbus
+    log to console    !!----9.Plugin:Modbus/TCP Stopped----!!
+    executeSTOPProcessCommandWithoutTraceInHistory    vems-plugin-bacnet
+    log to console    !!----10.Plugin:BACnet Stopped----!!
+    closeAllConnections
+

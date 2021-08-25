@@ -74,3 +74,15 @@ getAlarmStatusQuery
     [Arguments]   ${group_name}    ${alarm_name}
     ${getAlarmStatusOfGroupQuery}=  set variable  query alarmStatus{ alarms(selector:{subjectName: "${group_name}", type : ${alarm_name}}) { type severity status }}
     set global variable  ${getAlarmStatusOfGroupQuery}
+
+    #Created by Greeshma on 20 Aug 2021
+setSetPointLimits
+    [Arguments]    ${ctop_oid}    ${high_limit}    ${low_limit}
+    ${mutation}=    set variable    mutation targetSetPoints { targetSet(requests: [{oid: ${ctop_oid}, value: ${high_limit}, target: LIMIT_HIGH, origin: "MANUAL"},{oid: ${ctop_oid}, value: ${low_limit}, target: LIMIT_LOW, origin: "MANUAL"}]) { index reason }}
+    return from keyword    ${mutation}
+
+setGroupPropertymutation
+    [Arguments]    ${property_name}    ${property_type}    ${property_value}
+    queryToFetchGroupOid
+    ${mutation}=    set variable    mutation setGrpProp { propertyWrite(requests: [{oid: ${group_oid}, name: "${property_name}", ${property_type} : ${property_value}}]) { index reason }}
+    return from keyword    ${mutation}

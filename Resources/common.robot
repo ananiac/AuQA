@@ -26,3 +26,9 @@ waitForMinutes
     log to console    !------------Waiting for ${minutes} minutes------------!
     sleep    ${minutes} minutes
     log to console    !!---------Waiting - Done--------------------!!
+
+waitForSeconds
+    [Arguments]    ${seconds}
+    log to console    !------------Waiting for ${seconds} seconds------------!
+    sleep    ${seconds} seconds
+    log to console    !!---------Waiting - Done--------------------!!
