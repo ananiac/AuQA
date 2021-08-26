@@ -6,6 +6,7 @@ Variables    ${EXECDIR}/Resources/ResourceVariables/globalVariables.py
 Variables    ${EXECDIR}/PageObjects/siteEditorHomePage.py
 Variables    ${EXECDIR}/Inputs/basicHotAbsoluteGuardInputs.py
 Variables   ${EXECDIR}/PageObjects/toolsConfigsPage.py
+Resource    apiresources.robot
 
 *** Variables ***
 ${url_cx}    ${url_cx}
@@ -38,6 +39,7 @@ startBrowserAndLoginToAIEngine
     loginByEnteringUsernameAndPassword
 
 resetSystemPropertiesUsingLoadTemplateOptionWithOverwrite
+    apiresources.setConfigAlarmGroupDeadSensorHysteresis    11
     startBrowserAndLoginToAIEngine
     click element    ${tools_button}
     click element    ${configs_option_in_tools}
@@ -46,14 +48,19 @@ resetSystemPropertiesUsingLoadTemplateOptionWithOverwrite
     wait until element is enabled    ${load_template_in_config_popup}
     click element    ${load_template_in_config_popup}
     click element    ${template_dropbox_picker}
-    click element    ${template_option}
+    IF    "${groupname}"=="RSP-test"
+        click element    ${template_option_RSP}
+    ELSE
+        click element    ${template_option}
+    END
     click element    ${temperature_scale_dropbox_picker}
     click element    ${temperature_scale_option}
     select checkbox    ${overwrite_checkbox}
     click element    ${apply_button_load_template}
     click element    ${save_button}
     log to console    Loaded default template succesfully
-    sleep    ${high_speed}
+    sleep    ${load_time}
+    wait until element is visible    ${close_button}
     click element    ${close_button}
     wait until element is not visible    ${close_button}
     log to console    !-----------Closed config popup------------------!
