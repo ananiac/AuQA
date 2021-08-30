@@ -25,7 +25,6 @@ BasicHotAbsoluteGuardTest
     uiresources.resetSystemPropertiesUsingLoadTemplateOptionWithOverwrite
     #3)Set System DASHM:: configs NumGuardUnits = 1,NumMinutesGuardTimer = 3, PercentDeadSensorThreshold=100
     #4)Set System SYSTEM::NumMinutesPast=5
-    log to console  ${basicHotAbsoluteGuardInputs}[num_guard_units]
     apiresources.changeCxConfigsDashm_NumGuardUnits_NumMinutesGuardTimer_PercentDeadSensorThreshold_AndSystem_NumMinutesPast    ${basicHotAbsoluteGuardInputs}[num_guard_units]    ${basicHotAbsoluteGuardInputs}[num_minutes_guard_timer]   ${basicHotAbsoluteGuardInputs}[percent_deadsensor_threshold]    ${basicHotAbsoluteGuardInputs}[num_minutes_past]
     #5).Set the Group properties values->Grp ->Properties->AllowNumExceedencesGuard = 10 AllowNumExceedencesControl = 10
     #AlmHotAbsTemp = 200(degree F) GuardHotAbsTemp = 90 (degrees F)
