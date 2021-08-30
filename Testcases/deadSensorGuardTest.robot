@@ -37,10 +37,11 @@ DeadSensorGuardTestSetupSteps
     #6)Set ALARM::GrpDeadSensorHysteresis=10%
     apiresources.setConfigAlarmGroupDeadSensorHysteresis    ${grp_dead_sensor_hysteresis_value_default_value}
     #7)In the SADC group, write out all rack temperature sensor points every minute at say 66 F
-    apiresources.setRackSensorPointsTemperature    ${dead_sensor_test_temp}
+    apiresources.setCoolingTemperatureForAllSensorPoints    ${dead_sensor_test_temp}
     #8)Wait 2 minutes then stop updating the temperatures of one rack (ie 2 temp points)
-    #Currently managed within staleState Prevention
+    #Currently managed within staleState Prevention-Now implemented with Flag value
     apiresources.waitForTwoMinutes
+    apiresources.stopUpdatingTemperatureToLastRack    ${dead_sensor_test_temp}
     #9)Wait 2 minutes for the 2 points to go stale
     apiresources.waitForTwoMinutes
     #10)Test1_PercentDeadSensorThreshold_SingleSensorHysteresis

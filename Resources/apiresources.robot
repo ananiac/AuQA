@@ -101,6 +101,7 @@ setRackPointSensorTemperature
     log to console   Temperature ${temp} F set for ${oid}
 
 setExitCriteriaTemperature
+    common.setFlagValue    ${test_exit_flag}
     setRackSensorPointsTemperature  ${test_exit_sensor_temp}
 
 setRackSensorPointsTemperature    #Contain both query and mutation
@@ -133,6 +134,7 @@ queryToFetchJsonResponseContainingTheRackSensorsFromGroup
 
 setTemperatureForSensorsAandB
     [Arguments]    ${temp}
+    common.setFlagValue    ${two_sets_of_temp_flag}
     ${json_dict}    queryToFetchJsonResponseContainingTheRackSensorsFromGroup
     #First two sensor points are picked as Sensor A and Sensor B if they are Rack Top or Rack Bottom
     ${total}=    fetchTheNumberOfItemsInDictionary    ${json_dict}    ${racks_in_group}
@@ -153,8 +155,7 @@ setTemperatureForSensorsAandB
     END
     setRackPointSensorTemperature  ${sensor_A_oid}    ${temp}
     setRackPointSensorTemperature  ${sensor_B_oid}    ${temp}
-    #${time_at_sensor_is_100F}    get current date
-    #log to console    ${time_at_sensor_is_100F}
+
 
 getCurrentTemperatureOfSensorsAandB
     ${json_dict}    queryToFetchJsonResponseContainingTheRackSensorsFromGroup
@@ -360,7 +361,9 @@ setTestEntryTemperatureToSensorPoints
     log to console  !!--------Test started and writing test_entry_sensor_temp ${test_entry_sensor_temp} ---------------!!
     setRackSensorPointsTemperature  ${test_entry_sensor_temp}
 
+
 writeTestEntryTemperatureToSensorsAfterVXServerStarted
+    common.setFlagValue    ${test_entry_flag}
     ${current_status_of_vx_server}=  connection.establishConnectionAndCheckVX_ServerProcesseStatus
     log to console  Current status of vx server is ${current_status_of_vx_server}
     IF  '${current_status_of_vx_server}'=='process_up'
@@ -374,6 +377,7 @@ writeTestEntryTemperatureToSensorsAfterVXServerStarted
     log to console  !!!--------------------Test Setup done------------------------------!!!
 
 setTestExitTemperatureToFirstSensorPoint
+    common.setFlagValue    ${test_exit_flag}
     log to console  *************Test finished and writing test_exit_sensor_temp ${test_exit_sensor_temp}************
     setRackSensorPointsTemperature  ${test_exit_sensor_temp}
     log to console  !!!--------------------Test Teardown done------------------------------!!!
@@ -571,3 +575,16 @@ changeGroupPropertiesParameterValue
     ${result}=  post on session    AIEngine  /public/graphql  headers=${headers}    json=${body}
     should be equal as strings  ${result.json()}  ${propertyWriteResponse}
     log to console  !!------------------Group ->Propertie ${property_name} updated successfully with ${property_value}----------------!!
+
+    #Created by Greeshma on 30 August 2021
+setCoolingTemperatureForAllSensorPoints
+    [Arguments]    ${temp}
+    common.setFlagValue    ${current_temp_to_all_flag}
+    apiresources.setRackSensorPointsTemperature  ${temp}
+
+
+    #Created by Greeshma on 30 August 2021
+stopUpdatingTemperatureToLastRack
+    [Arguments]    ${temp}
+    common.setFlagValue    ${exclude_dead_rack_flag}
+    apiresources.setTemperatureForAllExceptDeadSensor    ${temp}
