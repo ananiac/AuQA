@@ -571,3 +571,14 @@ changeGroupPropertiesParameterValue
     ${result}=  post on session    AIEngine  /public/graphql  headers=${headers}    json=${body}
     should be equal as strings  ${result.json()}  ${propertyWriteResponse}
     log to console  !!------------------Group ->Propertie ${property_name} updated successfully with ${property_value}----------------!!
+
+    #Created by Abhijit on 26 Aug 2021
+changeGroupPropertiesIntValue
+    [Arguments]    ${property_name}  ${property_value}
+    ${headers}=       create dictionary    Content-Type=${content_type}    Vigilent-Api-Token=${write_api_token}
+    gqlMutation.setGroupPropertyInt    ${property_name}  ${property_value}
+    ${body}=          create dictionary    query= ${setGroupPropertyIntValueMutation}
+    create session    AIEngine    ${base_url}     disable_warnings=1
+    ${result}=  post on session    AIEngine  /public/graphql  headers=${headers}    json=${body}
+    should be equal as strings  ${result.json()}  ${propertyWriteResponse}
+    log to console  !!------------------Group ->Propertie ${property_name} updated successfully with ${property_value}----------------!!

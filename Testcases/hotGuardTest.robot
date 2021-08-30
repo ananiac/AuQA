@@ -1,6 +1,8 @@
 *** Settings ***
-Documentation          This testcase validates the Hot Guard mode feature of AI Engine
-...                    Created by Greeshma on 20th August 2021
+Documentation          This testcase validates the Hot Guard mode feature of AI Engine.
+...                     Environment: ${host_ip}
+...                     Group Name: ${group_name}
+#...                    Created by Greeshma on 20th August 2021
 Resource    ${EXECDIR}/Resources/apiresources.robot
 Resource    ${EXECDIR}/Resources/uiresources.robot
 Resource    ${EXECDIR}/Resources/connection.robot
@@ -19,7 +21,7 @@ HotGuardTestSetup
     #4.Confirm config DASH_M::AllowNumExceedencesGuard=1 and CATGuardBandRange=4
     hotGuardTestResources.setConfigAllowNumExceedencesGuardAndCATGuardBAndRange    ${config_allow_num_exceedences_guard_initial}    ${config_CAT_guard_band_range_initial}
     #5.Confirm group AllowNumExceedencesGuard, GuardHotAbsTemp, AlmHotAbsTemp are null
-    #-Abhijit's code here---!
+    hotGuardTestResources.setHotGuardGroupPropertiesToEmpty
     #6.Test 1 - configs NumGuardUnits and NumMinutesGuardTimer and AllowNumExceedencesGuard
 Test1_configsNumGuardUnitsAndNumMinutesGuardTimerAndAllowNumExceedencesGuard
     #7.Set config DASH_M::NumGuardUnits=2 NumMinutesGuardTimer=4 and GuardHysteresisBand=2
@@ -85,5 +87,5 @@ CleanUp
     #set point default values.
     uiresources.resetSystemPropertiesUsingLoadTemplateOptionWithOverwrite
     apiresources.setAllHighAndLowSetPointLimits    ${high_set_point_limit_cleanup}    ${low_set_point_limit_cleanup}
-
+    hotGuardTestResources.setHotGuardGroupPropertiesToEmpty
 
