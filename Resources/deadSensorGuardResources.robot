@@ -81,7 +81,7 @@ checkGuardAndGroupDeadSensorAlarmStatusForControlDeadSensorThreshold
 checkGuardAndGroupDeadSensorAlarmStatusForGrpDeadSensorThreshold
     [Arguments]    ${grp_dead_sensor_threshold_value}    ${expected_guard_status_value}    ${expected_alarm_status_value}
     apiresources.setConfigAlarmGroupDeadSensorThreshold  ${grp_dead_sensor_threshold_value}    #write
-    common.waitForMinutes 2
+    common.waitForMinutes   2
     deadSensorGuardResources.checkingGuardModeOfGroup    ${expected_guard_status_value}                         #query
     deadSensorGuardResources.checkingDeadSensorAlarmForGroup    ${expected_alarm_status_value}                  #query
 
