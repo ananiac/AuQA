@@ -13,7 +13,7 @@ ${url_cx}    ${url_cx}
 *** Keywords ***
 startBrowserAndAccessAIEngineCXWebUI
         #[Arguments]    ${url}    ${browser}    ${expectedTitle}
-        open browser    ${url_cx}    ${browser}    options=add_argument("--disable-popup-blocking"); add_argument("--ignore-certificate-errors"); add_argument("--no-sandbox"); add_argument("--disable-extensions"); add_argument("--disable-dev-shm-usage"); add_argument("--window-size=1200,1100")
+        open browser    ${url_cx}    ${browser}    options=add_argument("--disable-popup-blocking"); add_argument("--ignore-certificate-errors"); add_argument("--no-sandbox"); add_argument("--disable-extensions"); add_argument("--disable-dev-shm-usage"); add_argument("--window-size=1200,1100"); add_argument("--allow-running-insecure-content")
         maximize browser window
         set browser implicit wait    ${high_speed}
         log to console    Accessed AI Engine
@@ -41,7 +41,13 @@ startBrowserAndLoginToAIEngine
 resetSystemPropertiesUsingLoadTemplateOptionWithOverwrite
     apiresources.setConfigAlarmGroupDeadSensorHysteresis    11
     startBrowserAndLoginToAIEngine
+    sleep    1 minutes
+    wait until element is visible	${tools_button}
+    wait until element is enabled	${tools_button}
     click element    ${tools_button}
+    sleep    1 minutes
+    wait until element is visible	 ${configs_option_in_tools}
+    wait until element is enabled	 ${configs_option_in_tools}
     click element    ${configs_option_in_tools}
     sleep    ${load_time}
     wait until element is visible    ${load_template_in_config_popup}

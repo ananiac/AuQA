@@ -12,6 +12,7 @@ Resource    ${EXECDIR}/Resources/connection.robot
 Library    SeleniumLibrary
 Variables    ${EXECDIR}/Configurations/${environment}.py
 Variables    ${EXECDIR}/PageObjects/siteEditorHomePage.py
+Resource    common.robot
 
 
 *** Variables ***
@@ -80,7 +81,7 @@ checkGuardAndGroupDeadSensorAlarmStatusForControlDeadSensorThreshold
 checkGuardAndGroupDeadSensorAlarmStatusForGrpDeadSensorThreshold
     [Arguments]    ${grp_dead_sensor_threshold_value}    ${expected_guard_status_value}    ${expected_alarm_status_value}
     apiresources.setConfigAlarmGroupDeadSensorThreshold  ${grp_dead_sensor_threshold_value}    #write
-    apiresources.waitForOneMinute
+    common.waitForMinutes   2
     deadSensorGuardResources.checkingGuardModeOfGroup    ${expected_guard_status_value}                         #query
     deadSensorGuardResources.checkingDeadSensorAlarmForGroup    ${expected_alarm_status_value}                  #query
 
