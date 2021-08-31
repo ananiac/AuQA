@@ -121,9 +121,9 @@ setAlarmDeadSensorThresholdOfGroupProperties
     apiresources.changeGroupPropertiesFloatParameterValue    AlarmDeadSensorThreshold  ${property_value}
 
 setDeadSensorGuardGroupPropertiesToEmpty
-    sleep  5 seconds
-    uiresources.startBrowserAndLoginToAIEngine
     setGroupPropertiesForDeadSensorToZero
+    common.waitForSeconds    10
+    uiresources.startBrowserAndLoginToAIEngine
     selectAndClickGroupName
     setGroupPropertyToEmpty  ControlDeadSensorThreshold
     setGroupPropertyToEmpty  AlarmDeadSensorHysteresis

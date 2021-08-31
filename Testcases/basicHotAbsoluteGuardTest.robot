@@ -31,7 +31,7 @@ BasicHotAbsoluteGuardTest
     #Note 200dF set ALmHotAbsGuard will act same as blank as the alarms wont be triggered
     apiresources.setGroupPropertiesGuardHotAbsTempAllowNumExceedencesGuardAndControl    ${basicHotAbsoluteGuardInputs}[allow_num_exceedences_control_initial]   ${basicHotAbsoluteGuardInputs}[allow_num_exceedences_guard_initial]   ${basicHotAbsoluteGuardInputs}[alm_hot_abs_temp_initial]  ${basicHotAbsoluteGuardInputs}[guard_hot_abs_temp_intial]
     #6) Set all group temps sensors cool (eg 65 F) …. keep updating them every minute
-    apiresources.setRackSensorPointsTemperature    ${basicHotAbsoluteGuardInputs}[sensor_point_cooling_temp]
+    apiresources.setCoolingTemperatureForAllSensorPoints    ${basicHotAbsoluteGuardInputs}[sensor_point_cooling_temp]
     #7)Start facs_dash process (ie Cooling Control)
     establishConnectionAndStartCoolingControlProcess
     #8)Wait 2 minutes
@@ -49,7 +49,7 @@ BasicHotAbsoluteGuardTest
     #14)Once 4 AHUs are in guard then
     apiresources.checkForAHUToBeInGuardAtRegularIntervalUntilFourAHUsReached    ${basicHotAbsoluteGuardInputs}[num_guard_units]    ${basicHotAbsoluteGuardInputs}[num_minutes_guard_timer]
     #15)Continue updating all the temp sensors to 65 F every minute (including temp sensors A & B)
-    apiresources.setRackSensorPointsTemperature    ${basicHotAbsoluteGuardInputs}[sensor_point_cooling_temp]
+    apiresources.setCoolingTemperatureForAllSensorPoints    ${basicHotAbsoluteGuardInputs}[sensor_point_cooling_temp]
     #16)wait 2 minutes
     apiresources.waitForTwoMinutes
     #17)Confirm the group  exits guard

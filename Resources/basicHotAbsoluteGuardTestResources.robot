@@ -18,3 +18,4 @@ basicHotAbsoluteGuardTestSetup
     log to console    !-----PreCondition for the Basic Hot Absolute Guard test is been executed------!
     connection.establishConnectionAndStopAllVEMProcessesExceptVx_serverAndFacs_trends
     apiresources.writeTestEntryTemperatureToSensorsAfterVXServerStarted
+
