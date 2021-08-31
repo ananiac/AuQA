@@ -1,5 +1,7 @@
 *** Settings ***
 Documentation          This testsuite validates the Dead Sensor Guard feature of AI Engine
+...                     Environment: ${host_ip}
+...                     Group Name: ${group_name}
 ...                    Created by Greeshma on 28th July 2021
 ...                    This testsuite consist of 5 different types Dead Sensor Guard testcase
 ...                    It has to be running in parallel with staleStatePrevention program
@@ -28,7 +30,7 @@ DeadSensorGuardTestSetupSteps
            ##ControlDeadSensorThreshold
            ##AlarmDeadSensorHysteresis
            #AlarmDeadSensorThreshold
-    setDeadSensorGuardGroupPropertiesToEmpty
+    deadSensorGuardResources.setDeadSensorGuardGroupPropertiesToEmpty
     #3)Load the DASHAM_MIX template in the CX configs (with overwrite) (UI)
     deadSensorGuardResources.reloadDefaultDASHMTemplateFromUI
     #4)Set SYSTEM::NumMinutesPast=2
@@ -137,7 +139,7 @@ Cleanup
     #b)Set group property ControlDeadSensorThreshold=0
     #c)Set group property AlarmDeadSensorHysteresis=0
     #d)Set group property AlarmDeadSensorThreshold=0
-    setDeadSensorGuardGroupPropertiesToEmpty
+    deadSensorGuardResources.setDeadSensorGuardGroupPropertiesToEmpty
     #18)Exit test
 
 
