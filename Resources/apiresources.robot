@@ -100,10 +100,6 @@ setRackPointSensorTemperature
     should be equal as strings  ${result.json()}  ${pointWriteResponse}
     log to console   Temperature ${temp} F set for ${oid}
 
-setExitCriteriaTemperature
-    common.setFlagValue    ${test_exit_flag}
-    setRackSensorPointsTemperature  ${test_exit_sensor_temp}
-
 setRackSensorPointsTemperature    #Contain both query and mutation
     [Arguments]    ${tempF}
     log to console    Fetch the number of rack sensors ----------------->
