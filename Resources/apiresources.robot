@@ -595,4 +595,3 @@ changeGroupPropertiesIntValue
     ${result}=  post on session    AIEngine  /public/graphql  headers=${headers}    json=${body}
     should be equal as strings  ${result.json()}  ${propertyWriteResponse}
     log to console  !!------------------Group ->Propertie ${property_name} updated successfully with ${property_value}----------------!!
-    

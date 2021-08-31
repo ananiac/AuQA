@@ -85,6 +85,7 @@ CleanUp
     #Load default config template
     #group properties to null-allow_num_exceedences of group
     #set point default values.
+    hotGuardTestResources.setHotGuardGroupPropertiesToEmpty
     uiresources.resetSystemPropertiesUsingLoadTemplateOptionWithOverwrite
     apiresources.setAllHighAndLowSetPointLimits    ${high_set_point_limit_cleanup}    ${low_set_point_limit_cleanup}
 
