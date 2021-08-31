@@ -65,58 +65,16 @@ checkGuardAndGroupHotAlarmForGroupAllowNumExceedencesGuardValueChange
 
 setHotGuardGroupPropertiesToEmpty
     setGroupPropertiesForHotGuardToZero
-    sleep  5 seconds
+    sleep  ${load_time}
     uiresources.startBrowserAndLoginToAIEngine
-    sleep  2 seconds
-    selectAndClickGroupName
-    clickAllPropertiesButton
-    setGroupPropertyToEmpty  AllowNumExceedencesGuard
-    setGroupPropertyToEmpty  GuardHotAbsTemp
-    setGroupPropertyToEmpty  AlmHotAbsTemp
+    sleep  ${load_time}
+    uiresources.selectAndClickGroupName
+    uiresources.clickAllPropertiesButton
+    uiresources.setGroupPropertyToEmpty  AllowNumExceedencesGuard
+    uiresources.setGroupPropertyToEmpty  GuardHotAbsTemp
+    uiresources.setGroupPropertyToEmpty  AlmHotAbsTemp
     reload page
     close browser
-
-# Select and click Group Name and click on 'All Properties' button to display all properties
-selectAndClickGroupName
-    log to console  '${group_name}' group selected
-    sleep  5 seconds
-    # Group drop down list
-    click element  ${group_dropdown_list}
-    sleep  5 seconds
-
-    # Select a Group from drop down list
-    ${select_group}=  set variable  xpath=//li[contains(text(),'${group_name}')]
-
-    click element  ${select_group}
-    sleep  5 seconds
-    # Click a Group Name
-    ${select_and_click_group}=  set variable  xpath=//span[contains(.,'${group_name}')]
-    click element  ${select_and_click_group}
-    sleep  10 seconds
-
-# Click 'All Properties' button to display all properties
-clickAllPropertiesButton
-    click element  ${all_properties_button}
-    sleep    5 seconds
-
-# Set Group Property to empty
-setGroupPropertyToEmpty
-    [Arguments]    ${property}
-    ${group_property}=  set variable  //div[contains(text(),'${property}')]/following::td[1]
-    sleep  2 seconds
-    ${property_value}=  get text  ${group_property}
-    log to console  ${property} property value is ${property_value}, set through api
-    ${IsElementVisible}=  Run Keyword And Return Status    Element Should Be Visible   ${group_property}
-    sleep  5 seconds
-    IF  ${IsElementVisible}
-        press keys  ${group_property}  CTRL+a+BACKSPACE+DELETE+ENTER
-#        log to console  Set ${property} property to empty
-        ${property_empty_value}=  get text  ${group_property}
-        log to console  ${property} property value is ${property_empty_value}empty after setting to empty
-        sleep  5 seconds
-    ELSE
-        log to console  ${property} property is not visible
-    END
 
 setGroupPropertiesForHotGuardToZero
     apiresources.changeGroupPropertiesIntValue    AllowNumExceedencesGuard    ${allow_num_exceedences_guard_value}

@@ -58,3 +58,45 @@ resetSystemPropertiesUsingLoadTemplateOptionWithOverwrite
     wait until element is not visible    ${close_button}
     log to console    !-----------Closed config popup------------------!
     close browser
+
+# Select and click Group Name and click on 'All Properties' button to display all properties
+selectAndClickGroupName
+    log to console  '${group_name}' group selected
+    sleep  ${high_speed}
+    # Group drop down list
+    click element  ${group_dropdown_list}
+    sleep  ${high_speed}
+
+    # Select a Group from drop down list
+    ${select_group}=  set variable  xpath=//li[contains(text(),'${group_name}')]
+
+    click element  ${select_group}
+    sleep  ${high_speed}
+    # Click a Group Name
+    ${select_and_click_group}=  set variable  xpath=//span[contains(.,'${group_name}')]
+    click element  ${select_and_click_group}
+    sleep  ${load_time}
+
+# Click 'All Properties' button to display all properties
+clickAllPropertiesButton
+    click element  ${all_properties_button}
+    sleep  ${high_speed}
+
+# Set Group Property to empty
+setGroupPropertyToEmpty
+    [Arguments]    ${property}
+    ${group_property}=  set variable  //div[contains(text(),'${property}')]/following::td[1]
+    sleep  ${high_speed}
+    ${property_value}=  get text  ${group_property}
+    log to console  ${property} property value is ${property_value}, set through api
+    ${IsElementVisible}=  Run Keyword And Return Status    Element Should Be Visible   ${group_property}
+    sleep  ${high_speed}
+    log to console  ${IsElementVisible}
+    IF  ${IsElementVisible}
+        press keys  ${group_property}  CTRL+a+BACKSPACE+DELETE+ENTER
+        ${property_empty_value}=  get text  ${group_property}
+        log to console  ${property} property value is ${property_empty_value}empty after setting to empty
+        sleep  ${high_speed}
+    ELSE
+        log to console  ${property} property is not visible
+    END
