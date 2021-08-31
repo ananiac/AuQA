@@ -91,7 +91,6 @@ setGroupPropertyToEmpty
     log to console  ${property} property value is ${property_value}, set through api
     ${IsElementVisible}=  Run Keyword And Return Status    Element Should Be Visible   ${group_property}
     sleep  ${high_speed}
-    log to console  ${IsElementVisible}
     IF  ${IsElementVisible}
         press keys  ${group_property}  CTRL+a+BACKSPACE+DELETE+ENTER
         ${property_empty_value}=  get text  ${group_property}
