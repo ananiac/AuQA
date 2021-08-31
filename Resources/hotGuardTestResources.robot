@@ -9,7 +9,10 @@ Resource    ${EXECDIR}/Resources/apiresources.robot
 Resource    ${EXECDIR}/Resources/uiresources.robot
 Resource    ${EXECDIR}/Resources/connection.robot
 Resource    common.robot
-
+Library    SeleniumLibrary
+Variables    ${EXECDIR}/Configurations/${environment}.py
+Variables    ${EXECDIR}/PageObjects/siteEditorHomePage.py
+Variables    ${EXECDIR}/Inputs/hotGuardTestInputs.py
 
 *** Keywords ***
 hotGuardTestPreconditionSetup
@@ -59,3 +62,21 @@ checkGuardAndGroupHotAlarmForGroupAllowNumExceedencesGuardValueChange
     common.waitForMinutes    1
     apiresources.checkingGuardModeOfGroup    ${expected_guard_status_value}                         #query
     apiresources.checkingAlarmStatusForGroup    GroupHot    ${expected_alarm_status_value}                  #query
+
+setHotGuardGroupPropertiesToEmpty
+    setGroupPropertiesForHotGuardToZero
+    sleep  ${load_time}
+    uiresources.startBrowserAndLoginToAIEngine
+    sleep  ${load_time}
+    uiresources.selectAndClickGroupName
+    uiresources.clickAllPropertiesButton
+    uiresources.setGroupPropertyToEmpty  AllowNumExceedencesGuard
+    uiresources.setGroupPropertyToEmpty  GuardHotAbsTemp
+    uiresources.setGroupPropertyToEmpty  AlmHotAbsTemp
+    reload page
+    close browser
+
+setGroupPropertiesForHotGuardToZero
+    apiresources.changeGroupPropertiesIntValue    AllowNumExceedencesGuard    ${allow_num_exceedences_guard_value}
+    apiresources.changeGroupPropertiesIntValue    GuardHotAbsTemp     ${guard_hot_abs_temp_value}
+    apiresources.changeGroupPropertiesIntValue    AlmHotAbsTemp   ${alm_hot_abs_temp_value}
