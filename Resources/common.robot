@@ -48,6 +48,6 @@ getFlagValue
 
 takeScreenshot
     [Arguments]  ${filename}
-    set global variable  ${path}  Reports/Screenshots/${SUITE_NAME}
+    set global variable  ${path}  ${EXECDIR}/Reports/Screenshots/${SUITE_NAME}
     set screenshot directory  ${path}
     capture page screenshot  ${filename}.${type_of_file}
