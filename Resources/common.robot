@@ -4,7 +4,6 @@ Library    JSONLibrary
 Library    Collections
 Library    OperatingSystem
 Library  pabot.PabotLib
-Library    pabot.SharedLibrary
 Variables    ${EXECDIR}/Configurations/${environment}.py
 Library    ${EXECDIR}/ExternalKeywords/common.py
 
