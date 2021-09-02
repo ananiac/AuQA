@@ -27,11 +27,11 @@ loginByEnteringUsernameAndPassword
     log to console    Entering user name and password
     input text    ${uname}    ${ui_username}
     input text    ${upwd}    ${ui_password}
-    capture page screenshot    ${EXECDIR}/Reports/Screenshots/inputUserNameAndPwd_1.png
+    takeScreenshot  InputUserNameAndPwd
     click element    ${login_button}
     wait until page contains element   ${banner}
     wait until element is enabled    ${tools_button}
-    capture page screenshot    ${EXECDIR}/Reports/Screenshots/siteEditorHomePage_2.png
+    takeScreenshot  SiteEditorHomePage
     log to console    Logged in successfully
 
 startBrowserAndLoginToAIEngine
