@@ -48,6 +48,11 @@ getFlagValue
 
 takeScreenshot
     [Arguments]  ${filename}
-    set global variable  ${path}  ${EXECDIR}/Reports/Screenshots/${SUITE_NAME}
-    set screenshot directory  ${path}
-    capture page screenshot  ${filename}.${type_of_file}
+    ${current_date_time}=  getCurrentDateTime
+    set global variable  ${screenshot_directory_path}  ${EXECDIR}/Reports/Screenshots/${SUITE_NAME}
+    set screenshot directory  ${screenshot_directory_path}
+    capture page screenshot  ${filename} ${current_date_time}.${type_of_file}
+
+getCurrentDateTime
+  ${get_current_date_time}=  get current date  result_format=%Y%m%d %H%M%S
+  [Return]     ${get_current_date_time}
