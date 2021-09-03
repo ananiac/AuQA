@@ -56,14 +56,14 @@ getOidQuery
     #Created by Greeshma on 19 Aug 2021
 setGroupPropertyFloat
     [Arguments]    ${property_name}    ${property_value}
-    ${group_oid}=  queryToFetchGroupOid
+    ${group_oid}=  apiresources.queryToFetchGroupOid
     ${setGroupPropertyFloatValueMutation}=    set variable    mutation setGrpProp { propertyWrite(requests: [{oid: ${group_oid}, name: "${property_name}", float : ${property_value}}]) { index reason }}
     return from keyword  ${setGroupPropertyFloatValueMutation}
 
     #Created by Greeshma on 19 Aug 2021
 setGroupPropertyInt
     [Arguments]    ${property_name}    ${property_value}
-    ${group_oid}=  queryToFetchGroupOid
+    ${group_oid}=  apiresources.queryToFetchGroupOid
     ${setGroupPropertyIntValueMutation}=    set variable    mutation setGrpProp { propertyWrite(requests: [{oid: ${group_oid}, name: "${property_name}", int : ${property_value}}]) { index reason }}
     return from keyword  ${setGroupPropertyIntValueMutation}
 
@@ -81,6 +81,6 @@ setSetPointLimits
 
 setGroupPropertymutation
     [Arguments]    ${property_name}    ${property_type}    ${property_value}
-    ${group_oid}=  queryToFetchGroupOid
+    ${group_oid}=  apiresources.queryToFetchGroupOid
     ${mutation}=    set variable    mutation setGrpProp { propertyWrite(requests: [{oid: ${group_oid}, name: "${property_name}", ${property_type} : ${property_value}}]) { index reason }}
     return from keyword    ${mutation}
