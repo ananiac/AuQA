@@ -41,11 +41,10 @@ startBrowserAndLoginToAIEngine
 resetSystemPropertiesUsingLoadTemplateOptionWithOverwrite
     apiresources.setConfigAlarmGroupDeadSensorHysteresis    11
     startBrowserAndLoginToAIEngine
-    sleep    1 minutes
+    set selenium timeout    60 seconds
     wait until element is visible	${tools_button}
     wait until element is enabled	${tools_button}
     click element    ${tools_button}
-    sleep    1 minutes
     wait until element is visible	 ${configs_option_in_tools}
     wait until element is enabled	 ${configs_option_in_tools}
     click element    ${configs_option_in_tools}
@@ -70,4 +69,5 @@ resetSystemPropertiesUsingLoadTemplateOptionWithOverwrite
     click element    ${close_button}
     wait until element is not visible    ${close_button}
     log to console    !-----------Closed config popup------------------!
+    set selenium timeout    5 seconds
     close browser

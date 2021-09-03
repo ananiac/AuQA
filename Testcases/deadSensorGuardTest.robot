@@ -40,10 +40,10 @@ DeadSensorGuardTestSetupSteps
     apiresources.setCoolingTemperatureForAllSensorPoints    ${dead_sensor_test_temp}
     #8)Wait 2 minutes then stop updating the temperatures of one rack (ie 2 temp points)
     #Currently managed within staleState Prevention-Now implemented with Flag value
-    apiresources.waitForTwoMinutes
+    apiresources.waitForTwoMinutes       #common
     apiresources.stopUpdatingTemperatureToLastRack    ${dead_sensor_test_temp}
     #9)Wait 2 minutes for the 2 points to go stale
-    apiresources.waitForTwoMinutes
+    apiresources.waitForTwoMinutes      #common
     #10)Test1_PercentDeadSensorThreshold_SingleSensorHysteresis
 Test1_PercentDeadSensorThreshold_SingleSensorHysteresis
     #a)Set DASHM::PercentDeadSensorThreshold=24.9% … wait one minute - the group enters guard and the GroupDeadSensor alarm is raised

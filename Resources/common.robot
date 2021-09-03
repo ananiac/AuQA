@@ -4,7 +4,6 @@ Library    JSONLibrary
 Library    Collections
 Library    OperatingSystem
 Library  pabot.PabotLib
-Library    pabot.SharedLibrary
 Variables    ${EXECDIR}/Configurations/${environment}.py
 Library    ${EXECDIR}/ExternalKeywords/common.py
 
@@ -37,13 +36,18 @@ waitForSeconds
 
 setFlagValue
     [Arguments]    ${flag_value}
-    log to console    Setting flag value to ${flag_value}!!!
+#    log to console    Setting flag value to ${flag_value}!!!
     ${newflag}=    evaluate   ${flag_value}*1
-#    set global variable    ${newflag}
     set parallel value for key    ${flag}    ${newflag}
 
 
 getFlagValue
     ${current_flag_value}=    get parallel value for key    ${flag}
-    log to console    Getting current flag value:${current_flag_value}
+#    log to console    Getting current flag value:${current_flag_value}
     return from keyword    ${current_flag_value}
+
+waitForTwoMinutes
+    common.waitForMinutes    2
+
+waitForOneMinute
+    common.waitForMinutes    1

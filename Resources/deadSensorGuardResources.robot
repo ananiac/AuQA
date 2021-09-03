@@ -92,6 +92,7 @@ checkGuardAndGroupDeadSensorAlarmStatusForAlarmDeadSensorThreshold
     deadSensorGuardResources.checkingGuardModeOfGroup    ${expected_guard_status_value}                         #query
     deadSensorGuardResources.checkingDeadSensorAlarmForGroup    ${expected_alarm_status_value}                  #query
 
+    #remove
 checkingGuardModeOfGroup
     [Arguments]    ${expected_guard_status}
      IF    '${expected_guard_status}'=='GUARD_ON'    #Checking Group is in guard
