@@ -37,66 +37,20 @@ setPercentDeadSensorThresholdInDASHMConfig
 changeCxConfigsTabModuleFieldValues
     [Arguments]    ${module_name}    ${field_name}    ${value}
     ${headers}=       create dictionary    Content-Type=${content_type}    Vigilent-Api-Token=${write_api_token}
-    #${body}=          create dictionary    query= mutation configWrite { configSet(requests: [{module: "${module_name}", name: "${field_name}", value: "${value}"}]) { index reason }}
-    gqlMutation.configWriteMutation    ${module_name}    ${field_name}    ${value}
-    ${body}=          create dictionary    query= ${configWrite}
+    ${graphql_mutation}=  gqlMutation.configWriteMutation    ${module_name}    ${field_name}    ${value}
+    ${body}=          create dictionary    query= ${graphql_mutation}
     create session    AIEngine    ${base_url}     disable_warnings=1
     ${result}=  post on session    AIEngine  /public/graphql  headers=${headers}    json=${body}
-    #log to console  ${result.json()}
     should be equal as strings  ${result.json()}  ${configSetResponse}
     log to console    Config module :${module_name}->Field:${field_name}->Value:${value}-is updated
-
-setGroupPropertiesGuardHotAbsTempAllowNumExceedencesGuardAndControl
-    [Arguments]    ${allow_num_excd_ctrl}    ${allow_num_excd_guard}    ${alm_hot_abs_temp}    ${guard_hot_abs_temp}
-    log to console    Set the Group properties values->Group>Properties->AllowNumExceedencesGuard = ${allow_num_excd_guard} AllowNumExceedencesControl = ${allow_num_excd_ctrl}
-    log to console    AlmHotAbsTemp = ${alm_hot_abs_temp}(degree F) GuardHotAbsTemp = ${guard_hot_abs_temp} (degrees F)---------->
-    ${headers}=       create dictionary    Content-Type=${content_type}    Vigilent-Api-Token=${write_api_token}
-#    ${body}=          create dictionary    query= mutation setGrpProp { propertyWrite(requests: [{oid: 17, name: "AllowNumExceedencesGuard", int: ${allow_num_excd_guard}},{oid: 17, name: "AllowNumExceedencesControl", int: ${allow_num_excd_ctrl}},{oid: 17, name: "GuardHotAbsTemp", float: ${guard_hot_abs_temp}},{oid: 17, name: "AlmHotAbsTemp", float: ${alm_hot_abs_temp}}]) { index reason }}
-    gqlMutation.setGrpPropMutation  ${allow_num_excd_ctrl}  ${allow_num_excd_guard}  ${alm_hot_abs_temp}  ${guard_hot_abs_temp}
-    ${body}=          create dictionary    query= ${setGrpProp}
-    create session    AIEngine    ${base_url}     disable_warnings=1
-    ${result}=  post on session    AIEngine  /public/graphql  headers=${headers}    json=${body}
-    #log to console  ${result.json()}
-    should be equal as strings  ${result.json()}  ${propertyWriteResponse}
-
-
-checkGroupControlStatusValueNotInGuard
-    ${headers}=       create dictionary    Content-Type=${content_type}    Vigilent-Api-Token=${query_api_token}
-    #${file}    get binary file    ${EXECDIR}/Inputs/GraphQL/getGroupControlStatusValue.gql
-    #${body}=    create dictionary    query= ${getCtrlStateValue}
-    gqlMutation.getCtrlStateValueQuery  ${group_name}
-    ${body}=          create dictionary    query= ${getCtrlStateValue}
-    create session    AIEngine    ${base_url}     disable_warnings=1
-    ${result}=  post on session    AIEngine  /public/graphql  headers=${headers}    json=${body}
-    #log to console    ${result.json()}
-    @{ctrl_state_value}    get value from json    ${result.json()}    ${trends_groupStatus_controlStatus_value_path}
-    ${value}    get from list    ${ctrl_state_value}    0
-    log to console    *********Validating the Ctrl Status is not Guard(expect any other value than 2)******
-    should not be equal as integers    ${value}    2    System should not be in guard(2)
-    log to console    ==============Status value is ${value}-Not in Guard--Validated Successfully===================
-
-checkGroupControlStausValueInGuard
-    log to console    Checking Group Control Status for the value to be in guard.
-    ${headers}=       create dictionary    Content-Type=${content_type}    Vigilent-Api-Token=${query_api_token}
-    #${body}=          create dictionary    query= ${getCtrlStateValue}
-    gqlMutation.getCtrlStateValueQuery  ${group_name}
-    ${body}=          create dictionary    query= ${getCtrlStateValue}
-    create session    AIEngine    ${base_url}     disable_warnings=1
-    ${result}=  post on session    AIEngine  /public/graphql  headers=${headers}    json=${body}
-    @{ctrl_state_value}    get value from json    ${result.json()}    ${trends_groupStatus_controlStatus_value_path}
-    ${value}    get from list    ${ctrl_state_value}    0
-    should be equal as integers    ${value}    2    System should be in guard(2)
-    log to console    =============Validated and the Group is in Guard -${value}==================
 
 setRackPointSensorTemperature
     [Arguments]    ${oid}    ${temp}
     ${headers}=       create dictionary    Content-Type=${content_type}    Vigilent-Api-Token=${write_api_token}
-    #${body}=          create dictionary    query= mutation pointWrite { pointWrite(requests: [{oid: ${oid}, value: ${temp}}]) { index reason }}
-    gqlMutation.pointWriteMutation    ${oid}    ${temp}
-    ${body}=          create dictionary    query= ${pointWrite}
+    ${graphql_mutation}=  gqlMutation.pointWriteMutation    ${oid}    ${temp}
+    ${body}=          create dictionary    query= ${graphql_mutation}
     create session    AIEngine    ${base_url}     disable_warnings=1
     ${result}=  post on session    AIEngine  /public/graphql  headers=${headers}    json=${body}
-    #log to console  ${result.json()}
     should be equal as strings  ${result.json()}  ${pointWriteResponse}
     log to console   Temperature ${temp} F set for ${oid}
 
@@ -120,9 +74,8 @@ setRackSensorPointsTemperature    #Contain both query and mutation
 
 queryToFetchJsonResponseContainingTheRackSensorsFromGroup
     ${headers}=       create dictionary    Content-Type=${content_type}   Vigilent-Api-Token=${query_api_token}
-    #${body}=          create dictionary    query= ${rackSensorPoints}
-    gqlMutation.rackSensorPointsMutation  ${group_name}
-    ${body}=          create dictionary    query= ${rackSensorPoints}
+    ${query}=    gqlMutation.getRackSensorPointsOfGroupQuery  ${group_name}
+    ${body}=          create dictionary    query= ${query}
     create session    AIEngine    ${base_url}     disable_warnings=1
     ${result}=  post on session    AIEngine  /public/graphql  headers=${headers}    json=${body}
     ${json_dict}=   set variable    ${result.json()}
@@ -130,7 +83,6 @@ queryToFetchJsonResponseContainingTheRackSensorsFromGroup
 
 setTemperatureForSensorsAandB
     [Arguments]    ${temp}
-    common.setFlagValue    ${two_sets_of_temp_flag}
     ${json_dict}    queryToFetchJsonResponseContainingTheRackSensorsFromGroup
     #First two sensor points are picked as Sensor A and Sensor B if they are Rack Top or Rack Bottom
     ${total}=    fetchTheNumberOfItemsInDictionary    ${json_dict}    ${racks_in_group}
@@ -151,6 +103,7 @@ setTemperatureForSensorsAandB
     END
     setRackPointSensorTemperature  ${sensor_A_oid}    ${temp}
     setRackPointSensorTemperature  ${sensor_B_oid}    ${temp}
+    common.setFlagValue    ${two_sets_of_temp_flag}
 
 
 getCurrentTemperatureOfSensorsAandB
@@ -159,7 +112,6 @@ getCurrentTemperatureOfSensorsAandB
     ${total}=    fetchTheNumberOfItemsInDictionary    ${json_dict}    ${racks_in_group}
     log to console    Getting temperature of Sensor A----------------->
     FOR    ${i}    IN RANGE    0    ${total}
-        #log to console    ${i} Rack Sensor
         ${rack_type1}    fetchValueOfFieldFromJsonDictionary    ${json_dict}    $.data.site.groups[0].racks[${i}].points[0].type
         ${rack_type2}    fetchValueOfFieldFromJsonDictionary    ${json_dict}    $.data.site.groups[0].racks[${i}].points[1].type
         ${oid1}    fetchValueOfFieldFromJsonDictionary    ${json_dict}    $.data.site.groups[0].racks[${i}].points[0].oid
@@ -221,11 +173,9 @@ waitForOneMinute
 
 fetchTheNumberOfItemsInDictionary
     [Arguments]    ${dictionary}    ${json_of_required_node}
-    #log to console    ---find number of Items in Dictionary for JSonpath ${json_of_required_node}----
     @{points}    get value from json    ${dictionary}    ${json_of_required_node}
     ${total_points_to_write}    get length   @{points}
     ${total}=    convert to integer    ${total_points_to_write}
-    #log to console      ${total}
     return from keyword    ${total}
 
 fetchValueOfFieldFromJsonDictionary
@@ -233,34 +183,6 @@ fetchValueOfFieldFromJsonDictionary
     ${field_value_list}    get value from json    ${json_dictionary}    ${json_path_of_required_field}
     ${field_value}    get from list    ${field_value_list}    0
     return from keyword    ${field_value}
-
-checkForAHUToBeInGuardAtRegularIntervalUntilFourAHUsReached
-    [Arguments]    ${num_guard_units_val}    ${num_minutes_guard_timer_val}
-    log to console    <----Validation on the AHUs going on guard at regular interval----->
-    FOR    ${reps}  IN RANGE    1    5
-        log to console    XX----------Entering--${reps}-Cycle of Checking AHUs in Guard----------------XX
-        ${json_dictionary}=     queryToFetchJsonResponseContaingTheCurrentAHUStatus
-        IF    "${reps}"=="1"
-            ${total_no_ahus}=    fetchTheNumberOfItemsInDictionary    ${json_dictionary}    ${ahus_list_path}
-            log to console    !---Total Number of Ahus is ${total_no_ahus}------!
-            ${ahus_to_be_on}=    evaluate    ${num_guard_units_val} * 4
-            log to console    !!----We need to wait until ${ahus_to_be_on} AHUs are in Guard-----!!
-        END
-        ${expected_ahus_in_guard}=    evaluate    ${num_guard_units_val} * ${reps}
-        log to console    LL------We Expect ${expected_ahus_in_guard} to be in guard now---LL
-        IF    ${total_no_ahus} >= ${expected_ahus_in_guard}
-            ${current_ahus_in_guard}=    fetchNumberOfAHUsWithGuardON    ${total_no_ahus}    ${json_dictionary}
-            log to console    !!-----Currently ${current_ahus_in_guard} ahus in Guard----!!
-            should be equal as integers    ${current_ahus_in_guard}    ${expected_ahus_in_guard}
-            exit for loop if    ${current_ahus_in_guard}==${ahus_to_be_on}
-            waitForMinutes    ${num_minutes_guard_timer_val}
-        ELSE
-            log to console    Sufficient AHUs are not present to cool the system
-            should be true    ${total_no_ahus} >= ${expected_ahus_in_guard}     #need to check failure scenario
-        END
-    END
-    #run keyword if    ${total_no_ahus}>=
-    log to console    *************************************************************
 
 checkForAllAHUsToBeGuardCleared
     log to console    <----Validating AHU Guard is cleared ----->
@@ -271,9 +193,8 @@ checkForAllAHUsToBeGuardCleared
 
 queryToFetchJsonResponseContaingTheCurrentAHUStatus
     ${headers}=       create dictionary    Content-Type=${content_type}   Vigilent-Api-Token=${query_api_token}
-    #${body}=          create dictionary    query= ${getAHUStatusInGroupGRP00}
-    gqlMutation.getAHUStatusInGroupQuery  ${group_name}
-    ${body}=          create dictionary    query= ${getAHUStatusInGroup}
+    ${query}=  gqlMutation.getAHUStatusInGroupQuery  ${group_name}
+    ${body}=          create dictionary    query= ${query}
     create session    AIEngine    ${base_url}     disable_warnings=1
     ${result}=  post on session    AIEngine  /public/graphql  headers=${headers}    json=${body}
     ${json_dictionary}=     set variable    ${result.json()}
@@ -304,22 +225,6 @@ fetchNumberOfAHUsWithGuardON
     END
     return from keyword    ${counter}
 
-confirmStatusOfAHUs
-    [Arguments]    ${total}     ${json_dictionary}    ${expected_status}
-    log to console    !---Intial counter value is ${counter}---!
-    FOR    ${ahu}   IN RANGE    0    ${total}
-                log to console    !!---Checking ahu at position ${ahu}---!!s
-                ${no_of_controls}=    fetchTheNumberOfItemsInDictionary    ${json_dictionary}    $.data.site.groups[0].ahus[${ahu}].controls
-                log to console    !!!--No of Controls for ${ahu} is ${no_of_controls}---!!!
-                ${ahu_status_ctrl_value}     fetchValueOfFieldFromJsonDictionary    ${json_dictionary}    $.data.site.groups[0].ahus[${ahu}].controls[0].status.origin
-                log to console    !V-------Status value for AHU:${ahu} first Control is ${ahu_status_ctrl_value}-----!V
-                should be equal as strings    ${ahu_status_ctrl_value}    ${expected_status}    AHUS are expected with Status ${expected_status}
-                IF    "${no_of_controls}"=="2"
-                        ${ahu_status_ctrl_value}     fetchValueOfFieldFromJsonDictionary    ${json_dictionary}    $.data.site.groups[0].ahus[${ahu}].controls[1].status.origin
-                        log to console    !V-------Status value for AHU:${ahu} second control is ${ahu_status_ctrl_value}-----!V
-                        should be equal as strings    ${ahu_status_ctrl_value}    ${expected_status}    AHUS are expected with Status ${expected_status}
-                END
-    END
 
 confirmStatusOfAHUsNotGuard
    [Arguments]    ${total}     ${json_dictionary}
@@ -329,11 +234,11 @@ confirmStatusOfAHUsNotGuard
                 log to console    !!!--No of Controls for ${ahu} is ${no_of_controls}---!!!
                 ${ahu_status_ctrl_value}     fetchValueOfFieldFromJsonDictionary    ${json_dictionary}    $.data.site.groups[0].ahus[${ahu}].controls[0].status.origin
                 log to console    !V-------Status value for AHU:${ahu} first Control is ${ahu_status_ctrl_value}-----!V
-                should not be equal as strings    ${ahu_status_ctrl_value}    "GUARD"    AHUS are expected with GUARD Cleared
+                should not be equal as strings    ${ahu_status_ctrl_value}    GUARD    AHUS are expected with GUARD Cleared
                 IF    "${no_of_controls}"=="2"
                         ${ahu_status_ctrl_value}     fetchValueOfFieldFromJsonDictionary    ${json_dictionary}    $.data.site.groups[0].ahus[${ahu}].controls[1].status.origin
                         log to console    !V-------Status value for AHU:${ahu} second control is ${ahu_status_ctrl_value}-----!V
-                        should not be equal as strings    ${ahu_status_ctrl_value}    "GUARD"    AHUS are expected with GUARD Cleared
+                        should not be equal as strings    ${ahu_status_ctrl_value}    GUARD    AHUS are expected with GUARD Cleared
                 END
     END
     log to console    *********All AHUS are cleared of GUARD*****************
@@ -341,17 +246,18 @@ confirmStatusOfAHUsNotGuard
 getOid
     [Arguments]    ${group_name}
     ${headers}=       create dictionary    Content-Type=${content_type}    Vigilent-Api-Token=${write_api_token}
-    gqlMutation.getOidQuery  ${group_name}
-    ${body}=  create dictionary  query= ${group_oid_query}
+    ${query}=  gqlMutation.getOidQuery  ${group_name}
+    ${body}=  create dictionary  query= ${query}
     create session    AIEngine    ${base_url}     disable_warnings=1
     ${result}=  post on session    AIEngine  /public/graphql  headers=${headers}    json=${body}
     ${var_dict}=    evaluate     json.loads("""${result.content}""")    json
     ${group_oid_str}=    set variable    ${var_dict}[data][site][groups][0][oid]
     ${group_oid}=    convert to integer  ${group_oid_str}
-    set global variable  ${group_oid}
+    return from keyword  ${group_oid}
 
 queryToFetchGroupOid
-    getOid  ${group_name}
+    ${group_oid}=  getOid  ${group_name}
+    return from keyword  ${group_oid}
 
 setTestEntryTemperatureToSensorPoints
     log to console  !!--------Test started and writing test_entry_sensor_temp ${test_entry_sensor_temp} ---------------!!
@@ -378,25 +284,23 @@ setTestExitTemperatureToFirstSensorPoint
     setRackSensorPointsTemperature  ${test_exit_sensor_temp}
     log to console  !!!--------------------Test Teardown done------------------------------!!!
 
-    #Created by Greeshma on 19 Aug 2021
+    #Created by Greeshma on 19 Aug 2021 #remove this after making changes to test2 and test3
 changeGroupPropertiesFloatParameterValue
     [Arguments]    ${property_name}  ${property_value}
     ${headers}=       create dictionary    Content-Type=${content_type}    Vigilent-Api-Token=${write_api_token}
-    gqlMutation.setGroupPropertyFloat    ${property_name}  ${property_value}
-    ${body}=          create dictionary    query= ${setGroupPropertyFloatValueMutation}
-#    log to console    ${body}
+    ${graphql_mutation}=  gqlMutation.setGroupPropertyFloat    ${property_name}  ${property_value}
+    ${body}=          create dictionary    query= ${graphql_mutation}
     create session    AIEngine    ${base_url}     disable_warnings=1
     ${result}=  post on session    AIEngine  /public/graphql  headers=${headers}    json=${body}
-     #log to console  ${result.json()}
     should be equal as strings  ${result.json()}  ${propertyWriteResponse}
     log to console  !!------------------Group ->Propertie ${property_name} updated successfully with ${property_value}----------------!!
 
-    #Created by Greeshma on 19 Aug 2021
+    #Created by Greeshma on 19 Aug 2021 #remove this after making changes to test2 and test3
 changeGroupPropertiesIntParameterValue
     [Arguments]    ${property_name}  ${property_value}
     ${headers}=       create dictionary    Content-Type=${content_type}    Vigilent-Api-Token=${write_api_token}
-    gqlMutation.setGroupPropertyInt    ${property_name}  ${property_value}
-    ${body}=          create dictionary    query= ${setGroupPropertyIntValueMutation}
+    ${graphql_mutation}=  gqlMutation.setGroupPropertyInt    ${property_name}  ${property_value}
+    ${body}=          create dictionary    query= ${graphql_mutation}
      #log to console    ${body}
     create session    AIEngine    ${base_url}     disable_warnings=1
     ${result}=  post on session    AIEngine  /public/graphql  headers=${headers}    json=${body}
@@ -408,9 +312,8 @@ changeGroupPropertiesIntParameterValue
 queryToFetchJsonResponseForSpecificAlarmType
     [Arguments]    ${alarm_type}
     ${headers}=       create dictionary    Content-Type=${content_type}   Vigilent-Api-Token=${query_api_token}
-    gqlMutation.getAlarmStatusQuery    ${group_name}    ${alarm_type}
-#    log to console    ${getAlarmStatusOfGroupQuery}
-    ${body}=          create dictionary    query= ${getAlarmStatusOfGroupQuery}
+    ${query}=  gqlMutation.getAlarmStatusQuery    ${group_name}    ${alarm_type}
+    ${body}=          create dictionary    query= ${query}
     create session    AIEngine    ${base_url}     disable_warnings=1
     ${result}=  post on session    AIEngine  /public/graphql  headers=${headers}    json=${body}
     ${json_dictionary}=     set variable    ${result.json()}
@@ -449,13 +352,31 @@ setTemperatureForAllExceptDeadSensor    #Contain both query and mutation, 25% of
     log to console    ******************************Temperature set for all, except ${stale_sensor_count} rack/racks*********************************
 
     #Copied from deadSensorGuardResources to apiresources on 20 Aug 2021 by Greeshma
+    #Modified on 31 August 2021 by Greeshma to replace checkGroupControlStatusValueNotInGuard and checkGroupControlStausValueInGuard keywords
 checkingGuardModeOfGroup
     [Arguments]    ${expected_guard_status}
+    ${current_ctrl_status_value}=    queryToFetchControlStatusValueOfGroup
+       log to console    *********Validating the Group Ctrl Status is ${expected_guard_status}***********
      IF    '${expected_guard_status}'=='GUARD_ON'    #Checking Group is in guard
-        apiresources.checkGroupControlStausValueInGuard
+        should be equal as integers    ${current_ctrl_status_value}    2    System should be in guard(2)
+        log to console    =============Validated Successfully->Group is in Guard -${current_ctrl_status_value}==================
      ELSE                                            #Checking Group is in guard
-        apiresources.checkGroupControlStatusValueNotInGuard
+        should not be equal as integers    ${current_ctrl_status_value}    2    System should not be in guard(2)
+        log to console    ==============--Validated Successfully->Status value is ${current_ctrl_status_value}-Not in Guard===================
      END
+
+    #remove below keyword after modifying test2 and test3 -chk with Anania
+checkGroupControlStatusValueNotInGuard
+    ${current_ctrl_status_value}=    queryToFetchControlStatusValueOfGroup
+    log to console    *********Validating the Ctrl Status is not Guard(expect any other value than 2)******
+    should not be equal as integers    ${current_ctrl_status_value}    2    System should not be in guard(2)
+    log to console    ==============Status value is ${current_ctrl_status_value}-Not in Guard--Validated Successfully===================
+
+    #remove below keyword after modifying test2 and test3 -chk with Anania
+checkGroupControlStausValueInGuard
+    ${current_ctrl_status_value}=    queryToFetchControlStatusValueOfGroup
+    should be equal as integers    ${current_ctrl_status_value}    2    System should be in guard(2)
+    log to console    =============Validated and the Group is in Guard -${current_ctrl_status_value}==================
 
     #Created by Greeshma on 20 Aug 2021
 setHighAndLowSetPointValues
@@ -575,8 +496,8 @@ changeGroupPropertiesParameterValue
     #Created by Greeshma on 30 August 2021
 setCoolingTemperatureForAllSensorPoints
     [Arguments]    ${temp}
-    common.setFlagValue    ${current_temp_to_all_flag}
     apiresources.setRackSensorPointsTemperature  ${temp}
+    common.setFlagValue    ${current_temp_to_all_flag}
 
 
     #Created by Greeshma on 30 August 2021
@@ -585,13 +506,13 @@ stopUpdatingTemperatureToLastRack
     common.setFlagValue    ${exclude_dead_rack_flag}
     apiresources.setTemperatureForAllExceptDeadSensor    ${temp}
 
-    #Created by Abhijit on 26 Aug 2021
-changeGroupPropertiesIntValue
-    [Arguments]    ${property_name}  ${property_value}
-    ${headers}=       create dictionary    Content-Type=${content_type}    Vigilent-Api-Token=${write_api_token}
-    gqlMutation.setGroupPropertyInt    ${property_name}  ${property_value}
-    ${body}=          create dictionary    query= ${setGroupPropertyIntValueMutation}
+    #Created by Greeshma on 31 August 2021
+queryToFetchControlStatusValueOfGroup
+    ${headers}=       create dictionary    Content-Type=${content_type}    Vigilent-Api-Token=${query_api_token}
+    ${query}=  gqlMutation.getCtrlStateValueQuery  ${group_name}
+    ${body}=          create dictionary    query= ${query}
     create session    AIEngine    ${base_url}     disable_warnings=1
     ${result}=  post on session    AIEngine  /public/graphql  headers=${headers}    json=${body}
-    should be equal as strings  ${result.json()}  ${propertyWriteResponse}
-    log to console  !!------------------Group ->Propertie ${property_name} updated successfully with ${property_value}----------------!!
+    @{ctrl_state_value}    get value from json    ${result.json()}    ${trends_groupStatus_controlStatus_value_path}
+    ${value}    get from list    ${ctrl_state_value}    0
+    return from keyword    ${value}
