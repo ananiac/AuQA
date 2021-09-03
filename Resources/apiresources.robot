@@ -365,14 +365,14 @@ checkingGuardModeOfGroup
         log to console    ==============--Validated Successfully->Status value is ${current_ctrl_status_value}-Not in Guard===================
      END
 
-    #remove below keyword after modifying test2 and test3 -chk with Anania
+    #remove below keyword after modifying test2 and test3
 checkGroupControlStatusValueNotInGuard
     ${current_ctrl_status_value}=    queryToFetchControlStatusValueOfGroup
     log to console    *********Validating the Ctrl Status is not Guard(expect any other value than 2)******
     should not be equal as integers    ${current_ctrl_status_value}    2    System should not be in guard(2)
     log to console    ==============Status value is ${current_ctrl_status_value}-Not in Guard--Validated Successfully===================
 
-    #remove below keyword after modifying test2 and test3 -chk with Anania
+    #remove below keyword after modifying test2 and test3
 checkGroupControlStausValueInGuard
     ${current_ctrl_status_value}=    queryToFetchControlStatusValueOfGroup
     should be equal as integers    ${current_ctrl_status_value}    2    System should be in guard(2)
@@ -516,3 +516,14 @@ queryToFetchControlStatusValueOfGroup
     @{ctrl_state_value}    get value from json    ${result.json()}    ${trends_groupStatus_controlStatus_value_path}
     ${value}    get from list    ${ctrl_state_value}    0
     return from keyword    ${value}
+
+    #Created by Abhijit on 26 Aug 2021
+changeGroupPropertiesIntValue
+    [Arguments]    ${property_name}  ${property_value}
+    ${headers}=       create dictionary    Content-Type=${content_type}    Vigilent-Api-Token=${write_api_token}
+    gqlMutation.setGroupPropertyInt    ${property_name}  ${property_value}
+    ${body}=          create dictionary    query= ${setGroupPropertyIntValueMutation}
+    create session    AIEngine    ${base_url}     disable_warnings=1
+    ${result}=  post on session    AIEngine  /public/graphql  headers=${headers}    json=${body}
+    should be equal as strings  ${result.json()}  ${propertyWriteResponse}
+    log to console  !!------------------Group ->Propertie ${property_name} updated successfully with ${property_value}----------------!!

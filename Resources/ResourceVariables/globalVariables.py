@@ -14,7 +14,3 @@ test_entry_flag=1
 current_temp_to_all_flag=2
 two_sets_of_temp_flag=3
 exclude_dead_rack_flag=4
-guard_on="GUARD_ON"  #Guard mode value is 2
-guard_off="GUARD_OFF"
-alarm_on="ALARM_ON"
-alarm_off="ALARM_OFF"

@@ -9,7 +9,7 @@ Resource    ${EXECDIR}/Resources/apiresources.robot
 *** Keywords ***
 setGrpPropMutation
     [Arguments]    ${allow_num_excd_ctrl}    ${allow_num_excd_guard}    ${alm_hot_abs_temp}    ${guard_hot_abs_temp}
-    ${group_oid}=  queryToFetchGroupOid
+    ${group_oid}=  apiresources.queryToFetchGroupOid
     ${mutation}=  set variable  mutation setGrpProp { propertyWrite(requests: [{oid: ${group_oid}, name: "AllowNumExceedencesGuard", int: ${allow_num_excd_guard}},{oid: ${group_oid}, name: "AllowNumExceedencesControl", int: ${allow_num_excd_ctrl}},{oid: ${group_oid}, name: "GuardHotAbsTemp", float: ${guard_hot_abs_temp}},{oid: ${group_oid}, name: "AlmHotAbsTemp", float: ${alm_hot_abs_temp}}]) { index reason }}
     return from keyword    ${mutation}
 
