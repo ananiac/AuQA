@@ -216,22 +216,14 @@ fetchNumberOfAHUsWithGuardON
     END
     return from keyword    ${counter}
 
-confirmStatusOfAHUs
-    [Arguments]    ${total}     ${json_dictionary}    ${expected_status}
-    log to console    !---Intial counter value is ${counter}---!
-    FOR    ${ahu}   IN RANGE    0    ${total}
-                log to console    !!---Checking ahu at position ${ahu}---!!s
-                ${no_of_controls}=    fetchTheNumberOfItemsInDictionary    ${json_dictionary}    $.data.site.groups[0].ahus[${ahu}].controls
-                log to console    !!!--No of Controls for ${ahu} is ${no_of_controls}---!!!
-                ${ahu_status_ctrl_value}     fetchValueOfFieldFromJsonDictionary    ${json_dictionary}    $.data.site.groups[0].ahus[${ahu}].controls[0].status.origin
-                log to console    !V-------Status value for AHU:${ahu} first Control is ${ahu_status_ctrl_value}-----!V
-                should be equal as strings    ${ahu_status_ctrl_value}    ${expected_status}    AHUS are expected with Status ${expected_status}
-                IF    "${no_of_controls}"=="2"
-                        ${ahu_status_ctrl_value}     fetchValueOfFieldFromJsonDictionary    ${json_dictionary}    $.data.site.groups[0].ahus[${ahu}].controls[1].status.origin
-                        log to console    !V-------Status value for AHU:${ahu} second control is ${ahu_status_ctrl_value}-----!V
-                        should be equal as strings    ${ahu_status_ctrl_value}    ${expected_status}    AHUS are expected with Status ${expected_status}
-                END
-    END
+waitForTwoMinutes           #remove
+    log to console    Waiting for Two minutes
+    #sleep    ${low_speed}
+    sleep    2 minutes
+    log to console    **************two minutes waiting done***************
+
+waitForOneMinute                #remove
+    common.waitForMinutes    1
 
 confirmStatusOfAHUsNotGuard
    [Arguments]    ${total}     ${json_dictionary}
