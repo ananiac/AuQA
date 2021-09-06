@@ -1,7 +1,0 @@
-
-mutation pointWrite {
-  pointWrite(requests: [{oid: 26279, value: 66.6}]) {
-    index
-    reason
-  }
-}
