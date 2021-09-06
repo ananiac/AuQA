@@ -4,7 +4,6 @@ Variables    ${EXECDIR}/PageObjects/loginPage.py
 Variables    ${EXECDIR}/Configurations/${environment}.py
 Variables    ${EXECDIR}/Resources/ResourceVariables/globalVariables.py
 Variables    ${EXECDIR}/PageObjects/siteEditorHomePage.py
-Variables    ${EXECDIR}/Inputs/basicHotAbsoluteGuardInputs.py
 Variables   ${EXECDIR}/PageObjects/toolsConfigsPage.py
 Resource    apiresources.robot
 
