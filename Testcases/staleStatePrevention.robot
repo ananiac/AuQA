@@ -30,7 +30,7 @@ writeTemperatureToSensors
         log to console    Test started.Waiting for temperature changes
     ELSE IF    '${flg}'=='${current_temp_to_all_flag}'      #Writing current temperature to all sensor points
         log to console    Inside Flag Block 2
-        apiresources.setRackSensorPointsTemperature    ${current_temperature}
+        apiresources.setTemperatureForAllRackSensorPoints    ${current_temperature}
         writingCycleCalculation
     ELSE IF    '${flg}'=='${two_sets_of_temp_flag}'                 #Writing two sets of temperature.First two sensor points with current temperature and remaining with cooling temperature
         log to console    Inside Flag Block 3

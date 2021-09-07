@@ -67,6 +67,6 @@ BasicHotAbsoluteGuardTest
     #20)Stop facs_dash (Cooling Control)
     connection.establishConnectionAndStopCoolingControlProcess
     #21)End Test
-    [Teardown]    apiresources.setTestExitTemperatureToFirstSensorPoint
+    [Teardown]    apiresources.setTestExitTemperatureToAllSensorPoints
 
 
