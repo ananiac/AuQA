@@ -456,16 +456,6 @@ queryToFetchControlStatusValueOfGroup
     return from keyword    ${value}
 
     #Created by Greeshma and moved to apiresources on 7th Sep 2021
-setControlDeadSensorThresholdOfGroupProperties
-    [Arguments]    ${property_value}
-    apiresources.changeGroupPropertiesParameterValue    ControlDeadSensorThreshold  float  ${property_value}
-
-    #Created by Greeshma and moved to apiresources on 7th Sep 2021
-setAlarmDeadSensorHysteresisOfGroupProperties
-    [Arguments]    ${property_value}
-    apiresources.changeGroupPropertiesParameterValue    AlarmDeadSensorHysteresis  float    ${property_value}
-
-    #Created by Greeshma and moved to apiresources on 7th Sep 2021
-setAlarmDeadSensorThresholdOfGroupProperties
-    [Arguments]    ${property_value}
-    apiresources.changeGroupPropertiesParameterValue    AlarmDeadSensorThreshold  float    ${property_value}
+setGroupPropertyFloatValue
+    [Arguments]    ${property_name}    ${property_value}
+    apiresources.changeGroupPropertiesParameterValue    ${property_name}  float  ${property_value}

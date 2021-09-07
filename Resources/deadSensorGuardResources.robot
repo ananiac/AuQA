@@ -40,7 +40,7 @@ checkGuardAndGroupDeadSensorAlarmStatusForPerecntDeadSensorThreshold
 
 checkGuardAndGroupDeadSensorAlarmStatusForControlDeadSensorThreshold
     [Arguments]    ${control_dead_sensor_threshold_value}    ${expected_guard_status_value}    ${expected_alarm_status_value}
-    apiresources.setControlDeadSensorThresholdOfGroupProperties  ${control_dead_sensor_threshold_value}    #write
+    apiresources.setGroupPropertyFloatValue    ControlDeadSensorThreshold  ${control_dead_sensor_threshold_value}    #write
     common.waitForMinutes   1
     apiresources.checkingGuardModeOfGroup    ${expected_guard_status_value}                         #query
     apiresources.checkingAlarmStatusForGroup  GroupDeadSensor  ${expected_alarm_status_value}                  #query
@@ -54,7 +54,7 @@ checkGuardAndGroupDeadSensorAlarmStatusForGrpDeadSensorThreshold
 
 checkGuardAndGroupDeadSensorAlarmStatusForAlarmDeadSensorThreshold
     [Arguments]    ${alarm_dead_sensor_threshold_value}    ${expected_guard_status_value}    ${expected_alarm_status_value}
-    apiresources.setAlarmDeadSensorThresholdOfGroupProperties  ${alarm_dead_sensor_threshold_value}    #write
+    apiresources.setGroupPropertyFloatValue  AlarmDeadSensorThreshold    ${alarm_dead_sensor_threshold_value}    #write
     common.waitForMinutes   1
     apiresources.checkingGuardModeOfGroup    ${expected_guard_status_value}                         #query
     apiresources.checkingAlarmStatusForGroup  GroupDeadSensor  ${expected_alarm_status_value}                  #query

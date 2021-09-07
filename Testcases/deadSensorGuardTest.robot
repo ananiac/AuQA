@@ -76,7 +76,7 @@ Test3_CxConfigALARM_GrpDeadSensorThreshold
     #a)Set config DASHM::PercentDeadSensorThreshold=100%
     apiresources.setPercentDeadSensorThresholdInDASHMConfig    100
     #b)Set group property ControlDeadSensorThreshold=100%
-    apiresources.setControlDeadSensorThresholdOfGroupProperties    100
+    apiresources.setGroupPropertyFloatValue    ControlDeadSensorThreshold    100
     #c)Set config ALARM::GrpDeadSensorThreshold=20% … wait one minute - no guard and GroupDeadSensor alarm is raised
     deadSensorGuardResources.checkGuardAndGroupDeadSensorAlarmStatusForGrpDeadSensorThreshold    20    ${guard_off}    ${group_dead_sensor_alarm_on}
     #d)Set config ALARM::GrpDeadSensorThreshold=37.4% … wait one minute -  no guard but GroupDeadSensor alarm is still raised
@@ -112,7 +112,7 @@ Test5_AlarmDeadSensorThreshold
    #15)Test 6 … testing group property AlarmDeadSensorHysteresis (0% means ignore)
 Test6_AlarmDeadSensorHysteresis
     #a)Set group property AlarmDeadSensorHysteresis=20%
-    apiresources.setAlarmDeadSensorHysteresisOfGroupProperties    20
+    apiresources.setGroupPropertyFloatValue  AlarmDeadSensorHysteresis    20
     #b)Set config ALARM::GrpDeadSensorHysteresis=25%
     apiresources.setConfigAlarmGroupDeadSensorHysteresis    25
     #c)Set  group property AlarmDeadSensorThreshold=24% … wait one minute -  no guard and the GroupDeadSensor alarm is raised
@@ -128,7 +128,7 @@ Test6_AlarmDeadSensorHysteresis
     #h)Set group property AlarmDeadSensorThreshold=45% … the group is not in guard and now the GroupDeadSensor alarm clears
     deadSensorGuardResources.checkGuardAndGroupDeadSensorAlarmStatusForAlarmDeadSensorThreshold    45    ${guard_off}    ${group_dead_sensor_alarm_off}
     #i)Set group property AlarmDeadSensorHysteresis=0%
-    apiresources.setAlarmDeadSensorHysteresisOfGroupProperties    0
+    apiresources.setGroupPropertyFloatValue  AlarmDeadSensorHysteresis    0
     #j)Set  group property AlarmDeadSensorThreshold=24% … wait one minute -  no guard and the GroupDeadSensor alarm is raised
     deadSensorGuardResources.checkGuardAndGroupDeadSensorAlarmStatusForAlarmDeadSensorThreshold    24    ${guard_off}    ${group_dead_sensor_alarm_on}
     #k)Set group property AlarmDeadSensorThreshold=37.5% … wait one minute -  no guard but GroupDeadSensor alarm clears
