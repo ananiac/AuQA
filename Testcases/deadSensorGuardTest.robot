@@ -29,7 +29,7 @@ DeadSensorGuardTestSetupSteps
     #1)Start system 10.252.9.91 … this has the FTB database on it with the SADC group
     #Only vx_server, facs_launcher, facs_trends, and facs_sift should be running    (facs_dash also)
     connection.establishConnectionAndStartProcessesVx_serverFacs_launcherFacs_siftFacs_dashAndFacs_trends
-    #2)Ensure (manually) that the following group properties are Null for SADC :-     #Abhijit code to be merged here
+    #2)Ensure (manually) that the following group properties are Null for SADC
            ##ControlDeadSensorThreshold
            ##AlarmDeadSensorHysteresis
            #AlarmDeadSensorThreshold
@@ -45,10 +45,10 @@ DeadSensorGuardTestSetupSteps
     apiresources.setCoolingTemperatureForAllSensorPoints    ${dead_sensor_test_temp}
     #8)Wait 2 minutes then stop updating the temperatures of one rack (ie 2 temp points)
     #Currently managed within staleState Prevention-Now implemented with Flag value
-    common.waitForTwoMinutes
+    common.waitForMinutes   2
     apiresources.stopUpdatingTemperatureToLastRack    ${dead_sensor_test_temp}
     #9)Wait 2 minutes for the 2 points to go stale
-    common.waitForTwoMinutes
+    common.waitForMinutes   2
     #10)Test1_PercentDeadSensorThreshold_SingleSensorHysteresis
 Test1_PercentDeadSensorThreshold_SingleSensorHysteresis
     #a)Set DASHM::PercentDeadSensorThreshold=24.9% … wait one minute - the group enters guard and the GroupDeadSensor alarm is raised

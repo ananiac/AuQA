@@ -7,8 +7,11 @@ Variables    ${EXECDIR}/PageObjects/siteEditorHomePage.py
 Variables   ${EXECDIR}/PageObjects/toolsConfigsPage.py
 Resource    apiresources.robot
 
+
 *** Variables ***
 ${url_cx}    ${url_cx}
+
+
 *** Keywords ***
 startBrowserAndAccessAIEngineCXWebUI
         #[Arguments]    ${url}    ${browser}    ${expectedTitle}
@@ -107,9 +110,9 @@ setGroupPropertyToEmpty
     IF  ${IsElementVisible}
         press keys  ${group_property}  CTRL+a+BACKSPACE+DELETE+ENTER
         ${property_empty_value}=  get text  ${group_property}
-        log to console  ${property} property value is set to ${property_empty_value}
+        log to console  ${property} property value is set to ${property_empty_value}EMPTY
         sleep  ${high_speed}
     ELSE
-        log to console  ${property} property is not visible         #test fails for hot guard and deadsensor guard
+        log to console  ${property} property is not visible
     END
     set selenium timeout    ${high_speed}

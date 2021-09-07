@@ -318,7 +318,6 @@ setTemperatureForAllExceptDeadSensor    #Contain both query and mutation, 25% of
     log to console    ******************************Temperature set for all, except ${stale_sensor_count} rack/racks*********************************
 
     #Copied from deadSensorGuardResources to apiresources on 20 Aug 2021 by Greeshma
-    #Modified on 31 August 2021 by Greeshma to replace checkGroupControlStatusValueNotInGuard and checkGroupControlStausValueInGuard keywords
 checkingGuardModeOfGroup
     [Arguments]    ${expected_guard_status}
     ${current_ctrl_status_value}=    queryToFetchControlStatusValueOfGroup

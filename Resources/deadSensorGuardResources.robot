@@ -1,6 +1,6 @@
 *** Settings ***
 Documentation          This resource file provides the keyword definition specific to Dead Sensor Guard testsuite
-...                    Created by Greeshma on 28th July 2021
+#...                    Created by Greeshma on 28th July 2021
 Library    RequestsLibrary
 Library    JSONLibrary
 Library    Collections
@@ -34,14 +34,14 @@ setIntialCxConfigParameters
 checkGuardAndGroupDeadSensorAlarmStatusForPerecntDeadSensorThreshold
     [Arguments]    ${perecentage_dead_sensor_threshold_value}    ${expected_guard_status_value}    ${expected_alarm_status_value}
     apiresources.setPercentDeadSensorThresholdInDASHMConfig    ${perecentage_dead_sensor_threshold_value}    #write
-    common.waitForOneMinute
+    common.waitForMinutes   1
     apiresources.checkingGuardModeOfGroup    ${expected_guard_status_value}                         #query
     apiresources.checkingAlarmStatusForGroup  GroupDeadSensor  ${expected_alarm_status_value}                  #query
 
 checkGuardAndGroupDeadSensorAlarmStatusForControlDeadSensorThreshold
     [Arguments]    ${control_dead_sensor_threshold_value}    ${expected_guard_status_value}    ${expected_alarm_status_value}
     apiresources.setControlDeadSensorThresholdOfGroupProperties  ${control_dead_sensor_threshold_value}    #write
-    common.waitForOneMinute
+    common.waitForMinutes   1
     apiresources.checkingGuardModeOfGroup    ${expected_guard_status_value}                         #query
     apiresources.checkingAlarmStatusForGroup  GroupDeadSensor  ${expected_alarm_status_value}                  #query
 
@@ -55,7 +55,7 @@ checkGuardAndGroupDeadSensorAlarmStatusForGrpDeadSensorThreshold
 checkGuardAndGroupDeadSensorAlarmStatusForAlarmDeadSensorThreshold
     [Arguments]    ${alarm_dead_sensor_threshold_value}    ${expected_guard_status_value}    ${expected_alarm_status_value}
     apiresources.setAlarmDeadSensorThresholdOfGroupProperties  ${alarm_dead_sensor_threshold_value}    #write
-    common.waitForOneMinute
+    common.waitForMinutes   1
     apiresources.checkingGuardModeOfGroup    ${expected_guard_status_value}                         #query
     apiresources.checkingAlarmStatusForGroup  GroupDeadSensor  ${expected_alarm_status_value}                  #query
 
@@ -73,6 +73,6 @@ setDeadSensorGuardGroupPropertiesToEmpty
     close browser
 
 setGroupPropertiesForDeadSensorToZero
-    apiresources.setControlDeadSensorThresholdOfGroupProperties    ${control_dead_densor_threshold_cleanup_value}
-    apiresources.setAlarmDeadSensorHysteresisOfGroupProperties    ${alarm_dead_sensor_hysteresis_cleanup_value}
-    apiresources.setAlarmDeadSensorThresholdOfGroupProperties   ${alarm_dead_sensor_threshold_cleanup_value}
+    apiresources.changeGroupPropertiesParameterValue    ControlDeadSensorThreshold    float    ${control_dead_sensor_threshold_cleanup_value}
+    apiresources.changeGroupPropertiesParameterValue    AlarmDeadSensorHysteresis    float    ${alarm_dead_sensor_hysteresis_cleanup_value}
+    apiresources.changeGroupPropertiesParameterValue    AlarmDeadSensorThreshold    float    ${alarm_dead_sensor_threshold_cleanup_value}

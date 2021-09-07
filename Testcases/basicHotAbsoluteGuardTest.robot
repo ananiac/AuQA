@@ -37,14 +37,14 @@ BasicHotAbsoluteGuardTest
     #7)Start facs_dash process (ie Cooling Control)
     connection.establishConnectionAndStartCoolingControlProcess
     #8)Wait 2 minutes
-    common.waitForTwoMinutes
+    common.waitForMinutes   2
     #9)Confirm the group  is not in guard[Validation for GroupStatus Control value not to be 2 (Guard=2)]
     apiresources.checkingGuardModeOfGroup    ${guard_switch}[guard_off]
     #10)Set any two temp sensors (call them A & B ) to hot eg to 100 F …
     #pick whichever 2 you want … they should be updated (as hot eg 100 F) every minute a_oid=12010 b_oid=12018
     apiresources.setTemperatureForSensorsAandB   ${basicHotAbsoluteGuardInputs}[sensor_point_hot_temp]
     #11)Wait 2 minutes
-    common.waitForTwoMinutes
+    common.waitForMinutes   2
     #12)Confirm the group  is in guard now Validation for Group Status Control value is in guard(value should be 2)
     apiresources.checkingGuardModeOfGroup    ${guard_switch}[guard_on]
     #13)Confirm that one AHU goes into guard every 3 minutes
@@ -53,7 +53,7 @@ BasicHotAbsoluteGuardTest
     #15)Continue updating all the temp sensors to 65 F every minute (including temp sensors A & B)
     apiresources.setCoolingTemperatureForAllSensorPoints    ${basicHotAbsoluteGuardInputs}[sensor_point_cooling_temp]
     #16)wait 2 minutes
-    common.waitForTwoMinutes
+    common.waitForMinutes   2
     #17)Confirm the group  exits guard
     apiresources.checkingGuardModeOfGroup    ${guard_switch}[guard_off]
     #18)Reset Group configs AllowNumExceedencesGuard = 1 AllowNumExceedencesControl = 0
