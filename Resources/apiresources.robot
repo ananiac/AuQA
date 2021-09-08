@@ -357,7 +357,7 @@ setAllHighAndLowSetPointLimits
     END
     log to console    ******************************SetPoint Limits are set for all Racks *********************************
 
-    #Created by Greeshma on 20 Aug 2021.Modifued on 6th Sep 2021
+    #Created by Greeshma on 20 Aug 2021.Modified on 6th Sep 2021
 checkingAlarmStatusForGroup
     [Arguments]    ${alarm_name}    ${exepected_alarm_status}
     log to console    !--------Checking for the ${alarm_name} Alarm status to be:${exepected_alarm_status}-------!
