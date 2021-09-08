@@ -1,7 +1,7 @@
 #Dead Sensor guard test specific
 ds_num_guard_units_value=1
 ds_num_minutes_guard_timer_value=2
-ds_percent_deadsensor_threshold_default_value=30
+ds_percent_dead_sensor_threshold_default_value=30
 ds_num_minutes_past_value=2
 dead_sensor_test_temp=66
 alarm_dead_sensor_hysteresis_cleanup_value=0

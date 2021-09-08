@@ -38,7 +38,7 @@ DeadSensorGuardTestSetupSteps
     uiresources.resetSystemPropertiesUsingLoadTemplateOptionWithOverwrite
     #4)Set SYSTEM::NumMinutesPast=2
     #5)Set DASHM::PercentDeadSensorThreshold = 30%, NumMinutesGuardTimer=2, NumGuardUnits=1
-    deadSensorGuardResources.setIntialCxConfigParameters  ${ds_num_minutes_past_value}    ${ds_percent_deadsensor_threshold_default_value}   ${ds_num_minutes_guard_timer_value}    ${ds_num_guard_units_value}
+    deadSensorGuardResources.setIntialCxConfigParameters  ${ds_num_minutes_past_value}    ${ds_percent_dead_sensor_threshold_default_value}   ${ds_num_minutes_guard_timer_value}    ${ds_num_guard_units_value}
     #6)Set ALARM::GrpDeadSensorHysteresis=10%
     apiresources.setConfigAlarmGroupDeadSensorHysteresis    ${grp_dead_sensor_hysteresis_value_default_value}
     #7)In the SADC group, write out all rack temperature sensor points every minute at say 66 F
