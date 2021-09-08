@@ -81,9 +81,9 @@ Test3_configGuardHysteresisBand
     #33.End Test
     #34.Clean up
 CleanUp
-    [Teardown]   apiresources.setTestExitTemperatureToFirstSensorPoint
-    #Load default config template
+    [Teardown]   apiresources.setTestExitTemperatureToAllSensorPoints
     #group properties to null-allow_num_exceedences of group
+    #Load default config template
     #set point default values.
     hotGuardTestResources.setHotGuardGroupPropertiesToEmpty
     uiresources.resetSystemPropertiesUsingLoadTemplateOptionWithOverwrite

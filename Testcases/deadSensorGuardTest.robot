@@ -14,6 +14,9 @@ Library    JSONLibrary
 Library    Collections
 Resource    ${EXECDIR}/Resources/deadSensorGuardResources.robot
 Resource    ${EXECDIR}/Resources/apiresources.robot
+Resource    ${EXECDIR}/Resources/uiresources.robot
+Resource    ${EXECDIR}/Resources/common.robot
+Resource    ${EXECDIR}/Resources/connection.robot
 Variables   ${EXECDIR}/Inputs/deadSensorGuardInputs.py
 
 
@@ -25,27 +28,27 @@ DeadSensorGuardTestSetupSteps
     [Setup]    deadSensorGuardResources.deadSensorGuardTestSetup
     #1)Start system 10.252.9.91 … this has the FTB database on it with the SADC group
     #Only vx_server, facs_launcher, facs_trends, and facs_sift should be running    (facs_dash also)
-    deadSensorGuardResources.startVx_serverFacs_launcherFacs_siftFacs_dashAndFacs_trend
-    #2)Ensure (manually) that the following group properties are Null for SADC :-     #Abhijit code to be merged here
+    connection.establishConnectionAndStartProcessesVx_serverFacs_launcherFacs_siftFacs_dashAndFacs_trends
+    #2)Ensure (manually) that the following group properties are Null for SADC
            ##ControlDeadSensorThreshold
            ##AlarmDeadSensorHysteresis
            #AlarmDeadSensorThreshold
     deadSensorGuardResources.setDeadSensorGuardGroupPropertiesToEmpty
     #3)Load the DASHAM_MIX template in the CX configs (with overwrite) (UI)
-    deadSensorGuardResources.reloadDefaultDASHMTemplateFromUI
+    uiresources.resetSystemPropertiesUsingLoadTemplateOptionWithOverwrite
     #4)Set SYSTEM::NumMinutesPast=2
     #5)Set DASHM::PercentDeadSensorThreshold = 30%, NumMinutesGuardTimer=2, NumGuardUnits=1
-    deadSensorGuardResources.setIntialCxConfigParameters  ${ds_num_minutes_past_value}    ${ds_percent_deadsensor_threshold_default_value}   ${ds_num_minutes_guard_timer_value}    ${ds_num_guard_units_value}
+    deadSensorGuardResources.setIntialCxConfigParameters  ${ds_num_minutes_past_value}    ${ds_percent_dead_sensor_threshold_default_value}   ${ds_num_minutes_guard_timer_value}    ${ds_num_guard_units_value}
     #6)Set ALARM::GrpDeadSensorHysteresis=10%
     apiresources.setConfigAlarmGroupDeadSensorHysteresis    ${grp_dead_sensor_hysteresis_value_default_value}
     #7)In the SADC group, write out all rack temperature sensor points every minute at say 66 F
     apiresources.setCoolingTemperatureForAllSensorPoints    ${dead_sensor_test_temp}
     #8)Wait 2 minutes then stop updating the temperatures of one rack (ie 2 temp points)
     #Currently managed within staleState Prevention-Now implemented with Flag value
-    apiresources.waitForTwoMinutes
+    common.waitForMinutes   2
     apiresources.stopUpdatingTemperatureToLastRack    ${dead_sensor_test_temp}
     #9)Wait 2 minutes for the 2 points to go stale
-    apiresources.waitForTwoMinutes
+    common.waitForMinutes   2
     #10)Test1_PercentDeadSensorThreshold_SingleSensorHysteresis
 Test1_PercentDeadSensorThreshold_SingleSensorHysteresis
     #a)Set DASHM::PercentDeadSensorThreshold=24.9% … wait one minute - the group enters guard and the GroupDeadSensor alarm is raised
@@ -73,7 +76,7 @@ Test3_CxConfigALARM_GrpDeadSensorThreshold
     #a)Set config DASHM::PercentDeadSensorThreshold=100%
     apiresources.setPercentDeadSensorThresholdInDASHMConfig    100
     #b)Set group property ControlDeadSensorThreshold=100%
-    deadSensorGuardResources.setControlDeadSensorThresholdOfGroupProperties    100
+    apiresources.setGroupPropertyFloatValue    ControlDeadSensorThreshold    100
     #c)Set config ALARM::GrpDeadSensorThreshold=20% … wait one minute - no guard and GroupDeadSensor alarm is raised
     deadSensorGuardResources.checkGuardAndGroupDeadSensorAlarmStatusForGrpDeadSensorThreshold    20    ${guard_off}    ${group_dead_sensor_alarm_on}
     #d)Set config ALARM::GrpDeadSensorThreshold=37.4% … wait one minute -  no guard but GroupDeadSensor alarm is still raised
@@ -109,7 +112,7 @@ Test5_AlarmDeadSensorThreshold
    #15)Test 6 … testing group property AlarmDeadSensorHysteresis (0% means ignore)
 Test6_AlarmDeadSensorHysteresis
     #a)Set group property AlarmDeadSensorHysteresis=20%
-    deadSensorGuardResources.setAlarmDeadSensorHysteresisOfGroupProperties    20
+    apiresources.setGroupPropertyFloatValue  AlarmDeadSensorHysteresis    20
     #b)Set config ALARM::GrpDeadSensorHysteresis=25%
     apiresources.setConfigAlarmGroupDeadSensorHysteresis    25
     #c)Set  group property AlarmDeadSensorThreshold=24% … wait one minute -  no guard and the GroupDeadSensor alarm is raised
@@ -125,7 +128,7 @@ Test6_AlarmDeadSensorHysteresis
     #h)Set group property AlarmDeadSensorThreshold=45% … the group is not in guard and now the GroupDeadSensor alarm clears
     deadSensorGuardResources.checkGuardAndGroupDeadSensorAlarmStatusForAlarmDeadSensorThreshold    45    ${guard_off}    ${group_dead_sensor_alarm_off}
     #i)Set group property AlarmDeadSensorHysteresis=0%
-    deadSensorGuardResources.setAlarmDeadSensorHysteresisOfGroupProperties    0
+    apiresources.setGroupPropertyFloatValue  AlarmDeadSensorHysteresis    0
     #j)Set  group property AlarmDeadSensorThreshold=24% … wait one minute -  no guard and the GroupDeadSensor alarm is raised
     deadSensorGuardResources.checkGuardAndGroupDeadSensorAlarmStatusForAlarmDeadSensorThreshold    24    ${guard_off}    ${group_dead_sensor_alarm_on}
     #k)Set group property AlarmDeadSensorThreshold=37.5% … wait one minute -  no guard but GroupDeadSensor alarm clears
@@ -133,9 +136,9 @@ Test6_AlarmDeadSensorHysteresis
     #16)End Test
     #17)Cleanup
 Cleanup
-    [Teardown]   apiresources.setTestExitTemperatureToFirstSensorPoint
+    [Teardown]   apiresources.setTestExitTemperatureToAllSensorPoints
     #a)In the CX UI, open the Configs and load the DASHAM template (with overwrite) and hit Save button then close    #confirm this steps
-    deadSensorGuardResources.reloadDefaultDASHMTemplateFromUI
+    uiresources.resetSystemPropertiesUsingLoadTemplateOptionWithOverwrite
     #b)Set group property ControlDeadSensorThreshold=0
     #c)Set group property AlarmDeadSensorHysteresis=0
     #d)Set group property AlarmDeadSensorThreshold=0

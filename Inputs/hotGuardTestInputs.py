@@ -20,8 +20,6 @@ guard_on="GUARD_ON"  #Guard mode value is 2
 guard_off="GUARD_OFF"
 group_hot_alarm_on="ALARM_ON"
 group_hot_alarm_off="ALARM_OFF"
-
-
-allow_num_exceedences_guard_value=0
-guard_hot_abs_temp_value=0
-alm_hot_abs_temp_value=0
+allow_num_exceedences_guard_cleanup_value=0
+guard_hot_abs_temp_cleanup_value=0
+alm_hot_abs_temp_cleanup_value=0

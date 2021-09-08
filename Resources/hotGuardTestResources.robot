@@ -1,6 +1,6 @@
 *** Settings ***
 Documentation          This resource file provides the keyword definition specific to Guard 3-Hot Guard testsuite
-...                    Created by Greeshma on 20th August 2021
+#...                    Created by Greeshma on 20th August 2021
 Library    RequestsLibrary
 Library    JSONLibrary
 Library    Collections
@@ -73,10 +73,10 @@ setHotGuardGroupPropertiesToEmpty
     uiresources.setGroupPropertyToEmpty  AllowNumExceedencesGuard
     uiresources.setGroupPropertyToEmpty  GuardHotAbsTemp
     uiresources.setGroupPropertyToEmpty  AlmHotAbsTemp
-    reload page
+#    reload page
     close browser
 
 setGroupPropertiesForHotGuardToZero
-    apiresources.changeGroupPropertiesIntValue    AllowNumExceedencesGuard    ${allow_num_exceedences_guard_value}
-    apiresources.changeGroupPropertiesIntValue    GuardHotAbsTemp     ${guard_hot_abs_temp_value}
-    apiresources.changeGroupPropertiesIntValue    AlmHotAbsTemp   ${alm_hot_abs_temp_value}
+    apiresources.changeGroupPropertiesParameterValue    AllowNumExceedencesGuard  int  ${allow_num_exceedences_guard_cleanup_value}
+    apiresources.changeGroupPropertiesParameterValue    GuardHotAbsTemp  float  ${guard_hot_abs_temp_cleanup_value}
+    apiresources.changeGroupPropertiesParameterValue    AlmHotAbsTemp  float  ${alm_hot_abs_temp_cleanup_value}

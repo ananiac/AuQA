@@ -68,9 +68,3 @@ clearReports
     Remove Directory  ${EXECDIR}/Reports/Screenshots  recursive
     Remove Files  ${EXECDIR}/Reports/*.html
     Remove Files  ${EXECDIR}/Reports/*.xml
-
-waitForTwoMinutes
-    common.waitForMinutes    2
-
-waitForOneMinute
-    common.waitForMinutes    1

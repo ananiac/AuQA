@@ -54,20 +54,6 @@ getOidQuery
     return from keyword  ${group_oid_query}
 
     #Created by Greeshma on 19 Aug 2021
-setGroupPropertyFloat
-    [Arguments]    ${property_name}    ${property_value}
-    ${group_oid}=  apiresources.queryToFetchGroupOid
-    ${setGroupPropertyFloatValueMutation}=    set variable    mutation setGrpProp { propertyWrite(requests: [{oid: ${group_oid}, name: "${property_name}", float : ${property_value}}]) { index reason }}
-    return from keyword  ${setGroupPropertyFloatValueMutation}
-
-    #Created by Greeshma on 19 Aug 2021
-setGroupPropertyInt
-    [Arguments]    ${property_name}    ${property_value}
-    ${group_oid}=  apiresources.queryToFetchGroupOid
-    ${setGroupPropertyIntValueMutation}=    set variable    mutation setGrpProp { propertyWrite(requests: [{oid: ${group_oid}, name: "${property_name}", int : ${property_value}}]) { index reason }}
-    return from keyword  ${setGroupPropertyIntValueMutation}
-
-    #Created by Greeshma on 19 Aug 2021
 getAlarmStatusQuery
     [Arguments]   ${group_name}    ${alarm_name}
     ${getAlarmStatusOfGroupQuery}=  set variable  query alarmStatus{ alarms(selector:{subjectName: "${group_name}", type : ${alarm_name}}) { type severity status }}

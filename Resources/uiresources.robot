@@ -7,8 +7,11 @@ Variables    ${EXECDIR}/PageObjects/siteEditorHomePage.py
 Variables   ${EXECDIR}/PageObjects/toolsConfigsPage.py
 Resource    apiresources.robot
 
+
 *** Variables ***
 ${url_cx}    ${url_cx}
+
+
 *** Keywords ***
 startBrowserAndAccessAIEngineCXWebUI
         #[Arguments]    ${url}    ${browser}    ${expectedTitle}
@@ -40,7 +43,7 @@ startBrowserAndLoginToAIEngine
 resetSystemPropertiesUsingLoadTemplateOptionWithOverwrite
     apiresources.setConfigAlarmGroupDeadSensorHysteresis    11
     startBrowserAndLoginToAIEngine
-    set selenium timeout    60 seconds
+    set selenium timeout    ${low_speed}
     wait until element is visible	${tools_button}
     wait until element is enabled	${tools_button}
     click element    ${tools_button}
@@ -68,26 +71,26 @@ resetSystemPropertiesUsingLoadTemplateOptionWithOverwrite
     click element    ${close_button}
     wait until element is not visible    ${close_button}
     log to console    !-----------Closed config popup------------------!
-    set selenium timeout    5 seconds
+    set selenium timeout    ${high_speed}
     close browser
 
 # Select and click Group Name and click on 'All Properties' button to display all properties
 selectAndClickGroupName
-    log to console  '${group_name}' group selected
+    log to console  '${group_name}' group selection
+    set selenium timeout    ${low_speed}
     sleep  ${high_speed}
     # Group drop down list
     click element  ${group_dropdown_list}
     sleep  ${high_speed}
-
     # Select a Group from drop down list
     ${select_group}=  set variable  xpath=//li[contains(text(),'${group_name}')]
-
     click element  ${select_group}
     sleep  ${high_speed}
     # Click a Group Name
     ${select_and_click_group}=  set variable  xpath=//span[contains(.,'${group_name}')]
     click element  ${select_and_click_group}
     sleep  ${load_time}
+    set selenium timeout    ${high_speed}
 
 # Click 'All Properties' button to display all properties
 clickAllPropertiesButton
@@ -99,15 +102,17 @@ setGroupPropertyToEmpty
     [Arguments]    ${property}
     ${group_property}=  set variable  //div[contains(text(),'${property}')]/following::td[1]
     sleep  ${high_speed}
+    set selenium timeout    ${low_speed}
     ${property_value}=  get text  ${group_property}
-    log to console  ${property} property value is ${property_value}, set through api
+    log to console  ${property} property value is currently ${property_value}, set through api
     ${IsElementVisible}=  Run Keyword And Return Status    Element Should Be Visible   ${group_property}
     sleep  ${high_speed}
     IF  ${IsElementVisible}
         press keys  ${group_property}  CTRL+a+BACKSPACE+DELETE+ENTER
         ${property_empty_value}=  get text  ${group_property}
-        log to console  ${property} property value is ${property_empty_value}empty after setting to empty
+        log to console  ${property} property value is set to ${property_empty_value}EMPTY
         sleep  ${high_speed}
     ELSE
         log to console  ${property} property is not visible
     END
+    set selenium timeout    ${high_speed}

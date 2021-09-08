@@ -54,7 +54,7 @@ setRackPointSensorTemperature
     should be equal as strings  ${result.json()}  ${pointWriteResponse}
     log to console   Temperature ${temp} F set for ${oid}
 
-setRackSensorPointsTemperature    #Contain both query and mutation
+setTemperatureForAllRackSensorPoints    #Contain both query and mutation
     [Arguments]    ${tempF}
     log to console    Fetch the number of rack sensors ----------------->
     ${json_dict}    queryToFetchJsonResponseContainingTheRackSensorsFromGroup
@@ -162,15 +162,6 @@ setTwoSetOfSensorTemperatureForRack
         ...   ('${rack_type2}'=='CTop' and '${oid2}'!='${sensor_B_oid}')   setRackPointSensorTemperature    ${oid2}    ${tempC}
     END
 
-waitForTwoMinutes
-    log to console    Waiting for Two minutes
-    #sleep    ${low_speed}
-    sleep    2 minutes
-    log to console    **************two minutes waiting done***************
-
-waitForOneMinute
-    common.waitForMinutes    1
-
 fetchTheNumberOfItemsInDictionary
     [Arguments]    ${dictionary}    ${json_of_required_node}
     @{points}    get value from json    ${dictionary}    ${json_of_required_node}
@@ -261,8 +252,7 @@ queryToFetchGroupOid
 
 setTestEntryTemperatureToSensorPoints
     log to console  !!--------Test started and writing test_entry_sensor_temp ${test_entry_sensor_temp} ---------------!!
-    setRackSensorPointsTemperature  ${test_entry_sensor_temp}
-
+    setTemperatureForAllRackSensorPoints  ${test_entry_sensor_temp}
 
 writeTestEntryTemperatureToSensorsAfterVXServerStarted
     common.setFlagValue    ${test_entry_flag}
@@ -278,35 +268,11 @@ writeTestEntryTemperatureToSensorsAfterVXServerStarted
     END
     log to console  !!!--------------------Test Setup done------------------------------!!!
 
-setTestExitTemperatureToFirstSensorPoint
+setTestExitTemperatureToAllSensorPoints
     common.setFlagValue    ${test_exit_flag}
     log to console  *************Test finished and writing test_exit_sensor_temp ${test_exit_sensor_temp}************
-    setRackSensorPointsTemperature  ${test_exit_sensor_temp}
+    setTemperatureForAllRackSensorPoints  ${test_exit_sensor_temp}
     log to console  !!!--------------------Test Teardown done------------------------------!!!
-
-    #Created by Greeshma on 19 Aug 2021 #remove this after making changes to test2 and test3
-changeGroupPropertiesFloatParameterValue
-    [Arguments]    ${property_name}  ${property_value}
-    ${headers}=       create dictionary    Content-Type=${content_type}    Vigilent-Api-Token=${write_api_token}
-    ${graphql_mutation}=  gqlMutation.setGroupPropertyFloat    ${property_name}  ${property_value}
-    ${body}=          create dictionary    query= ${graphql_mutation}
-    create session    AIEngine    ${base_url}     disable_warnings=1
-    ${result}=  post on session    AIEngine  /public/graphql  headers=${headers}    json=${body}
-    should be equal as strings  ${result.json()}  ${propertyWriteResponse}
-    log to console  !!------------------Group ->Propertie ${property_name} updated successfully with ${property_value}----------------!!
-
-    #Created by Greeshma on 19 Aug 2021 #remove this after making changes to test2 and test3
-changeGroupPropertiesIntParameterValue
-    [Arguments]    ${property_name}  ${property_value}
-    ${headers}=       create dictionary    Content-Type=${content_type}    Vigilent-Api-Token=${write_api_token}
-    ${graphql_mutation}=  gqlMutation.setGroupPropertyInt    ${property_name}  ${property_value}
-    ${body}=          create dictionary    query= ${graphql_mutation}
-     #log to console    ${body}
-    create session    AIEngine    ${base_url}     disable_warnings=1
-    ${result}=  post on session    AIEngine  /public/graphql  headers=${headers}    json=${body}
-    #log to console  ${result.json()}
-    should be equal as strings  ${result.json()}  ${propertyWriteResponse}
-    log to console  !!------------------Group ->Propertie ${property_name} updated successfully with ${property_value}----------------!!
 
     #Created by Greeshma on 19 Aug 2021
 queryToFetchJsonResponseForSpecificAlarmType
@@ -352,7 +318,6 @@ setTemperatureForAllExceptDeadSensor    #Contain both query and mutation, 25% of
     log to console    ******************************Temperature set for all, except ${stale_sensor_count} rack/racks*********************************
 
     #Copied from deadSensorGuardResources to apiresources on 20 Aug 2021 by Greeshma
-    #Modified on 31 August 2021 by Greeshma to replace checkGroupControlStatusValueNotInGuard and checkGroupControlStausValueInGuard keywords
 checkingGuardModeOfGroup
     [Arguments]    ${expected_guard_status}
     ${current_ctrl_status_value}=    queryToFetchControlStatusValueOfGroup
@@ -364,19 +329,6 @@ checkingGuardModeOfGroup
         should not be equal as integers    ${current_ctrl_status_value}    2    System should not be in guard(2)
         log to console    ==============--Validated Successfully->Status value is ${current_ctrl_status_value}-Not in Guard===================
      END
-
-    #remove below keyword after modifying test2 and test3
-checkGroupControlStatusValueNotInGuard
-    ${current_ctrl_status_value}=    queryToFetchControlStatusValueOfGroup
-    log to console    *********Validating the Ctrl Status is not Guard(expect any other value than 2)******
-    should not be equal as integers    ${current_ctrl_status_value}    2    System should not be in guard(2)
-    log to console    ==============Status value is ${current_ctrl_status_value}-Not in Guard--Validated Successfully===================
-
-    #remove below keyword after modifying test2 and test3
-checkGroupControlStausValueInGuard
-    ${current_ctrl_status_value}=    queryToFetchControlStatusValueOfGroup
-    should be equal as integers    ${current_ctrl_status_value}    2    System should be in guard(2)
-    log to console    =============Validated and the Group is in Guard -${current_ctrl_status_value}==================
 
     #Created by Greeshma on 20 Aug 2021
 setHighAndLowSetPointValues
@@ -405,32 +357,19 @@ setAllHighAndLowSetPointLimits
     END
     log to console    ******************************SetPoint Limits are set for all Racks *********************************
 
-    #Created by Greeshma on 20 Aug 2021
-checkStatusOfAlarmIsRaised
-    [Arguments]    ${alarm_name}
-    log to console    !--------Checking for the ${alarm_name} Alarm to be Raised-------!
-    ${json_response}=    apiresources.queryToFetchJsonResponseForSpecificAlarmType    ${alarm_name}
-    ${no_of_alarms}    apiresources.fetchTheNumberOfItemsInDictionary   ${json_response}    $.data.alarms
-    log to console    Total no: of ${alarm_name} is ${no_of_alarms}
-    should be equal as integers  ${no_of_alarms}  1
-    log to console    =================${alarm_name} Alarm raised=======================
-
-    #Created by Greeshma on 20 Aug 2021
-checkStatusOfAlarmIsCleared
-    [Arguments]    ${alarm_name}
-    log to console    !--------Checking for the ${alarm_name} Alarm to be Cleared-------!
-    ${json_response}=    apiresources.queryToFetchJsonResponseForSpecificAlarmType    ${alarm_name}
-    ${actual_value}    apiresources.fetchValueOfFieldFromJsonDictionary   ${json_response}  $.data
-    should be equal as strings   ${actual_value}  None
-    log to console    ===============${alarm_name} Alarm Cleared====================
-
-    #Created by Greeshma on 20 Aug 2021
+    #Created by Greeshma on 20 Aug 2021.Modified on 6th Sep 2021
 checkingAlarmStatusForGroup
     [Arguments]    ${alarm_name}    ${exepected_alarm_status}
+    log to console    !--------Checking for the ${alarm_name} Alarm status to be:${exepected_alarm_status}-------!
+    ${json_response}=    apiresources.queryToFetchJsonResponseForSpecificAlarmType    ${alarm_name}
     IF  '${exepected_alarm_status}'=='ALARM_ON'
-        apiresources.checkStatusOfAlarmIsRaised    ${alarm_name}
+        ${no_of_alarms}    apiresources.fetchTheNumberOfItemsInDictionary   ${json_response}    $.data.alarms
+        should be equal as integers  ${no_of_alarms}  1
+        log to console    =================${alarm_name} Alarm raised=======================
     ELSE
-        apiresources.checkStatusOfAlarmIsCleared    ${alarm_name}
+        ${actual_value}    apiresources.fetchValueOfFieldFromJsonDictionary   ${json_response}  $.data
+        should be equal as strings   ${actual_value}  None
+        log to console    ===============${alarm_name} Alarm Cleared====================
     END
 
     #Created by Greeshma on 23 Aug 2021
@@ -496,9 +435,8 @@ changeGroupPropertiesParameterValue
     #Created by Greeshma on 30 August 2021
 setCoolingTemperatureForAllSensorPoints
     [Arguments]    ${temp}
-    apiresources.setRackSensorPointsTemperature  ${temp}
+    apiresources.setTemperatureForAllRackSensorPoints  ${temp}
     common.setFlagValue    ${current_temp_to_all_flag}
-
 
     #Created by Greeshma on 30 August 2021
 stopUpdatingTemperatureToLastRack
@@ -517,13 +455,7 @@ queryToFetchControlStatusValueOfGroup
     ${value}    get from list    ${ctrl_state_value}    0
     return from keyword    ${value}
 
-    #Created by Abhijit on 26 Aug 2021
-changeGroupPropertiesIntValue
-    [Arguments]    ${property_name}  ${property_value}
-    ${headers}=       create dictionary    Content-Type=${content_type}    Vigilent-Api-Token=${write_api_token}
-    ${mutation}=    gqlMutation.setGroupPropertyInt    ${property_name}  ${property_value}
-    ${body}=          create dictionary    query= ${mutation}
-    create session    AIEngine    ${base_url}     disable_warnings=1
-    ${result}=  post on session    AIEngine  /public/graphql  headers=${headers}    json=${body}
-    should be equal as strings  ${result.json()}  ${propertyWriteResponse}
-    log to console  !!------------------Group ->Propertie ${property_name} updated successfully with ${property_value}----------------!!
+    #Created by Greeshma and moved to apiresources on 7th Sep 2021
+setGroupPropertyFloatValue
+    [Arguments]    ${property_name}    ${property_value}
+    apiresources.changeGroupPropertiesParameterValue    ${property_name}  float  ${property_value}
