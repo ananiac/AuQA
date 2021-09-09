@@ -66,15 +66,16 @@ checkGuardAndGroupHotAlarmForGroupAllowNumExceedencesGuardValueChange
 setHotGuardGroupPropertiesToEmpty
     setGroupPropertiesForHotGuardToZero
     sleep  ${load_time}
-    uiresources.startBrowserAndLoginToAIEngine
-    sleep  ${load_time}
+    #uiresources.startBrowserAndLoginToAIEngine
+    #sleep  ${load_time}
     uiresources.selectAndClickGroupName
     uiresources.clickAllPropertiesButton
     uiresources.setGroupPropertyToEmpty  AllowNumExceedencesGuard
     uiresources.setGroupPropertyToEmpty  GuardHotAbsTemp
     uiresources.setGroupPropertyToEmpty  AlmHotAbsTemp
-#    reload page
-    close browser
+    reload page
+    sleep  ${load_time}
+    #close browser
 
 setGroupPropertiesForHotGuardToZero
     apiresources.changeGroupPropertiesParameterValue    AllowNumExceedencesGuard  int  ${allow_num_exceedences_guard_cleanup_value}

@@ -42,8 +42,9 @@ startBrowserAndLoginToAIEngine
 
 resetSystemPropertiesUsingLoadTemplateOptionWithOverwrite
     apiresources.setConfigAlarmGroupDeadSensorHysteresis    11
-    startBrowserAndLoginToAIEngine
+    #startBrowserAndLoginToAIEngine
     set selenium timeout    ${low_speed}
+    #reload page
     wait until element is visible	${tools_button}
     wait until element is enabled	${tools_button}
     click element    ${tools_button}
@@ -72,7 +73,8 @@ resetSystemPropertiesUsingLoadTemplateOptionWithOverwrite
     wait until element is not visible    ${close_button}
     log to console    !-----------Closed config popup------------------!
     set selenium timeout    ${high_speed}
-    close browser
+    #close browser
+
 
 # Select and click Group Name and click on 'All Properties' button to display all properties
 selectAndClickGroupName
@@ -116,3 +118,6 @@ setGroupPropertyToEmpty
         log to console  ${property} property is not visible
     END
     set selenium timeout    ${high_speed}
+
+closeBrowser
+    close All browsers

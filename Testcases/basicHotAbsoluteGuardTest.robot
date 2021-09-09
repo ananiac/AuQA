@@ -24,7 +24,9 @@ BasicHotAbsoluteGuardTest
     #1).Start only vx_server, facs_launcher and facs_trend should be running
     connection.establishConnectionAndStartProcessesVx_serverFacs_trendAndFacs_launcher
     #2)In the CX UI, open the Configs and load the DASHAM template (with overwrite) and hit Save button then close
+    uiresources.startBrowserAndLoginToAIEngine
     uiresources.resetSystemPropertiesUsingLoadTemplateOptionWithOverwrite
+    uiresources.closeBrowser
     #3)Set System DASHM:: configs NumGuardUnits = 1,NumMinutesGuardTimer = 3, PercentDeadSensorThreshold=100
     #4)Set System SYSTEM::NumMinutesPast=5
     apiresources.changeCxConfigsDashm_NumGuardUnits_NumMinutesGuardTimer_PercentDeadSensorThreshold_AndSystem_NumMinutesPast    ${basicHotAbsoluteGuardInputs}[num_guard_units]    ${basicHotAbsoluteGuardInputs}[num_minutes_guard_timer]   ${basicHotAbsoluteGuardInputs}[percent_deadsensor_threshold]    ${basicHotAbsoluteGuardInputs}[num_minutes_past]

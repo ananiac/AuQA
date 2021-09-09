@@ -35,7 +35,9 @@ DeadSensorGuardTestSetupSteps
            #AlarmDeadSensorThreshold
     deadSensorGuardResources.setDeadSensorGuardGroupPropertiesToEmpty
     #3)Load the DASHAM_MIX template in the CX configs (with overwrite) (UI)
+    uiresources.startBrowserAndLoginToAIEngine
     uiresources.resetSystemPropertiesUsingLoadTemplateOptionWithOverwrite
+    uiresources.closeBrowser
     #4)Set SYSTEM::NumMinutesPast=2
     #5)Set DASHM::PercentDeadSensorThreshold = 30%, NumMinutesGuardTimer=2, NumGuardUnits=1
     deadSensorGuardResources.setIntialCxConfigParameters  ${ds_num_minutes_past_value}    ${ds_percent_dead_sensor_threshold_default_value}   ${ds_num_minutes_guard_timer_value}    ${ds_num_guard_units_value}
@@ -138,7 +140,9 @@ Test6_AlarmDeadSensorHysteresis
 Cleanup
     [Teardown]   apiresources.setTestExitTemperatureToAllSensorPoints
     #a)In the CX UI, open the Configs and load the DASHAM template (with overwrite) and hit Save button then close    #confirm this steps
+    uiresources.startBrowserAndLoginToAIEngine
     uiresources.resetSystemPropertiesUsingLoadTemplateOptionWithOverwrite
+    uiresources.closeBrowser
     #b)Set group property ControlDeadSensorThreshold=0
     #c)Set group property AlarmDeadSensorHysteresis=0
     #d)Set group property AlarmDeadSensorThreshold=0
