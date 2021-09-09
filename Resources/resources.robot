@@ -12,7 +12,7 @@ startBrowserAndAccessAIEngineWebUI
         #[Arguments]    ${url_vx}    ${browser}    ${expectedTitle}
         open browser    ${url_vx}    ${browser}    options=add_argument("--disable-popup-blocking"); add_argument("--ignore-certificate-errors"); add_argument("--no-sandbox"); add_argument("--disable-extensions"); add_argument("--disable-dev-shm-usage")
         maximize browser window
-        set browser implicit wait    ${high_speed}
+        set browser implicit wait    ${short_wait_time}
         log to console    Accessed AI Engine
 verifyTitle
         title should be    ${page_title}
@@ -24,7 +24,7 @@ loginByEnteringUsernameAndPassword
     input text    ${upwd}    ${ui_password}
     takeScreenshot  InputUserNameAndPwd
     click element    ${login_button}
-    set selenium timeout    ${low_speed}
+    set selenium timeout    ${long_wait_time}
     wait until page contains    All Groups in Control
     takeScreenshot  SystemConsoleHomePage
     log to console    Logged in succesfully
@@ -32,7 +32,7 @@ startBrowserAndLoginToAIEngine
     startBrowserAndAccessAIEngineWebUI
     loginByEnteringUsernameAndPassword
 openEquipmentTabToCheckTheCoolingUnitStatus
-    set selenium timeout    ${medium_speed}
+    set selenium timeout    ${medium_wait_time}
     wait until element is enabled    css:span#tab-1311-btnInnerEl
     click element    css:span#tab-1311-btnInnerEl
     wait until page contains    CONTROL
@@ -43,13 +43,13 @@ openSystemConsoleEquipmentTabToCheckGuardModeONForCoolingUnits
     openEquipmentTab
     reload page
     wait until page contains    Cooling
-    set selenium timeout    ${low_speed}
+    set selenium timeout    ${long_wait_time}
     ${status}=    run keyword and ignore error    page should not contain   xpath://div[text()='GUARD']
     run keyword if    ${status} == 'PASS'    reload page
     wait until page contains    Cooling
     wait until page contains element    xpath://div[text()='GUARD']
     page should contain element   xpath://div[text()='GUARD']
-    sleep    ${high_speed}
+    sleep    ${short_wait_time}
     takeScreenshot  GuardMode
 
 openEquipmentTab
@@ -67,7 +67,7 @@ openSiteEditorPage
     log to console    Site Editor is open --->
 gotoSystemConsolePage
     go to    ${url_vx}
-    sleep    ${medium_speed}    #Need to check the timing
+    sleep    ${medium_wait_time}    #Need to check the timing
     log to console    System Console is open
 gotoSiteEditorPage
     go to    ${url_cx}

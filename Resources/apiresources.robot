@@ -273,6 +273,7 @@ setTestExitTemperatureToAllSensorPoints
     log to console  *************Test finished and writing test_exit_sensor_temp ${test_exit_sensor_temp}************
     setTemperatureForAllRackSensorPoints  ${test_exit_sensor_temp}
     log to console  !!!--------------------Test Teardown done------------------------------!!!
+    connection.killChromeAndChromedriverProcessesAfterTest
 
     #Created by Greeshma on 19 Aug 2021
 queryToFetchJsonResponseForSpecificAlarmType
