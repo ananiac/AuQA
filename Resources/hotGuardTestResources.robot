@@ -64,7 +64,7 @@ checkGuardAndGroupHotAlarmForGroupAllowNumExceedencesGuardValueChange
     apiresources.checkingAlarmStatusForGroup    GroupHot    ${expected_alarm_status_value}                  #query
 
 setHotGuardGroupPropertiesToEmpty
-    setGroupPropertiesForHotGuardToZero
+    setGroupPropertiesForHotGuardToSomeValue
     sleep  ${load_time}
     uiresources.startBrowserAndLoginToAIEngine
     sleep  ${load_time}
@@ -76,7 +76,7 @@ setHotGuardGroupPropertiesToEmpty
 #    reload page
     close browser
 
-setGroupPropertiesForHotGuardToZero
+setGroupPropertiesForHotGuardToSomeValue
     apiresources.changeGroupPropertiesParameterValue    AllowNumExceedencesGuard  int  ${allow_num_exceedences_guard_cleanup_value}
     apiresources.changeGroupPropertiesParameterValue    GuardHotAbsTemp  float  ${guard_hot_abs_temp_cleanup_value}
     apiresources.changeGroupPropertiesParameterValue    AlmHotAbsTemp  float  ${alm_hot_abs_temp_cleanup_value}

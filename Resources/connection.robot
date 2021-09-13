@@ -163,3 +163,18 @@ establishConnectionAndStopAllVEMProcessesExceptVx_serverFacsLauncherFacsSiftFacs
     log to console    !!----10.Plugin:BACnet Stopped----!!
     closeAllConnections
 
+establishConnectionAndStartProcessesVx_serverFacs_launcherFacs_siftAndFacs_trends
+    [Documentation]    Establish connection and start processes on the remote machine.
+    ...                HISTIGNORE command is used to avoid saving the password in history
+    openConnectionAndLogIn
+    log to console    !!------Connection opened and now starting the processes----!!
+    executeProcessCommandWithoutTraceInHistory    vx_server
+    log to console    ----****1.done***---------
+    executeProcessCommandWithoutTraceInHistory    facs_launcher
+    log to console    ---------****2.done****---------
+    executeProcessCommandWithoutTraceInHistory    facs_sift
+    log to console    ---------****3.done****---------
+    executeProcessCommandWithoutTraceInHistory    facs_trend
+    log to console    ---------****4.done****---------
+    sleep    ${high_speed}
+    closeAllConnections
