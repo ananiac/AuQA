@@ -93,17 +93,17 @@ Test3_configGuardHysteresisBand
     hotGuardTestResources.checkGuardAndGroupHotAlarmForTemperatureChangeOnFirstRack    84.7    ${guard_on}    ${group_hot_alarm_on}
     #39.Set temps 84.6 - Expect exit guard and clear alarm
     hotGuardTestResources.checkGuardAndGroupHotAlarmForTemperatureChangeOnFirstRack    84.6    ${guard_off}    ${group_hot_alarm_off}
+CleanUp
     #40.Write User event “Ending Hot Guard test”
     writeUserEventsEntryToNotificationEventLog    Ending Hot Guard test
     #41.End Test
     #42.Clean up
-CleanUp
-    [Teardown]   apiresources.setTestExitTemperatureToAllSensorPoints
     #group properties to null-allow_num_exceedences of group
     #Load default config template
     #set point default values.
     hotGuardTestResources.setHotGuardGroupPropertiesToEmpty
     uiresources.resetSystemPropertiesUsingLoadTemplateOptionWithOverwrite
     apiresources.setAllHighAndLowSetPointLimits    ${high_set_point_limit_cleanup}    ${low_set_point_limit_cleanup}
+    [Teardown]   apiresources.setTestExitTemperatureToAllSensorPoints
 
 
