@@ -22,7 +22,7 @@ hotGuardTestPreconditionSetup
     ...                Make sure the simulator is NOT running
     ...                Also write test entry temperature for the parallel staleStatePrevention program
     log to console    !-----PreCondition for the Dead Sensor Guard test is been executed------!
-    connection.establishConnectionAndStopAllVEMProcessesExceptVx_serverFacsLauncherFacsSiftFacsDashAndFacs_trends
+    connection.establishConnectionAndStopAllVEMProcessesExceptVx_serverAndFacs_trends
     apiresources.writeTestEntryTemperatureToSensorsAfterVXServerStarted
 
 setConfigAllowNumExceedencesGuardAndCATGuardBAndRange
