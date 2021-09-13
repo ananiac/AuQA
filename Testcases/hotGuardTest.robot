@@ -58,7 +58,7 @@ Test1_configsNumGuardUnitsAndNumMinutesGuardTimerAndAllowNumExceedencesGuard
     hotGuardTestResources.checkGuardAndGroupHotAlarmForConfigAllowNumExceedencesGuardValueChange    ${config_allow_num_exceedences_guard_value2}    ${guard_off}    ${group_hot_alarm_off}
 Test2_groupAllowNumExceedencesGuard
     #22.Write User event “Starting Test 2- testing group AllowNumExceedencesGuard”
-    writeUserEventsEntryToNotificationEventLog    Starting Test 2- testing group AllowNumExceedencesGuard
+    apiresources.writeUserEventsEntryToNotificationEventLog    Starting Test 2- testing group AllowNumExceedencesGuard
     #23.Test 2 - group AllowNumExceedencesGuard
     #24.Set group AllowNumExceedencesGuard=0 - Expect guard and alarm … 1 ahu after 2 mins
     checkGuardAndGroupHotAlarmForGroupAllowNumExceedencesGuardValueChange    ${group_allow_num_exceedences_guard_value0}    ${guard_on}    ${group_hot_alarm_on}
@@ -69,7 +69,7 @@ Test2_groupAllowNumExceedencesGuard
     checkGuardAndGroupHotAlarmForGroupAllowNumExceedencesGuardValueChange    ${group_allow_num_exceedences_guard_value2}    ${guard_off}    ${group_hot_alarm_off}
 Test3_configGuardHysteresisBand
     #27.Write User event “Starting Test 2- testing GuardHysteresisBand ”
-    writeUserEventsEntryToNotificationEventLog    Starting Test 3- testing GuardHysteresisBand
+    apiresources.writeUserEventsEntryToNotificationEventLog    Starting Test 3- testing GuardHysteresisBand
     #28.Test 3 - GuardHysteresisBand
     #29.Set group AllowNumExceedencesGuard=1 - Expect still guard and alarm
     checkGuardAndGroupHotAlarmForGroupAllowNumExceedencesGuardValueChange    ${group_allow_num_exceedences_guard_value1}    ${guard_on}    ${group_hot_alarm_on}
@@ -95,7 +95,7 @@ Test3_configGuardHysteresisBand
     hotGuardTestResources.checkGuardAndGroupHotAlarmForTemperatureChangeOnFirstRack    84.6    ${guard_off}    ${group_hot_alarm_off}
 CleanUp
     #40.Write User event “Ending Hot Guard test”
-    writeUserEventsEntryToNotificationEventLog    ${group_name}->Ending Hot Guard test
+    apiresources.writeUserEventsEntryToNotificationEventLog    ${group_name}->Ending Hot Guard test
     #41.End Test
     #42.Clean up
     #group properties to null-allow_num_exceedences of group
