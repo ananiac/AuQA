@@ -32,7 +32,7 @@ HotGuardTestSetup
     #9.Wait 4 minutes
     common.waitForMinutes   4
     #10.Write User event “Starting Test 1 - testing NumGuardUnits, NumMinutesGuardTimer and AllowNumExceedencesGuard”
-    writeUserEventsEntryToNotificationEventLog    Starting Test 1 - testing NumGuardUnits,NumMinutesGuardTimer and AllowNumExceedencesGuard
+    apiresources.writeUserEventsEntryToNotificationEventLog    ${group_name}->Hot Guard test->Starting Test 1 - testing NumGuardUnits,NumMinutesGuardTimer and AllowNumExceedencesGuard
     #11.Test 1 - configs NumGuardUnits and NumMinutesGuardTimer and AllowNumExceedencesGuard
 Test1_configsNumGuardUnitsAndNumMinutesGuardTimerAndAllowNumExceedencesGuard
     #12.Set config DASH_M::NumGuardUnits=2 NumMinutesGuardTimer=4 and GuardHysteresisBand=2
@@ -56,10 +56,10 @@ Test1_configsNumGuardUnitsAndNumMinutesGuardTimerAndAllowNumExceedencesGuard
     apiresources.checkForAHUToBeInGuardAtRegularIntervalUntilExpectedNoOfAHUsIntoGuard    2    ${config_num_guard_units_value1}    ${config_num_minutes_guard_timer_value2}
     #21.Set config DASH_M::AllowNumExceedencesGuard=2 -Expect exit guard and clear alarm
     hotGuardTestResources.checkGuardAndGroupHotAlarmForConfigAllowNumExceedencesGuardValueChange    ${config_allow_num_exceedences_guard_value2}    ${guard_off}    ${group_hot_alarm_off}
+Test2_groupAllowNumExceedencesGuard
     #22.Write User event “Starting Test 2- testing group AllowNumExceedencesGuard”
     writeUserEventsEntryToNotificationEventLog    Starting Test 2- testing group AllowNumExceedencesGuard
     #23.Test 2 - group AllowNumExceedencesGuard
-Test2_groupAllowNumExceedencesGuard
     #24.Set group AllowNumExceedencesGuard=0 - Expect guard and alarm … 1 ahu after 2 mins
     checkGuardAndGroupHotAlarmForGroupAllowNumExceedencesGuardValueChange    ${group_allow_num_exceedences_guard_value0}    ${guard_on}    ${group_hot_alarm_on}
     apiresources.checkForAHUToBeInGuardAtRegularIntervalUntilExpectedNoOfAHUsIntoGuard    2    ${config_num_guard_units_value1}    ${config_num_minutes_guard_timer_value2}
@@ -67,10 +67,10 @@ Test2_groupAllowNumExceedencesGuard
     checkGuardAndGroupHotAlarmForGroupAllowNumExceedencesGuardValueChange    ${group_allow_num_exceedences_guard_value1}    ${guard_on}    ${group_hot_alarm_on}
     #26.Set group AllowNumExceedencesGuard=2 - Expect exit guard and clear alarm
     checkGuardAndGroupHotAlarmForGroupAllowNumExceedencesGuardValueChange    ${group_allow_num_exceedences_guard_value2}    ${guard_off}    ${group_hot_alarm_off}
+Test3_configGuardHysteresisBand
     #27.Write User event “Starting Test 2- testing GuardHysteresisBand ”
     writeUserEventsEntryToNotificationEventLog    Starting Test 3- testing GuardHysteresisBand
     #28.Test 3 - GuardHysteresisBand
-Test3_configGuardHysteresisBand
     #29.Set group AllowNumExceedencesGuard=1 - Expect still guard and alarm
     checkGuardAndGroupHotAlarmForGroupAllowNumExceedencesGuardValueChange    ${group_allow_num_exceedences_guard_value1}    ${guard_on}    ${group_hot_alarm_on}
     #30.Set temps to 84.6-Expect still guard and alarm
@@ -95,7 +95,7 @@ Test3_configGuardHysteresisBand
     hotGuardTestResources.checkGuardAndGroupHotAlarmForTemperatureChangeOnFirstRack    84.6    ${guard_off}    ${group_hot_alarm_off}
 CleanUp
     #40.Write User event “Ending Hot Guard test”
-    writeUserEventsEntryToNotificationEventLog    Ending Hot Guard test
+    writeUserEventsEntryToNotificationEventLog    ${group_name}->Ending Hot Guard test
     #41.End Test
     #42.Clean up
     #group properties to null-allow_num_exceedences of group
