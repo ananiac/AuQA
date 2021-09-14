@@ -1,8 +1,8 @@
 #All the global variables is stored here
 #Regulate speed based on system response time delay
-low_speed="60 seconds"
-medium_speed="30 seconds"
-high_speed="5 seconds"
+long_wait_time="60 seconds"
+medium_wait_time="30 seconds"
+short_wait_time="5 seconds"
 #time to overcome Clickable exception
 load_time="10 seconds"
 test_entry_sensor_temp=61.11

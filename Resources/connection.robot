@@ -1,8 +1,8 @@
 *** Settings ***
 Documentation          This demonstrates executing a command on a remote machine
-...                    and getting its output.
-...
+...                    and getting its output using ssh library.Also the commands on staging machine using process library
 Library                SSHLibrary
+Library                Process
 Variables    ${EXECDIR}/Configurations/${environment}.py
 Variables    ${EXECDIR}/Resources/ResourceVariables/globalVariables.py
 
@@ -32,40 +32,40 @@ executeProcessCommandWithoutTraceInHistory
 establishConnectionAndStartProcessesVx_serverFacs_trendAndFacs_launcher
     [Documentation]    Establish connection and start processes on the remote machine.
     ...                HISTIGNORE command is used to avoid saving the password in history
-    openConnectionAndLogIn
+    connection.openConnectionAndLogIn
     log to console    !!------Connection opened and now starting the processes----!!
-    executeProcessCommandWithoutTraceInHistory    vx_server
-    executeProcessCommandWithoutTraceInHistory    facs_trend
-    executeProcessCommandWithoutTraceInHistory    facs_launcher
-    sleep    ${high_speed}
-    closeAllConnections
+    connection.executeProcessCommandWithoutTraceInHistory    vx_server
+    connection.executeProcessCommandWithoutTraceInHistory    facs_trend
+    connection.executeProcessCommandWithoutTraceInHistory    facs_launcher
+    sleep    ${short_wait_time}
+    connection.closeAllConnections
 
 establishConnectionAndStartProcessesVx_serverFacs_launcherFacs_siftFacs_dashAndFacs_trends
     [Documentation]    Establish connection and start processes on the remote machine.
     ...                HISTIGNORE command is used to avoid saving the password in history
-    openConnectionAndLogIn
+    connection.openConnectionAndLogIn
     log to console    !!------Connection opened and now starting the processes----!!
-    executeProcessCommandWithoutTraceInHistory    vx_server
+    connection.executeProcessCommandWithoutTraceInHistory    vx_server
     log to console    ----****1.done***---------
-    executeProcessCommandWithoutTraceInHistory    facs_launcher
+    connection.executeProcessCommandWithoutTraceInHistory    facs_launcher
     log to console    ---------****2.done****---------
-    executeProcessCommandWithoutTraceInHistory    facs_sift
+    connection.executeProcessCommandWithoutTraceInHistory    facs_sift
     log to console    ---------****3.done****---------
-    executeProcessCommandWithoutTraceInHistory    facs_dash
+    connection.executeProcessCommandWithoutTraceInHistory    facs_dash
     log to console    ---------****4.done****---------
-    executeProcessCommandWithoutTraceInHistory    facs_trend
+    connection.executeProcessCommandWithoutTraceInHistory    facs_trend
     log to console    ---------****5.done****---------
-    sleep    ${high_speed}
-    closeAllConnections
+    sleep    ${short_wait_time}
+    connection.closeAllConnections
 
 establishConnectionAndStartCoolingControlProcess
     [Documentation]    Establish connection and start processes on the remote machine.
     ...                HISTIGNORE command is used to avoid saving the password in history
-    openConnectionAndLogIn
-    executeProcessCommandWithoutTraceInHistory    facs_dash
-    sleep    ${high_speed}
-    closeAllConnections
-    #sleep    ${medium_speed}
+    connection.openConnectionAndLogIn
+    connection.executeProcessCommandWithoutTraceInHistory    facs_dash
+    sleep    ${short_wait_time}
+    connection.closeAllConnections
+    #sleep    ${medium_wait_time}
 
 executeSTOPProcessCommandWithoutTraceInHistory
     [Arguments]    ${process_name}
@@ -77,46 +77,46 @@ executeSTOPProcessCommandWithoutTraceInHistory
 establishConnectionAndStopCoolingControlProcess
     [Documentation]    Establish connection and start processes on the remote machine.
     ...                HISTIGNORE command is used to avoid saving the password in history
-    openConnectionAndLogIn
-    executeSTOPProcessCommandWithoutTraceInHistory    facs_dash
-    sleep    ${high_speed}
-    closeAllConnections
+    connection.openConnectionAndLogIn
+    connection.executeSTOPProcessCommandWithoutTraceInHistory    facs_dash
+    sleep    ${short_wait_time}
+    connection.closeAllConnections
 
 startVXServerProcess
-    openConnectionAndLogIn
-    executeProcessCommandWithoutTraceInHistory    vx_server
-    closeAllConnections
+    connection.openConnectionAndLogIn
+    connection.executeProcessCommandWithoutTraceInHistory    vx_server
+    connection.closeAllConnections
 
 establishConnectionAndStopAllVEMProcessesExceptVx_serverAndFacs_trends
     log to console    !--------------Stopping all 13 processes except vx_Server and facs_trends----------!
-    openConnectionAndLogIn
-    executeSTOPProcessCommandWithoutTraceInHistory    dcsim
+    connection.openConnectionAndLogIn
+    connection.executeSTOPProcessCommandWithoutTraceInHistory    dcsim
     log to console    !!----1.Simulator Stopped----!!
-    executeSTOPProcessCommandWithoutTraceInHistory    facs_cleanup
+    connection.executeSTOPProcessCommandWithoutTraceInHistory    facs_cleanup
     log to console    !!----2.CleanUp Stopped----!!
-    executeSTOPProcessCommandWithoutTraceInHistory    vems-snmp
+    connection.executeSTOPProcessCommandWithoutTraceInHistory    vems-snmp
     log to console    !!----3.SNMP Stopped----!!
-    executeSTOPProcessCommandWithoutTraceInHistory    facs_cp
+    connection.executeSTOPProcessCommandWithoutTraceInHistory    facs_cp
     log to console    !!----4.Calibration Stopped----!!
-    executeSTOPProcessCommandWithoutTraceInHistory    facs_cl
+    connection.executeSTOPProcessCommandWithoutTraceInHistory    facs_cl
     log to console    !!----5.Learning Stopped----!!
-    executeSTOPProcessCommandWithoutTraceInHistory    facs_dash
+    connection.executeSTOPProcessCommandWithoutTraceInHistory    facs_dash
     log to console    !!----6.Cooling Control Stopped----!!
-    executeSTOPProcessCommandWithoutTraceInHistory    facs_sift
+    connection.executeSTOPProcessCommandWithoutTraceInHistory    facs_sift
     log to console    !!----7.Application Metrics Stopped----!!
-    executeSTOPProcessCommandWithoutTraceInHistory    vems-plugin-smart-mesh-ip
+    connection.executeSTOPProcessCommandWithoutTraceInHistory    vems-plugin-smart-mesh-ip
     log to console    !!----8.Plugin: SmartMesh IP Stopped----!!
-    executeSTOPProcessCommandWithoutTraceInHistory    facs_launcher
+    connection.executeSTOPProcessCommandWithoutTraceInHistory    facs_launcher
     log to console    !!----9.Script Laucnher Stopped----!!
-    executeSTOPProcessCommandWithoutTraceInHistory    vx_report
+    connection.executeSTOPProcessCommandWithoutTraceInHistory    vx_report
     log to console    !!----10.Reports Stopped----!!
-    executeSTOPProcessCommandWithoutTraceInHistory    vems-plugin-dust
+    connection.executeSTOPProcessCommandWithoutTraceInHistory    vems-plugin-dust
     log to console    !!----11.Plugin:DUST Stopped----!!
-    executeSTOPProcessCommandWithoutTraceInHistory    vems-plugin-modbus
+    connection.executeSTOPProcessCommandWithoutTraceInHistory    vems-plugin-modbus
     log to console    !!----12.Plugin:Modbus/TCP Stopped----!!
-    executeSTOPProcessCommandWithoutTraceInHistory    vems-plugin-bacnet
+    connection.executeSTOPProcessCommandWithoutTraceInHistory    vems-plugin-bacnet
     log to console    !!----13.Plugin:BACnet Stopped----!!
-    closeAllConnections
+    connection.closeAllConnections
 
 executeCommandToCheckProcessStatus
     [Arguments]  ${process_name}
@@ -132,34 +132,40 @@ executeCommandToCheckProcessStatus
     END
 
 establishConnectionAndCheckVX_ServerProcesseStatus
-    openConnectionAndLogIn
+    connection.openConnectionAndLogIn
     ${current_status}=  executeCommandToCheckProcessStatus  vx_server
-    closeAllConnections
+    connection.closeAllConnections
     return from keyword  ${current_status}
 
     #Created by Greeshma on 20 Aug 2021
 establishConnectionAndStopAllVEMProcessesExceptVx_serverFacsLauncherFacsSiftFacsDashAndFacs_trends
     log to console    !----------Stopping all processes except vx_server, facs_launcher, facs_dash, facs_trends, and facs_sift----------!
-    openConnectionAndLogIn
-    executeSTOPProcessCommandWithoutTraceInHistory    dcsim
+    connection.openConnectionAndLogIn
+    connection.executeSTOPProcessCommandWithoutTraceInHistory    dcsim
     log to console    !!----1.Simulator Stopped----!!
-    executeSTOPProcessCommandWithoutTraceInHistory    facs_cleanup
+    connection.executeSTOPProcessCommandWithoutTraceInHistory    facs_cleanup
     log to console    !!----2.CleanUp Stopped----!!
-    executeSTOPProcessCommandWithoutTraceInHistory    vems-snmp
+    connection.executeSTOPProcessCommandWithoutTraceInHistory    vems-snmp
     log to console    !!----3.SNMP Stopped----!!
-    executeSTOPProcessCommandWithoutTraceInHistory    facs_cp
+    connection.executeSTOPProcessCommandWithoutTraceInHistory    facs_cp
     log to console    !!----4.Calibration Stopped----!!
-    executeSTOPProcessCommandWithoutTraceInHistory    facs_cl
+    connection.executeSTOPProcessCommandWithoutTraceInHistory    facs_cl
     log to console    !!----5.Learning Stopped----!!
-    executeSTOPProcessCommandWithoutTraceInHistory    vems-plugin-smart-mesh-ip
+    connection.executeSTOPProcessCommandWithoutTraceInHistory    vems-plugin-smart-mesh-ip
     log to console    !!----6.Plugin: SmartMesh IP Stopped----!!
-    executeSTOPProcessCommandWithoutTraceInHistory    vx_report
+    connection.executeSTOPProcessCommandWithoutTraceInHistory    vx_report
     log to console    !!----7.Reports Stopped----!!
-    executeSTOPProcessCommandWithoutTraceInHistory    vems-plugin-dust
+    connection.executeSTOPProcessCommandWithoutTraceInHistory    vems-plugin-dust
     log to console    !!----8.Plugin:DUST Stopped----!!
-    executeSTOPProcessCommandWithoutTraceInHistory    vems-plugin-modbus
+    connection.executeSTOPProcessCommandWithoutTraceInHistory    vems-plugin-modbus
     log to console    !!----9.Plugin:Modbus/TCP Stopped----!!
-    executeSTOPProcessCommandWithoutTraceInHistory    vems-plugin-bacnet
+    connection.executeSTOPProcessCommandWithoutTraceInHistory    vems-plugin-bacnet
     log to console    !!----10.Plugin:BACnet Stopped----!!
-    closeAllConnections
+    connection.closeAllConnections
+
+killChromeAndChromedriverProcessesAfterTest
+    log to console  !!-----Killing all the Chrome instances in Staging machine------!!
+    run process    echo    "${password}"  |    sudo    killall    chrome     shell=True
+    log to console  !!-----Killing chromedriver process in Staging machine------!!
+    run process    echo    "${password}"  |    sudo    killall    chromedriver     shell=True
 

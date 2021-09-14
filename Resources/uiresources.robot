@@ -17,7 +17,7 @@ startBrowserAndAccessAIEngineCXWebUI
         #[Arguments]    ${url}    ${browser}    ${expectedTitle}
         open browser    ${url_cx}    ${browser}    options=add_argument("--disable-popup-blocking"); add_argument("--ignore-certificate-errors"); add_argument("--no-sandbox"); add_argument("--disable-extensions"); add_argument("--disable-dev-shm-usage"); add_argument("--window-size=1200,1100"); add_argument("--allow-running-insecure-content")
         maximize browser window
-        set browser implicit wait    ${high_speed}
+        set browser implicit wait    ${short_wait_time}
         log to console    Accessed AI Engine
 
 verifyTitle
@@ -43,7 +43,7 @@ startBrowserAndLoginToAIEngine
 resetSystemPropertiesUsingLoadTemplateOptionWithOverwrite
     apiresources.setConfigAlarmGroupDeadSensorHysteresis    11
     startBrowserAndLoginToAIEngine
-    set selenium timeout    ${low_speed}
+    set selenium timeout    ${long_wait_time}
     wait until element is visible	${tools_button}
     wait until element is enabled	${tools_button}
     click element    ${tools_button}
@@ -71,48 +71,51 @@ resetSystemPropertiesUsingLoadTemplateOptionWithOverwrite
     click element    ${close_button}
     wait until element is not visible    ${close_button}
     log to console    !-----------Closed config popup------------------!
-    set selenium timeout    ${high_speed}
+    set selenium timeout    ${short_wait_time}
     close browser
 
 # Select and click Group Name and click on 'All Properties' button to display all properties
 selectAndClickGroupName
     log to console  '${group_name}' group selection
-    set selenium timeout    ${low_speed}
-    sleep  ${high_speed}
+    set selenium timeout    ${long_wait_time}
+    sleep  ${short_wait_time}
     # Group drop down list
     click element  ${group_dropdown_list}
-    sleep  ${high_speed}
+    sleep  ${short_wait_time}
     # Select a Group from drop down list
     ${select_group}=  set variable  xpath=//li[contains(text(),'${group_name}')]
     click element  ${select_group}
-    sleep  ${high_speed}
+    sleep  ${short_wait_time}
     # Click a Group Name
     ${select_and_click_group}=  set variable  xpath=//span[contains(.,'${group_name}')]
     click element  ${select_and_click_group}
     sleep  ${load_time}
-    set selenium timeout    ${high_speed}
+    set selenium timeout    ${short_wait_time}
 
 # Click 'All Properties' button to display all properties
 clickAllPropertiesButton
     click element  ${all_properties_button}
-    sleep  ${high_speed}
+    sleep  ${short_wait_time}
 
 # Set Group Property to empty
 setGroupPropertyToEmpty
     [Arguments]    ${property}
     ${group_property}=  set variable  //div[contains(text(),'${property}')]/following::td[1]
-    sleep  ${high_speed}
-    set selenium timeout    ${low_speed}
+    sleep  ${short_wait_time}
+    set selenium timeout    ${long_wait_time}
     ${property_value}=  get text  ${group_property}
     log to console  ${property} property value is currently ${property_value}, set through api
     ${IsElementVisible}=  Run Keyword And Return Status    Element Should Be Visible   ${group_property}
-    sleep  ${high_speed}
+    sleep  ${short_wait_time}
     IF  ${IsElementVisible}
         press keys  ${group_property}  CTRL+a+BACKSPACE+DELETE+ENTER
         ${property_empty_value}=  get text  ${group_property}
         log to console  ${property} property value is set to ${property_empty_value}EMPTY
-        sleep  ${high_speed}
+        sleep  ${short_wait_time}
     ELSE
         log to console  ${property} property is not visible
     END
-    set selenium timeout    ${high_speed}
+    set selenium timeout    ${short_wait_time}
+
+
+
