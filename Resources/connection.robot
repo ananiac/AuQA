@@ -1,10 +1,8 @@
 *** Settings ***
 Documentation          This demonstrates executing a command on a remote machine
-...                    and getting its output.
-...
+...                    and getting its output using ssh library.Also the commands on staging machine using process library
 Library                SSHLibrary
 Library                Process
-Library                OperatingSystem
 Variables    ${EXECDIR}/Configurations/${environment}.py
 Variables    ${EXECDIR}/Resources/ResourceVariables/globalVariables.py
 
