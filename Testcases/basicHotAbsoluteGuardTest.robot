@@ -33,7 +33,7 @@ BasicHotAbsoluteGuardTest
 #    #Note 200dF set ALmHotAbsGuard will act same as blank as the alarms wont be triggered
 #    basicHotAbsoluteGuardTestResources.setGroupProperties_GuardHotAbsTemp_AlmHotAbsTemp_AllowNumExceedencesGuard_AllowNumExceedencesControl    ${basicHotAbsoluteGuardInputs}[allow_num_exceedences_control_initial]   ${basicHotAbsoluteGuardInputs}[allow_num_exceedences_guard_initial]   ${basicHotAbsoluteGuardInputs}[alm_hot_abs_temp_initial]  ${basicHotAbsoluteGuardInputs}[guard_hot_abs_temp_intial]
 #    #6) Set all group temps sensors cool (eg 65 F) …. keep updating them every minute
-#    apiresources.setCoolingTemperatureForAllSensorPoints    ${basicHotAbsoluteGuardInputs}[sensor_point_cooling_temp]
+    apiresources.setCoolingTemperatureForAllSensorPoints    ${basicHotAbsoluteGuardInputs}[sensor_point_cooling_temp]
 #    #7)Start facs_dash process (ie Cooling Control)
 #    connection.establishConnectionAndStartCoolingControlProcess
 #    #8)Wait 2 minutes
