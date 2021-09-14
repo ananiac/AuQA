@@ -4,6 +4,7 @@ Documentation          This demonstrates executing a command on a remote machine
 ...
 Library                SSHLibrary
 Library                Process
+Library                OperatingSystem
 Variables    ${EXECDIR}/Configurations/${environment}.py
 Variables    ${EXECDIR}/Resources/ResourceVariables/globalVariables.py
 
@@ -166,8 +167,10 @@ establishConnectionAndStopAllVEMProcessesExceptVx_serverFacsLauncherFacsSiftFacs
 
 killChromeAndChromedriverProcessesAfterTest
     log to console  !!-----Killing all the Chrome instances in Staging machine------!!
-    run process    export    HISTIGNORE='*sudo -S*'  shell=True
-    run process    echo    "${password}"  |    sudo    killall    chrome     shell=True
+    execute command     export HISTIGNORE='*sudo -S*'
+    execute command     echo "${password}" | sudo killall chrome
+#    run process    export    HISTIGNORE='*sudo -S*'  shell=True
+#    run process    echo    "${password}"  |    sudo    killall    chrome     shell=True
 #    log to console  !!-----Killing chromedriver process in Staging machine------!!
 #    ${pid}=  run process  pidof chromedriver    shell=True
 #    log to console  PID of chromedriver process is -${pid}
