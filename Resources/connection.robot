@@ -167,14 +167,7 @@ establishConnectionAndStopAllVEMProcessesExceptVx_serverFacsLauncherFacsSiftFacs
 
 killChromeAndChromedriverProcessesAfterTest
     log to console  !!-----Killing all the Chrome instances in Staging machine------!!
-    execute command     export HISTIGNORE='*sudo -S*'
-    execute command     echo "${password}" | sudo killall chrome
-#    run process    export    HISTIGNORE='*sudo -S*'  shell=True
-#    run process    echo    "${password}"  |    sudo    killall    chrome     shell=True
-#    log to console  !!-----Killing chromedriver process in Staging machine------!!
-#    ${pid}=  run process  pidof chromedriver    shell=True
-#    log to console  PID of chromedriver process is -${pid}
-#    IF  '${pid}'!=''
-#        run process    export HISTIGNORE='*sudo -S*'
-#        run process    echo "${password}" | sudo kill -9 ${pid}
-#    END
+    run process    echo    "${password}"  |    sudo    killall    chrome     shell=True
+    log to console  !!-----Killing chromedriver process in Staging machine------!!
+    run process    echo    "${password}"  |    sudo    killall    chromedriver     shell=True
+
