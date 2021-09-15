@@ -30,7 +30,7 @@ HotGuardTestSetup
     #8.set all rack temperature sensor points every minute at say 66 F
     apiresources.setCoolingTemperatureForAllSensorPoints    ${hot_guard_intial_temp_all_racks}
     #9.start facs_dash (Cooling Control) and facs_sift (Application Metrics)
-    connection.establishConnectionAndStartRequiredProcesses    facs_dash    facs_Sift
+    connection.establishConnectionAndStartRequiredProcesses    facs_dash    facs_sift
     #10.Wait 4 minutes
     common.waitForMinutes   4
     #11.Write User event “Starting Test 1 - testing NumGuardUnits, NumMinutesGuardTimer and AllowNumExceedencesGuard”
