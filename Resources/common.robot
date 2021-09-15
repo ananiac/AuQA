@@ -60,11 +60,12 @@ moveReports
     ${foldername}=  	Get Current Date  result_format=%Y-%m-%d-%H-%M-%S
     ${foldernamestr}=  convert to string  ${foldername}
     log to console  folder ${foldernamestr} created under testReports
-    Copy Directory  ${EXECDIR}/Reports   /home/fc/automation/testReports/${foldernamestr}/
+    copy directory  ${EXECDIR}/Reports   /home/fc/automation/testReports/${foldernamestr}/
     log to console  folder /home/fc/automation/testReports/${foldernamestr}/
 
 clearReports
-    Remove Directory  ${EXECDIR}/Reports/pabot_results  recursive
-    Remove Directory  ${EXECDIR}/Reports/Screenshots  recursive
-    Remove Files  ${EXECDIR}/Reports/*.html
-    Remove Files  ${EXECDIR}/Reports/*.xml
+    remove directory  ${EXECDIR}/Reports/pabot_results  recursive
+    remove directory  ${EXECDIR}/Reports/Screenshots  recursive
+    remove files  ${EXECDIR}/Reports/*.html
+    remove files  ${EXECDIR}/Reports/*.xml
+    remove files  ${EXECDIR}/Reports/*.txt
