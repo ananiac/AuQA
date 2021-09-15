@@ -92,7 +92,7 @@ Test3_configGuardHysteresisBand
     #38.Set temps to 82.6 -Expect exit guard and clear alarm
     hotGuardTestResources.checkGuardAndGroupHotAlarmForTemperatureChangeOnFirstRack    82.6    ${guard_off}    ${group_hot_alarm_off}
     #39.Write User event - “Set config DASHM:: GuardHysteresisBand=1 and  CATGuardBandRange=5”
-    apiresources.writeUserEventsEntryToNotificationEventLog     AuQA test->Set config DASHM:: GuardHysteresisBand=${config_guard_hysteresis_band_value1} and  CATGuardBandRange=${config_CAT_guard_band_range_value5}
+    apiresources.writeUserEventsEntryToNotificationEventLog     AuQA test->Set config DASHM:: GuardHysteresisBand=${config_guard_hysteresis_band_value1} and CATGuardBandRange=${config_CAT_guard_band_range_value5}
     #40.Set config DASH_M:: GuardHysteresisBand=1 and  CATGuardBandRange=5
     hotGuardTestResources.setConfigGuardHysteresisBandAndCATGuardBandRange    ${config_guard_hysteresis_band_value1}    ${config_CAT_guard_band_range_value5}
     #41.Set temps 84.7- Expect no guard or alarm
