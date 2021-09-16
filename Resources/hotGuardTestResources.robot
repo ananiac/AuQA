@@ -16,13 +16,10 @@ Variables    ${EXECDIR}/Inputs/hotGuardTestInputs.py
 
 *** Keywords ***
 hotGuardTestPreconditionSetup
-    [Documentation]    Make sure no VEMS processes are running except
-    ...                vx_server, facs_launcher, facs_dash, facs_trends, and facs_sift (Application Metrics).
-    ...                Only these processes should be enabled.
-    ...                Make sure the simulator is NOT running
+    [Documentation]    Make sure no VEMS processes are running except vx_server, facs_launcher, facs_trends.
     ...                Also write test entry temperature for the parallel staleStatePrevention program
     log to console    !-----PreCondition for the Dead Sensor Guard test is been executed------!
-    connection.establishConnectionAndStopAllVEMProcessesExceptVx_serverFacsLauncherFacsSiftFacsDashAndFacs_trends
+    connection.establishConnectionAndStopAllProcessesExcept    vx_server    facs_launcher    facs_trend
     apiresources.writeTestEntryTemperatureToSensorsAfterVXServerStarted
 
 setConfigAllowNumExceedencesGuardAndCATGuardBAndRange
@@ -64,7 +61,7 @@ checkGuardAndGroupHotAlarmForGroupAllowNumExceedencesGuardValueChange
     apiresources.checkingAlarmStatusForGroup    GroupHot    ${expected_alarm_status_value}                  #query
 
 setHotGuardGroupPropertiesToEmpty
-    setGroupPropertiesForHotGuardToZero
+    setGroupPropertiesForHotGuardToSomeValue
     sleep  ${load_time}
     uiresources.startBrowserAndLoginToAIEngine
     sleep  ${load_time}
@@ -76,7 +73,7 @@ setHotGuardGroupPropertiesToEmpty
 #    reload page
     close browser
 
-setGroupPropertiesForHotGuardToZero
+setGroupPropertiesForHotGuardToSomeValue
     apiresources.changeGroupPropertiesParameterValue    AllowNumExceedencesGuard  int  ${allow_num_exceedences_guard_cleanup_value}
     apiresources.changeGroupPropertiesParameterValue    GuardHotAbsTemp  float  ${guard_hot_abs_temp_cleanup_value}
     apiresources.changeGroupPropertiesParameterValue    AlmHotAbsTemp  float  ${alm_hot_abs_temp_cleanup_value}

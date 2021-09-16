@@ -3,6 +3,7 @@ Documentation          This demonstrates executing a command on a remote machine
 ...                    and getting its output using ssh library.Also the commands on staging machine using process library
 Library                SSHLibrary
 Library                Process
+Library                Collections
 Variables    ${EXECDIR}/Configurations/${environment}.py
 Variables    ${EXECDIR}/Resources/ResourceVariables/globalVariables.py
 
@@ -169,3 +170,41 @@ killChromeAndChromedriverProcessesAfterTest
     log to console  !!-----Killing chromedriver process in Staging machine------!!
     run process    echo    "${password}"  |    sudo    killall    chromedriver     shell=True
 
+    #Created by Greeshma on 15 sep 2021
+    #Argument of this keyword is the list of process that need to be started.
+establishConnectionAndStartRequiredProcesses
+    [Arguments]    @{process_list}
+    ${length}    get length    ${process_list}
+    IF    ${length}==0
+        log to console    Process name not recieved
+    ELSE
+        ${num}    evaluate    1 * 1
+        connection.openConnectionAndLogIn
+        FOR    ${process}    IN    @{process_list}
+            log to console    ${num}-Starting ${process}---->
+            connection.executeProcessCommandWithoutTraceInHistory    ${process}
+            sleep    ${short_wait_time}
+            ${num}    evaluate   ${num} + 1
+        END
+        connection.closeAllConnections
+    END
+
+    #Created by Greeshma on 15 sep 2021 .
+    #Argument for this keyword should be the list of process which should not be stopped
+establishConnectionAndStopAllProcessesExcept
+    [Arguments]    @{exception_list}
+    @{all_processes_list}    create list    vx_server    facs_trends    dcsim  facs_cleanup  vems-snmp  facs_cp  facs_cl  facs_dash  facs_sift  vems-plugin-smart-mesh-ip  facs_launcher  vx_report  vems-plugin-dust  vems-plugin-modbus  vems-plugin-bacnet
+    connection.openConnectionAndLogIn
+    ${num}    evaluate    1 * 1
+    FOR    ${process}    IN    @{all_processes_list}
+        ${count}=    count values in list    ${exception_list}    ${process}
+        IF    ${count}==0
+            log to console    ${num}-Stopping ${process}---->
+            connection.executeSTOPProcessCommandWithoutTraceInHistory    ${process}
+            ${num}    evaluate    ${num} + 1
+        ELSE
+            log to console    ------------------------------------------------------------
+            log to console   >>>>>>>>>>>>>>>>>>>>>>${process} not stopped<<<<<<<<<<<<<<<<<
+        END
+    END
+    connection.closeAllConnections

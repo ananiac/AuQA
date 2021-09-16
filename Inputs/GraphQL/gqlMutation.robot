@@ -70,3 +70,9 @@ setGroupPropertymutation
     ${group_oid}=  apiresources.queryToFetchGroupOid
     ${mutation}=    set variable    mutation setGrpProp { propertyWrite(requests: [{oid: ${group_oid}, name: "${property_name}", ${property_type} : ${property_value}}]) { index reason }}
     return from keyword    ${mutation}
+
+    #Created by Greeshma on 13 Sep 2021
+testEventLogMutation
+    [Arguments]    ${message}
+    ${mutation}=    set variable    mutation TestEventLog { eventLog(requests: [{source: "Ideavat AuQA", message: "${message}"}]) { index reason }}
+    return from keyword    ${mutation}
