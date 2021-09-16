@@ -70,3 +70,13 @@ setGroupPropertymutation
     ${group_oid}=  apiresources.queryToFetchGroupOid
     ${mutation}=    set variable    mutation setGrpProp { propertyWrite(requests: [{oid: ${group_oid}, name: "${property_name}", ${property_type} : ${property_value}}]) { index reason }}
     return from keyword    ${mutation}
+
+setSFCMutation
+    [Arguments]  ${oid_sfc}  ${oid_sfc_value}
+    ${mutationSFC}=    set variable    mutation targetSetSFC {targetSet(requests: [{oid: ${oidSFC}, value: ${oid_sfc_value}, unit: percent100, target: CONTROL, origin: "MANUAL", priority: 70}]) { index reason }}
+    return from keyword    ${mutationSFC}
+
+setBOPMutation
+    [Arguments]  ${oidBOP}
+    ${mutationBOP}=    set variable    mutation targetSetBOP {targetSet(requests: [{oid: ${oidBOP}, value: 1, target: CONTROL, origin: "MANUAL", priority: 70}]) { index reason }}
+    return from keyword    ${mutationBOP}

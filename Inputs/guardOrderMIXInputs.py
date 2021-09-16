@@ -1,0 +1,25 @@
+# Guard order MIX test specific
+config_allow_num_exceedences_guard_initial=1
+config_allow_num_exceedences_guard_value2=2
+group_allow_num_exceedences_guard_value0=0
+group_allow_num_exceedences_guard_value1=1
+group_allow_num_exceedences_guard_value2=2
+config_CAT_guard_band_range_initial=4
+config_CAT_guard_band_range_value5=5
+config_num_guard_units_value1=1
+config_num_guard_units_value2=2
+config_num_minutes_guard_timer_value1=1
+config_num_minutes_guard_timer_value2=2
+config_guard_hysteresis_band_value1=1
+config_guard_hysteresis_band_value2=2
+high_set_point_limit=80.6
+high_set_point_limit_cleanup=88
+low_set_point_limit=64.4
+low_set_point_limit_cleanup=60
+guard_on="GUARD_ON"  #Guard mode value is 2
+guard_off="GUARD_OFF"
+group_hot_alarm_on="ALARM_ON"
+group_hot_alarm_off="ALARM_OFF"
+allow_num_exceedences_guard_cleanup_value=0
+guard_hot_abs_temp_cleanup_value=0
+alm_hot_abs_temp_cleanup_value=0
