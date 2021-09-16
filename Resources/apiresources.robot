@@ -470,4 +470,4 @@ writeUserEventsEntryToNotificationEventLog
     create session    AIEngine    ${base_url}     disable_warnings=1
     ${result}=  post on session    AIEngine  /public/graphql  headers=${headers}    json=${body}
     should be equal as strings  ${result.json()}  ${testEventLogResponse}
-    log to console    ---------------VX-->Notification tab->Event--> Updated with test event message!-----------
+    log to console    !---------------VX-->Notification tab->Event-->updated--> ${message}--!
