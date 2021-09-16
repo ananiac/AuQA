@@ -171,6 +171,7 @@ killChromeAndChromedriverProcessesAfterTest
     run process    echo    "${password}"  |    sudo    killall    chromedriver     shell=True
 
     #Created by Greeshma on 15 sep 2021
+    #Argument of this keyword is the list of process that need to be started.
 establishConnectionAndStartRequiredProcesses
     [Arguments]    @{process_list}
     ${length}    get length    ${process_list}
@@ -188,7 +189,8 @@ establishConnectionAndStartRequiredProcesses
         connection.closeAllConnections
     END
 
-    #Created by Greeshma on 15 sep 2021
+    #Created by Greeshma on 15 sep 2021 .
+    #Argument for this keyword should be the list of process which should not be stopped
 establishConnectionAndStopAllProcessesExcept
     [Arguments]    @{exception_list}
     @{all_processes_list}    create list    vx_server    facs_trends    dcsim  facs_cleanup  vems-snmp  facs_cp  facs_cl  facs_dash  facs_sift  vems-plugin-smart-mesh-ip  facs_launcher  vx_report  vems-plugin-dust  vems-plugin-modbus  vems-plugin-bacnet

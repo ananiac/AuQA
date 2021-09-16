@@ -16,10 +16,10 @@ Variables    ${EXECDIR}/Inputs/hotGuardTestInputs.py
 
 *** Keywords ***
 hotGuardTestPreconditionSetup
-    [Documentation]    Stop all VEMS processes except vx_server and facs_trends
+    [Documentation]    Make sure no VEMS processes are running except vx_server, facs_launcher, facs_trends.
     ...                Also write test entry temperature for the parallel staleStatePrevention program
     log to console    !-----PreCondition for the Dead Sensor Guard test is been executed------!
-    connection.establishConnectionAndStopAllVEMProcessesExceptVx_serverAndFacs_trends
+    connection.establishConnectionAndStopAllProcessesExcept    vx_server    facs_launcher    facs_trend
     apiresources.writeTestEntryTemperatureToSensorsAfterVXServerStarted
 
 setConfigAllowNumExceedencesGuardAndCATGuardBAndRange
