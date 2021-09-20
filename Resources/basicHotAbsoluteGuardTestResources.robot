@@ -16,7 +16,7 @@ basicHotAbsoluteGuardTestSetup
     ...                Make sure the simulator is NOT running
     ...                Also write test entry temperature for the parallel staleStatePrevention program
     log to console    !-----PreCondition for the Basic Hot Absolute Guard test is been executed------!
-    connection.establishConnectionAndStopAllVEMProcessesExceptVx_serverAndFacs_trends
+    connection.establishConnectionAndStopAllProcessesExcept    vx_server  facs_trend
     apiresources.writeTestEntryTemperatureToSensorsAfterVXServerStarted
 
     #Moved from apiresource.robot by Greeshma on 31 August 2021
