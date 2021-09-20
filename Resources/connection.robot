@@ -22,7 +22,7 @@ openConnectionAndLogIn
 
 closeAllConnections
     execute command    exit
-    log to console    *******************Processes(start or stop) completed and Closed ssh connection********************
+    log to console    *******************Closed ssh connection********************
 
 executeProcessCommandWithoutTraceInHistory
     [Arguments]    ${process_name}
@@ -32,7 +32,6 @@ executeProcessCommandWithoutTraceInHistory
 
 executeSTOPProcessCommandWithoutTraceInHistory
     [Arguments]    ${process_name}
-    log to console    !!------Connection opened and now stopping the process ${process_name}----!!
     execute command     export HISTIGNORE='*sudo -S*'
     execute command     echo "${password}" | sudo -S -k systemctl stop ${process_name}
     log to console    ***********Process ${process_name} Stopped**********
