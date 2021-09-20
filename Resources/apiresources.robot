@@ -43,6 +43,7 @@ changeCxConfigsTabModuleFieldValues
     ${result}=  post on session    AIEngine  /public/graphql  headers=${headers}    json=${body}
     should be equal as strings  ${result.json()}  ${configSetResponse}
     log to console    Config module :${module_name}->Field:${field_name}->Value:${value}-is updated
+    apiresources.writeUserEventsEntryToNotificationEventLog    AuQA test->${group_name}->Config->${module_name}->${field_name}=${value}-is updated.
 
 setRackPointSensorTemperature
     [Arguments]    ${oid}    ${temp}
@@ -252,18 +253,18 @@ queryToFetchGroupOid
 
 setTestEntryTemperatureToSensorPoints
     log to console  !!--------Test started and writing test_entry_sensor_temp ${test_entry_sensor_temp} ---------------!!
-    setTemperatureForAllRackSensorPoints  ${test_entry_sensor_temp}
+    apiresources.setTemperatureForAllRackSensorPoints  ${test_entry_sensor_temp}
 
 writeTestEntryTemperatureToSensorsAfterVXServerStarted
     common.setFlagValue    ${test_entry_flag}
     ${current_status_of_vx_server}=  connection.establishConnectionAndCheckVX_ServerProcesseStatus
     log to console  Current status of vx server is ${current_status_of_vx_server}
     IF  '${current_status_of_vx_server}'=='process_up'
-        setTestEntryTemperatureToSensorPoints
+        apiresources.setTestEntryTemperatureToSensorPoints
     ELSE
         log to console  !!--------Need to start vx_server and write test_entry_sensor_temp---------------!!
-        connection.startVXServerProcess
-        setTestEntryTemperatureToSensorPoints
+        connection.establishConnectionAndStartRequiredProcesses    vx_server
+        apiresources.setTestEntryTemperatureToSensorPoints
 
     END
     log to console  !!!--------------------Test Setup done------------------------------!!!
@@ -271,7 +272,7 @@ writeTestEntryTemperatureToSensorsAfterVXServerStarted
 setTestExitTemperatureToAllSensorPoints
     common.setFlagValue    ${test_exit_flag}
     log to console  *************Test finished and writing test_exit_sensor_temp ${test_exit_sensor_temp}************
-    setTemperatureForAllRackSensorPoints  ${test_exit_sensor_temp}
+    apiresources.setTemperatureForAllRackSensorPoints  ${test_exit_sensor_temp}
     log to console  !!!--------------------Test Teardown done------------------------------!!!
     connection.killChromeAndChromedriverProcessesAfterTest
 

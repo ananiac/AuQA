@@ -16,7 +16,7 @@ HotGuardTestSetup
     #1.Start system with the AuQa Db on it (eg 10.252.9.118)
     #2.Use the General-test group.Only vx_server, facs_launcher and facs_trends should be running
     #facs_dash should NOT be running
-    connection.establishConnectionAndStartRequiredProcesses    vx_server  facs_launcher  facs_trends
+    connection.establishConnectionAndStartRequiredProcesses    vx_server  facs_launcher  facs_trend
     #3.Load the DASHAM_MIX template in the CX configs (with overwrite),DASHAM_RSP_RESET template if using RSP-test group
     uiresources.resetSystemPropertiesUsingLoadTemplateOptionWithOverwrite
     #4.Confirm config DASH_M::AllowNumExceedencesGuard=1 and CATGuardBandRange=4
