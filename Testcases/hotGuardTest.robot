@@ -34,7 +34,7 @@ HotGuardTestSetup
     #10.Wait 4 minutes
     common.waitForMinutes   4
     #11.Write User event “Starting Test 1 - testing NumGuardUnits, NumMinutesGuardTimer and AllowNumExceedencesGuard”
-    apiresources.writeUserEventsEntryToNotificationEventLog    ${group_name}->Hot Guard test->Starting Test 1 - testing NumGuardUnits,NumMinutesGuardTimer and AllowNumExceedencesGuard
+    apiresources.writeUserEventsEntryToNotificationEventLog    AuQA test->${group_name}->Hot Guard test->Starting Test 1 - testing NumGuardUnits,NumMinutesGuardTimer and AllowNumExceedencesGuard
     #12.Test 1 - configs NumGuardUnits and NumMinutesGuardTimer and AllowNumExceedencesGuard
 Test1_configsNumGuardUnitsAndNumMinutesGuardTimerAndAllowNumExceedencesGuard
     #13.Write User event - “Set config DASHM::NumGuardUnits=2 NumMinutesGuardTimer=4 and GuardHysteresisBand=2”
@@ -70,7 +70,7 @@ Test1_configsNumGuardUnitsAndNumMinutesGuardTimerAndAllowNumExceedencesGuard
     hotGuardTestResources.checkGuardAndGroupHotAlarmForConfigAllowNumExceedencesGuardValueChange    ${config_allow_num_exceedences_guard_value2}    ${guard_off}    ${group_hot_alarm_off}
 Test2_groupAllowNumExceedencesGuard
     #28.Write User event “Starting Test 2- testing group AllowNumExceedencesGuard”
-    apiresources.writeUserEventsEntryToNotificationEventLog    Starting Test 2- testing group AllowNumExceedencesGuard
+    apiresources.writeUserEventsEntryToNotificationEventLog    AuQA test->${group_name}->Starting Test 2->testing group AllowNumExceedencesGuard
     #29.Test 2 - group AllowNumExceedencesGuard
     #30.Set group AllowNumExceedencesGuard=0 - Expect guard and alarm … 1 ahu after 2 mins
     checkGuardAndGroupHotAlarmForGroupAllowNumExceedencesGuardValueChange    ${group_allow_num_exceedences_guard_value0}    ${guard_on}    ${group_hot_alarm_on}
@@ -81,7 +81,7 @@ Test2_groupAllowNumExceedencesGuard
     checkGuardAndGroupHotAlarmForGroupAllowNumExceedencesGuardValueChange    ${group_allow_num_exceedences_guard_value2}    ${guard_off}    ${group_hot_alarm_off}
 Test3_configGuardHysteresisBand
     #33.Write User event “Starting Test 2- testing GuardHysteresisBand ”
-    apiresources.writeUserEventsEntryToNotificationEventLog    Starting Test 3- testing GuardHysteresisBand
+    apiresources.writeUserEventsEntryToNotificationEventLog    AuQA test->${group_name}->Starting Test 3->testing GuardHysteresisBand
     #34.Test 3 - GuardHysteresisBand
     #35.Set group AllowNumExceedencesGuard=1 - Expect still guard and alarm
     checkGuardAndGroupHotAlarmForGroupAllowNumExceedencesGuardValueChange    ${group_allow_num_exceedences_guard_value1}    ${guard_on}    ${group_hot_alarm_on}
@@ -109,7 +109,7 @@ Test3_configGuardHysteresisBand
     hotGuardTestResources.checkGuardAndGroupHotAlarmForTemperatureChangeOnFirstRack    84.6    ${guard_off}    ${group_hot_alarm_off}
 CleanUp
     #47.Write User event “Ending Hot Guard test”
-    apiresources.writeUserEventsEntryToNotificationEventLog    ${group_name}->Ending Hot Guard test
+    apiresources.writeUserEventsEntryToNotificationEventLog    AuQA test->${group_name}->Ending Hot Guard test<<<<
     #48.End Test
     #49.Stop all processes except vx_server, facs_launcher and facs_trend
     connection.establishConnectionAndStopAllProcessesExcept    vx_server    facs_launcher    facs_trend
