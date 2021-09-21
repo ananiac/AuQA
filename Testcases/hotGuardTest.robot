@@ -54,7 +54,7 @@ Test1_configsNumGuardUnitsAndNumMinutesGuardTimerAndAllowNumExceedencesGuard
     #20.Set config DASH_M::AllowNumExceedencesGuard=2-Expect exit guard and clear alarm
     hotGuardTestResources.checkGuardAndGroupHotAlarmForConfigAllowNumExceedencesGuardValueChange    ${config_allow_num_exceedences_guard_value2}    ${guard_off}    ${group_hot_alarm_off}
     #21.Write User event - “Set config DASHM::NumGuardUnits=1 NumMinutesGuardTimer=2”
-    #User event log entry is added from apiresources.changeCxConfigsTabModuleFieldValues,which is part of the keyword definition in step 22
+    #User event log entry is added from apiresources.changeCxConfigsTabModuleFieldValues, which is part of the keyword definition in step 22
     #22.Set  config DASH_M::NumGuardUnits=1 NumMinutesGuardTimer=2
     apiresources.setConfigNumGuardUnits    ${config_num_guard_units_value1}
     apiresources.setConfigNumMinutesGuardTimer    ${config_num_minutes_guard_timer_value2}
