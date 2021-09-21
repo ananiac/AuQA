@@ -11,6 +11,7 @@ Variables    ${EXECDIR}/Inputs/expectedMutationJsonResponses.py
 Resource    common.robot
 Resource    connection.robot
 Resource    ${EXECDIR}/Inputs/GraphQL/gqlMutation.robot
+Resource    ${EXECDIR}/Inputs/guardTestInputs.robot
 
 
 *** Variables ***
@@ -472,3 +473,134 @@ writeUserEventsEntryToNotificationEventLog
     ${result}=  post on session    AIEngine  /public/graphql  headers=${headers}    json=${body}
     should be equal as strings  ${result.json()}  ${testEventLogResponse}
     log to console    !---------------VX-->Notification tab->Event-->updated--> ${message}--!
+
+queryToFetchJsonResponseContaingTheCurrentAHUStatusGuard4
+    ${headers}=       create dictionary    Content-Type=${content_type}   Vigilent-Api-Token=${query_api_token}
+    ${query}=  gqlMutation.getAHUStatusInGroupQuery  ${group_name}
+    ${body}=          create dictionary    query= ${query}
+    create session    AIEngine    ${base_url}     disable_warnings=1
+    ${result}=  post on session    AIEngine  /public/graphql  headers=${headers}    json=${body}
+#    ${json_dictionary}=     set variable    ${result.json()}
+#    return from keyword    ${json_dictionary}
+    &{var_dict}=    evaluate     json.loads("""${result.content}""")    json
+    #log to console    ${var_dict}
+#    ${total_ahu}=    fetchTheNumberOfItemsInDictionary    ${var_dict}    ${ahu_in_group}
+#    ${total_ahu}=  8  #set variable  ${var_dict}[data][site][groups][0][ahus]
+#    log to console    ${total_ahu}
+    @{ahu_list}=  create list
+    FOR    ${i}    IN RANGE    0    8
+        ${ahu_name}=    set variable    ${var_dict}[data][site][groups][0][ahus][${i}][name]
+        ${ahu_bop_oid}=    set variable    ${var_dict}[data][site][groups][0][ahus][${i}][controls][0][oid]
+        ${ahu_sfc_oid}=    set variable    ${var_dict}[data][site][groups][0][ahus][${i}][controls][1][oid]
+        log to console    ahu_name ${ahu_name}
+        log to console    ahu_bop_oid ${ahu_bop_oid}
+        log to console    ahu_sfc_oid ${ahu_sfc_oid}
+#        @{ahu_list}  append to list  ${var_dict}[data][site][groups][0][ahus][${i}][name]
+#        ${ahuahu}=  set variable   @{ahu_list}
+        Append To List    ${ahu_list}    ${var_dict}[data][site][groups][0][ahus][${i}][name]
+
+        setBOPValueGuard4    ${ahu_bop_oid}
+        setSFC  ${ahu_name}  ${ahu_sfc_oid}
+#        log to console    ===========-----SFC Value set for AHU ${rack_name}---===============
+    END
+    log to console  from list ${ahu_list}
+    ${ahu_list}=  get length  ${ahu_list}
+    log to console  length of list is ${ahu_list}
+
+setSFC
+    [Arguments]    ${ahu_name}  ${ahu_sfc_oid}
+    FOR    ${i}    IN RANGE    0    8
+    run keyword if    '${ahu_name}'=='CAC_1${i}'     setSFCValueGuard4    ${ahu_sfc_oid}  ${guardOrderMIXInputs}[ahu_cac_1${i}_value]
+    END
+#    run keyword if    '${ahu_name}'=='CAC_10'     setSFCValueGuard4    ${ahu_sfc_oid}  ${guardOrderMIXInputs}[ahu_cac_10_value]
+#        run keyword if    '${ahu_name}'=='CAC_11'     setSFCValueGuard4    ${ahu_sfc_oid}  ${guardOrderMIXInputs}[ahu_cac_11_value]
+#        run keyword if    '${ahu_name}'=='CAC_12'     setSFCValueGuard4    ${ahu_sfc_oid}  ${guardOrderMIXInputs}[ahu_cac_12_value]
+#        run keyword if    '${ahu_name}'=='CAC_13'     setSFCValueGuard4    ${ahu_sfc_oid}  ${guardOrderMIXInputs}[ahu_cac_13_value]
+#        run keyword if    '${ahu_name}'=='CAC_14'     setSFCValueGuard4    ${ahu_sfc_oid}  ${guardOrderMIXInputs}[ahu_cac_14_value]
+#        run keyword if    '${ahu_name}'=='CAC_15'     setSFCValueGuard4    ${ahu_sfc_oid}  ${guardOrderMIXInputs}[ahu_cac_15_value]
+#        run keyword if    '${ahu_name}'=='CAC_16'     setSFCValueGuard4    ${ahu_sfc_oid}  ${guardOrderMIXInputs}[ahu_cac_16_value]
+#        run keyword if    '${ahu_name}'=='CAC_17'     setSFCValueGuard4    ${ahu_sfc_oid}  ${guardOrderMIXInputs}[ahu_cac_17_value]
+
+
+#queryToFetchJsonResponseContaingTheCurrentAHUStatus
+#    ${headers}=       create dictionary    Content-Type=${content_type}   Vigilent-Api-Token=${query_api_token}
+#    ${query}=  gqlMutation.getAHUStatusInGroupQuery  ${group_name}
+#    ${body}=          create dictionary    query= ${query}
+#    create session    AIEngine    ${base_url}     disable_warnings=1
+#    ${result}=  post on session    AIEngine  /public/graphql  headers=${headers}    json=${body}
+#    ${json_dictionary}=     set variable    ${result.json()}
+#    return from keyword    ${json_dictionary}
+
+#setBOPAndSFCGuard4
+#    [Arguments]    ${bop_value}    ${sfc_value}
+#    log to console    Fetch the number of AHUs ----------------->
+#    ${json_dict}    queryToFetchJsonResponseContainingAHUsFromGroup
+#    ${total}=    fetchTheNumberOfItemsInDictionaryGuard4    ${json_dict}    ${racks_in_group}
+#    log to console    Setting BOP and SFC for all ${total} AHUs----------------->
+#    FOR    ${i}    IN RANGE    0    ${total}
+#        ${rack_type2}    fetchValueOfFieldFromJsonDictionary    ${json_dict}    $.data.site.groups[0].racks[${i}].points[1].type
+#        ${oid2}     fetchValueOfFieldFromJsonDictionary    ${json_dict}    $.data.site.groups[0].racks[${i}].points[1].oid
+#        ${rack_name}    fetchValueOfFieldFromJsonDictionary    ${json_dict}    $.data.site.groups[0].racks[${i}].displayName
+#        run keyword if    '${rack_type2}'=='CTop'     setHighAndLowSetPointValues    ${oid2}    ${high_limit}    ${low_limit}
+#        log to console    ===========-----Done for ${rack_name}---===============
+#    END
+#    log to console    ******************************SetPoint Limits are set for all Racks *********************************
+
+queryToFetchJsonResponseContainingAHUsFromGroup
+    ${headers}=       create dictionary    Content-Type=${content_type}   Vigilent-Api-Token=${query_api_token}
+    ${query}=    gqlMutation.getRackSensorPointsOfGroupQuery  ${group_name}
+    ${body}=          create dictionary    query= ${query}
+    create session    AIEngine    ${base_url}     disable_warnings=1
+    ${result}=  post on session    AIEngine  /public/graphql  headers=${headers}    json=${body}
+    ${json_dict}=   set variable    ${result.json()}
+    return from keyword    ${json_dict}
+
+fetchTheNumberOfItemsInDictionaryGuard4
+    [Arguments]    ${dictionary}    ${json_of_required_node}
+    @{points}    get value from json    ${dictionary}    ${json_of_required_node}
+    ${total_points_to_write}    get length   @{points}
+    ${total}=    convert to integer    ${total_points_to_write}
+    return from keyword    ${total}
+
+fetchValueOfFieldFromJsonDictionaryGuard4
+    [Arguments]    ${json_dictionary}     ${json_path_of_required_field}
+    ${field_value_list}    get value from json    ${json_dictionary}    ${json_path_of_required_field}
+    ${field_value}    get from list    ${field_value_list}    0
+    return from keyword    ${field_value}
+
+setSFCValueGuard4
+    [Arguments]    ${oid_sfc}  ${oid_sfc_value}
+    ${headers}=       create dictionary    Content-Type=${content_type}   Vigilent-Api-Token=${write_api_token}
+    ${graphql_mutation}=  gqlMutation.setSFCMutation  ${oid_sfc}  ${oid_sfc_value}
+    log to console  ${graphql_mutation}
+    ${body}=          create dictionary    query= ${graphql_mutation}
+    create session    AIEngine    ${base_url}     disable_warnings=1
+    ${result}=  post on session    AIEngine  /public/graphql  headers=${headers}    json=${body}
+    log to console  ${result}
+    log to console   Set SFC value for AHU
+
+setBOPValueGuard4
+    [Arguments]    ${ahu_bop_oid}
+    ${headers}=       create dictionary    Content-Type=${content_type}   Vigilent-Api-Token=${write_api_token}
+    ${graphql_mutation}=  gqlMutation.setBOPMutation  ${ahu_bop_oid}    #${oid_sfc_value}
+    log to console  ${graphql_mutation}
+    ${body}=          create dictionary    query= ${graphql_mutation}
+    create session    AIEngine    ${base_url}     disable_warnings=1
+    ${result}=  post on session    AIEngine  /public/graphql  headers=${headers}    json=${body}
+    log to console  ${result}
+    log to console   Set ON for AHU's BOP ${ahu_bop_oid}
+
+#setAllHighAndLowSetPointLimitsGuard4
+#    [Arguments]    ${high_limit}    ${low_limit}
+#    log to console    Fetch the number of rack sensors ----------------->
+#    ${json_dict}    queryToFetchJsonResponseContainingTheRackSensorsFromGroup
+#    ${total}=    fetchTheNumberOfItemsInDictionary    ${json_dict}    ${racks_in_group}
+#    log to console    Setting SetPoint High and Low Limits for all ${total} Racks----------------->
+#    FOR    ${i}    IN RANGE    0    ${total}
+#        ${rack_type2}    fetchValueOfFieldFromJsonDictionary    ${json_dict}    $.data.site.groups[0].racks[${i}].points[1].type
+#        ${oid2}     fetchValueOfFieldFromJsonDictionary    ${json_dict}    $.data.site.groups[0].racks[${i}].points[1].oid
+#        ${rack_name}    fetchValueOfFieldFromJsonDictionary    ${json_dict}    $.data.site.groups[0].racks[${i}].displayName
+#        run keyword if    '${rack_type2}'=='CTop'     setHighAndLowSetPointValues    ${oid2}    ${high_limit}    ${low_limit}
+#        log to console    ===========-----Done for ${rack_name}---===============
+#    END
+#    log to console    ******************************SetPoint Limits are set for all Racks *********************************

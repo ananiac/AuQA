@@ -76,3 +76,13 @@ testEventLogMutation
     [Arguments]    ${message}
     ${mutation}=    set variable    mutation TestEventLog { eventLog(requests: [{source: "Ideavat AuQA", message: "${message}"}]) { index reason }}
     return from keyword    ${mutation}
+
+setSFCMutation
+    [Arguments]  ${oid_sfc}  ${oid_sfc_value}
+    ${mutationSFC}=    set variable    mutation targetSetSFC {targetSet(requests: [{oid: ${oidSFC}, value: ${oid_sfc_value}, unit: percent100, target: CONTROL, origin: "MANUAL", priority: 70}]) { index reason }}
+    return from keyword    ${mutationSFC}
+
+setBOPMutation
+    [Arguments]  ${oid_bop}
+    ${mutationBOP}=    set variable    mutation targetSetBOP {targetSet(requests: [{oid: ${oidBOP}, value: 1, target: CONTROL, origin: "MANUAL", priority: 70}]) { index reason }}
+    return from keyword    ${mutationBOP}
