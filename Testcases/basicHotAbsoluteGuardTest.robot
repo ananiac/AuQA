@@ -21,8 +21,9 @@ Resource    ${EXECDIR}/Inputs/guardTestInputs.robot
 *** Test Cases ***
 BasicHotAbsoluteGuardTest
     [Setup]    basicHotAbsoluteGuardTestResources.basicHotAbsoluteGuardTestSetup
+    apiresources.writeUserEventsEntryToNotificationEventLog    AuQA test->${group_name}->BasicHotAbsoluteGuardTest started.
     #1).Start only vx_server, facs_launcher and facs_trend should be running
-    connection.establishConnectionAndStartProcessesVx_serverFacs_trendAndFacs_launcher
+    connection.establishConnectionAndStartRequiredProcesses    vx_server  facs_launcher  facs_trend
     #2)In the CX UI, open the Configs and load the DASHAM template (with overwrite) and hit Save button then close
     uiresources.resetSystemPropertiesUsingLoadTemplateOptionWithOverwrite
     #3)Set System DASHM:: configs NumGuardUnits = 1,NumMinutesGuardTimer = 3, PercentDeadSensorThreshold=100
@@ -35,7 +36,7 @@ BasicHotAbsoluteGuardTest
     #6) Set all group temps sensors cool (eg 65 F) …. keep updating them every minute
     apiresources.setCoolingTemperatureForAllSensorPoints    ${basicHotAbsoluteGuardInputs}[sensor_point_cooling_temp]
     #7)Start facs_dash process (ie Cooling Control)
-    connection.establishConnectionAndStartCoolingControlProcess
+    connection.establishConnectionAndStartRequiredProcesses    facs_dash
     #8)Wait 2 minutes
     common.waitForMinutes   2
     #9)Confirm the group  is not in guard[Validation for GroupStatus Control value not to be 2 (Guard=2)]
@@ -64,9 +65,10 @@ BasicHotAbsoluteGuardTest
     apiresources.setPercentDeadSensorThresholdInDASHMConfig    ${basicHotAbsoluteGuardInputs}[percent_deadsensor_threshold_default]
     #19)Confirm  no AHUs are in guard
     apiresources.checkForAllAHUsToBeGuardCleared
-    #20)Stop facs_dash (Cooling Control)
-    connection.establishConnectionAndStopCoolingControlProcess
+    #20)Stop all processes except vx_server, facs_launcher and facs_trend
+    connection.establishConnectionAndStopAllProcessesExcept    vx_server    facs_launcher    facs_trend
     #21)End Test
+    apiresources.writeUserEventsEntryToNotificationEventLog    AuQA test->${group_name}->BasicHotAbsoluteGuardTest Finished.
     [Teardown]    apiresources.setTestExitTemperatureToAllSensorPoints
 
 

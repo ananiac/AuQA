@@ -20,11 +20,11 @@ Resource    common.robot
 
 *** Keywords ***
 deadSensorGuardTestSetup
-    [Documentation]    Make sure no VEMS processes are running except vx_server and facs_trends
+    [Documentation]    Make sure no VEMS processes are running except vx_server, facs_launcher, facs_trends
     ...                Make sure the simulator is NOT running
     ...                Also write test entry temperature for the parallel staleStatePrevention program
     log to console    !-----PreCondition for the Dead Sensor Guard test is been executed------!
-    connection.establishConnectionAndStopAllVEMProcessesExceptVx_serverAndFacs_trends
+    connection.establishConnectionAndStopAllProcessesExcept    vx_server  facs_trend    facs_launcher
     apiresources.writeTestEntryTemperatureToSensorsAfterVXServerStarted
 
 setIntialCxConfigParameters
