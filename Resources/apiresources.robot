@@ -481,10 +481,11 @@ queryToFetchJsonResponseContaingTheCurrentAHUStatusGuard4
 #    return from keyword    ${json_dictionary}
     &{var_dict}=    evaluate     json.loads("""${result.content}""")    json
     #log to console    ${var_dict}
-#    ${total_ahu}=    fetchTheNumberOfItemsInDictionary    ${var_dict}    ${ahu_in_group}
-#    ${total_ahu}=  8  #set variable  ${var_dict}[data][site][groups][0][ahus]
-    #log to console    ${total_ahu}
+    ${total_ahu}=    fetchTheNumberOfItemsInDictionary    ${var_dict}    ${ahu_in_group}
+    ${total_ahu}=  8  #set variable  ${var_dict}[data][site][groups][0][ahus]
+    log to console    ${total_ahu}
 
+    #${ahu_list}=  create list
     FOR    ${i}    IN RANGE    0    8
         ${ahu_name}=    set variable    ${var_dict}[data][site][groups][0][ahus][${i}][name]
         ${ahu_bop_oid}=    set variable    ${var_dict}[data][site][groups][0][ahus][${i}][controls][0][oid]
@@ -492,16 +493,25 @@ queryToFetchJsonResponseContaingTheCurrentAHUStatusGuard4
         log to console    ahu_name ${ahu_name}
         log to console    ahu_bop_oid ${ahu_bop_oid}
         log to console    ahu_sfc_oid ${ahu_sfc_oid}
-        run keyword if    '${ahu_name}'=='CAC_10'     setSFCValueGuard4    ${ahu_sfc_oid}  ${guardOrderMIXInputs}[ahu_cac_10_value]
-        run keyword if    '${ahu_name}'=='CAC_11'     setSFCValueGuard4    ${ahu_sfc_oid}  ${guardOrderMIXInputs}[ahu_cac_11_value]
-        run keyword if    '${ahu_name}'=='CAC_12'     setSFCValueGuard4    ${ahu_sfc_oid}  ${guardOrderMIXInputs}[ahu_cac_12_value]
-        run keyword if    '${ahu_name}'=='CAC_13'     setSFCValueGuard4    ${ahu_sfc_oid}  ${guardOrderMIXInputs}[ahu_cac_13_value]
-        run keyword if    '${ahu_name}'=='CAC_14'     setSFCValueGuard4    ${ahu_sfc_oid}  ${guardOrderMIXInputs}[ahu_cac_14_value]
-        run keyword if    '${ahu_name}'=='CAC_15'     setSFCValueGuard4    ${ahu_sfc_oid}  ${guardOrderMIXInputs}[ahu_cac_15_value]
-        run keyword if    '${ahu_name}'=='CAC_16'     setSFCValueGuard4    ${ahu_sfc_oid}  ${guardOrderMIXInputs}[ahu_cac_16_value]
-        run keyword if    '${ahu_name}'=='CAC_17'     setSFCValueGuard4    ${ahu_sfc_oid}  ${guardOrderMIXInputs}[ahu_cac_17_value]
+        setBOPValueGuard4    ${ahu_bop_oid}
+        setSFC  ${ahu_name}  ${ahu_sfc_oid}
 #        log to console    ===========-----SFC Value set for AHU ${rack_name}---===============
     END
+
+setSFC
+    [Arguments]    ${ahu_name}  ${ahu_sfc_oid}
+    FOR    ${i}    IN RANGE    0    8
+    run keyword if    '${ahu_name}'=='CAC_1${i}'     setSFCValueGuard4    ${ahu_sfc_oid}  ${guardOrderMIXInputs}[ahu_cac_1${i}_value]
+    END
+#    run keyword if    '${ahu_name}'=='CAC_10'     setSFCValueGuard4    ${ahu_sfc_oid}  ${guardOrderMIXInputs}[ahu_cac_10_value]
+#        run keyword if    '${ahu_name}'=='CAC_11'     setSFCValueGuard4    ${ahu_sfc_oid}  ${guardOrderMIXInputs}[ahu_cac_11_value]
+#        run keyword if    '${ahu_name}'=='CAC_12'     setSFCValueGuard4    ${ahu_sfc_oid}  ${guardOrderMIXInputs}[ahu_cac_12_value]
+#        run keyword if    '${ahu_name}'=='CAC_13'     setSFCValueGuard4    ${ahu_sfc_oid}  ${guardOrderMIXInputs}[ahu_cac_13_value]
+#        run keyword if    '${ahu_name}'=='CAC_14'     setSFCValueGuard4    ${ahu_sfc_oid}  ${guardOrderMIXInputs}[ahu_cac_14_value]
+#        run keyword if    '${ahu_name}'=='CAC_15'     setSFCValueGuard4    ${ahu_sfc_oid}  ${guardOrderMIXInputs}[ahu_cac_15_value]
+#        run keyword if    '${ahu_name}'=='CAC_16'     setSFCValueGuard4    ${ahu_sfc_oid}  ${guardOrderMIXInputs}[ahu_cac_16_value]
+#        run keyword if    '${ahu_name}'=='CAC_17'     setSFCValueGuard4    ${ahu_sfc_oid}  ${guardOrderMIXInputs}[ahu_cac_17_value]
+
 
 #queryToFetchJsonResponseContaingTheCurrentAHUStatus
 #    ${headers}=       create dictionary    Content-Type=${content_type}   Vigilent-Api-Token=${query_api_token}
@@ -559,6 +569,17 @@ setSFCValueGuard4
     ${result}=  post on session    AIEngine  /public/graphql  headers=${headers}    json=${body}
     log to console  ${result}
     log to console   Set SFC value for AHU
+
+setBOPValueGuard4
+    [Arguments]    ${ahu_bop_oid}
+    ${headers}=       create dictionary    Content-Type=${content_type}   Vigilent-Api-Token=${write_api_token}
+    ${graphql_mutation}=  gqlMutation.setBOPMutation  ${ahu_bop_oid}    #${oid_sfc_value}
+    log to console  ${graphql_mutation}
+    ${body}=          create dictionary    query= ${graphql_mutation}
+    create session    AIEngine    ${base_url}     disable_warnings=1
+    ${result}=  post on session    AIEngine  /public/graphql  headers=${headers}    json=${body}
+    log to console  ${result}
+    log to console   Set ON for AHU's BOP ${ahu_bop_oid}
 
 #setAllHighAndLowSetPointLimitsGuard4
 #    [Arguments]    ${high_limit}    ${low_limit}

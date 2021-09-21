@@ -77,6 +77,6 @@ setSFCMutation
     return from keyword    ${mutationSFC}
 
 setBOPMutation
-    [Arguments]  ${oidBOP}
+    [Arguments]  ${oid_bop}
     ${mutationBOP}=    set variable    mutation targetSetBOP {targetSet(requests: [{oid: ${oidBOP}, value: 1, target: CONTROL, origin: "MANUAL", priority: 70}]) { index reason }}
     return from keyword    ${mutationBOP}
