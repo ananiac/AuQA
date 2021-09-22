@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<robot generator="Rebot 4.1 (Python 3.9.6 on win32)" generated="20210921 18:42:12.761" rpa="false" schemaversion="2">
+<suite id="s1" name="cleanReports" source="E:\Ideavat\AutomatedQA\AuQA\Testcases\cleanReports.robot">
+<test id="s1-t1" name="CleanReportsFolder">
+<kw name="clearReports" library="common">
+<kw name="Remove Directory" library="OperatingSystem">
+<arg>${EXECDIR}/Reports/pabot_results</arg>
+<arg>recursive</arg>
+<doc>Removes the directory pointed to by the given ``path``.</doc>
+<msg timestamp="20210921 18:42:12.396" level="INFO" html="true">Directory '&lt;a href="file://E:\Ideavat\AutomatedQA\AuQA\Reports\pabot_results"&gt;E:\Ideavat\AutomatedQA\AuQA\Reports\pabot_results&lt;/a&gt;' does not exist.</msg>
+<status status="PASS" starttime="20210921 18:42:12.396" endtime="20210921 18:42:12.396"/>
+</kw>
+<kw name="Remove Directory" library="OperatingSystem">
+<arg>${EXECDIR}/Reports/Screenshots</arg>
+<arg>recursive</arg>
+<doc>Removes the directory pointed to by the given ``path``.</doc>
+<msg timestamp="20210921 18:42:12.396" level="INFO" html="true">Directory '&lt;a href="file://E:\Ideavat\AutomatedQA\AuQA\Reports\Screenshots"&gt;E:\Ideavat\AutomatedQA\AuQA\Reports\Screenshots&lt;/a&gt;' does not exist.</msg>
+<status status="PASS" starttime="20210921 18:42:12.396" endtime="20210921 18:42:12.396"/>
+</kw>
+<kw name="Remove Files" library="OperatingSystem">
+<arg>${EXECDIR}/Reports/*.html</arg>
+<doc>Uses `Remove File` to remove multiple files one-by-one.</doc>
+<msg timestamp="20210921 18:42:12.396" level="INFO" html="true">File '&lt;a href="file://E:\Ideavat\AutomatedQA\AuQA\Reports\*.html"&gt;E:\Ideavat\AutomatedQA\AuQA\Reports\*.html&lt;/a&gt;' does not exist.</msg>
+<status status="PASS" starttime="20210921 18:42:12.396" endtime="20210921 18:42:12.396"/>
+</kw>
+<kw name="Remove Files" library="OperatingSystem">
+<arg>${EXECDIR}/Reports/*.xml</arg>
+<doc>Uses `Remove File` to remove multiple files one-by-one.</doc>
+<msg timestamp="20210921 18:42:12.396" level="INFO" html="true">File '&lt;a href="file://E:\Ideavat\AutomatedQA\AuQA\Reports\*.xml"&gt;E:\Ideavat\AutomatedQA\AuQA\Reports\*.xml&lt;/a&gt;' does not exist.</msg>
+<status status="PASS" starttime="20210921 18:42:12.396" endtime="20210921 18:42:12.396"/>
+</kw>
+<kw name="Remove Files" library="OperatingSystem">
+<arg>${EXECDIR}/Reports/*.txt</arg>
+<doc>Uses `Remove File` to remove multiple files one-by-one.</doc>
+<msg timestamp="20210921 18:42:12.396" level="INFO" html="true">Removed file '&lt;a href="file://E:\Ideavat\AutomatedQA\AuQA\Reports\executionLog.txt"&gt;E:\Ideavat\AutomatedQA\AuQA\Reports\executionLog.txt&lt;/a&gt;'.</msg>
+<status status="PASS" starttime="20210921 18:42:12.396" endtime="20210921 18:42:12.396"/>
+</kw>
+<status status="PASS" starttime="20210921 18:42:12.396" endtime="20210921 18:42:12.396"/>
+</kw>
+<status status="PASS" starttime="20210921 18:42:12.396" endtime="20210921 18:42:12.396"/>
+</test>
+<doc>Deletes last run files and folder in the report directory except updating cleanReport folder</doc>
+<status status="PASS" starttime="20210921 18:42:11.877" endtime="20210921 18:42:12.404"/>
+</suite>
+<statistics>
+<total>
+<stat pass="1" fail="0" skip="0">All Tests</stat>
+</total>
+<tag>
+</tag>
+<suite>
+<stat pass="1" fail="0" skip="0" id="s1" name="cleanReports">cleanReports</stat>
+</suite>
+</statistics>
+<errors>
+</errors>
+</robot>

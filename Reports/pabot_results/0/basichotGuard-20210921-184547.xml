@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<robot generator="Robot 4.1 (Python 3.9.6 on win32)" generated="20210921 18:45:47.853" rpa="false" schemaversion="2">
+<suite id="s1" name="Guard1_General-test_$(date +%F_%H:%M:%S)">
+<suite id="s1-s1" name="basicHotAbsoluteGuardTest" source="E:\Ideavat\AutomatedQA\AuQA\Testcases\basicHotAbsoluteGuardTest.robot">
+<test id="s1-s1-t1" name="BasicHotAbsoluteGuardTest">
+<kw name="Log To Console" library="BuiltIn">
+<arg>test1</arg>
+<doc>Logs the given message to the console.</doc>
+<status status="PASS" starttime="20210921 18:45:49.121" endtime="20210921 18:45:49.121"/>
+</kw>
+<status status="PASS" starttime="20210921 18:45:49.121" endtime="20210921 18:45:49.121"/>
+</test>
+<doc>This testcase validates the Guard mode feature of AI Engine
+Environment: 10.252.9.37
+Group Name: General-test</doc>
+<status status="PASS" starttime="20210921 18:45:47.909" endtime="20210921 18:45:49.121"/>
+</suite>
+<status status="PASS" starttime="20210921 18:45:47.877" endtime="20210921 18:45:49.121"/>
+</suite>
+<statistics>
+<total>
+<stat pass="1" fail="0" skip="0">All Tests</stat>
+</total>
+<tag>
+</tag>
+<suite>
+<stat pass="1" fail="0" skip="0" id="s1" name="Guard1_General-test_$(date +%F_%H:%M:%S)">Guard1_General-test_$(date +%F_%H:%M:%S)</stat>
+<stat pass="1" fail="0" skip="0" id="s1-s1" name="basicHotAbsoluteGuardTest">Guard1_General-test_$(date +%F_%H:%M:%S).basicHotAbsoluteGuardTest</stat>
+</suite>
+</statistics>
+<errors>
+</errors>
+</robot>
