@@ -71,4 +71,3 @@ BasicHotAbsoluteGuardTest
     apiresources.writeUserEventsEntryToNotificationEventLog    AuQA test->${group_name}->BasicHotAbsoluteGuardTest Finished.
     [Teardown]    apiresources.setTestExitTemperatureToAllSensorPoints
 
-

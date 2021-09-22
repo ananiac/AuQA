@@ -161,23 +161,3 @@ Cleanup
     #25)Stop all processes except vx_server, facs_launcher and facs_trend
     connection.establishConnectionAndStopAllProcessesExcept    vx_server    facs_launcher    facs_trend
     #26)Exit test
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

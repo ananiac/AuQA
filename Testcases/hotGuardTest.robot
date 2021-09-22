@@ -121,5 +121,3 @@ CleanUp
     uiresources.resetSystemPropertiesUsingLoadTemplateOptionWithOverwrite
     apiresources.setAllHighAndLowSetPointLimits    ${high_set_point_limit_cleanup}    ${low_set_point_limit_cleanup}
     [Teardown]   apiresources.setTestExitTemperatureToAllSensorPoints
-
-
