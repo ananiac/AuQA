@@ -79,10 +79,28 @@ testEventLogMutation
 
 setSFCMutation
     [Arguments]  ${oid_sfc}  ${oid_sfc_value}
+    log to console  ${oid_sfc}  ${oid_sfc_value}
     ${mutationSFC}=    set variable    mutation targetSetSFC {targetSet(requests: [{oid: ${oidSFC}, value: ${oid_sfc_value}, unit: percent100, target: CONTROL, origin: "MANUAL", priority: 70}]) { index reason }}
+    log to console   ${mutationSFC}
     return from keyword    ${mutationSFC}
 
 setBOPMutation
     [Arguments]  ${oid_bop}
     ${mutationBOP}=    set variable    mutation targetSetBOP {targetSet(requests: [{oid: ${oidBOP}, value: 1, target: CONTROL, origin: "MANUAL", priority: 70}]) { index reason }}
     return from keyword    ${mutationBOP}
+
+getCoolEstimateEffortsQuery
+    [Arguments]     ${group_name}
+    ${coolEstimateEffortsQuery}=  set variable  query getCoolEstimateEffortOfAHUS {site {groups:children(selector:{type:Group,name:"${group_name}"}) {oid type displayName ahus:children(selector:{type:AHU}) {name CoolEffortEstimate:children(selector:{type:CoolEffort}){name pointCurrent(unit:percent100){value}}}}}}
+    return from keyword    ${coolEstimateEffortsQuery}
+
+clearBOPMutation
+    [Arguments]     ${clear_bop_oid}
+    ${clearBOPOverride}=  set variable  mutation targetClearBOP {targetClear(requests: [{oid: ${clear_bop_oid}, target: CONTROL, origin: "MANUAL"}]) {index reason}}
+    return from keyword    ${clearBOPOverride}
+
+clearSFCMutation
+    [Arguments]     ${clear_bop_oid}
+    ${clearSFCOverride}=  set variable  mutation targetClearSFC {targetClear(requests: [{oid: 10645, target: CONTROL, origin: "MANUAL"}]) {index reason}}
+    return from keyword    ${clearSFCOverride}
+
