@@ -482,3 +482,34 @@ queryToFetchJsonResponseContainingAHUsFromGroup
     ${result}=  post on session    AIEngine  /public/graphql  headers=${headers}    json=${body}
     ${json_dict}=   set variable    ${result.json()}
     return from keyword    ${json_dict}
+
+#For Guard 4
+#checkForAHUToBeInGuardAtRegularIntervalUntilExpectedNoOfAHUsIntoGuard for reference
+checkForAHUToBeInGuardAtRegularIntervalUntilAllAHUsIntoGuard
+    [Arguments]    ${ahus_to_be_on}   ${num_guard_units_val}    ${num_minutes_guard_timer_val}
+    log to console    <----Checking number of AHUs-> ${num_guard_units_val} going into GUARD mode at every->${num_minutes_guard_timer_val} minutes----->
+    ${json_dictionary}=     queryToFetchJsonResponseContaingTheCurrentAHUStatus
+    ${total_no_ahus}=    fetchTheNumberOfItemsInDictionary    ${json_dictionary}    ${ahus_list_path}
+
+    FOR    ${cycle}  IN RANGE    1    5
+        log to console    XX----------Entering--${cycle}-cycle for checking AHUs in GUARD mode----------------XX
+        IF    "${cycle}"=="1"
+#            log to console    !---Total number of AHUs are ${total_no_ahus}------!
+##            ${ahus_to_be_on}=    evaluate    4 * 1
+            log to console    !!----We need to wait until ${ahus_to_be_on} AHUs are in GUARD mode-----!!
+        END
+        ${expected_ahus_in_guard}=    evaluate    ${num_guard_units_val} * ${cycle}
+        log to console    LL------We expect ${expected_ahus_in_guard} AHUs to be in GUARD mode now-----LL
+        IF    ${total_no_ahus} >= ${expected_ahus_in_guard}
+            ${current_ahus_in_guard}=    fetchNumberOfAHUsWithGuardON    ${total_no_ahus}    ${json_dictionary}
+#            log to console    !!-----===============Currently ${current_ahus_in_guard} ahus in Guard============----!!
+#            should be equal as integers    ${current_ahus_in_guard}    ${expected_ahus_in_guard}
+#            log to console    *******Validation passed for the expected AHU count into Guard for the current cycle********
+#            exit for loop if    ${current_ahus_in_guard}==${ahus_to_be_on}
+#            waitForMinutes    ${num_minutes_guard_timer_val}
+#        ELSE
+#            log to console    Sufficient AHUs are not present to cool the system
+#            should be true    ${total_no_ahus} >= ${expected_ahus_in_guard}     #need to check failure scenario
+        END
+    END
+    log to console    *********============================================*******

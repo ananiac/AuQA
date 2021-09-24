@@ -13,7 +13,7 @@ Variables    ${EXECDIR}/Inputs/guardOrderMIXInputs.PY
 *** Test Cases ***
 GuardOrderMIXTestSetup
 #    [Setup]    guardOrderMIXResources.guardOrderMIXTestPreconditionSetup
-#
+    log to console  GuardOrderMIXTest
 #    # 1.Start system with the AuQa Db on it (eg 10.252.9.118)
 #    # 2.Use the General-test group
 #    # 3.Use the General-test group
@@ -40,18 +40,20 @@ GuardOrderMIXTestSetup
 #    # 13.Wait 4 minutes
 #    common.waitForMinutes    4
 #    # 14.Override the AHUs as follows
-#    guardOrderMIXResources.overrideAHUsGuard4
-#    # 15.Wait 3 minutes
+#    guardOrderMIXResources.overrideAllAHUInGroup
+    guardOrderMIXResources.overrideAllAHUInGroupCHECKORDER
+    # 15.Wait 3 minutes
 #    common.waitForMinutes    3
-    # 16.Confirm that this gives the CoolEffortEstimates of the AHUs as follows
-    guardOrderMIXResources.coolEffortEstimates
-    # 17.Screenshot - no coding is required
-    # 18.Now set the group into guard by setting the group property GuardHotAbsTemp=9
-    guardOrderMIXResources.setGuardHotAbsTempProperty  9
-    # 19.immediately release all AHU overrides - this must be done without delay
-    guardOrderMIXResources.releaseAllAHUOverrides
-    # 20..Wait until all AHUs are in guard and confirm the guard order was (this is in reverse)
-    apiresources.checkForAHUToBeInGuardAtRegularIntervalUntilExpectedNoOfAHUsIntoGuard    1    ${guardOrderMIXInputs}[config_num_guard_units_value1]    ${guardOrderMIXInputs}[config_num_minutes_guard_timer_value2]
+#    # 16.Confirm that this gives the CoolEffortEstimates of the AHUs as follows
+#    guardOrderMIXResources.getCoolEffortEstimatesValuesListOfAllAHU
+#    # 17.Screenshot - no coding is required
+#    # 18.Now set the group into guard by setting the group property GuardHotAbsTemp=9
+#    guardOrderMIXResources.setGroupPropertyGuardHotAbsTemp  9
+#    # 19.immediately release all AHU overrides - this must be done without delay
+#    guardOrderMIXResources.releaseAllAHUOverrides
+#    # 20..Wait until all AHUs are in guard and confirm the guard order was (this is in reverse)
+#    apiresources.checkForAHUToBeInGuardAtRegularIntervalUntilAllAHUsIntoGuard    8    ${guardOrderMIXInputs}[config_num_guard_units_value1]    ${guardOrderMIXInputs}[config_num_minutes_guard_timer_value2]
+#    apiresources.checkForAHUToBeInGuardAtRegularIntervalUntilExpectedNoOfAHUsIntoGuard    8    ${guardOrderMIXInputs}[config_num_guard_units_value1]    ${guardOrderMIXInputs}[config_num_minutes_guard_timer_value2]
 ######################################################################################################    # 11.Now set the group into guard by setting the group property GuardHotAbsTemp=9
 #    # 20.Screenshot - no coding is required
 #    # 21.end test - no coding is required
