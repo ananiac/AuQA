@@ -8,6 +8,7 @@ Variables    ${EXECDIR}/Resources/ResourceVariables/globalVariables.py
 Resource    ${EXECDIR}/Resources/apiresources.robot
 Resource    ${EXECDIR}/Resources/uiresources.robot
 Resource    ${EXECDIR}/Resources/connection.robot
+Resource    ${EXECDIR}/Inputs/guardTestInputs.robot
 
 
 *** Keywords ***
@@ -15,6 +16,9 @@ basicHotAbsoluteGuardTestSetup
     [Documentation]    Make sure no VEMS processes are running except vx_server and facs_trends
     ...                Make sure the simulator is NOT running
     ...                Also write test entry temperature for the parallel staleStatePrevention program
+#    ...               24Sep21: readInputsForBasiHcotAbsoluteGuard included to read the input from ecxel
+    log to console    !-----Reading the inputs from the excel and storing in dictionary------!
+    guardTestInputs.readInputsForBasiHcotAbsoluteGuard
     log to console    !-----PreCondition for the Basic Hot Absolute Guard test is been executed------!
     connection.establishConnectionAndStopAllProcessesExcept    vx_server  facs_trend
     apiresources.writeTestEntryTemperatureToSensorsAfterVXServerStarted
