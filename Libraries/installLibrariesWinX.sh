@@ -5,3 +5,4 @@ pip install robotframework-requests
 pip install robotframework-jsonlibrary
 pip install robotframework-sshlibrary
 pip install -U robotframework-pabot
+pip install openpyxl
