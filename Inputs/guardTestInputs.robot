@@ -9,9 +9,12 @@ Library    ${EXECDIR}/ExternalKeywords/readExcel.py
 
 
 *** Keywords ***
-readInputsForBasiHcotAbsoluteGuard
-    &{basicHotAbsoluteGuard}  readBasicHotAbsoluteGuardInputsFromExcel
-    log to console  ${basicHotAbsoluteGuard}
-    &{basicHotAbsoluteGuardInputs}  set variable    ${basicHotAbsoluteGuard}
-    Set Global Variable   ${basicHotAbsoluteGuardInputs}
-
+readingInputsFromExcel
+    [Documentation]    sheet_index starts with 0
+    ...                key_column should be cloumn of key like A
+    ...                value_column should be cloumn of value like B
+    [Arguments]    ${sheet_index}    ${key_column}    ${value_column}
+    &{excel_inputs}  read_inputs_from_excel  ${sheet_index}    ${key_column}    ${value_column}
+    log to console  ${excel_inputs}
+    &{test_input}  set variable    ${excel_inputs}
+    Set Global Variable   ${test_input}
