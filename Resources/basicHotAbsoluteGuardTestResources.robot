@@ -8,7 +8,7 @@ Variables    ${EXECDIR}/Resources/ResourceVariables/globalVariables.py
 Resource    ${EXECDIR}/Resources/apiresources.robot
 Resource    ${EXECDIR}/Resources/uiresources.robot
 Resource    ${EXECDIR}/Resources/connection.robot
-Resource    ${EXECDIR}/Inputs/guardTestInputs.robot
+Resource    ${EXECDIR}/Inputs/testInputs.robot
 
 
 *** Keywords ***
@@ -18,7 +18,7 @@ basicHotAbsoluteGuardTestSetup
     ...                Also write test entry temperature for the parallel staleStatePrevention program
     ...                24Sep21: readingInputsFromExcel included to read the input from excel
     log to console    !-----Reading the inputs from the excel and storing in dictionary------!
-    guardTestInputs.readingInputsFromExcel  0  A  B
+    testInputs.readingInputsFromExcel  0  A  B
     log to console    !-----PreCondition for the Basic Hot Absolute Guard test is been executed------!
     connection.establishConnectionAndStopAllProcessesExcept    vx_server  facs_trend
     apiresources.writeTestEntryTemperatureToSensorsAfterVXServerStarted

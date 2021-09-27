@@ -11,8 +11,8 @@ Library    ${EXECDIR}/ExternalKeywords/readExcel.py
 *** Keywords ***
 readingInputsFromExcel
     [Documentation]    sheet_index starts with 0
-    ...                key_column should be cloumn of key like A
-    ...                value_column should be cloumn of value like B
+    ...                key_column should be column of key like A
+    ...                value_column should be column of value like B
     [Arguments]    ${sheet_index}    ${key_column}    ${value_column}
     &{excel_inputs}  read_inputs_from_excel  ${sheet_index}    ${key_column}    ${value_column}
     log to console  ${excel_inputs}
