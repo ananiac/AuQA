@@ -1,0 +1,7 @@
+Hello Team,
+
+Automation suite execution was successfull.
+Please find AUQA  test run results in the latest folder at location http://10.252.9.35/testReports/
+
+Thanks,
+AuQA Team
