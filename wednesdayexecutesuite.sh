@@ -3,7 +3,7 @@
 
     ##Used the below for Ubuntu machine
 if [ `ps -ef | grep pabot | wc -l` -lt 2 ];  then
-    echo "pabot is not running-suite execution started"
+    echo "No automated tests are running so starting the test execution"
     cd /home/fc/automation/AuQA
     sudo pabot --pabotlib -d Reports/cleanReports --output cleanReports.xml --variable environment:config37 /home/fc/automation/AuQA/Testcases/cleanReports.robot || echo $(date +%F_%H:%M:%S)- cleanReports failed >> Reports/executionLog.txt 2>&1
     sudo pabot --pabotlib --processes 2 --name "Guard1_RSP-test_37_$(date +%F_%H:%M:%S)" --reporttitle "BasicHotAbsoluteGuard" --outputdir Reports --output basichotGuard.xml --variable environment:config37  -v groupname:RSP-test -T /home/fc/automation/AuQA/Testcases/basicHotAbsoluteGuardTest.robot /home/fc/automation/AuQA/Testcases/staleStatePrevention.robot >> Reports/executionLog.txt 2>&1 || echo $(date +%F_%H:%M:%S)- BasicHotAbsoluteGuard/staleStatePrevention  execution failed >> Reports/executionLog.txt 2>&1
@@ -11,8 +11,9 @@ if [ `ps -ef | grep pabot | wc -l` -lt 2 ];  then
     sudo pabot --pabotlib --processes 2 --name "Guard3_General-test_118_$(date +%F_%H:%M:%S)" --reporttitle "HotGuard" --outputdir Reports --output hotGuard.xml --variable environment:config118  -v groupname:General-test -T /home/fc/automation/AuQA/Testcases/hotGuardTest.robot  /home/fc/automation/AuQA/Testcases/staleStatePrevention.robot >> Reports/executionLog.txt 2>&1 || echo $(date +%F_%H:%M:%S)- HotGuard/staleStatePrevention  execution failed >> Reports/executionLog.txt 2>&1
     sudo rebot  --name "GuardTest" --reporttitle "Test performed across different environment and different group" --outputdir Reports --output output.xml /home/fc/automation/AuQA/Reports/basichotGuard.xml /home/fc/automation/AuQA/Reports/deadSensorGuard.xml /home/fc/automation/AuQA/Reports/hotGuard.xml 2>&1 | sudo tee -a Reports/executionLog.txt
     sudo pabot --pabotlib -d Reports/cleanReports --output moveReports.xml --variable environment:config37 /home/fc/automation/AuQA/Testcases/moveReports.robot >> Reports/executionLog.txt 2>&1 || echo $(date +%F_%H:%M:%S)- moveReports failed >> Reports/executionLog.txt 2>&1
+    echo "Automated test execution completed"
   else
-    echo "pabot is already running"
+    echo "Automated test are running so the test execution is aborted"
  fi
 
 ##Uncomment and use the below  for windows
