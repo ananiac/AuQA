@@ -24,15 +24,13 @@ closeAllConnections
     execute command    exit
     log to console    *******************Closed ssh connection********************
 
-executeProcessCommandWithoutTraceInHistory
+executeStartProcessCommand
     [Arguments]    ${process_name}
-    execute command     export HISTIGNORE='*sudo -S*'
     execute command     echo "${password}" | sudo -S -k systemctl start ${process_name}
     log to console    =============Process:${process_name} Started================
 
-executeSTOPProcessCommandWithoutTraceInHistory
+executeStopProcessCommand
     [Arguments]    ${process_name}
-    execute command     export HISTIGNORE='*sudo -S*'
     execute command     echo "${password}" | sudo -S -k systemctl stop ${process_name}
     log to console    ***********Process ${process_name} Stopped**********
 
@@ -60,7 +58,8 @@ killChromeAndChromedriverProcessesAfterTest
     log to console  !!-----Killing all the Chrome instances in Staging machine------!!
     run process    echo    "${password}"  |    sudo    killall    chrome     shell=True
     log to console  !!-----Killing chromedriver process in Staging machine------!!
-    run process    echo    "${password}"  |    sudo    killall    chromedriver     shell=True
+    run process    killall    chromedriver      shell=True
+
 
     #Created by Greeshma on 15 sep 2021
     #Argument of this keyword is the list of process that need to be started.
@@ -74,7 +73,7 @@ establishConnectionAndStartRequiredProcesses
         connection.openConnectionAndLogIn
         FOR    ${process}    IN    @{process_list}
             log to console    ${num}-Starting ${process}---->
-            connection.executeProcessCommandWithoutTraceInHistory    ${process}
+            connection.executeStartProcessCommand    ${process}
             sleep    ${short_wait_time}
             ${num}    evaluate   ${num} + 1
         END
@@ -92,7 +91,7 @@ establishConnectionAndStopAllProcessesExcept
         ${count}=    count values in list    ${exception_list}    ${process}
         IF    ${count}==0
             log to console    ${num}-Stopping ${process}---->
-            connection.executeSTOPProcessCommandWithoutTraceInHistory    ${process}
+            connection.executeStopProcessCommand    ${process}
             ${num}    evaluate    ${num} + 1
         ELSE
             log to console    ------------------------------------------------------------
