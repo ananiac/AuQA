@@ -17,6 +17,7 @@ Resource    ${EXECDIR}/Resources/apiresources.robot
 Resource    ${EXECDIR}/Resources/uiresources.robot
 Resource    ${EXECDIR}/Resources/common.robot
 Resource    ${EXECDIR}/Resources/connection.robot
+Resource    ${EXECDIR}/Inputs/testInputs.robot
 
 
 *** Variables ***

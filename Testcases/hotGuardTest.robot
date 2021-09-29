@@ -7,6 +7,7 @@ Resource    ${EXECDIR}/Resources/apiresources.robot
 Resource    ${EXECDIR}/Resources/uiresources.robot
 Resource    ${EXECDIR}/Resources/connection.robot
 Resource    ${EXECDIR}/Resources/hotGuardTestResources.robot
+Resource    ${EXECDIR}/Inputs/testInputs.robot
 
 
 *** Test Cases ***
