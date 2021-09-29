@@ -13,6 +13,7 @@ Library    SeleniumLibrary
 Variables    ${EXECDIR}/Configurations/${environment}.py
 Variables    ${EXECDIR}/PageObjects/siteEditorHomePage.py
 Resource    common.robot
+Resource    ${EXECDIR}/Inputs/testInputs.robot
 
 
 *** Variables ***
@@ -23,6 +24,8 @@ deadSensorGuardTestSetup
     [Documentation]    Make sure no VEMS processes are running except vx_server, facs_launcher, facs_trends
     ...                Make sure the simulator is NOT running
     ...                Also write test entry temperature for the parallel staleStatePrevention program
+    log to console    !-----Reading the inputs from the excel and storing in dictionary------!
+    testInputs.readingInputsFromExcel  0  D  E
     log to console    !-----PreCondition for the Dead Sensor Guard test is been executed------!
     connection.establishConnectionAndStopAllProcessesExcept    vx_server  facs_trend    facs_launcher
     apiresources.writeTestEntryTemperatureToSensorsAfterVXServerStarted
@@ -73,6 +76,6 @@ setDeadSensorGuardGroupPropertiesToEmpty
     close browser
 
 setGroupPropertiesForDeadSensorToZero
-    apiresources.changeGroupPropertiesParameterValue    ControlDeadSensorThreshold    float    ${control_dead_sensor_threshold_cleanup_value}
-    apiresources.changeGroupPropertiesParameterValue    AlarmDeadSensorHysteresis    float    ${alarm_dead_sensor_hysteresis_cleanup_value}
-    apiresources.changeGroupPropertiesParameterValue    AlarmDeadSensorThreshold    float    ${alarm_dead_sensor_threshold_cleanup_value}
+    apiresources.changeGroupPropertiesParameterValue    ControlDeadSensorThreshold    float    ${test_input}[control_dead_sensor_threshold_cleanup_value]
+    apiresources.changeGroupPropertiesParameterValue    AlarmDeadSensorHysteresis    float    ${test_input}[alarm_dead_sensor_hysteresis_cleanup_value]
+    apiresources.changeGroupPropertiesParameterValue    AlarmDeadSensorThreshold    float    ${test_input}[alarm_dead_sensor_threshold_cleanup_value]
