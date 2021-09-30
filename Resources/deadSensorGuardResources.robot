@@ -8,7 +8,6 @@ Variables    ${EXECDIR}/Resources/ResourceVariables/globalVariables.py
 Resource    ${EXECDIR}/Resources/apiresources.robot
 Resource    ${EXECDIR}/Resources/uiresources.robot
 Resource    ${EXECDIR}/Resources/connection.robot
-
 Library    SeleniumLibrary
 Variables    ${EXECDIR}/Configurations/${environment}.py
 Variables    ${EXECDIR}/PageObjects/siteEditorHomePage.py

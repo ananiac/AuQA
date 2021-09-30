@@ -384,7 +384,6 @@ checkForAHUToBeInGuardAtRegularIntervalUntilExpectedNoOfAHUsIntoGuard
         IF    "${reps}"=="1"
             ${total_no_ahus}=    fetchTheNumberOfItemsInDictionary    ${json_dictionary}    ${ahus_list_path}
             log to console    !---Total Number of Ahus is ${total_no_ahus}------!
-#            ${ahus_to_be_on}=    evaluate    4 * 1
             log to console    !!----We need to wait until ${ahus_to_be_on} AHUs are in Guard-----!!
         END
         ${expected_ahus_in_guard}=    evaluate    ${num_guard_units_val} * ${reps}
@@ -472,3 +471,158 @@ writeUserEventsEntryToNotificationEventLog
     ${result}=  post on session    AIEngine  /public/graphql  headers=${headers}    json=${body}
     should be equal as strings  ${result.json()}  ${testEventLogResponse}
     log to console    !---------------VX-->Notification tab->Event-->updated--> ${message}--!
+
+getAHUCount
+    ${json_dict}=  apiresources.queryToFetchJsonResponseContaingTheCurrentAHUStatus
+    ${total_no_ahus}=    fetchTheNumberOfItemsInDictionary    ${json_dict}    ${ahus_list_path}
+    return from keyword    ${total_no_ahus}
+
+    #Mutation for setting BOP value as 'ON' for a AHU
+settingBOPValueOfAHU
+    [Arguments]    ${ahu_bop_oid}
+    ${headers}=       create dictionary    Content-Type=${content_type}   Vigilent-Api-Token=${write_api_token}
+    ${graphql_mutation}=  gqlMutation.setBOPMutation  ${ahu_bop_oid}
+    ${body}=          create dictionary    query= ${graphql_mutation}
+    create session    AIEngine    ${base_url}     disable_warnings=1
+    ${result}=  post on session    AIEngine  /public/graphql  headers=${headers}    json=${body}
+    should be equal as strings  ${result.json()}  ${setSetPointLimitsResponse}
+    log to console   !!===========BOP ON->done===========!!
+
+    #Mutation for setting SFC value as 'ON' for an AHU
+settingSFCValueOfAHU
+    [Arguments]    ${ahu_sfc_oid}  ${oid_sfc_value}
+    ${headers}=       create dictionary    Content-Type=${content_type}   Vigilent-Api-Token=${write_api_token}
+    ${graphql_mutation}=  gqlMutation.setSFCMutation  ${ahu_sfc_oid}  ${oid_sfc_value}
+    ${body}=          create dictionary    query= ${graphql_mutation}
+    create session    AIEngine    ${base_url}     disable_warnings=1
+    ${result}=  post on session    AIEngine  /public/graphql  headers=${headers}    json=${body}
+    should be equal as strings  ${result.json()}  ${setSetPointLimitsResponse}
+    log to console   !!=======SFC value:${oid_sfc_value} is set=========!!
+
+    #Created by Greeshma on 30 Sep 2021.Set the AHUs into override as per the sfc values provided in the Test input.
+overrideAllAHUsWithSFCValuesAsPerList
+    [Arguments]    ${test_input}
+    &{json_dict}=  apiresources.queryToFetchJsonResponseContaingTheCurrentAHUStatus
+    @{group_ahu_name_list}=    apiresources.getAHUNamesListOfGroup
+    FOR    ${ahu}    IN    @{group_ahu_name_list}
+        ${ahu_bop_oid}=    fetchValueOfFieldFromJsonDictionary    ${json_dict}    $.data.site.groups[0].ahus[?(@.name=="${ahu}")].controls[?(@.type=="BOP")].oid
+        ${ahu_sfc_oid}=    fetchValueOfFieldFromJsonDictionary    ${json_dict}    $.data.site.groups[0].ahus[?(@.name=="${ahu}")].controls[?(@.type=="SFC")].oid
+        log to console    !---Overriding AHU:${ahu}->ahu_bop_oid ${ahu_bop_oid}->ahu_sfc_oid ${ahu_sfc_oid}-----!
+        settingBOPValueOfAHU    ${ahu_bop_oid}
+        settingSFCValueOfAHU    ${ahu_sfc_oid}    ${test_input}[${ahu}]
+    END
+    log to console    !!*****************==============All AHUs in the list are overridden==================****************!!
+
+    #Created by Greeshma on 27 Sep 2021.
+queryToFetchJsonResponseContainingTheCoolEffortEstimateOfAHUs
+    ${headers}=       create dictionary    Content-Type=${content_type}   Vigilent-Api-Token=${query_api_token}
+    ${query}=    gqlMutation.getCoolEstimateEffortsQuery  ${group_name}
+    ${body}=          create dictionary    query= ${query}
+    create session    AIEngine    ${base_url}     disable_warnings=1
+    ${result}=  post on session    AIEngine  /public/graphql  headers=${headers}    json=${body}
+    ${json_dict}=   set variable    ${result.json()}
+    return from keyword    ${json_dict}
+
+    #Created by Greeshma on 28 Sep 2021.This keyword returns a dictionary conatining (K=V) ahu_name=cool_effor_estimate_value
+getCoolEffortEstimateValuesOfAllAHUs
+    ${json_dict}=    queryToFetchJsonResponseContainingTheCoolEffortEstimateOfAHUs
+    &{actual_ahu_cool_effort_value_dict}=    create dictionary
+    ${ahu_count}    fetchTheNumberOfItemsInDictionary    ${json_dict}    ${ahus_list_path}
+    FOR    ${i}    IN RANGE   0    ${ahu_count}
+        ${ahu_name}=    fetchValueOfFieldFromJsonDictionary    ${json_dict}  $.data.site.groups[0].ahus[${i}].name
+        ${cool_effort_value}=  fetchValueOfFieldFromJsonDictionary    ${json_dict}    $.data.site.groups[0].ahus[${i}].CoolEffort[0].point.value
+        set to dictionary  ${actual_ahu_cool_effort_value_dict}    ${ahu_name}    ${cool_effort_value}
+    END
+    return from keyword    ${actual_ahu_cool_effort_value_dict}
+
+    #Created by Greeshma on 30 Sep 2021.Input is the excel sheet data in dictionary format.
+    #Validation of CooleEffortEstimate is done using this keyword
+confirmTheCoolEffortEstimateValueIsAsPerSFCValuesSet
+   [Arguments]    ${test_input}
+   &{actual_ahu_cool_effort_value_dict}=    getCoolEffortEstimateValuesOfAllAHUs
+      FOR    ${key}    IN    @{actual_ahu_cool_effort_value_dict.keys()}
+        ${expected_cool_effort_value}=    set variable  ${test_input}[${key}]
+        ${actual_cool_effort_value}=    set variable    ${actual_ahu_cool_effort_value_dict}[${key}]
+        should be equal as strings    ${expected_cool_effort_value}    ${actual_cool_effort_value}    Cool Effort value validation
+        log to console    !!-----------Validation passed for AHU:${key}-->Cool Effort value ${actual_ahu_cool_effort_value_dict}[${key}]-------------!!
+      END
+
+    #Created by Greeshma on 27 Sep 2021.
+getSpecificControlOidListOfAllAHUs
+    [Arguments]    ${ctrl_name}
+    &{json_dict}=  apiresources.queryToFetchJsonResponseContaingTheCurrentAHUStatus
+    ${ahu_count}    fetchTheNumberOfItemsInDictionary    ${json_dict}    ${ahus_list_path}
+    @{ctrl_oid_list}    create list
+    FOR    ${i}    IN RANGE    0    ${ahu_count}
+        ${ahu_ctrl_oid}=    fetchValueOfFieldFromJsonDictionary    ${json_dict}    $.data.site.groups[0].ahus[${i}].controls[?(@.type=="${ctrl_name}")].oid
+        append to list    ${ctrl_oid_list}    ${ahu_ctrl_oid}
+    END
+    return from keyword    @{ctrl_oid_list}
+
+    #Created by Greeshma on 27 Sep 2021.
+getBOPOidListOfAllAHUs
+    @{bop_oid_list}    getSpecificControlOidListOfAllAHUs    BOP
+    return from keyword    @{bop_oid_list}
+
+    #Created by Greeshma on 27 Sep 2021.
+getSFCOidListOfAllAHUs
+    @{sfc_oid_list}    getSpecificControlOidListOfAllAHUs    SFC
+    return from keyword    @{sfc_oid_list}
+
+    #Created by Greeshma on 27 Sep 2021.
+releaseOverrideOfAllAHUs
+    @{bop_oid_list}=    getBOPOidListOfAllAHUs
+    @{sfc_oid_list}=     getSFCOidListOfAllAHUs
+    @{all_ctrl_oid_list}=    combine lists  ${bop_oid_list}    ${sfc_oid_list}
+    ${mutation}=    gqlMutation.releaseOverrideOfAllAHUsMutation  @{all_ctrl_oid_list}
+    ${body}=          create dictionary    query= ${mutation}
+    ${headers}=       create dictionary    Content-Type=${content_type}    Vigilent-Api-Token=${write_api_token}
+    create session    AIEngine    ${base_url}     disable_warnings=1
+    ${result}=  post on session    AIEngine  /public/graphql  headers=${headers}    json=${body}
+    should be equal as strings  ${result.json()}  ${clearOverRideOfAllAHUsResponse}
+    log to console   !!=======*********Override released for All AHUs*******=========!!
+
+    #Created by Greeshma on 28 Sep 2021
+fetchAHUNameListOfAHUsWithGuardON
+    [Arguments]    ${total}     ${json_dictionary}
+    @{guard_ON_AHU_List}    create list
+    FOR    ${ahu}   IN RANGE    0    ${total}
+                log to console    !!---Checking ahu at position ${ahu}---!!s
+                ${ahu_name}=    fetchValueOfFieldFromJsonDictionary    ${json_dictionary}   $.data.site.groups[0].ahus[${ahu}].name
+                ${no_of_controls}=    fetchTheNumberOfItemsInDictionary    ${json_dictionary}    $.data.site.groups[0].ahus[${ahu}].controls
+                log to console    !!!--No of Controls for ${ahu_name} is ${no_of_controls}---!!!
+                FOR    ${controls}  IN RANGE  0   ${no_of_controls}
+                    ${ahu_status_ctrl_value}     fetchValueOfFieldFromJsonDictionary    ${json_dictionary}    $.data.site.groups[0].ahus[${ahu}].controls[${controls}].status.origin
+                    log to console    !V-------Status value for AHU:${ahu_name} control:${controls} is ${ahu_status_ctrl_value}-----!V
+                    IF  "${ahu_status_ctrl_value}"=="GUARD"         #Do we need to check both to be in Guard?
+                        IF    ${no_of_controls} > 1
+                                FOR    ${remaining_controls}  IN RANGE  1   ${no_of_controls}
+                                    ${ahu_status_ctrl_value}     fetchValueOfFieldFromJsonDictionary    ${json_dictionary}    $.data.site.groups[0].ahus[${ahu}].controls[${remaining_controls}].status.origin
+                                    log to console    !V-------Status value for AHU:${ahu_name} control:${remaining_controls} is ${ahu_status_ctrl_value}-----!V
+                                    should be equal as strings    ${ahu_status_ctrl_value}    GUARD
+                                    append to list    ${guard_ON_AHU_List}    ${ahu_name}
+                                END
+                        ELSE
+                                append to list    ${guard_ON_AHU_List}    ${ahu_name}
+                        END
+                        exit for loop
+                    END
+                END
+    END
+    return from keyword    ${guard_ON_AHU_List}
+
+    #Created by Greeshma on 28 Sep 2021. Release override for all AHUs and confirm the Guard is cleared for all.
+releaseOverrideOfAllAHUsAndConfirmAHUsAreGuardCleared
+    apiresources.releaseOverrideOfAllAHUs
+    apiresources.checkForAllAHUsToBeGuardCleared
+
+    #Created by Greeshma on 30 September 2021.This keyword returns list of ahu_names belongs to current control group.
+getAHUNamesListOfGroup
+    &{json_dict}=  apiresources.queryToFetchJsonResponseContaingTheCurrentAHUStatus
+    ${ahu_count}    fetchTheNumberOfItemsInDictionary    ${json_dict}    ${ahus_list_path}
+    @{ahu_names_list}=    create list
+    FOR    ${i}    IN RANGE   0    ${ahu_count}
+        ${ahu_name}=    fetchValueOfFieldFromJsonDictionary    ${json_dict}  $.data.site.groups[0].ahus[${i}].name
+        append to list    ${ahu_names_list}    ${ahu_name}
+    END
+    return from keyword    ${ahu_names_list}
