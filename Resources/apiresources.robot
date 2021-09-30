@@ -11,6 +11,7 @@ Variables    ${EXECDIR}/Inputs/expectedMutationJsonResponses.py
 Resource    common.robot
 Resource    connection.robot
 Resource    ${EXECDIR}/Inputs/GraphQL/gqlMutation.robot
+Resource    ${EXECDIR}/Inputs/GraphQL/gqlQueries.robot
 
 
 *** Variables ***
@@ -34,16 +35,16 @@ setPercentDeadSensorThresholdInDASHMConfig
     [Arguments]    ${percent_dead_sensor_threshold_val}
     changeCxConfigsTabModuleFieldValues    DASHM    PercentDeadSensorThreshold    ${percent_dead_sensor_threshold_val}
 
-changeCxConfigsTabModuleFieldValues
-    [Arguments]    ${module_name}    ${field_name}    ${value}
-    ${headers}=       create dictionary    Content-Type=${content_type}    Vigilent-Api-Token=${write_api_token}
-    ${graphql_mutation}=  gqlMutation.configWriteMutation    ${module_name}    ${field_name}    ${value}
-    ${body}=          create dictionary    query= ${graphql_mutation}
-    create session    AIEngine    ${base_url}     disable_warnings=1
-    ${result}=  post on session    AIEngine  /public/graphql  headers=${headers}    json=${body}
-    should be equal as strings  ${result.json()}  ${configSetResponse}
-    log to console    Config module :${module_name}->Field:${field_name}->Value:${value}-is updated
-    apiresources.writeUserEventsEntryToNotificationEventLog    AuQA test->${group_name}->Config->${module_name}->${field_name}=${value}-is updated.
+#changeCxConfigsTabModuleFieldValues
+#    [Arguments]    ${module_name}    ${field_name}    ${value}
+#    ${headers}=       create dictionary    Content-Type=${content_type}    Vigilent-Api-Token=${write_api_token}
+#    ${graphql_mutation}=  gqlMutation.configWriteMutation    ${module_name}    ${field_name}    ${value}
+#    ${body}=          create dictionary    query= ${graphql_mutation}
+#    create session    AIEngine    ${base_url}     disable_warnings=1
+#    ${result}=  post on session    AIEngine  /public/graphql  headers=${headers}    json=${body}
+#    should be equal as strings  ${result.json()}  ${configSetResponse}
+#    log to console    Config module :${module_name}->Field:${field_name}->Value:${value}-is updated
+#    apiresources.writeUserEventsEntryToNotificationEventLog    AuQA test->${group_name}->Config->${module_name}->${field_name}=${value}-is updated.
 
 setRackPointSensorTemperature
     [Arguments]    ${oid}    ${temp}
@@ -75,7 +76,7 @@ setTemperatureForAllRackSensorPoints    #Contain both query and mutation
 
 queryToFetchJsonResponseContainingTheRackSensorsFromGroup
     ${headers}=       create dictionary    Content-Type=${content_type}   Vigilent-Api-Token=${query_api_token}
-    ${query}=    gqlMutation.getRackSensorPointsOfGroupQuery  ${group_name}
+    ${query}=    gqlQueries.getRackSensorPointsOfGroupQuery  ${group_name}
     ${body}=          create dictionary    query= ${query}
     create session    AIEngine    ${base_url}     disable_warnings=1
     ${result}=  post on session    AIEngine  /public/graphql  headers=${headers}    json=${body}
@@ -183,14 +184,14 @@ checkForAllAHUsToBeGuardCleared
     confirmStatusOfAHUsNotGuard     ${total_no_ahus}     ${json_dictionary}
     log to console    *************************************************************
 
-queryToFetchJsonResponseContaingTheCurrentAHUStatus
-    ${headers}=       create dictionary    Content-Type=${content_type}   Vigilent-Api-Token=${query_api_token}
-    ${query}=  gqlMutation.getAHUStatusInGroupQuery  ${group_name}
-    ${body}=          create dictionary    query= ${query}
-    create session    AIEngine    ${base_url}     disable_warnings=1
-    ${result}=  post on session    AIEngine  /public/graphql  headers=${headers}    json=${body}
-    ${json_dictionary}=     set variable    ${result.json()}
-    return from keyword    ${json_dictionary}
+#queryToFetchJsonResponseContaingTheCurrentAHUStatus
+#    ${headers}=       create dictionary    Content-Type=${content_type}   Vigilent-Api-Token=${query_api_token}
+#    ${query}=  gqlQueries.getAHUStatusInGroupQuery  ${group_name}
+#    ${body}=          create dictionary    query= ${query}
+#    create session    AIEngine    ${base_url}     disable_warnings=1
+#    ${result}=  post on session    AIEngine  /public/graphql  headers=${headers}    json=${body}
+#    ${json_dictionary}=     set variable    ${result.json()}
+#    return from keyword    ${json_dictionary}
 
 fetchNumberOfAHUsWithGuardON
     [Arguments]    ${total}     ${json_dictionary}
@@ -280,7 +281,7 @@ setTestExitTemperatureToAllSensorPoints
 queryToFetchJsonResponseForSpecificAlarmType
     [Arguments]    ${alarm_type}
     ${headers}=       create dictionary    Content-Type=${content_type}   Vigilent-Api-Token=${query_api_token}
-    ${query}=  gqlMutation.getAlarmStatusQuery    ${group_name}    ${alarm_type}
+    ${query}=  gqlQueries.getAlarmStatusQuery    ${group_name}    ${alarm_type}
     ${body}=          create dictionary    query= ${query}
     create session    AIEngine    ${base_url}     disable_warnings=1
     ${result}=  post on session    AIEngine  /public/graphql  headers=${headers}    json=${body}
@@ -449,7 +450,7 @@ stopUpdatingTemperatureToLastRack
     #Created by Greeshma on 31 August 2021
 queryToFetchControlStatusValueOfGroup
     ${headers}=       create dictionary    Content-Type=${content_type}    Vigilent-Api-Token=${query_api_token}
-    ${query}=  gqlMutation.getCtrlStateValueQuery  ${group_name}
+    ${query}=  gqlQueries.getCtrlStateValueQuery  ${group_name}
     ${body}=          create dictionary    query= ${query}
     create session    AIEngine    ${base_url}     disable_warnings=1
     ${result}=  post on session    AIEngine  /public/graphql  headers=${headers}    json=${body}
@@ -472,3 +473,36 @@ writeUserEventsEntryToNotificationEventLog
     ${result}=  post on session    AIEngine  /public/graphql  headers=${headers}    json=${body}
     should be equal as strings  ${result.json()}  ${testEventLogResponse}
     log to console    !---------------VX-->Notification tab->Event-->updated--> ${message}--!
+
+####################################################################################################
+
+queryToFetchJsonResponseContaingTheCurrentAHUStatus
+    ${query}=  gqlQueries.getAHUStatusInGroupQuery  ${group_name}
+    ${json_dictionary}=  gqlQueryToFetchJsonResponse     ${query}
+    return from keyword    ${json_dictionary}
+
+gqlQueryToFetchJsonResponse
+    [Arguments]    ${query}
+    ${headers}=       create dictionary    Content-Type=${content_type}   Vigilent-Api-Token=${query_api_token}
+    ${body}=          create dictionary    query= ${query}
+    create session    AIEngine    ${base_url}     disable_warnings=1
+    ${result}=  post on session    AIEngine  /public/graphql  headers=${headers}    json=${body}
+    ${json_dictionary}=     set variable    ${result.json()}
+    return from keyword    ${json_dictionary}
+
+gqlMutationToFetchJsonResponse
+    [Arguments]    ${graphql_mutation}
+    ${headers}=       create dictionary    Content-Type=${content_type}    Vigilent-Api-Token=${write_api_token}
+    ${body}=          create dictionary    query= ${graphql_mutation}
+    create session    AIEngine    ${base_url}     disable_warnings=1
+    ${result}=  post on session    AIEngine  /public/graphql  headers=${headers}    json=${body}
+    ${json_dictionary}=     set variable    ${result.json()}
+    return from keyword    ${json_dictionary}
+
+changeCxConfigsTabModuleFieldValues
+    [Arguments]    ${module_name}    ${field_name}    ${value}
+    ${graphql_mutation}=  gqlMutation.configWriteMutation    ${module_name}    ${field_name}    ${value}
+    ${json_dictionary}=  gqlMutationToFetchJsonResponse     ${graphql_mutation}
+    should be equal as strings  ${json_dictionary}  ${configSetResponse}
+    log to console    Config module :${module_name}->Field:${field_name}->Value:${value}-is updated
+    apiresources.writeUserEventsEntryToNotificationEventLog    AuQA test->${group_name}->Config->${module_name}->${field_name}=${value}-is updated.
