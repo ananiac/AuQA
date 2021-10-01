@@ -11,6 +11,7 @@ Variables    ${EXECDIR}/Inputs/expectedMutationJsonResponses.py
 Resource    common.robot
 Resource    connection.robot
 Resource    ${EXECDIR}/Inputs/GraphQL/gqlMutation.robot
+Resource    ${EXECDIR}/Inputs/GraphQL/gqlQueries.robot
 
 
 *** Variables ***
@@ -75,7 +76,7 @@ setTemperatureForAllRackSensorPoints    #Contain both query and mutation
 
 queryToFetchJsonResponseContainingTheRackSensorsFromGroup
     ${headers}=       create dictionary    Content-Type=${content_type}   Vigilent-Api-Token=${query_api_token}
-    ${query}=    gqlMutation.getRackSensorPointsOfGroupQuery  ${group_name}
+    ${query}=    gqlQueries.getRackSensorPointsOfGroupQuery  ${group_name}
     ${body}=          create dictionary    query= ${query}
     create session    AIEngine    ${base_url}     disable_warnings=1
     ${result}=  post on session    AIEngine  /public/graphql  headers=${headers}    json=${body}
@@ -185,7 +186,7 @@ checkForAllAHUsToBeGuardCleared
 
 queryToFetchJsonResponseContaingTheCurrentAHUStatus
     ${headers}=       create dictionary    Content-Type=${content_type}   Vigilent-Api-Token=${query_api_token}
-    ${query}=  gqlMutation.getAHUStatusInGroupQuery  ${group_name}
+    ${query}=  gqlQueries.getAHUStatusInGroupQuery  ${group_name}
     ${body}=          create dictionary    query= ${query}
     create session    AIEngine    ${base_url}     disable_warnings=1
     ${result}=  post on session    AIEngine  /public/graphql  headers=${headers}    json=${body}
@@ -280,7 +281,7 @@ setTestExitTemperatureToAllSensorPoints
 queryToFetchJsonResponseForSpecificAlarmType
     [Arguments]    ${alarm_type}
     ${headers}=       create dictionary    Content-Type=${content_type}   Vigilent-Api-Token=${query_api_token}
-    ${query}=  gqlMutation.getAlarmStatusQuery    ${group_name}    ${alarm_type}
+    ${query}=  gqlQueries.getAlarmStatusQuery    ${group_name}    ${alarm_type}
     ${body}=          create dictionary    query= ${query}
     create session    AIEngine    ${base_url}     disable_warnings=1
     ${result}=  post on session    AIEngine  /public/graphql  headers=${headers}    json=${body}
@@ -448,7 +449,7 @@ stopUpdatingTemperatureToLastRack
     #Created by Greeshma on 31 August 2021
 queryToFetchControlStatusValueOfGroup
     ${headers}=       create dictionary    Content-Type=${content_type}    Vigilent-Api-Token=${query_api_token}
-    ${query}=  gqlMutation.getCtrlStateValueQuery  ${group_name}
+    ${query}=  gqlQueries.getCtrlStateValueQuery  ${group_name}
     ${body}=          create dictionary    query= ${query}
     create session    AIEngine    ${base_url}     disable_warnings=1
     ${result}=  post on session    AIEngine  /public/graphql  headers=${headers}    json=${body}
@@ -516,7 +517,7 @@ overrideAllAHUsWithSFCValuesAsPerList
     #Created by Greeshma on 27 Sep 2021.
 queryToFetchJsonResponseContainingTheCoolEffortEstimateOfAHUs
     ${headers}=       create dictionary    Content-Type=${content_type}   Vigilent-Api-Token=${query_api_token}
-    ${query}=    gqlMutation.getCoolEstimateEffortsQuery  ${group_name}
+    ${query}=    gqlQueries.getCoolEstimateEffortsQuery  ${group_name}
     ${body}=          create dictionary    query= ${query}
     create session    AIEngine    ${base_url}     disable_warnings=1
     ${result}=  post on session    AIEngine  /public/graphql  headers=${headers}    json=${body}

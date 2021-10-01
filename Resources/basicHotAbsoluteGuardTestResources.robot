@@ -29,7 +29,7 @@ setGroupProperties_GuardHotAbsTemp_AlmHotAbsTemp_AllowNumExceedencesGuard_AllowN
     log to console    Set the Group properties values->Group>Properties->AllowNumExceedencesGuard = ${allow_num_excd_guard} AllowNumExceedencesControl = ${allow_num_excd_ctrl}
     log to console    AlmHotAbsTemp = ${alm_hot_abs_temp}(degree F) GuardHotAbsTemp = ${guard_hot_abs_temp} (degrees F)---------->
     ${headers}=       create dictionary    Content-Type=${content_type}    Vigilent-Api-Token=${write_api_token}
-    ${setGrpProp}=  gqlMutation.setGrpPropMutation  ${allow_num_excd_ctrl}  ${allow_num_excd_guard}  ${alm_hot_abs_temp}  ${guard_hot_abs_temp}
+    ${setGrpProp}=  gqlQueries.setGrpPropMutation  ${allow_num_excd_ctrl}  ${allow_num_excd_guard}  ${alm_hot_abs_temp}  ${guard_hot_abs_temp}
     ${body}=          create dictionary    query= ${setGrpProp}
     create session    AIEngine    ${base_url}     disable_warnings=1
     ${result}=  post on session    AIEngine  /public/graphql  headers=${headers}    json=${body}
