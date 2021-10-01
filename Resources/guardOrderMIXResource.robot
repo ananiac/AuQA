@@ -25,10 +25,10 @@ ${exp_index}     0
 guardOrderMIXTestPreconditionSetup
     [Documentation]    Stop all VEM processes and wait for 2 minutes
     ...                Also write test entry temperature for the parallel staleStatePrevention program
-    log to console    !-----PreCondition for the Guard Order Mix test is been executed------!
     log to console    !-----Reading the inputs from the excel and storing in dictionary------!
     testInputs.readingInputsFromExcel  0  J  K
     common.setFlagValue    ${test_entry_flag}         #to handle the parallel program stale state.
+    log to console    !-----PreCondition for the Guard Order Mix test is been executed------!
     connection.establishConnectionAndStopAllProcessesExcept
     common.waitForMinutes    2
     apiresources.writeTestEntryTemperatureToSensorsAfterVXServerStarted
