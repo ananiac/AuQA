@@ -44,12 +44,21 @@ setGroupPropertyGuardHotAbsTemp
     apiresources.changeGroupPropertiesParameterValue    GuardHotAbsTemp  int  ${guard_hot_abs_temp_value}
 
 setGuardOrderMixPropertiesToEmpty
+    setGroupPropertiesForGuardOrderMixToSomeValue
+    sleep  ${load_time}
     uiresources.startBrowserAndLoginToAIEngine
     sleep  ${load_time}
     uiresources.selectAndClickGroupName
     uiresources.clickAllPropertiesButton
+    uiresources.setGroupPropertyToEmpty  AllowNumExceedencesGuard
     uiresources.setGroupPropertyToEmpty  GuardHotAbsTemp
+    uiresources.setGroupPropertyToEmpty  AllowNumExceedencesControl
     close browser
+
+setGroupPropertiesForGuardOrderMixToSomeValue
+    apiresources.changeGroupPropertiesParameterValue    AllowNumExceedencesGuard  int  ${test_input}[allow_num_exceedences_guard_cleanup_value]
+    apiresources.changeGroupPropertiesParameterValue    GuardHotAbsTemp  float  ${test_input}[guard_hot_abs_temp_cleanup_value]
+    apiresources.changeGroupPropertiesParameterValue    AllowNumExceedencesControl  int  ${test_input}[allow_num_exceedences_control_cleanup_value]
 
     #Created by Greeshma on 30 Sep 2021.This keyword takes the test_input from Excel and validates the AHU order w.r.t the SFC values
 confirmTheOrderOfAHUsGoingIntoGuardIsIncrementalCoolEffortEstimateExceptFirstAHU
