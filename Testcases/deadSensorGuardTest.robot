@@ -38,7 +38,6 @@ DeadSensorGuardTestSetupSteps
     uiresources.resetSystemPropertiesUsingLoadTemplateOptionWithOverwrite
     #4)Set SYSTEM::NumMinutesPast=2
     #5)Set DASHM::PercentDeadSensorThreshold = 30%, NumMinutesGuardTimer=2, NumGuardUnits=1
-    log to console  FROM EXCEL ${test_input}[ds_num_guard_units_value]
     deadSensorGuardResources.setIntialCxConfigParameters  ${test_input}[ds_num_minutes_past_value]    ${test_input}[ds_percent_dead_sensor_threshold_default_value]   ${test_input}[ds_num_minutes_guard_timer_value]    ${test_input}[ds_num_guard_units_value]
     #6)Set ALARM::GrpDeadSensorHysteresis=10%
     apiresources.setConfigAlarmGroupDeadSensorHysteresis    ${test_input}[grp_dead_sensor_hysteresis_value_default_value]
