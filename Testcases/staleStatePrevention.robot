@@ -3,8 +3,8 @@ Library    RequestsLibrary
 Library    JSONLibrary
 Library    Collections
 Resource    ${EXECDIR}/Resources/connection.robot
-Resource    ../Resources/apiresources.robot
-Resource    ../Resources/common.robot
+Resource    ${EXECDIR}/Resources/apiresources.robot
+Resource    ${EXECDIR}/Resources/common.robot
 Variables    ${EXECDIR}/Resources/ResourceVariables/globalVariables.py
 
 
@@ -24,8 +24,10 @@ StaleStatePreventionForSensors
 *** Keywords ***
     #Created by Greeshma on 30 August 2021
 writeTemperatureToSensors
-    ${current_temperature}=    apiresources.getCurrentTemperatureOfSensorsAandB
     ${flg}=    common.getFlagValue
+    IF  '${flg}'!='${test_entry_flag}'
+        ${current_temperature}=    apiresources.getCurrentTemperatureOfSensorsAandB
+    END
     IF  '${flg}'=='${test_entry_flag}'     #Setup where application is getting ready for test
         log to console    Test started.Waiting for temperature changes
     ELSE IF    '${flg}'=='${current_temp_to_all_flag}'      #Writing current temperature to all sensor points

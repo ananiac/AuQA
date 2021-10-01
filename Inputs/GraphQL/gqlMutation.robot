@@ -76,3 +76,37 @@ testEventLogMutation
     [Arguments]    ${message}
     ${mutation}=    set variable    mutation TestEventLog { eventLog(requests: [{source: "Ideavat AuQA", message: "${message}"}]) { index reason }}
     return from keyword    ${mutation}
+
+    #Created by Abhijit
+setSFCMutation
+    [Arguments]  ${oid_sfc}  ${oid_sfc_value}
+    ${mutationSFC}=    set variable    mutation targetSetSFC {targetSet(requests: [{oid: ${oidSFC}, value: ${oid_sfc_value}, unit: percent100, target: CONTROL, origin: "MANUAL", priority: 70}]) { index reason }}
+    return from keyword    ${mutationSFC}
+
+    #Created by Abhijit
+setBOPMutation
+    [Arguments]  ${oid_bop}
+    ${mutationBOP}=    set variable    mutation targetSetBOP {targetSet(requests: [{oid: ${oidBOP}, value: 1, target: CONTROL, origin: "MANUAL", priority: 70}]) { index reason }}
+    return from keyword    ${mutationBOP}
+
+    #Created by Abhijit
+getCoolEstimateEffortsQuery
+    [Arguments]     ${group_name}
+    ${coolEstimateEffortsQuery}=  set variable  query getCoolEstimateEffortOfAHUS {site {groups:children(selector:{type:Group,name:"${group_name}"}) {oid type displayName ahus:children(selector:{type:AHU}) {name CoolEffort:children(selector:{type:CoolEffort}){name point:pointCurrent(unit:percent100){value}}}}}}
+    return from keyword    ${coolEstimateEffortsQuery}
+
+    #Created by Greeshma on 27 Sep 2021
+releaseOverrideOfAllAHUsMutation
+    [Arguments]    @{ahu_ctrl_oid_list}
+    ${all_target_set}=    set variable
+     FOR  ${oid}  IN  @{ahu_ctrl_oid_list}
+        ${target_string}    set variable  {oid: ${oid}, target: CONTROL, origin: "MANUAL"}
+        IF    '${all_target_set}'!=''
+        ${all_target_set}=    catenate  ${all_target_set}  ,    ${target_string}
+        ELSE
+        ${all_target_set}=    set variable   ${target_string}
+        END
+    END
+    ${mutation}=    set variable  mutation targetClearOverride {targetClear(requests: [${all_target_set}]) {index reason}}
+    return from keyword    ${mutation}
+
