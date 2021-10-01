@@ -23,8 +23,7 @@ ${exp_index}     0
 
 *** Keywords ***
 guardOrderMIXTestPreconditionSetup
-    [Documentation]    Make sure no VEMS processes are running except vx_server, facs_launcher, facs_trends.
-    ...                facs_dash should NOT be running
+    [Documentation]    Stop all VEM processes and wait for 2 minutes
     ...                Also write test entry temperature for the parallel staleStatePrevention program
     log to console    !-----PreCondition for the Guard Order Mix test is been executed------!
     log to console    !-----Reading the inputs from the excel and storing in dictionary------!
