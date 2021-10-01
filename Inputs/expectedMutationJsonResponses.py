@@ -7,3 +7,5 @@ propertyWriteResponse="""{'data': {'propertyWrite': []}}"""
 setSetPointLimitsResponse="""{'data': {'targetSet': []}}"""
 
 testEventLogResponse="""{'data': {'eventLog': []}}"""
+
+clearOverRideOfAllAHUsResponse="""{'data': {'targetClear': []}}"""
