@@ -34,11 +34,6 @@ guardOrderMIXTestPreconditionSetup
     common.waitForMinutes    2
     apiresources.writeTestEntryTemperatureToSensorsAfterVXServerStarted
 
-setGroupPropertyAllowNumExceedencesControlAndGuardHotAbsTemp
-    [Arguments]    ${allow_num_exceedences_control_value}    ${guard_hot_abs_temp_value}
-    apiresources.changeGroupPropertiesParameterValue    AllowNumExceedencesControl  int  ${allow_num_exceedences_control_value}
-    apiresources.changeGroupPropertiesParameterValue    GuardHotAbsTemp  int  ${guard_hot_abs_temp_value}
-
 setconfigNumGuardUnitsNumMinutesGuardTimerAndNumMinutesPast
     [Arguments]    ${config_num_guard_units_value}    ${config_num_minutes_guard_timer_value}    ${config_system_num_minutes_past_value}
     apiresources.changeCxConfigsTabModuleFieldValues  DASHM  NumGuardUnits  ${config_num_guard_units_value}
@@ -54,7 +49,6 @@ setGuardOrderMixPropertiesToEmpty
     sleep  ${load_time}
     uiresources.selectAndClickGroupName
     uiresources.clickAllPropertiesButton
-    uiresources.setGroupPropertyToEmpty  AllowNumExceedencesControl
     uiresources.setGroupPropertyToEmpty  GuardHotAbsTemp
     close browser
 
