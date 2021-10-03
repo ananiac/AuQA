@@ -1,6 +1,5 @@
 # test suite for execution scheduled on thursday using cronjob
 # Can be executed manually from AuQA folder using - sh thursdayexecutesuite.sh
-#path="E:/Ideavat/AutomatedQA/AuQA/Testcases" # /home/fc/automation/AuQA/Testcases
 
 full_path=$(realpath $0)
 dir_path=$(dirname $full_path)
