@@ -60,3 +60,5 @@ waitForOneMinuteAndPrintCurrentTimeToConsole
     common.waitForMinutes  1
     ${current_time}=    get current date
     log to console    !----Stale prevention program-Time==========>${current_time}============!
+
+

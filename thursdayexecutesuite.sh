@@ -3,16 +3,9 @@
 #path="E:/Ideavat/AutomatedQA/AuQA/Testcases" # /home/fc/automation/AuQA/Testcases
 
 full_path=$(realpath $0)
-echo $full_path
-
 dir_path=$(dirname $full_path)
-echo $dir_path
-
 tc_path=$dir_path/Testcases
-echo $tc_path
-
 rp_path=$dir_path/Reports
-echo $rp_path
 
 if [ `ps -ef | grep pabot | wc -l` -lt 2 ];  then
     echo "No automated tests are running so starting the test execution"
