@@ -2,6 +2,7 @@ Hello Team,
 
 Automation suite execution is completed.PFA Reports.
 Detailed test run results are in the folder created by latest date at location http://10.252.9.35/testReports/
+<message from the text file>
 
 Thanks,
 AuQA Team
