@@ -7,13 +7,6 @@ Resource    ${EXECDIR}/Resources/apiresources.robot
 
 
 *** Keywords ***
-# Query setGroupProperties_GuardHotAbsTemp_AlmHotAbsTemp_AllowNumExceedencesGuard_AllowNumExceedencesControl
-setGrpPropMutation
-    [Arguments]    ${allow_num_excd_ctrl}    ${allow_num_excd_guard}    ${alm_hot_abs_temp}    ${guard_hot_abs_temp}
-    ${group_oid}=  apiresources.queryToFetchGroupOid
-    ${mutation}=  set variable  mutation setGrpProp { propertyWrite(requests: [{oid: ${group_oid}, name: "AllowNumExceedencesGuard", int: ${allow_num_excd_guard}},{oid: ${group_oid}, name: "AllowNumExceedencesControl", int: ${allow_num_excd_ctrl}},{oid: ${group_oid}, name: "GuardHotAbsTemp", float: ${guard_hot_abs_temp}},{oid: ${group_oid}, name: "AlmHotAbsTemp", float: ${alm_hot_abs_temp}}]) { index reason }}
-    return from keyword    ${mutation}
-
 # Query queryToFetchJsonResponseContaingTheCurrentAHUStatus
 getAHUStatusInGroupQuery
     [Arguments]    ${group_name}
@@ -45,4 +38,9 @@ getCoolEstimateEffortsQuery
     [Arguments]     ${group_name}
     ${coolEstimateEffortsQuery}=  set variable  query getCoolEstimateEffortOfAHUS {site {groups:children(selector:{type:Group,name:"${group_name}"}) {oid type displayName ahus:children(selector:{type:AHU}) {name CoolEffort:children(selector:{type:CoolEffort}){name point:pointCurrent(unit:percent100){value}}}}}}
     return from keyword    ${coolEstimateEffortsQuery}
+
+getOidQuery
+    [Arguments]    ${group_name}
+    ${group_oid_query}=  set variable  query getGroupOid{site{groups: children(selector: {type: Group,name: "${group_name}"}){oid}}}
+    return from keyword  ${group_oid_query}
 

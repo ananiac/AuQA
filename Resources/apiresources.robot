@@ -239,7 +239,7 @@ confirmStatusOfAHUsNotGuard
 getOid
     [Arguments]    ${group_name}
     ${headers}=       create dictionary    Content-Type=${content_type}    Vigilent-Api-Token=${write_api_token}
-    ${query}=  gqlMutation.getOidQuery  ${group_name}
+    ${query}=  gqlQueries.getOidQuery  ${group_name}
     ${body}=  create dictionary  query= ${query}
     create session    AIEngine    ${base_url}     disable_warnings=1
     ${result}=  post on session    AIEngine  /public/graphql  headers=${headers}    json=${body}
