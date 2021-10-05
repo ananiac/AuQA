@@ -2,7 +2,7 @@
 Documentation          This testcase validates the Hot Guard mode feature of AI Engine
 ...                     Environment: ${host_ip}
 ...                     Group Name: ${group_name}
-#...                    Created by Greeshma on 20th August 2021
+#...                    Created by Greeshma on 20th August 2021.Modified on 5th Oct 2021 as per changes in Wiki page.
 Resource    ${EXECDIR}/Resources/apiresources.robot
 Resource    ${EXECDIR}/Resources/uiresources.robot
 Resource    ${EXECDIR}/Resources/connection.robot

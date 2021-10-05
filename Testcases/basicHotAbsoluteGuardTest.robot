@@ -3,8 +3,7 @@ Documentation          This testcase validates the Guard mode feature of AI Engi
 ...                     Environment: ${host_ip}
 ...                     Group Name: ${group_name}
 #...                    Created by Greeshma on 5th July 2021
-#...                    Modified on 6th July 2021 as per testcase update in Vigilent Confluence-Steps 2,3,5,9,15,18,20
-#...                    New test steps are 3,18 to 21
+#...                    Modified on 5th Oct as per testcase update in Vigilent Confluence-Steps
 Library    RequestsLibrary
 Library    JSONLibrary
 Library    Collections

@@ -2,13 +2,13 @@
 Documentation          This testsuite validates the Dead Sensor Guard feature of AI Engine
 ...                     Environment: ${host_ip}
 ...                     Group Name: ${group_name}
-#...                    Created by Greeshma on 28th July 2021
+#...                    Created by Greeshma on 28th July 2021.Modified on 5th Oct 2021 as per changes in Wiki page.
 ...                    This testsuite consist of 5 different types Dead Sensor Guard testcase
-...                    It has to be running in parallel with staleStatePrevention program
-...                     For all the tests , 25% of the sensors will be in stale via staleStatePrevention program
-...                     Thresold and Hysteresis calculations are done w.r.t to this 25%
-...     If the Hysteresis is not set,then 12.5% is considered as the default Hysteresis
-...      for the Alarm Clearence Threshold value calculation
+#                    It has to be running in parallel with staleStatePrevention program
+#                     For all the tests , 25% of the sensors will be in stale via staleStatePrevention program
+#                     Thresold and Hysteresis calculations are done w.r.t to this 25%
+#     If the Hysteresis is not set,then 12.5% is considered as the default Hysteresis
+#      for the Alarm Clearence Threshold value calculation
 Library    RequestsLibrary
 Library    JSONLibrary
 Library    Collections
