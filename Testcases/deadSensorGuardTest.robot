@@ -41,16 +41,18 @@ DeadSensorGuardTestSetupSteps
     deadSensorGuardResources.setIntialCxConfigParameters  ${test_input}[ds_num_minutes_past_value]    ${test_input}[ds_percent_dead_sensor_threshold_default_value]   ${test_input}[ds_num_minutes_guard_timer_value]    ${test_input}[ds_num_guard_units_value]
     #6)Set ALARM::GrpDeadSensorHysteresis=10%
     apiresources.setConfigAlarmGroupDeadSensorHysteresis    ${test_input}[grp_dead_sensor_hysteresis_value_default_value]
-    #7)make sure no AHUs are in Guard or Overridden
-    apiresources.releaseOverrideOfAllAHUsAndConfirmAHUsAreGuardCleared
-    #8)Start facs_dash and and facs_sift
+#    #7)make sure no AHUs are in Guard or Overridden
+#    apiresources.releaseOverrideOfAllAHUsAndConfirmAHUsAreGuardCleared
+    #7)Start facs_dash and and facs_sift
     connection.establishConnectionAndStartRequiredProcesses    facs_dash    facs_sift
-    #9)In the Imputes-test group, write out all rack temperature sensor points every minute at say 66 F
+    #8)In the Imputes-test group, write out all rack temperature sensor points every minute at say 66 F
     apiresources.setCoolingTemperatureForAllSensorPoints    ${test_input}[dead_sensor_test_temp]
-    #10)Wait 2 minutes then stop updating the temperatures of one rack (ie 2 temp points)
+    #9)Wait 2 minutes then stop updating the temperatures of one rack (ie 2 temp points)
     #Currently managed within staleState Prevention-implemented with Flag value
     common.waitForMinutes   2
     apiresources.stopUpdatingTemperatureToLastRack    ${test_input}[dead_sensor_test_temp]
+    #10)Make sure no AHUs are in Guard or Overridden
+    apiresources.releaseOverrideOfAllAHUsAndConfirmAHUsAreGuardCleared
     #11)Wait 2 minutes for the 2 points to go stale
     common.waitForMinutes   2
 Test1_PercentDeadSensorThreshold_SingleSensorHysteresis

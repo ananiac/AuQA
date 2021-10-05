@@ -23,6 +23,7 @@ hotGuardTestPreconditionSetup
     log to console    !-----PreCondition for the Dead Sensor Guard test is been executed------!
     connection.establishConnectionAndStopAllProcessesExcept    vx_server    facs_launcher    facs_trend
     apiresources.writeTestEntryTemperatureToSensorsAfterVXServerStarted
+    common.waitForMinutes    1
 
 setConfigAllowNumExceedencesGuardAndCATGuardBAndRange
     [Arguments]    ${config_allow_num_exceedences_guard_value}    ${config_CAT_guard_band_range_value}

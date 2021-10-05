@@ -21,8 +21,8 @@ HotGuardTestSetup
     uiresources.resetSystemPropertiesUsingLoadTemplateOptionWithOverwrite
     #4.Confirm config DASH_M::AllowNumExceedencesGuard=1 and CATGuardBandRange=4
     hotGuardTestResources.setConfigAllowNumExceedencesGuardAndCATGuardBAndRange    ${test_input}[config_allow_num_exceedences_guard_initial]    ${test_input}[config_CAT_guard_band_range_initial]
-    #5.Make sure no AHUs are in Guard or Overridden
-    apiresources.releaseOverrideOfAllAHUsAndConfirmAHUsAreGuardCleared
+#    #5.Make sure no AHUs are in Guard or Overridden
+#    apiresources.releaseOverrideOfAllAHUsAndConfirmAHUsAreGuardCleared
     #6.Write User event - “confirmed config DASHM::AllowNumExceedencesGuard=1 and CATGuardBandRange=4”
     #User event log entry is added from apiresources.changeCxConfigsTabModuleFieldValues, which is part of the keyword definition in step 4
     #7.Confirm group AllowNumExceedencesGuard, GuardHotAbsTemp, AlmHotAbsTemp are null
@@ -35,6 +35,8 @@ HotGuardTestSetup
     connection.establishConnectionAndStartRequiredProcesses    facs_dash    facs_sift
     #11.Wait 4 minutes
     common.waitForMinutes   4
+    #11.Make sure no AHUs are in Guard or Overridden
+    apiresources.releaseOverrideOfAllAHUsAndConfirmAHUsAreGuardCleared
     #12.Write User event “Starting Test 1 - testing NumGuardUnits, NumMinutesGuardTimer and AllowNumExceedencesGuard”
     apiresources.writeUserEventsEntryToNotificationEventLog    AuQA test->${group_name}->Hot Guard test->Starting Test 1 - testing NumGuardUnits,NumMinutesGuardTimer and AllowNumExceedencesGuard
     #13.Test 1 - configs NumGuardUnits and NumMinutesGuardTimer and AllowNumExceedencesGuard
