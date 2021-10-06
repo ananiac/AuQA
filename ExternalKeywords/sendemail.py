@@ -1,39 +1,49 @@
 import smtplib
 import os
+import sys
+import subprocess
+import pathlib
 from email.message import EmailMessage
 
-report_path= os.path.abspath("Reports/report.html")
-output_path= os.path.abspath("Reports/output.xml")
-log_path= os.path.abspath("Reports/log.html")
-template_path= os.path.abspath("ExternalKeywords/emailTemplate.txt")
+report_path = os.path.abspath("Reports/report.html")
 
-def attach_file(file_name_with_path,sub_type):
-   with open(file_name_with_path, "rb") as file:
-      file_content = file.read()
-      file_name = file.name
-      msg.add_attachment(file_content, maintype="application", subtype=sub_type, filename=file_name)
+#Fetch the ip address of host machine
+ipaddress= (subprocess.check_output(['hostname', '-s', '-I']).decode('utf-8')[:-1]).strip()
+print(ipaddress)
 
+#Suitename sent from the command line
+suite_name = sys.argv[1]
+print(suite_name)
+
+# Fetch the latest folder in testReports folder
+latest= max(pathlib.Path("/home/fc/automation/testReports").glob('*/'), key=os.path.getmtime)
+print(latest)
+latest_folder = os.path.split(latest)[1]
+print(latest_folder)
+
+#Sending email with the message and attachment
 msg = EmailMessage()
-msg['Subject'] = 'This is testemail on 4OCt- plz forward to anania if received'
+msg['Subject'] = 'This is test email- Please ignore-Test run result of '+suite_name
 msg['From'] = 'auqa@vigilent.com'
-msg['To'] = 'drkirby@vigilent.com'
+msg['To'] = 'AuQaTeam@vigilent.com'
 msg.set_content("""
-                This is the test email sent from AUQA
-                Automation suite execution is completed.PFA Reports.
-                Detailed test run results are in the folder created by latest date at location http://10.252.9.35/testReports/""")
+		Hello Team,
 
-with open(template_path) as template:
-   email_content=template.read()
-   msg.set_content(email_content)
+                Automation suite execution of """+suite_name+""" is completed.PFA Reports.
+                Detailed test run results are placed in the folder """+latest_folder+" at location http:/"+ipaddress+"""/testReports/
 
-attach_file(report_path,".html")
-attach_file(output_path,"xml")
-attach_file(log_path,"html")
+		Thanks,
+		AuQA Team""")
+
+with open(report_path, "rb") as file:
+    file_content = file.read()
+    file_name = file.name
+    msg.add_attachment(file_content, maintype="application", subtype=".html", filename=file_name)
 
 try:
-   smtpObj = smtplib.SMTP('172.17.1.70', 25)
-   smtpObj.send_message(msg)
-   smtpObj.quit()
-   print("Successfully sent email")
+    smtpObj = smtplib.SMTP('172.17.1.70', 25)
+    smtpObj.send_message(msg)
+    smtpObj.quit()
+    print("Successfully sent email")
 except Exception:
-   print("Error: unable to send email")
+    print("Error: unable to send email")
