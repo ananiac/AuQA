@@ -2,13 +2,13 @@
 Documentation          This testsuite validates the Dead Sensor Guard feature of AI Engine
 ...                     Environment: ${host_ip}
 ...                     Group Name: ${group_name}
-#...                    Created by Greeshma on 28th July 2021
+#...                    Created by Greeshma on 28th July 2021.Modified on 5th Oct 2021 as per changes in Wiki page.
 ...                    This testsuite consist of 5 different types Dead Sensor Guard testcase
-...                    It has to be running in parallel with staleStatePrevention program
-...                     For all the tests , 25% of the sensors will be in stale via staleStatePrevention program
-...                     Thresold and Hysteresis calculations are done w.r.t to this 25%
-...     If the Hysteresis is not set,then 12.5% is considered as the default Hysteresis
-...      for the Alarm Clearence Threshold value calculation
+#                    It has to be running in parallel with staleStatePrevention program
+#                     For all the tests , 25% of the sensors will be in stale via staleStatePrevention program
+#                     Thresold and Hysteresis calculations are done w.r.t to this 25%
+#     If the Hysteresis is not set,then 12.5% is considered as the default Hysteresis
+#      for the Alarm Clearence Threshold value calculation
 Library    RequestsLibrary
 Library    JSONLibrary
 Library    Collections
@@ -49,12 +49,14 @@ DeadSensorGuardTestSetupSteps
     #Currently managed within staleState Prevention-implemented with Flag value
     common.waitForMinutes   2
     apiresources.stopUpdatingTemperatureToLastRack    ${test_input}[dead_sensor_test_temp]
-    #10)Wait 2 minutes for the 2 points to go stale
+    #10)Make sure no AHUs are in Guard or Overridden
+    apiresources.releaseOverrideOfAllAHUsAndConfirmAHUsAreGuardCleared
+    #11)Wait 2 minutes for the 2 points to go stale
     common.waitForMinutes   2
 Test1_PercentDeadSensorThreshold_SingleSensorHysteresis
-    #11)Write User event “Starting Test 1 … testing DASHM::PercentDeadSensorThreshold and single sensor hysteresis”
+    #12)Write User event “Starting Test 1 … testing DASHM::PercentDeadSensorThreshold and single sensor hysteresis”
     apiresources.writeUserEventsEntryToNotificationEventLog    AuQA test->${group_name}->DeadSensorGuardTest->Starting Test 1->testing DASHM::PercentDeadSensorThreshold and single sensor hysteresis
-    #12)Test 1 … testing DASHM::PercentDeadSensorThreshold and single sensor hysteresis
+    #13)Test 1 … testing DASHM::PercentDeadSensorThreshold and single sensor hysteresis
     #a)Set DASHM::PercentDeadSensorThreshold=24.9% … wait one minute - the group enters guard and the GroupDeadSensor alarm is raised
    deadSensorGuardResources.checkGuardAndGroupDeadSensorAlarmStatusForPerecntDeadSensorThreshold    24.9    ${guard_switch}[guard_on]    ${test_input}[group_dead_sensor_alarm_on]
     #b)Set DASHM::PercentDeadSensorThreshold=25.1% … wait one minute - the group exits guard and the GroupDeadSensor alarm is still raised
@@ -64,9 +66,9 @@ Test1_PercentDeadSensorThreshold_SingleSensorHysteresis
     #d)Set DASHM::PercentDeadSensorThreshold=37.5% … wait one minute - the group is not in guard and now the alarm clears
    deadSensorGuardResources.checkGuardAndGroupDeadSensorAlarmStatusForPerecntDeadSensorThreshold    37.5    ${guard_switch}[guard_off]    ${test_input}[group_dead_sensor_alarm_off]
 Test2_ControlDeadSensorThreshold_SingleSensorHysteresis
-    #13)Write User event “Starting Test2 … testing group property ControlDeadSensorThreshold and single sensor hysteresis
+    #14)Write User event “Starting Test2 … testing group property ControlDeadSensorThreshold and single sensor hysteresis
     apiresources.writeUserEventsEntryToNotificationEventLog    AuQA test->${group_name}->Starting Test2->testing group property ControlDeadSensorThreshold and single sensor hysteresis
-    #14)Test 2 … testing group property ControlDeadSensorThreshold and single sensor hysteresis
+    #15)Test 2 … testing group property ControlDeadSensorThreshold and single sensor hysteresis
     #a)Set group property ControlDeadSensorThreshold=30% … wait one minute - the group does not enter  guard and the GroupDeadSensor alarm is not raised
     deadSensorGuardResources.checkGuardAndGroupDeadSensorAlarmStatusForControlDeadSensorThreshold    30    ${guard_switch}[guard_off]    ${test_input}[group_dead_sensor_alarm_off]
     #b)Set group property ControlDeadSensorThreshold=24.9% … wait one minute - the group enters guard and the GroupDeadSensor alarm is raised
@@ -78,9 +80,9 @@ Test2_ControlDeadSensorThreshold_SingleSensorHysteresis
     #e)Set group property ControlDeadSensorThreshold=37.5% … wait one minute - the group is not in guard and now the GroupDeadSensor alarm clears
     deadSensorGuardResources.checkGuardAndGroupDeadSensorAlarmStatusForControlDeadSensorThreshold    37.5    ${guard_switch}[guard_off]    ${test_input}[group_dead_sensor_alarm_off]
 Test3_CxConfigALARM_GrpDeadSensorThreshold
-    #15)Write User event “Test 3 …. testing ALARM::GrpDeadSensorThreshold”
+    #16)Write User event “Test 3 …. testing ALARM::GrpDeadSensorThreshold”
     apiresources.writeUserEventsEntryToNotificationEventLog    AuQA test->${group_name}->Test 3->testing ALARM::GrpDeadSensorThreshold
-    #16)Test 3 …. testing ALARM::GrpDeadSensorThreshold
+    #17)Test 3 …. testing ALARM::GrpDeadSensorThreshold
     #a)Set config DASHM::PercentDeadSensorThreshold=100%
     apiresources.setPercentDeadSensorThresholdInDASHMConfig    100
     #b)Set group property ControlDeadSensorThreshold=100%
@@ -92,9 +94,9 @@ Test3_CxConfigALARM_GrpDeadSensorThreshold
     #e)Set config ALARM::GrpDeadSensorThreshold=37.5% … wait one minute - no guard and GroupDeadSensor alarm is cleared
     deadSensorGuardResources.checkGuardAndGroupDeadSensorAlarmStatusForGrpDeadSensorThreshold    37.5    ${guard_switch}[guard_off]    ${test_input}[group_dead_sensor_alarm_off]
 Test4_CxConfigALARM_GrpDeadSensorHysteresis
-    #17)Write User event “Test 4 … testing ALARM::GrpDeadSensorHysteresis”
+    #18)Write User event “Test 4 … testing ALARM::GrpDeadSensorHysteresis”
     apiresources.writeUserEventsEntryToNotificationEventLog    AuQA test->${group_name}->Test 4->testing ALARM::GrpDeadSensorHysteresis
-    #18)Test 4 … testing ALARM::GrpDeadSensorHysteresis
+    #19)Test 4 … testing ALARM::GrpDeadSensorHysteresis
     #a)Set config ALARM::GrpDeadSensorHysteresis=20%
     apiresources.setConfigAlarmGroupDeadSensorHysteresis    20
     #b)Set config ALARM::GrpDeadSensorThreshold=20% … wait one minute - no guard and GroupDeadSensor alarm is raised
@@ -106,9 +108,9 @@ Test4_CxConfigALARM_GrpDeadSensorHysteresis
     #e)Set config ALARM::GrpDeadSensorThreshold=45% … wait one minute - no guard and GroupDeadSensor alarm is cleared
     deadSensorGuardResources.checkGuardAndGroupDeadSensorAlarmStatusForGrpDeadSensorThreshold    45    ${guard_switch}[guard_off]    ${test_input}[group_dead_sensor_alarm_off]
 Test5_AlarmDeadSensorThreshold
-    #19)Write User event “Test 5 … testing group property AlarmDeadSensorThreshold”
+    #20)Write User event “Test 5 … testing group property AlarmDeadSensorThreshold”
     apiresources.writeUserEventsEntryToNotificationEventLog    AuQA test->${group_name}->Test 5->testing group property AlarmDeadSensorThreshold
-    #20)Test 5 … testing group property AlarmDeadSensorThreshold
+    #21)Test 5 … testing group property AlarmDeadSensorThreshold
     #a)Set config ALARM::GrpDeadSensorThreshold=100%
     apiresources.setConfigAlarmGroupDeadSensorThreshold    100
     #b)Set config ALARM::GrpDeadSensorHysteresis=10%
@@ -122,9 +124,9 @@ Test5_AlarmDeadSensorThreshold
     #f)Set group property AlarmDeadSensorThreshold=37.5% … wait one minute -  no guard but GroupDeadSensor alarm clears
     deadSensorGuardResources.checkGuardAndGroupDeadSensorAlarmStatusForAlarmDeadSensorThreshold    37.5    ${guard_switch}[guard_off]    ${test_input}[group_dead_sensor_alarm_off]
 Test6_AlarmDeadSensorHysteresis
-    #21)Write User event “Test 6 … testing group property AlarmDeadSensorHysteresis”
+    #22)Write User event “Test 6 … testing group property AlarmDeadSensorHysteresis”
     apiresources.writeUserEventsEntryToNotificationEventLog    AuQA test->${group_name}->Test 6->testing group property AlarmDeadSensorHysteresis
-    #22)Test 6 … testing group property AlarmDeadSensorHysteresis (0% means ignore)
+    #23)Test 6 … testing group property AlarmDeadSensorHysteresis (0% means ignore)
     #a)Set group property AlarmDeadSensorHysteresis=20%
     apiresources.setGroupPropertyFloatValue  AlarmDeadSensorHysteresis    20
     #b)Set config ALARM::GrpDeadSensorHysteresis=25%
@@ -147,9 +149,9 @@ Test6_AlarmDeadSensorHysteresis
     deadSensorGuardResources.checkGuardAndGroupDeadSensorAlarmStatusForAlarmDeadSensorThreshold    24    ${guard_switch}[guard_off]    ${test_input}[group_dead_sensor_alarm_on]
     #k)Set group property AlarmDeadSensorThreshold=37.5% … wait one minute -  no guard but GroupDeadSensor alarm clears
     deadSensorGuardResources.checkGuardAndGroupDeadSensorAlarmStatusForAlarmDeadSensorThreshold    37.5    ${guard_switch}[guard_off]    ${test_input}[group_dead_sensor_alarm_off]
-    #23)End Test
+    #24)End Test
     apiresources.writeUserEventsEntryToNotificationEventLog    AuQA test->${group_name}->DeadSensorGuard Test finsihed.
-    #24)Cleanup
+    #25)Cleanup
 Cleanup
     [Teardown]   apiresources.setTestExitTemperatureToAllSensorPoints
     #a)In the CX UI, open the Configs and load the DASHAM template (with overwrite) and hit Save button then close    #confirm this steps
@@ -158,6 +160,6 @@ Cleanup
     #c)Set group property AlarmDeadSensorHysteresis=0
     #d)Set group property AlarmDeadSensorThreshold=0
     deadSensorGuardResources.setDeadSensorGuardGroupPropertiesToEmpty
-    #25)Stop all processes except vx_server, facs_launcher and facs_trend
+    #26)Stop all processes except vx_server, facs_launcher and facs_trend
     connection.establishConnectionAndStopAllProcessesExcept    vx_server    facs_launcher    facs_trend
-    #26)Exit test
+    #27)Exit test

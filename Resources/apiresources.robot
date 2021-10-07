@@ -463,7 +463,9 @@ fetchAHUNameListOfAHUsWithGuardON
 
     #Created by Greeshma on 28 Sep 2021. Release override for all AHUs and confirm the Guard is cleared for all.
 releaseOverrideOfAllAHUsAndConfirmAHUsAreGuardCleared
-    apiresources.releaseOverrideOfAllAHUs
+    IF    '${group_name}'!='RSP-test'
+        apiresources.releaseOverrideOfAllAHUs
+    END
     apiresources.checkForAllAHUsToBeGuardCleared
 
     #Created by Greeshma on 30 September 2021.This keyword returns list of ahu_names belongs to current control group.
