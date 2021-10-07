@@ -35,27 +35,6 @@ setPercentDeadSensorThresholdInDASHMConfig
     [Arguments]    ${percent_dead_sensor_threshold_val}
     changeCxConfigsTabModuleFieldValues    DASHM    PercentDeadSensorThreshold    ${percent_dead_sensor_threshold_val}
 
-#changeCxConfigsTabModuleFieldValues
-#    [Arguments]    ${module_name}    ${field_name}    ${value}
-#    ${headers}=       create dictionary    Content-Type=${content_type}    Vigilent-Api-Token=${write_api_token}
-#    ${graphql_mutation}=  gqlMutation.configWriteMutation    ${module_name}    ${field_name}    ${value}
-#    ${body}=          create dictionary    query= ${graphql_mutation}
-#    create session    AIEngine    ${base_url}     disable_warnings=1
-#    ${result}=  post on session    AIEngine  /public/graphql  headers=${headers}    json=${body}
-#    should be equal as strings  ${result.json()}  ${configSetResponse}
-#    log to console    Config module :${module_name}->Field:${field_name}->Value:${value}-is updated
-#    apiresources.writeUserEventsEntryToNotificationEventLog    AuQA test->${group_name}->Config->${module_name}->${field_name}=${value}-is updated.
-
-#setRackPointSensorTemperature
-#    [Arguments]    ${oid}    ${temp}
-#    ${headers}=       create dictionary    Content-Type=${content_type}    Vigilent-Api-Token=${write_api_token}
-#    ${graphql_mutation}=  gqlMutation.pointWriteMutation    ${oid}    ${temp}
-#    ${body}=          create dictionary    query= ${graphql_mutation}
-#    create session    AIEngine    ${base_url}     disable_warnings=1
-#    ${result}=  post on session    AIEngine  /public/graphql  headers=${headers}    json=${body}
-#    should be equal as strings  ${result.json()}  ${pointWriteResponse}
-#    log to console   Temperature ${temp} F set for ${oid}
-
 setTemperatureForAllRackSensorPoints    #Contain both query and mutation
     [Arguments]    ${tempF}
     log to console    Fetch the number of rack sensors ----------------->
@@ -73,15 +52,6 @@ setTemperatureForAllRackSensorPoints    #Contain both query and mutation
         run keyword if    '${rack_type2}'=='CTop'     setRackPointSensorTemperature    ${oid2}    ${tempF}
     END
     log to console    ******************************Temperature set for all rack sensors*********************************
-
-#queryToFetchJsonResponseContainingTheRackSensorsFromGroup
-#    ${headers}=       create dictionary    Content-Type=${content_type}   Vigilent-Api-Token=${query_api_token}
-#    ${query}=    gqlQueries.getRackSensorPointsOfGroupQuery  ${group_name}
-#    ${body}=          create dictionary    query= ${query}
-#    create session    AIEngine    ${base_url}     disable_warnings=1
-#    ${result}=  post on session    AIEngine  /public/graphql  headers=${headers}    json=${body}
-#    ${json_dict}=   set variable    ${result.json()}
-#    return from keyword    ${json_dict}
 
 setTemperatureForSensorsAandB
     [Arguments]    ${temp}
@@ -184,22 +154,13 @@ checkForAllAHUsToBeGuardCleared
     confirmStatusOfAHUsNotGuard     ${total_no_ahus}     ${json_dictionary}
     log to console    *************************************************************
 
-#queryToFetchJsonResponseContaingTheCurrentAHUStatus
-#    ${headers}=       create dictionary    Content-Type=${content_type}   Vigilent-Api-Token=${query_api_token}
-#    ${query}=  gqlQueries.getAHUStatusInGroupQuery  ${group_name}
-#    ${body}=          create dictionary    query= ${query}
-#    create session    AIEngine    ${base_url}     disable_warnings=1
-#    ${result}=  post on session    AIEngine  /public/graphql  headers=${headers}    json=${body}
-#    ${json_dictionary}=     set variable    ${result.json()}
-#    return from keyword    ${json_dictionary}
-
 fetchNumberOfAHUsWithGuardON
     [Arguments]    ${total}     ${json_dictionary}
     #log to console    !---Intial counter value is ${counter}---!
     FOR    ${ahu}   IN RANGE    0    ${total}
                 log to console    !!---Checking ahu at position ${ahu}---!!s
                 ${no_of_controls}=    fetchTheNumberOfItemsInDictionary    ${json_dictionary}    $.data.site.groups[0].ahus[${ahu}].controls
-                log to console    !!!--No of Controls for ${ahu} is ${no_of_controls}---!!!
+                log to console    !!!--No of Controls for ${ahu} is ${no_of_controls}---!!!queryToFetchJsonResponseContaingTheCurrentAHUStatus
                 FOR    ${controls}  IN RANGE  0   ${no_of_controls}
                     ${ahu_status_ctrl_value}     fetchValueOfFieldFromJsonDictionary    ${json_dictionary}    $.data.site.groups[0].ahus[${ahu}].controls[${controls}].status.origin
                     log to console    !V-------Status value for AHU:${ahu} control:${controls} is ${ahu_status_ctrl_value}-----!V
@@ -236,18 +197,6 @@ confirmStatusOfAHUsNotGuard
     END
     log to console    *********All AHUS are cleared of GUARD*****************
 
-#getOid
-#    [Arguments]    ${group_name}
-#    ${headers}=       create dictionary    Content-Type=${content_type}    Vigilent-Api-Token=${write_api_token}
-#    ${query}=  gqlQueries.getOidQuery  ${group_name}
-#    ${body}=  create dictionary  query= ${query}
-#    create session    AIEngine    ${base_url}     disable_warnings=1
-#    ${result}=  post on session    AIEngine  /public/graphql  headers=${headers}    json=${body}
-#    ${var_dict}=    evaluate     json.loads("""${result.content}""")    json
-#    ${group_oid_str}=    set variable    ${var_dict}[data][site][groups][0][oid]
-#    ${group_oid}=    convert to integer  ${group_oid_str}
-#    return from keyword  ${group_oid}
-
 queryToFetchGroupOid
     ${group_oid}=  getOid  ${group_name}
     return from keyword  ${group_oid}
@@ -276,17 +225,6 @@ setTestExitTemperatureToAllSensorPoints
     apiresources.setTemperatureForAllRackSensorPoints  ${test_exit_sensor_temp}
     log to console  !!!--------------------Test Teardown done------------------------------!!!
     connection.killChromeAndChromedriverProcessesAfterTest
-
-    #Created by Greeshma on 19 Aug 2021
-#queryToFetchJsonResponseForSpecificAlarmType
-#    [Arguments]    ${alarm_type}
-#    ${headers}=       create dictionary    Content-Type=${content_type}   Vigilent-Api-Token=${query_api_token}
-#    ${query}=  gqlQueries.getAlarmStatusQuery    ${group_name}    ${alarm_type}
-#    ${body}=          create dictionary    query= ${query}
-#    create session    AIEngine    ${base_url}     disable_warnings=1
-#    ${result}=  post on session    AIEngine  /public/graphql  headers=${headers}    json=${body}
-#    ${json_dictionary}=     set variable    ${result.json()}
-#    return from keyword    ${json_dictionary}
 
     #Created by Greeshma on 19 Aug 2021
 setConfigAlarmGroupDeadSensorHysteresis
@@ -332,17 +270,6 @@ checkingGuardModeOfGroup
         should not be equal as integers    ${current_ctrl_status_value}    2    System should not be in guard(2)
         log to console    ==============--Validated Successfully->Status value is ${current_ctrl_status_value}-Not in Guard===================
      END
-
-    #Created by Greeshma on 20 Aug 2021
-#setHighAndLowSetPointValues
-#    [Arguments]    ${ctop_oid}    ${high_value}    ${low_value}
-#    ${headers}=       create dictionary    Content-Type=${content_type}    Vigilent-Api-Token=${write_api_token}
-#    ${mutation}=    gqlMutation.setSetPointLimits    ${ctop_oid}  ${high_value}  ${low_value}
-#    ${body}=          create dictionary    query= ${mutation}
-#    create session    AIEngine    ${base_url}     disable_warnings=1
-#    ${result}=  post on session    AIEngine  /public/graphql  headers=${headers}    json=${body}
-#    should be equal as strings  ${result.json()}  ${setSetPointLimitsResponse}
-#    log to console   Limits set for Setpoint on ctop ${ctop_oid} -> high_limit: ${high_value} and low_limit:${low_value}
 
     #Created by Greeshma on 20 Aug 2021
 setAllHighAndLowSetPointLimits
@@ -423,17 +350,6 @@ setAllowNumExceedencesGuardOfGroupProperties
     [Arguments]    ${property_value}
     apiresources.changeGroupPropertiesParameterValue    AllowNumExceedencesGuard  int   ${property_value}
 
-    #Created by Greeshma on 23 Aug 2021
-#changeGroupPropertiesParameterValue
-#    [Arguments]    ${property_name}  ${property_type}  ${property_value}
-#    ${headers}=       create dictionary    Content-Type=${content_type}    Vigilent-Api-Token=${write_api_token}
-#    ${mutation}=    gqlMutation.setGroupPropertymutation    ${property_name}    ${property_type}    ${property_value}
-#    ${body}=          create dictionary    query= ${mutation}
-#    create session    AIEngine    ${base_url}     disable_warnings=1
-#    ${result}=  post on session    AIEngine  /public/graphql  headers=${headers}    json=${body}
-#    should be equal as strings  ${result.json()}  ${propertyWriteResponse}
-#    log to console  !!------------------Group ->Propertie ${property_name} updated successfully with ${property_value}----------------!!
-
     #Created by Greeshma on 30 August 2021
 setCoolingTemperatureForAllSensorPoints
     [Arguments]    ${temp}
@@ -446,59 +362,15 @@ stopUpdatingTemperatureToLastRack
     common.setFlagValue    ${exclude_dead_rack_flag}
     apiresources.setTemperatureForAllExceptDeadSensor    ${temp}
 
-    #Created by Greeshma on 31 August 2021
-#queryToFetchControlStatusValueOfGroup
-#    ${headers}=       create dictionary    Content-Type=${content_type}    Vigilent-Api-Token=${query_api_token}
-#    ${query}=  gqlQueries.getCtrlStateValueQuery  ${group_name}
-#    ${body}=          create dictionary    query= ${query}
-#    create session    AIEngine    ${base_url}     disable_warnings=1
-#    ${result}=  post on session    AIEngine  /public/graphql  headers=${headers}    json=${body}
-#    @{ctrl_state_value}    get value from json    ${result.json()}    ${trends_groupStatus_controlStatus_value_path}
-#    ${value}    get from list    ${ctrl_state_value}    0
-#    return from keyword    ${value}
-
     #Created by Greeshma and moved to apiresources on 7th Sep 2021
 setGroupPropertyFloatValue
     [Arguments]    ${property_name}    ${property_value}
     apiresources.changeGroupPropertiesParameterValue    ${property_name}  float  ${property_value}
 
-    #Created by Greeshma on 13 Sep 2021
-#writeUserEventsEntryToNotificationEventLog
-#    [Arguments]    ${message}
-#    ${headers}=       create dictionary    Content-Type=${content_type}    Vigilent-Api-Token=${write_api_token}
-#    ${mutation}=    gqlMutation.testEventLogMutation    ${message}
-#    ${body}=          create dictionary    query= ${mutation}
-#    create session    AIEngine    ${base_url}     disable_warnings=1
-#    ${result}=  post on session    AIEngine  /public/graphql  headers=${headers}    json=${body}
-#    should be equal as strings  ${result.json()}  ${testEventLogResponse}
-#    log to console    !---------------VX-->Notification tab->Event-->updated--> ${message}--!
-
 getAHUCount
     ${json_dict}=  apiresources.queryToFetchJsonResponseContaingTheCurrentAHUStatus
     ${total_no_ahus}=    fetchTheNumberOfItemsInDictionary    ${json_dict}    ${ahus_list_path}
     return from keyword    ${total_no_ahus}
-
-    #Mutation for setting BOP value as 'ON' for a AHU
-#settingBOPValueOfAHU
-#    [Arguments]    ${ahu_bop_oid}
-#    ${headers}=       create dictionary    Content-Type=${content_type}   Vigilent-Api-Token=${write_api_token}
-#    ${graphql_mutation}=  gqlMutation.setBOPMutation  ${ahu_bop_oid}
-#    ${body}=          create dictionary    query= ${graphql_mutation}
-#    create session    AIEngine    ${base_url}     disable_warnings=1
-#    ${result}=  post on session    AIEngine  /public/graphql  headers=${headers}    json=${body}
-#    should be equal as strings  ${result.json()}  ${setSetPointLimitsResponse}
-#    log to console   !!===========BOP ON->done===========!!
-
-    #Mutation for setting SFC value as 'ON' for an AHU
-#settingSFCValueOfAHU
-#    [Arguments]    ${ahu_sfc_oid}  ${oid_sfc_value}
-#    ${headers}=       create dictionary    Content-Type=${content_type}   Vigilent-Api-Token=${write_api_token}
-#    ${graphql_mutation}=  gqlMutation.setSFCMutation  ${ahu_sfc_oid}  ${oid_sfc_value}
-#    ${body}=          create dictionary    query= ${graphql_mutation}
-#    create session    AIEngine    ${base_url}     disable_warnings=1
-#    ${result}=  post on session    AIEngine  /public/graphql  headers=${headers}    json=${body}
-#    should be equal as strings  ${result.json()}  ${setSetPointLimitsResponse}
-#    log to console   !!=======SFC value:${oid_sfc_value} is set=========!!
 
     #Created by Greeshma on 30 Sep 2021.Set the AHUs into override as per the sfc values provided in the Test input.
 overrideAllAHUsWithSFCValuesAsPerList
@@ -513,16 +385,6 @@ overrideAllAHUsWithSFCValuesAsPerList
         settingSFCValueOfAHU    ${ahu_sfc_oid}    ${test_input}[${ahu}]
     END
     log to console    !!*****************==============All AHUs in the list are overridden==================****************!!
-
-    #Created by Greeshma on 27 Sep 2021.
-#queryToFetchJsonResponseContainingTheCoolEffortEstimateOfAHUs
-#    ${headers}=       create dictionary    Content-Type=${content_type}   Vigilent-Api-Token=${query_api_token}
-#    ${query}=    gqlQueries.getCoolEstimateEffortsQuery  ${group_name}
-#    ${body}=          create dictionary    query= ${query}
-#    create session    AIEngine    ${base_url}     disable_warnings=1
-#    ${result}=  post on session    AIEngine  /public/graphql  headers=${headers}    json=${body}
-#    ${json_dict}=   set variable    ${result.json()}
-#    return from keyword    ${json_dict}
 
     #Created by Greeshma on 28 Sep 2021.This keyword returns a dictionary conatining (K=V) ahu_name=cool_effor_estimate_value
 getCoolEffortEstimateValuesOfAllAHUs
@@ -569,19 +431,6 @@ getBOPOidListOfAllAHUs
 getSFCOidListOfAllAHUs
     @{sfc_oid_list}    getSpecificControlOidListOfAllAHUs    SFC
     return from keyword    @{sfc_oid_list}
-
-    #Created by Greeshma on 27 Sep 2021.
-#releaseOverrideOfAllAHUs
-#    @{bop_oid_list}=    getBOPOidListOfAllAHUs
-#    @{sfc_oid_list}=     getSFCOidListOfAllAHUs
-#    @{all_ctrl_oid_list}=    combine lists  ${bop_oid_list}    ${sfc_oid_list}
-#    ${mutation}=    gqlMutation.releaseOverrideOfAllAHUsMutation  @{all_ctrl_oid_list}
-#    ${body}=          create dictionary    query= ${mutation}
-#    ${headers}=       create dictionary    Content-Type=${content_type}    Vigilent-Api-Token=${write_api_token}
-#    create session    AIEngine    ${base_url}     disable_warnings=1
-#    ${result}=  post on session    AIEngine  /public/graphql  headers=${headers}    json=${body}
-#    should be equal as strings  ${result.json()}  ${clearOverRideOfAllAHUsResponse}
-#    log to console   !!=======*********Override released for All AHUs*******=========!!
 
     #Created by Greeshma on 28 Sep 2021
 fetchAHUNameListOfAHUsWithGuardON
