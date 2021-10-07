@@ -21,19 +21,17 @@ HotGuardTestSetup
     uiresources.resetSystemPropertiesUsingLoadTemplateOptionWithOverwrite
     #4.Confirm config DASH_M::AllowNumExceedencesGuard=1 and CATGuardBandRange=4
     hotGuardTestResources.setConfigAllowNumExceedencesGuardAndCATGuardBAndRange    ${test_input}[config_allow_num_exceedences_guard_initial]    ${test_input}[config_CAT_guard_band_range_initial]
-#    #5.Make sure no AHUs are in Guard or Overridden
-#    apiresources.releaseOverrideOfAllAHUsAndConfirmAHUsAreGuardCleared
-    #6.Write User event - “confirmed config DASHM::AllowNumExceedencesGuard=1 and CATGuardBandRange=4”
+    #5.Write User event - “confirmed config DASHM::AllowNumExceedencesGuard=1 and CATGuardBandRange=4”
     #User event log entry is added from apiresources.changeCxConfigsTabModuleFieldValues, which is part of the keyword definition in step 4
-    #7.Confirm group AllowNumExceedencesGuard, GuardHotAbsTemp, AlmHotAbsTemp are null
+    #6.Confirm group AllowNumExceedencesGuard, GuardHotAbsTemp, AlmHotAbsTemp are null
     hotGuardTestResources.setHotGuardGroupPropertiesToEmpty
-    #8.Set all Setpoint to  80.6/64.4
+    #7.Set all Setpoint to  80.6/64.4
     apiresources.setAllHighAndLowSetPointLimits    ${test_input}[high_set_point_limit]    ${test_input}[low_set_point_limit]
-    #9.set all rack temperature sensor points every minute at say 66 F
+    #8.set all rack temperature sensor points every minute at say 66 F
     apiresources.setCoolingTemperatureForAllSensorPoints    ${test_input}[hot_guard_intial_temp_all_racks]
-    #10.start facs_dash (Cooling Control) and facs_sift (Application Metrics)
+    #9.start facs_dash (Cooling Control) and facs_sift (Application Metrics)
     connection.establishConnectionAndStartRequiredProcesses    facs_dash    facs_sift
-    #11.Wait 4 minutes
+    #10.Wait 4 minutes
     common.waitForMinutes   4
     #11.Make sure no AHUs are in Guard or Overridden
     apiresources.releaseOverrideOfAllAHUsAndConfirmAHUsAreGuardCleared

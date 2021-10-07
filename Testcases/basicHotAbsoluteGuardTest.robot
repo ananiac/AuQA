@@ -23,8 +23,6 @@ BasicHotAbsoluteGuardTest
     apiresources.writeUserEventsEntryToNotificationEventLog    AuQA test->${group_name}->BasicHotAbsoluteGuardTest started.
     #1).Start only vx_server, facs_launcher and facs_trend should be running
     connection.establishConnectionAndStartRequiredProcesses    vx_server  facs_launcher  facs_trend
-#    #2).Make sure no AHUs are in Guard or Overridden
-#    apiresources.releaseOverrideOfAllAHUsAndConfirmAHUsAreGuardCleared
     #2)In the CX UI, open the Configs and load the DASHAM template (with overwrite) and hit Save button then close
     uiresources.resetSystemPropertiesUsingLoadTemplateOptionWithOverwrite
     #3)Set System DASHM:: configs NumGuardUnits = 1,NumMinutesGuardTimer = 3, PercentDeadSensorThreshold=100

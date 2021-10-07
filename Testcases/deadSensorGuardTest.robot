@@ -41,8 +41,6 @@ DeadSensorGuardTestSetupSteps
     deadSensorGuardResources.setIntialCxConfigParameters  ${test_input}[ds_num_minutes_past_value]    ${test_input}[ds_percent_dead_sensor_threshold_default_value]   ${test_input}[ds_num_minutes_guard_timer_value]    ${test_input}[ds_num_guard_units_value]
     #6)Set ALARM::GrpDeadSensorHysteresis=10%
     apiresources.setConfigAlarmGroupDeadSensorHysteresis    ${test_input}[grp_dead_sensor_hysteresis_value_default_value]
-#    #7)make sure no AHUs are in Guard or Overridden
-#    apiresources.releaseOverrideOfAllAHUsAndConfirmAHUsAreGuardCleared
     #7)Start facs_dash and and facs_sift
     connection.establishConnectionAndStartRequiredProcesses    facs_dash    facs_sift
     #8)In the Imputes-test group, write out all rack temperature sensor points every minute at say 66 F
