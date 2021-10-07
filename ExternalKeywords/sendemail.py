@@ -23,7 +23,7 @@ print(latest_folder)
 
 #Sending email with the message and attachment
 msg = EmailMessage()
-msg['Subject'] = 'This is test email- Please ignore-Test run result of '+suite_name
+msg['Subject'] = 'AuQA test run result of '+suite_name
 msg['From'] = 'auqa@vigilent.com'
 msg['To'] = 'AuQaTeam@vigilent.com'
 msg.set_content("""

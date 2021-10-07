@@ -32,7 +32,7 @@ if [ `ps -ef | grep pabot | wc -l` -lt 2 ];  then
 #   sudo pabot --pabotlib --processes 2 --name "Guard4_General-test_$(date +%F_%H:%M:%S)" --reporttitle "GuardOrderMIX" --outputdir Reports --output guardOrderMIX.xml --variable environment:config118  -v groupname:General-test -T Testcases/guardOrderMIXTest.robot  Testcases/staleStatePrevention.robot >> Reports/executionLog.txt 2>&1 || echo $(date +%F_%H:%M:%S)- GuardOrderMIX/staleStatePrevention  execution failed >> Reports/executionLog.txt 2>&1
 #   sudo rebot  --name "GuardTest" --reporttitle "Test performed across different environment and different group" --outputdir Reports --output output.xml Reports/basichotGuard.xml Reports/deadSensorGuard.xml Reports/hotGuard.xml Reports/guardOrderMIX.xml 2>&1 | sudo tee -a Reports/executionLog.txt
 #   sudo pabot --pabotlib -d Reports/cleanReports --output moveReports.xml --variable environment:config37 /home/fc/automation/AuQA/Testcases/moveReports.robot
-
+#   python3 ExternalKeywords/sendemail.py wednesdaydaysuite 2>&1 | tee -a Reports/executionLog.txt
 
 
 ##Uncomment and use the below  for windows

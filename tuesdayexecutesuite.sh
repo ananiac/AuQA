@@ -33,7 +33,7 @@ if [ `ps -ef | grep pabot | wc -l` -lt 2 ];  then
 #    sudo pabot --pabotlib --processes 2 --name "Guard4_General-test_$(date +%F_%H:%M:%S)" --reporttitle "GuardOrderMIX" --outputdir Reports --output guardOrderMIX.xml --variable environment:config37  -v groupname:General-test -T Testcases/guardOrderMIXTest.robot  Testcases/staleStatePrevention.robot >> Reports/executionLog.txt 2>&1 || echo $(date +%F_%H:%M:%S)- GuardOrderMIX/staleStatePrevention  execution failed >> Reports/executionLog.txt 2>&1
 #    sudo rebot  --name "GuardTest" --reporttitle "Test performed on environment 37" --outputdir Reports --output output.xml /home/fc/automation/AuQA/Reports/basichotGuard.xml /home/fc/automation/AuQA/Reports/deadSensorGuard.xml /home/fc/automation/AuQA/Reports/hotGuard.xml /home/fc/automation/AuQA/Reports/guardOrderMIX.xml 2>&1 | sudo tee -a Reports/executionLog.txt
 #    sudo pabot --pabotlib -d Reports/cleanReports --output moveReports.xml --variable environment:config37 /home/fc/automation/AuQA/Testcases/moveReports.robot
-
+#    python3 ExternalKeywords/sendemail.py tuesdaysuite 2>&1 | tee -a Reports/executionLog.txt
 
 ##Uncomment and use the below  for windows machine
 #cd E:/Ideavat/AutomatedQA/AuQA
