@@ -9,17 +9,13 @@ report_path = os.path.abspath("Reports/report.html")
 
 #Fetch the ip address of host machine
 ipaddress= (subprocess.check_output(['hostname', '-s', '-I']).decode('utf-8')[:-1]).strip()
-print(ipaddress)
 
 #Suitename sent from the command line
 suite_name = sys.argv[1]
-print(suite_name)
 
 # Fetch the latest folder in testReports folder
 latest= max(pathlib.Path("/home/fc/automation/testReports").glob('*/'), key=os.path.getmtime)
-print(latest)
 latest_folder = os.path.split(latest)[1]
-print(latest_folder)
 
 #Sending email with the message and attachment
 msg = EmailMessage()
