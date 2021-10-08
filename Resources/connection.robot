@@ -5,7 +5,7 @@ Library                SSHLibrary
 Library                Process
 Library                Collections
 Variables    ${EXECDIR}/Configurations/${environment}.py
-Variables    ${EXECDIR}/Resources/ResourceVariables/globalVariables.py
+Variables    ${EXECDIR}/Inputs/testInputs.robot
 
 
 *** Variables ***

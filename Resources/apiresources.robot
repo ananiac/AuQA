@@ -5,9 +5,9 @@ Library    Collections
 Library    OperatingSystem
 Library    DateTime
 Variables    ${EXECDIR}/Configurations/${environment}.py
-Variables    ${EXECDIR}/Resources/ResourceVariables/globalVariables.py
 Variables    ${EXECDIR}/JsonPath/basicHotAbsoluteGuardJsonpath.py
 Variables    ${EXECDIR}/Inputs/expectedMutationJsonResponses.py
+Variables    ${EXECDIR}/Inputs/testInputs.robot
 Resource    common.robot
 Resource    connection.robot
 Resource    ${EXECDIR}/Inputs/GraphQL/gqlMutation.robot

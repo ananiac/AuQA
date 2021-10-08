@@ -5,6 +5,7 @@ Library    Collections
 Library    OperatingSystem
 Library  pabot.PabotLib
 Variables    ${EXECDIR}/Configurations/${environment}.py
+Variables    ${EXECDIR}/Inputs/testInputs.robot
 Library    ${EXECDIR}/ExternalKeywords/common.py
 Library    DateTime
 
