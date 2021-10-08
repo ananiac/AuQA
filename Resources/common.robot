@@ -5,13 +5,13 @@ Library    Collections
 Library    OperatingSystem
 Library  pabot.PabotLib
 Variables    ${EXECDIR}/Configurations/${environment}.py
-Variables    ${EXECDIR}/Inputs/testInputs.robot
+Resource    ${EXECDIR}/Inputs/testInputs.robot
 Library    ${EXECDIR}/ExternalKeywords/common.py
 Library    DateTime
 
 *** Variables ***
 ${type_of_file}  png
-${flag}    0
+
 
 *** Keywords ***
 checkResponseStatusCode

@@ -7,7 +7,7 @@ Library    DateTime
 Variables    ${EXECDIR}/Configurations/${environment}.py
 Variables    ${EXECDIR}/JsonPath/basicHotAbsoluteGuardJsonpath.py
 Variables    ${EXECDIR}/Inputs/expectedMutationJsonResponses.py
-Variables    ${EXECDIR}/Inputs/testInputs.robot
+Resource    ${EXECDIR}/Inputs/testInputs.robot
 Resource    common.robot
 Resource    connection.robot
 Resource    ${EXECDIR}/Inputs/GraphQL/gqlMutation.robot
@@ -574,7 +574,7 @@ queryToFetchJsonResponseContainingTheRackSensorsFromGroup
 getOid
     [Arguments]    ${group_name}
     ${query}=  gqlQueries.getOidQuery  ${group_name}
-    ${json_dictionary}=  gqlFetchJsonResponseFromMutation     ${query}
+    ${json_dictionary}=  gqlFetchJsonResponseFromQuery     ${query}
     ${group_oid_str}=    set variable    ${json_dictionary}[data][site][groups][0][oid]
     ${group_oid}=    convert to integer  ${group_oid_str}
     return from keyword  ${group_oid}
