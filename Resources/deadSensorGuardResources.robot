@@ -8,7 +8,6 @@ Variables    ${EXECDIR}/Resources/ResourceVariables/globalVariables.py
 Resource    ${EXECDIR}/Resources/apiresources.robot
 Resource    ${EXECDIR}/Resources/uiresources.robot
 Resource    ${EXECDIR}/Resources/connection.robot
-
 Library    SeleniumLibrary
 Variables    ${EXECDIR}/Configurations/${environment}.py
 Variables    ${EXECDIR}/PageObjects/siteEditorHomePage.py
@@ -29,6 +28,7 @@ deadSensorGuardTestSetup
     log to console    !-----PreCondition for the Dead Sensor Guard test is been executed------!
     connection.establishConnectionAndStopAllProcessesExcept    vx_server  facs_trend    facs_launcher
     apiresources.writeTestEntryTemperatureToSensorsAfterVXServerStarted
+    common.waitForMinutes    1
 
 setIntialCxConfigParameters
     [Arguments]    ${num_minutes_past_v}    ${percent_deadsensor_threshold_v}    ${num_minutes_guard_timer_v}    ${num_guard_units_v}
