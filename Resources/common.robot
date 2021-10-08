@@ -11,6 +11,7 @@ Library    DateTime
 
 *** Variables ***
 ${type_of_file}  png
+${flag}    0
 
 *** Keywords ***
 checkResponseStatusCode
