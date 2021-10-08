@@ -160,7 +160,7 @@ fetchNumberOfAHUsWithGuardON
     FOR    ${ahu}   IN RANGE    0    ${total}
                 log to console    !!---Checking ahu at position ${ahu}---!!s
                 ${no_of_controls}=    fetchTheNumberOfItemsInDictionary    ${json_dictionary}    $.data.site.groups[0].ahus[${ahu}].controls
-                log to console    !!!--No of Controls for ${ahu} is ${no_of_controls}---!!!queryToFetchJsonResponseContaingTheCurrentAHUStatus
+                log to console    !!!--No of Controls for ${ahu} is ${no_of_controls}---!!!
                 FOR    ${controls}  IN RANGE  0   ${no_of_controls}
                     ${ahu_status_ctrl_value}     fetchValueOfFieldFromJsonDictionary    ${json_dictionary}    $.data.site.groups[0].ahus[${ahu}].controls[${controls}].status.origin
                     log to console    !V-------Status value for AHU:${ahu} control:${controls} is ${ahu_status_ctrl_value}-----!V
@@ -588,7 +588,6 @@ queryToFetchJsonResponseForSpecificAlarmType
 
     #Created by Greeshma on 31 August 2021
 queryToFetchControlStatusValueOfGroup
-
     ${query}=  gqlQueries.getCtrlStateValueQuery  ${group_name}
     ${json_dictionary}=  gqlFetchJsonResponseFromQuery     ${query}
     @{ctrl_state_value}    get value from json    ${json_dictionary}    ${trends_groupStatus_controlStatus_value_path}
