@@ -6,7 +6,7 @@ Documentation          This testcase validates the Hot Guard mode feature of AI 
 Resource    ${EXECDIR}/Resources/apiresources.robot
 Resource    ${EXECDIR}/Resources/uiresources.robot
 Resource    ${EXECDIR}/Resources/connection.robot
-Resource    ${EXECDIR}/Resources/hotGuardTestResources.robot
+Resource    ${EXECDIR}/Resources/GuardTestResources/hotGuardTestResources.robot
 Resource    ${EXECDIR}/Inputs/testInputs.robot
 
 
