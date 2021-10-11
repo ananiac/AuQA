@@ -2,15 +2,10 @@
 # Can be executed manually from AuQA folder using - sh tuesdayexecutesuite.sh
 
 full_path=$(realpath $0)
-print(full_path)
 dir_path=$(dirname $full_path)
-print(dir_path)
 tc_path=$dir_path/Testcases/GuardTests
-print(tc_path)
 rp_path=$dir_path/Reports
-print(rp_path)
 se_path=$dir_path/ExternalKeywords
-print(se_path)
 
 if [ `ps -ef | grep pabot | wc -l` -lt 2 ];  then
     echo "No automated tests are running so starting the test execution"
