@@ -5,7 +5,7 @@ Library    Collections
 Resource    ${EXECDIR}/Resources/connection.robot
 Resource    ${EXECDIR}/Resources/apiresources.robot
 Resource    ${EXECDIR}/Resources/common.robot
-Variables    ${EXECDIR}/Resources/ResourceVariables/globalVariables.py
+Resource    ${EXECDIR}/Inputs/testInputs.robot
 
 
 *** Variables ***
