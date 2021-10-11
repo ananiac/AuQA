@@ -5,7 +5,6 @@ Library    RequestsLibrary
 Library    JSONLibrary
 Library    Collections
 Library     String
-Variables    ${EXECDIR}/Resources/ResourceVariables/globalVariables.py
 Resource    ${EXECDIR}/Resources/apiresources.robot
 Resource    ${EXECDIR}/Resources/uiresources.robot
 Resource    ${EXECDIR}/Resources/connection.robot
