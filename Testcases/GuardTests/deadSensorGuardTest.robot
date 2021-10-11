@@ -12,7 +12,7 @@ Documentation          This testsuite validates the Dead Sensor Guard feature of
 Library    RequestsLibrary
 Library    JSONLibrary
 Library    Collections
-Resource    ${EXECDIR}/Resources/deadSensorGuardResources.robot
+Resource    ${EXECDIR}/Resources/GuardTestResources/deadSensorGuardResources.robot
 Resource    ${EXECDIR}/Resources/apiresources.robot
 Resource    ${EXECDIR}/Resources/uiresources.robot
 Resource    ${EXECDIR}/Resources/common.robot
