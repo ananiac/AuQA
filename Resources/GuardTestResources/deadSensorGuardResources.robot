@@ -23,7 +23,7 @@ deadSensorGuardTestSetup
     ...                Make sure the simulator is NOT running
     ...                Also write test entry temperature for the parallel staleStatePrevention program
     log to console    !-----Reading the inputs from the excel and storing in dictionary------!
-    testInputs.readingInputsFromExcel  0  D  E
+    testInputs.readingInputsFromExcel  guardTest  D  E
     log to console    !-----PreCondition for the Dead Sensor Guard test is been executed------!
     connection.establishConnectionAndStopAllProcessesExcept    vx_server  facs_trend    facs_launcher
     apiresources.writeTestEntryTemperatureToSensorsAfterVXServerStarted
