@@ -58,14 +58,15 @@ BasicHotAbsoluteGuardTest
     common.waitForMinutes   2
     #18)Confirm the group  exits guard
     apiresources.checkingGuardModeOfGroup    ${guard_switch}[guard_off]
+    #20)Confirm  no AHUs are in guard
+    apiresources.checkForAllAHUsToBeGuardCleared
+Cleanup
     #19)Reset Group configs AllowNumExceedencesGuard = 1 AllowNumExceedencesControl = 0
     #AlmHotAbsTemp = 90
     #GuardHotAbsTemp = 90
     #Set System config DASHM:: PercentDeadSensorThreshold=30
     basicHotAbsoluteGuardTestResources.setGroupProperties_GuardHotAbsTemp_AlmHotAbsTemp_AllowNumExceedencesGuard_AllowNumExceedencesControl    ${test_input}[allow_num_exceedences_control_default]   ${test_input}[allow_num_exceedences_guard_default]   ${test_input}[alm_hot_abs_temp_default]  ${test_input}[guard_hot_abs_temp_default]
     apiresources.setPercentDeadSensorThresholdInDASHMConfig    ${test_input}[percent_deadsensor_threshold_default]
-    #20)Confirm  no AHUs are in guard
-    apiresources.checkForAllAHUsToBeGuardCleared
     #21)Stop all processes except vx_server, facs_launcher and facs_trend
     connection.establishConnectionAndStopAllProcessesExcept    vx_server    facs_launcher    facs_trend
     #22)End Test
