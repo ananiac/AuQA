@@ -11,7 +11,7 @@ Resource    ${EXECDIR}/Resources/connection.robot
 Library    SeleniumLibrary
 Variables    ${EXECDIR}/Configurations/${environment}.py
 Variables    ${EXECDIR}/PageObjects/siteEditorHomePage.py
-Resource    common.robot
+Resource    ${EXECDIR}/Resources/common.robot
 Resource    ${EXECDIR}/Inputs/testInputs.robot
 Library    ${EXECDIR}/ExternalKeywords/common.py
 
