@@ -6,7 +6,7 @@ Documentation          This testcase validates the AHUS go into guard in the cor
 Resource    ${EXECDIR}/Resources/apiresources.robot
 Resource    ${EXECDIR}/Resources/uiresources.robot
 Resource    ${EXECDIR}/Resources/connection.robot
-Resource    ${EXECDIR}/Resources/guardOrderMIXResource.robot
+Resource    ${EXECDIR}/Resources/GuardTestResources/guardOrderMIXResource.robot
 Resource    ${EXECDIR}/Inputs/testInputs.robot
 
 *** Test Cases ***

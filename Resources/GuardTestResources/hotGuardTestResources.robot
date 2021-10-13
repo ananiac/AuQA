@@ -7,7 +7,7 @@ Library    Collections
 Resource    ${EXECDIR}/Resources/apiresources.robot
 Resource    ${EXECDIR}/Resources/uiresources.robot
 Resource    ${EXECDIR}/Resources/connection.robot
-Resource    common.robot
+Resource    ${EXECDIR}/Resources/common.robot
 Library    SeleniumLibrary
 Variables    ${EXECDIR}/Configurations/${environment}.py
 Variables    ${EXECDIR}/PageObjects/siteEditorHomePage.py

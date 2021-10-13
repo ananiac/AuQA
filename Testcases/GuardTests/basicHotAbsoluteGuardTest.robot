@@ -10,7 +10,7 @@ Library    Collections
 Resource    ${EXECDIR}/Resources/apiresources.robot
 Resource    ${EXECDIR}/Resources/uiresources.robot
 Resource    ${EXECDIR}/Resources/connection.robot
-Resource    ${EXECDIR}/Resources/basicHotAbsoluteGuardTestResources.robot
+Resource    ${EXECDIR}/Resources/GuardTestResources/basicHotAbsoluteGuardTestResources.robot
 Resource    ${EXECDIR}/Inputs/testInputs.robot
 
 
