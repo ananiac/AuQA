@@ -21,7 +21,6 @@ basicHotAbsoluteGuardTestSetup
     log to console    !-----PreCondition for the Basic Hot Absolute Guard test is been executed------!
     connection.establishConnectionAndStopAllProcessesExcept    vx_server  facs_trend
     apiresources.writeTestEntryTemperatureToSensorsAfterVXServerStarted
-    common.waitForMinutes    1
 
     #Moved from apiresource.robot by Greeshma on 31 August 2021
 setGroupProperties_GuardHotAbsTemp_AlmHotAbsTemp_AllowNumExceedencesGuard_AllowNumExceedencesControl
