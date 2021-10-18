@@ -30,8 +30,8 @@ sfc_min="xpath=//table[25]/tbody/tr/td[2]/div"
 
 # ok_button="xpath=//span[contains(text(),'OK')]"
 # ok_button="id=button-1005-btnInnerEl"
-#ok_button="xpath=/html/body/div[13]/div[2]/div[2]/div/div/a[1]/span/span/span[2]"
-ok_button="xpath=/html/body/div[13]/div[2]/div[2]/div/div/a[1]/span/span/span[contains(text(),'OK')]"
+ok_button="xpath=/html/body/div[13]/div[2]/div[2]/div/div/a[1]/span/span/span[2]"
+#ok_button="xpath=/html/body/div[13]/div[2]/div[2]/div/div/a[1]/span/span/span[contains(text(),'OK')]"
 
 
 # tools_configs_system_save_button
