@@ -599,3 +599,72 @@ queryToFetchJsonResponseContainingTheCoolEffortEstimateOfAHUs
     ${query}=    gqlQueries.getCoolEstimateEffortsQuery  ${group_name}
     ${json_dictionary}=  gqlFetchJsonResponseFromQuery     ${query}
     return from keyword    ${json_dictionary}
+
+    #Created by Greeshma on 13 Oct 2021. FanCtrlMin and FanCtrlMax values if need to set 100, then in mutation we pass 1.0, if need 89 then .89 is passed.
+setComponentPropertyValue
+    [Arguments]    ${c_oid}    ${property_name}  ${property_type}  ${property_value}
+    ${graphql_mutation}=    gqlMutation.setPropertymutation    ${c_oid}    ${property_name}    ${property_type}    ${property_value}
+    ${json_dictionary}=  gqlFetchJsonResponseFromMutation     ${graphql_mutation}
+    should be equal as strings  ${json_dictionary}  ${propertyWriteResponse}
+    log to console  !!------------------Component:${c_oid}->Property ${property_name} updated successfully with ${property_value}----------------!!
+
+    #Created by Greeshma on 13 Oct 2021.
+    #Input the Component name and get the oid of component
+getOidOfComponentUsingComponentName
+    [Arguments]    ${c_name}
+    ${query}=    gqlQueries.getComponentDetailsUsingName  ${group_name}  ${c_name}
+    ${json_dictionary}=  gqlFetchJsonResponseFromQuery     ${query}
+    ${c_oid}=    fetchValueOfFieldFromJsonDictionary    ${json_dictionary}    $.data.site.group[0].component[0].oid
+    return from keyword    ${c_oid}
+
+    #Created by Greeshma on 13 Oct 2021.Required parameters are AHUs oid and property value as fraction of 100.
+    #If the value to set is 89,then pass 0.89
+setFanCtrlMaxValueOfAHU
+    [Arguments]    ${ahu_oid}    ${property_value}
+    ${proper_value}=    evaluate    ${property_value} / 100
+    setComponentPropertyValue  ${ahu_oid}    FanCtrlMax    float   ${proper_value}
+
+    #Created by Greeshma on 13 Oct 2021.Required parameters are AHUs oid and property value as fraction of 100.
+    #If the value to set is 56,then pass 0.56
+setFanCtrlMinValueOfAHU
+    [Arguments]    ${ahu_oid}    ${property_value}
+    ${proper_value}=    evaluate    ${property_value} / 100
+    setComponentPropertyValue  ${ahu_oid}    FanCtrlMin    float   ${proper_value}
+
+    #Created by Greeshma on 13 Oct 2021.Input AHU name,FanCtrlMax and FanCtrlMin values.
+setFanCtrlMaxAndMinValuesOfNamedAHU
+    [Arguments]    ${ahu_name}    ${max_value}    ${min_value}
+    ${ahu_oid}=    getOidOfComponentUsingComponentName    ${ahu_name}
+    setFanCtrlMaxValueOfAHU    ${ahu_oid}    ${max_value}
+    setFanCtrlMinValueOfAHU    ${ahu_oid}    ${min_value}
+
+    #Created by Greeshma on 13 Oct 2021.
+queryToFetchJsonResponseContainingTheSFCValueOfAHUs
+    ${query}=    gqlQueries.getSFCValueOfAllAHUsQuery  ${group_name}
+    ${json_dictionary}=  gqlFetchJsonResponseFromQuery     ${query}
+    return from keyword    ${json_dictionary}
+
+    #Created by Greeshma on 13 Oct 2021.
+checkSupplyFanValueOfAllAHUs
+    [Arguments]    ${expected_supply_fan_value}
+    ${total_no_of_ahus}=    apiresources.getAHUCount
+    ${json_dictionary}=    queryToFetchJsonResponseContainingTheSFCValueOfAHUs
+    FOR    ${i}   IN RANGE    0    ${total_no_of_ahus}
+        ${ahu_name}=    fetchValueOfFieldFromJsonDictionary    ${json_dictionary}    $.data.site.groups[0].ahus[${i}].name
+        ${actual_sfc_value}=    fetchValueOfFieldFromJsonDictionary    ${json_dictionary}    $.data.site.groups[0].ahus[${i}].SFC[0].point.value
+        log to console    !!---Checking SFC value of ahu-${ahu_name} with actual sfc:${actual_sfc_value}---!!
+        should be equal as strings    ${actual_sfc_value}    ${expected_supply_fan_value}    Supply Fan value verification expected ${expected_supply_fan_value}
+    END
+    log to console    *********All AHUS are verified for the sfc value->${expected_supply_fan_value}*****************
+
+    #Created by Greeshma on 18 Oct 2021.
+checkSupplyFanValueOfSingleAHUUsingName
+    [Arguments]    ${ahu_name}    ${expected_supply_fan_value}
+    ${total_no_of_ahus}=    apiresources.getAHUCount
+    ${json_dictionary}=    queryToFetchJsonResponseContainingTheSFCValueOfAHUs
+    ${actual_sfc_value}=    fetchValueOfFieldFromJsonDictionary    ${json_dictionary}    $.data.site.groups[0].ahus[?(@.name=="${ahu_name}")]..SFC[0].point.value
+    log to console    !!---Checking SFC value of ahu-${ahu_name} with actual sfc:${actual_sfc_value}---!!
+    should be equal as strings    ${actual_sfc_value}    ${expected_supply_fan_value}    Supply Fan value verification expected ${expected_supply_fan_value}
+    log to console    *********AHU-${ahu_name} is verified for the sfc value->${expected_supply_fan_value}*****************
+
+
