@@ -20,3 +20,19 @@ all_properties_button="xpath=//span[contains(text(),'All Properties')]"
 # Group drop down list
 group_dropdown_list="xpath=/html/body/div[1]/div/div[1]/div[2]/div/div[2]/div/div/div[2]"
 
+# tools_configs_system
+tools_configs_system="xpath=//div[4]/div/div/div/div/div[2]"
+# tools_configs_system="xpath=/html/body/div[1]/div[3]/div[2]/div/div/div/div[2]/div/div/div[4]/div[1]/div/div/div[1]/div[2]"
+
+# Working
+sfc_min="xpath=//table[25]/tbody/tr/td[2]/div"
+# sfc_min="xpath=//span[contains(text(),'SFCMin')]"
+
+# ok_button="xpath=//span[contains(text(),'OK')]"
+# ok_button="id=button-1005-btnInnerEl"
+#ok_button="xpath=/html/body/div[13]/div[2]/div[2]/div/div/a[1]/span/span/span[2]"
+ok_button="xpath=/html/body/div[13]/div[2]/div[2]/div/div/a[1]/span/span/span[contains(text(),'OK')]"
+
+
+# tools_configs_system_save_button
+#tools_configs_system_save_button="xpath=/html/body/div[1]/div[3]/div[2]/div/div/div/div[1]/div/div/a[3]/span/span/span[2]"

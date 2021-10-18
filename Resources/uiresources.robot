@@ -117,5 +117,43 @@ setGroupPropertyToEmpty
     END
     set selenium timeout    ${short_wait_time}
 
+####################################################################################
+setSystemPropertiesSFCMinToBlank_Guard5
+    apiresources.setConfigAlarmGroupDeadSensorHysteresis    11
+    startBrowserAndLoginToAIEngine
+    set selenium timeout    ${long_wait_time}
+    wait until element is visible	${tools_button}
+    wait until element is enabled	${tools_button}
+    click element    ${tools_button}
+    wait until element is visible	 ${configs_option_in_tools}
+    wait until element is enabled	 ${configs_option_in_tools}
+    click element    ${configs_option_in_tools}
+    sleep    ${load_time}
+    wait until element is visible	 ${tools_configs_system}
+    wait until element is enabled	 ${tools_configs_system}
+    click element  ${tools_configs_system}
+    sleep    ${load_time}
+    press keys  ${sfc_min}  CTRL+a+BACKSPACE+DELETE+ENTER
+    sleep  ${short_wait_time}
+    log to console    clicked tools_configs_system
+    log to console    Check popup
+    sleep    ${load_time}
+    wait until element is visible    ${ok_button}
+    click element    ${ok_button}
+    log to console    Clicked on OK button
+    sleep    ${load_time}
+    wait until element is visible    ${save_button}
+    click element    ${save_button}
+    log to console    Clicked on Save button
+    sleep    ${load_time}
+    wait until element is visible    ${ok_button}
+    click element    ${ok_button}
+    log to console    Clicked on 'Nothing to save' popup's OK button
+    wait until element is visible    ${close_button}
+    click element    ${close_button}
+    log to console    Clicked on Close button
+    sleep    ${load_time}
+    close browser
+
 
 
