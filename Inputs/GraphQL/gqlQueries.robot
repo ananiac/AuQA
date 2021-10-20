@@ -50,8 +50,3 @@ getComponentDetailsUsingName
     ${query}=  set variable  query getComponentDetailsUsingName{site{group:children(selector:{type:Group,name:"${group_name}"}){ oid name component:children(selector:{name:"${component_name}"}){ oid name type }}}}
     return from keyword  ${query}
 
-getSFCValueOfAllAHUsQuery
-    [Arguments]    ${group_name}
-    ${query}=    set variable    query getSupplyFanValueOfAHUS {site {groups : children(selector:{type: Group,name:"${group_name}"}) {oid type displayName ahus: children(selector:{type: AHU}) {name oid SFC: children(selector:{type: SFC}){oid name type point:pointCurrent(unit:percent100){ value}}}}}}
-    return from keyword  ${query}
-
