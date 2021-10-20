@@ -67,3 +67,9 @@ releaseOverrideOfAllAHUsMutation
     ${mutation}=    set variable  mutation targetClearOverride {targetClear(requests: [${all_target_set}]) {index reason}}
     return from keyword    ${mutation}
 
+    #Created by Greeshma on 13 Oct 2021.This mutation helps to set the property value of any component inside a group,eg:-ahu,rack using their oid
+setPropertymutation
+    [Arguments]    ${oid}    ${property_name}    ${property_type}    ${property_value}
+    ${mutation}=    set variable    mutation setGrpProp { propertyWrite(requests: [{oid: ${oid}, name: "${property_name}", ${property_type} : ${property_value}}]) { index reason }}
+    return from keyword    ${mutation}
+
