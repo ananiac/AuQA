@@ -126,3 +126,15 @@ getExpectedListOfAHUsGoingIntoGuard
     END
     @{ahus_expected_order_list}    get_keys_list_after_sorting_dict_by_value    ${ahu_sfc_input_dict}
     return from keyword    ${ahus_expected_order_list}
+
+    #Created by Greeshma on 20 Oct 2021.
+setFanCtrlMinMaxValueOfAllAHUs
+    [Arguments]    ${fan_ctlr_min_value}    ${fan_ctrl_max_value}
+    ${total_no_of_ahus}=    apiresources.getAHUCount
+    ${json_dictionary}=    apiresources.queryToFetchJsonResponseContaingTheCurrentAHUStatus
+    FOR    ${i}   IN RANGE    0    ${total_no_of_ahus}
+        ${ahu_name}=    fetchValueOfFieldFromJsonDictionary    ${json_dictionary}    $.data.site.groups[0].ahus[${i}].name
+        apiresources.setFanCtrlMaxAndMinValuesOfNamedAHU    ${ahu_name}    ${fan_ctrl_max_value}    ${fan_ctlr_min_value}
+        log to console    !!---Done for the ahu-${ahu_name} with FanCtrlMin:${fan_ctlr_min_value} FanCtrlMax:${fan_ctrl_max_value}---!!
+     END
+    log to console    *********All AHUS are set with FanCtrlMin:${fan_ctlr_min_value} FanCtrlMax:${fan_ctrl_max_value}*****************
