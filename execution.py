@@ -3,6 +3,7 @@ from subprocess import call
 import os
 from ExternalKeywords import readExcel
 import datetime
+import sys
 # import time
 from pathlib import Path
 
@@ -16,10 +17,13 @@ gt_path=dir_path+'\Testcases\GuardTests'
 rp_path=dir_path+'\Reports'
 se_path=dir_path+'\ExternalKeywords'
 
+#Suitename sent from the command line
+suite_name = sys.argv[1]
+
 # Reading the excel as dictionary and fetching the rows and column header
 command_input={}
-command_input= readExcel.read_command_inputs_from_excel('execution')
-header= readExcel.get_header('execution')
+command_input= readExcel.read_command_inputs_from_excel(suite_name)
+header= readExcel.get_header(suite_name)
 dic_row =len(command_input)
 
 #Formalating te commands from excel inputs
@@ -61,7 +65,7 @@ for i in range(dic_row):
                     execution_command = execution_command + " "+tc_path+"\\"+command_input[i][h]
     command_for_execution.append(execution_command)
 # print(command_for_execution)
-"""
+
 #Executing the command and redirecting the output to executionLog.txt
 for i in range(dic_row-2):
     print("executing the command: "+command_for_execution[i])
@@ -84,67 +88,9 @@ for x in range(dic_row-2, dic_row):
     with open("Reports/executionLog.txt", "a") as logfile:
         for line in output_report[1]:
             fileout = logfile.write(line)
-"""
+
 #Execute send email
 file_name=se_path+"\\sendemail.py"
 print(file_name)
-call(["python3", file_name,"thursdaydaysuite"])
+call(["python3", file_name, suite_name])
 
-# ==========================To be deleted
-
-# call(command_for_execution[1])
-# import sys
-# from robot import run_cli, rebot_cli
-
-#Executing the rebot to combine the output xml  and move the folder
-# print(dic_row-2)
-# output_report = subprocess.getstatusoutput(command_for_execution[dic_row-2])
-# with open("Reports/executionLog.txt", "a") as logfile:
-#     for line in output_report[1]:
-#         fileout = logfile.write(line)
-#
-# print(dic_row-1)
-# output_report = subprocess.getstatusoutput(command_for_execution[dic_row-1])
-# with open("Reports/executionLog.txt", "a") as logfile:
-#     for line in output_report[1]:
-#         fileout = logfile.write(line)
-
-# clean_report_op = subprocess.getstatusoutput('pabot --pabotlib -d Reports/cleanReports --output cleanReports.xml --variable environment:config37  Testcases/cleanReports.robot')
-# print(clean_report_op)
-
-# common = ['--log', 'none', '--report', 'none'] + sys.argv[1:] + ['login']
-# run_cli(['--name', 'Firefox', '--variable', 'BROWSER:Firefox', '--output', 'out/fx.xml'] + common, exit=False)
-# run_cli(['--name', 'IE', '--variable', 'BROWSER:IE', '--output', 'out/ie.xml'] + common, exit=False)
-# rebot_cli(['--name', 'Login', '--outputdir', 'out', 'out/fx.xml', 'out/ie.xml'])
-# does not work""
-# run_cli(['-d' ' Reports/cleanReports' ' --output' ' cleanReports.xml'] + [' Testcases/cleanReports.robot'])
-
-# from subprocess import call
-# works:
-# call('pabot --pabotlib -d Reports/cleanReports --output cleanReports.xml --variable environment:config37  Testcases/cleanReports.robot')
-
-# command_for_execution =""
-# for h in header:
-#     print(h)
-#     print(command_input[0][h])
-#     if (command_input[0][h] != None) and  h !='testcase':
-#         command_for_execution=command_for_execution+str((command_input[0][h]))
-# print(command_for_execution)
-# Executing the commands
-# call(command_for_execution)
-
-#Formalating te commands from excel inputs
-# command_for_execution =[]
-# for i in range(dic_row):
-#     print(i)
-#     execution_command =""
-#     for h in header:
-#          # print(h)
-#         # print(command_input[i][h])
-#         if (command_input[i][h] != None) and  h !='testcase':
-#             execution_command=execution_command+str((command_input[i][h]))
-#         # if (command_input[i][h] != name):
-#         #     execution_command= execution_command+"--name"
-#     # print(execution_command)
-#     command_for_execution.append(execution_command)
-# print(command_for_execution[0])
