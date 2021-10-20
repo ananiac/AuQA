@@ -44,3 +44,9 @@ getOidQuery
     ${group_oid_query}=  set variable  query getGroupOid{site{groups: children(selector: {type: Group,name: "${group_name}"}){oid}}}
     return from keyword  ${group_oid_query}
 
+    #Created by Greeshma on 13 Oct 2021.This query is to retrieve details-name,oid,type of any component(rack,ahu)of the control group
+getComponentDetailsUsingName
+    [Arguments]    ${group_name}    ${component_name}
+    ${query}=  set variable  query getComponentDetailsUsingName{site{group:children(selector:{type:Group,name:"${group_name}"}){ oid name component:children(selector:{name:"${component_name}"}){ oid name type }}}}
+    return from keyword  ${query}
+
