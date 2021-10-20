@@ -1,40 +1,26 @@
+import subprocess
 from subprocess import call
 import os
 from ExternalKeywords import readExcel
 import datetime
+# import time
 from pathlib import Path
 
-date = datetime.datetime.now()
-date_format = date.strftime("%F_%X")
-print(date_format)
+#Gets the current date and time
+date_format = datetime.datetime.now().strftime("%F_%X")
 
 # path variables
 dir_path=os.getcwd()
-# print(dir_path)
 tc_path=dir_path+'\Testcases'
-# print(tc_path)
 gt_path=dir_path+'\Testcases\GuardTests'
-# print(gt_path)
 rp_path=dir_path+'\Reports'
-# print(rp_path)
 se_path=dir_path+'\ExternalKeywords'
-# print(se_path)
 
+# Reading the excel as dictionary and fetching the rows and column header
 command_input={}
 command_input= readExcel.read_command_inputs_from_excel('execution')
-# print(command_input)
-# command_for_execution_test = command_input[0]['command']+command_input[0]['output dir']+command_input[0]['output']+\
-#                         command_input[0]['environment']+command_input[0]['test']
-# print (command_for_execution_test)
-
 header= readExcel.get_header('execution')
-# print(header)
-
-dic_col = len(command_input[0])
-# print(dic_col)
-
 dic_row =len(command_input)
-# print(dic_row)
 
 #Formalating te commands from excel inputs
 command_for_execution =[]
@@ -47,11 +33,20 @@ for i in range(dic_row):
             elif(h == "name" ):
                 execution_command = execution_command + " --name"+" '"+command_input[i][h]+"_"+date_format+"' "
             elif(h == "reporttitle"):
-                execution_command = execution_command + " --reporttitle" + " '" +command_input[i][h]+ "' "
+                execution_command = execution_command + " --reporttitle" + ' "' +command_input[i][h]+ '" '
             elif (h == "output dir"):
                 execution_command = execution_command + " --outputdir " + command_input[i][h]
             elif (h == "output"):
-                execution_command = execution_command + " --output " + command_input[i][h]
+                if (command_input[i]['testcase'] =="combinereport") and (".xml/" in command_input[i][h]):
+                    output_xml = (command_input[i][h]).split("/")
+                    # print(output_xml)
+                    xml_to_combine =""
+                    for xml in output_xml:
+                        xml_to_combine = xml_to_combine+" "+rp_path+"\\"+xml
+                    # print("value of final xml"+ xml_to_combine)
+                    execution_command = execution_command + " --output output.xml "+xml_to_combine
+                else:
+                    execution_command = execution_command + " --output " + command_input[i][h]
             elif (h == "environment"):
                 execution_command = execution_command + " --variable " +"environment:"+ command_input[i][h]
             elif (h == "groupname"):
@@ -64,24 +59,55 @@ for i in range(dic_row):
                         execution_command = execution_command + " -T " + gt_path+"\\"+test_name[0]+" "+tc_path+"\\"+ test_name[1]
                 else:
                     execution_command = execution_command + " "+tc_path+"\\"+command_input[i][h]
-            # elif (h == "log"):
-            #     execution_command = execution_command +" >> "+ rp_path+"\\"+command_input[i][h]
     command_for_execution.append(execution_command)
-print(command_for_execution[1])
+# print(command_for_execution)
+"""
+#Executing the command and redirecting the output to executionLog.txt
+for i in range(dic_row-2):
+    print("executing the command: "+command_for_execution[i])
+    try:
+        output_report = subprocess.getstatusoutput(command_for_execution[i])
+    except Exception:
+        print("Error in testcase execution")
+    with open("Reports/executionLog.txt", "a") as logfile:
+        for line in output_report[1]:
+            fileout = logfile.write(line)
 
-# call(command_for_execution[1])
-clean_report_op = subprocess.getstatusoutput(command_for_execution[1])
-print(clean_report_op)
-
-
-
-
-
+#rebot command has to be separated from the loop of test execution else creates issue while combining the xml
+#Executing the rebot to combine the output xml  and move the reports folder to testReports
+for x in range(dic_row-2, dic_row):
+    print("executing the command: " + command_for_execution[x])
+    try:
+        output_report = subprocess.getstatusoutput(command_for_execution[x])
+    except Exception:
+        print("Error in command execution")
+    with open("Reports/executionLog.txt", "a") as logfile:
+        for line in output_report[1]:
+            fileout = logfile.write(line)
+"""
+#Execute send email
+file_name=se_path+"\\sendemail.py"
+print(file_name)
+call(["python3", file_name,"thursdaydaysuite"])
 
 # ==========================To be deleted
+
+# call(command_for_execution[1])
 # import sys
 # from robot import run_cli, rebot_cli
 
+#Executing the rebot to combine the output xml  and move the folder
+# print(dic_row-2)
+# output_report = subprocess.getstatusoutput(command_for_execution[dic_row-2])
+# with open("Reports/executionLog.txt", "a") as logfile:
+#     for line in output_report[1]:
+#         fileout = logfile.write(line)
+#
+# print(dic_row-1)
+# output_report = subprocess.getstatusoutput(command_for_execution[dic_row-1])
+# with open("Reports/executionLog.txt", "a") as logfile:
+#     for line in output_report[1]:
+#         fileout = logfile.write(line)
 
 # clean_report_op = subprocess.getstatusoutput('pabot --pabotlib -d Reports/cleanReports --output cleanReports.xml --variable environment:config37  Testcases/cleanReports.robot')
 # print(clean_report_op)
