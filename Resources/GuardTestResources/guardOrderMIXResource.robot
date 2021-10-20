@@ -127,7 +127,7 @@ getExpectedListOfAHUsGoingIntoGuard
     @{ahus_expected_order_list}    get_keys_list_after_sorting_dict_by_value    ${ahu_sfc_input_dict}
     return from keyword    ${ahus_expected_order_list}
 
-    #Created by Greeshma on 20 Oct 2021.
+    #Created by Greeshma on 20-Oct-2021.
 setFanCtrlMinMaxValueOfAllAHUs
     [Arguments]    ${fan_ctlr_min_value}    ${fan_ctrl_max_value}
     ${total_no_of_ahus}=    apiresources.getAHUCount
