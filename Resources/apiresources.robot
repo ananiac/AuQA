@@ -599,3 +599,84 @@ queryToFetchJsonResponseContainingTheCoolEffortEstimateOfAHUs
     ${query}=    gqlQueries.getCoolEstimateEffortsQuery  ${group_name}
     ${json_dictionary}=  gqlFetchJsonResponseFromQuery     ${query}
     return from keyword    ${json_dictionary}
+
+##################################################################################
+
+######################################################################################
+
+#   #Duplicates of values are not allowed in dict for this sort function
+#def get_keys_list_after_sorting_dict_by_value(dic):
+#    sorted_values = sorted(dic.values())  # Sort the values
+#    sorted_dict = {}
+#    for i in sorted_values:
+#        for k in dic.keys():
+#            if dic[k] == i:
+#                sorted_dict[k] = dic[k]
+#                break
+#    return sorted_dict.keys()
+
+sortTheDictionary
+    ${json_dictionary}=     queryToFetchJsonResponseContaingTheCurrentAHUStatus
+    #${total_no_ahus}=    fetchTheNumberOfItemsInDictionary    ${json_dictionary}    ${ahus_list_path}
+    #log to console   ${json_dictionary}
+
+#     ${keys}=  Get Dictionary Keys  ${json_dictionary}
+#
+#     ${values}=  Get Dictionary values  ${json_dictionary}  sort_keys=True
+#    #log to console  ${keys}
+    #log to console  ${values}
+    #${sorted_dictionary}=  sortTheKeys  ${json_dictionary}
+
+    #@{group_ahu_name_list}=    apiresources.getAHUNamesListOfGroup
+    @{group_ahu_name_bop_list}=    apiresources.getAHUNamesAndBOPOidsList
+
+    #log to console  ${group_ahu_name_list}
+    log to console  ${group_ahu_name_bop_list}
+    log to console  ${values}
+    MyKeyword
+
+#    @{keys_list}=    create list
+#    @{values_list}=    create list
+#    ${keys_list}=  Get Dictionary Keys  ${key_value}
+#    ${values_list}=  Get Dictionary values  ${key_value}
+#    log to console  ${keys}
+#    log to console  ${values}
+
+#    FOR    ${ahu}    IN    @{group_ahu_name_list}
+#        ${ahu_bop_oid}=    fetchValueOfFieldFromJsonDictionary    ${json_dictionary}    $.data.site.groups[0].ahus[?(@.name=="${ahu}")].controls[?(@.type=="BOP")].oid
+#        ${ahu_sfc_oid}=    fetchValueOfFieldFromJsonDictionary    ${json_dictionary}    $.data.site.groups[0].ahus[?(@.name=="${ahu}")].controls[?(@.type=="SFC")].oid
+#       #log to console    !---Overriding AHU:->ahu_bop_oid ${ahu_bop_oid}->ahu_sfc_oid ${ahu_sfc_oid}-----!
+#    END
+
+getAHUNamesAndBOPOidsList
+    &{json_dict}=  apiresources.queryToFetchJsonResponseContaingTheCurrentAHUStatus
+    ${ahu_count}    fetchTheNumberOfItemsInDictionary    ${json_dict}    ${ahus_list_path}
+    @{ahu_names_list}=    create list
+    @{bop_oid_list}=    create list
+    ${dict}    Create Dictionary
+    FOR    ${i}    IN RANGE   0    ${ahu_count}
+       ${ahu_name}=    fetchValueOfFieldFromJsonDictionary    ${json_dict}  $.data.site.groups[0].ahus[${i}].name
+       append to list    ${ahu_names_list}    ${ahu_name}
+       ${bop_oid}=    fetchValueOfFieldFromJsonDictionary    ${json_dict}  $.data.site.groups[0].ahus[${i}].controls[?(@.type=="BOP")].oid
+       append to list    ${bop_oid_list}    ${bop_oid}
+       set to dictionary    ${dict}  ${ahu_name}=${bop_oid}
+    END
+    #set to dictionary  ${dict}  ${ahu_names_list}  ${bop_oid_list}
+    return from keyword    ${dict}
+
+
+
+
+sortTheKeys
+    [Arguments]  ${dic}
+    ${keys}=  Get Dictionary Keys  ${dic}
+    log to console  ${keys}
+#    ${sorted_dict}=  ${sorted}  ${dic}
+
+MyKeyword
+    ${mydict}    Create Dictionary      a=1    b=2
+    ${items}     Get Dictionary Items   ${mydict}
+        FOR    ${key}    ${value}    IN    @{items}
+            Log to console    The current key is: ${key}
+            Log to console    The value is: ${value}
+        END
