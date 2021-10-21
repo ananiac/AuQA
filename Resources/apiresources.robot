@@ -638,5 +638,33 @@ setFanCtrlMaxAndMinValuesOfNamedAHU
     setFanCtrlMaxValueOfAHU    ${ahu_oid}    ${max_value}
     setFanCtrlMinValueOfAHU    ${ahu_oid}    ${min_value}
 
+    #Created by Greeshma on 13 Oct 2021.
+queryToFetchJsonResponseContainingTheSFCValueOfAHUs
+    ${query}=    gqlQueries.getSFCValueOfAllAHUsQuery  ${group_name}
+    ${json_dictionary}=  gqlFetchJsonResponseFromQuery     ${query}
+    return from keyword    ${json_dictionary}
+
+    #Created by Greeshma on 13 Oct 2021.
+checkSupplyFanValueOfAllAHUs
+    [Arguments]    ${expected_supply_fan_value}
+    ${total_no_of_ahus}=    apiresources.getAHUCount
+    ${json_dictionary}=    queryToFetchJsonResponseContainingTheSFCValueOfAHUs
+    FOR    ${i}   IN RANGE    0    ${total_no_of_ahus}
+        ${ahu_name}=    fetchValueOfFieldFromJsonDictionary    ${json_dictionary}    $.data.site.groups[0].ahus[${i}].name
+        ${actual_sfc_value}=    fetchValueOfFieldFromJsonDictionary    ${json_dictionary}    $.data.site.groups[0].ahus[${i}].SFC[0].point.value
+        log to console    !!---Checking SFC value of ahu-${ahu_name} with actual sfc:${actual_sfc_value}---!!
+        should be equal as strings    ${actual_sfc_value}    ${expected_supply_fan_value}    Supply Fan value verification expected ${expected_supply_fan_value}
+    END
+    log to console    *********All AHUS are verified for the sfc value->${expected_supply_fan_value}*****************
+
+    #Created by Greeshma on 18 Oct 2021.
+checkSupplyFanValueOfSingleAHUUsingName
+    [Arguments]    ${ahu_name}    ${expected_supply_fan_value}
+    ${total_no_of_ahus}=    apiresources.getAHUCount
+    ${json_dictionary}=    queryToFetchJsonResponseContainingTheSFCValueOfAHUs
+    ${actual_sfc_value}=    fetchValueOfFieldFromJsonDictionary    ${json_dictionary}    $.data.site.groups[0].ahus[?(@.name=="${ahu_name}")]..SFC[0].point.value
+    log to console    !!---Checking SFC value of ahu-${ahu_name} with actual sfc:${actual_sfc_value}---!!
+    should be equal as strings    ${actual_sfc_value}    ${expected_supply_fan_value}    Supply Fan value verification expected ${expected_supply_fan_value}
+    log to console    *********AHU-${ahu_name} is verified for the sfc value->${expected_supply_fan_value}*****************
 
 
