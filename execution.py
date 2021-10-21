@@ -67,10 +67,10 @@ for i in range(dic_row):
 #Fetch the count of pabot process
 cmd = 'ps -ef | grep pabot | wc -l'
 pabot_output = subprocess.getstatusoutput(cmd)
-print(pabot_output[1])
+print(pabot_output)
 
 #check if the pabot process is not running and execute the commands
-if (pabot_output[1] ==2):
+if (pabot_output[1] <=str(2)):
     print("No automated tests are running so starting the test execution")
     # Executing the testcases and redirecting the output to executionLog.txt
     for i in range(dic_row - 2):
@@ -100,4 +100,5 @@ else:
 file_name=se_path+"/sendemail.py"
 print(file_name)
 call(["python3", file_name, suite_name])
+
 
