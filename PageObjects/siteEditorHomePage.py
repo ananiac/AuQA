@@ -36,3 +36,6 @@ ok_button="xpath=/html/body/div[13]/div[2]/div[2]/div/div/a[1]/span/span/span[2]
 
 # tools_configs_system_save_button
 #tools_configs_system_save_button="xpath=/html/body/div[1]/div[3]/div[2]/div/div/div/div[1]/div/div/a[3]/span/span/span[2]"
+
+# Group drop down list VX
+group_dropdown_list_vx="xpath=/html/body/div[3]/div/div[1]/div/div/div[2]/div/div/div[2]"

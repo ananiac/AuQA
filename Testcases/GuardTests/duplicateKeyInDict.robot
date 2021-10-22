@@ -10,7 +10,7 @@ Resource    ${EXECDIR}/Resources/GuardTestResources/guardOrderMIXResource.robot
 Resource    ${EXECDIR}/Inputs/testInputs.robot
 
 *** Test Cases ***
-GuardOrderMixTest
+#GuardOrderMixTest
 #    #1.Start system with the AuQa Db on it (eg 10.252.9.118
 #    #2.Stop ALL processes including the API Server (vx_server) and Script Launcher
 #    [Setup]    guardOrderMIXResource.guardOrderMIXTestPreconditionSetup
@@ -18,9 +18,8 @@ GuardOrderMixTest
 #    #4.Start the API Server (vx_server) and Script Launcher processes
 #    connection.establishConnectionAndStartRequiredProcesses    vx_server  facs_launcher
 #    #5.Load the DASHAM_MIX template in the CX configs (with overwrite) … or DASHAM_RSP_RESET template if using RSP-test group
-    uiresources.setSystemPropertiesSFCMinToBlank_Guard5
-    #uiresources.accessVXWebUI_Guard5
-    #6.Set group property GuardHotAbsTemp=99         #AllowNumExceedencesControl removed on 1st oct
+#    uiresources.resetSystemPropertiesUsingLoadTemplateOptionWithOverwrite
+#    #6.Set group property GuardHotAbsTemp=99         #AllowNumExceedencesControl removed on 1st oct
 #    guardOrderMIXResource.setGroupPropertyGuardHotAbsTemp     ${test_input}[guard_hot_abs_temp_intial]
 #    #7.Write user event “set config DASHM::NumGuardUnits=1, NumMinutesGuardTimer=1 and SYSTEM::NumMinutesPast=20”
 #    #8.Set config DASHM::NumGuardUnits=1, NumMinutesGuardTimer=1 and SYSTEM::NumMinutesPast=20
@@ -61,10 +60,9 @@ GuardOrderMixTest
 #    #26.Stop all processes except vx_server, facs_launcher and facs_trend
 #    connection.establishConnectionAndStopAllProcessesExcept    vx_server    facs_launcher    facs_trend
 #    #27.cleanup
-#CleanUp
+CleanUp
 #    guardOrderMIXResource.setGuardOrderMixPropertiesToEmpty
 #    apiresources.writeUserEventsEntryToNotificationEventLog    AuQA test->${group_name}->Finished Test->Guard AHU turn-On order
 #    [Teardown]   apiresources.setTestExitTemperatureToAllSensorPoints
-
-
+    apiresources.sortTheDictionary
 

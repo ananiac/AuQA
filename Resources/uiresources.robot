@@ -10,6 +10,7 @@ Resource    apiresources.robot
 
 *** Variables ***
 ${url_cx}    ${url_cx}
+${url_vx}    ${url_vx}
 
 
 *** Keywords ***
@@ -119,7 +120,7 @@ setGroupPropertyToEmpty
 
 ####################################################################################
 setSystemPropertiesSFCMinToBlank_Guard5
-    apiresources.setConfigAlarmGroupDeadSensorHysteresis    11
+    #apiresources.setConfigAlarmGroupDeadSensorHysteresis    11
     startBrowserAndLoginToAIEngine
     set selenium timeout    ${long_wait_time}
     wait until element is visible	${tools_button}
@@ -138,6 +139,28 @@ setSystemPropertiesSFCMinToBlank_Guard5
     log to console    clicked tools_configs_system
     log to console    Check popup
     sleep    ${load_time}
+#    page should contain  Validation Error
+#    select element  xpath=/html/body/div[13]
+#    log to console  pop selected
+##    frame should contain  xpath=/html/body/div[13]  Validation Error
+#    frame should contain  xpath=/html/body/div[13]/div[1]  Validation Error
+#    log to console  pop title verified
+    #title should be  Validation Error
+#    @{window_title}=  get title  xpath=/html/body/div[12]
+#    log to console  ${window_title}
+#    ${for_value}=   Get Element Attribute  xpath=//div/label  Validation Error
+#    Log To Console  ${for_value}
+#    ${content}  Get Element Attribute   xpath=//div[contains(text(),'Validation Error')]  Validation Error
+#    should be equal as strings  ${content}  Validation Error
+#    log to console  ${content}
+#    ${msg}=   Get Element Attribute  xpath=//div  Validation Error
+#    log to console  ${msg}
+#    ${msg}=   Get Element Attribute  xpath=//div  Validation Error
+#    log to console  ${msg}
+
+    verifyTitleOfValidationErrorPopUp
+    verifyMsgOfValidationErrorPopUp  SFCMin
+    sleep    ${load_time}
     wait until element is visible    ${ok_button}
     click element    ${ok_button}
     log to console    Clicked on OK button
@@ -146,6 +169,8 @@ setSystemPropertiesSFCMinToBlank_Guard5
     click element    ${save_button}
     log to console    Clicked on Save button
     sleep    ${load_time}
+    verifyTitleOfSavePopUp
+    verifyMsgOfSavePopUp
     wait until element is visible    ${ok_button}
     click element    ${ok_button}
     log to console    Clicked on 'Nothing to save' popup's OK button
@@ -155,5 +180,106 @@ setSystemPropertiesSFCMinToBlank_Guard5
     sleep    ${load_time}
     close browser
 
+verifyTitleOfValidationErrorPopUp
+    ${title}=  get text  xpath=/html/body/div[13]/div[1]/div/div/div[1]/div
+    should be equal	 ${title}  Validation Error
+    log to console  Popup title is "${title}"
+
+verifyMsgOfValidationErrorPopUp
+    [Arguments]    ${property}
+    ${message}=  get text  xpath=/html/body/div[13]/div[2]/div[1]/div/div/div[1]/div/div/div[2]/div/div/div[1]
+    should be equal	 ${message}  SYSTEM.${property}: The value must not be blank.
+    log to console  Popup message is "${message}"
+
+verifyTitleOfSavePopUp
+    ${title}=  get text  xpath=/html/body/div[13]/div[1]/div/div/div[1]/div
+    should be equal	 ${title}  Save
+    log to console  Popup title is "${title}"
+
+verifyMsgOfSavePopUp
+    ${message}=  get text  xpath=/html/body/div[13]/div[2]/div[1]/div/div/div[1]/div/div/div[2]/div/div/div[1]
+    should be equal	 ${message}  Nothing to save.
+    log to console  Save popup message is "${message}"
+
+verifyTitleOfClearOverlapPopUp
+    ${title}=  get text  xpath=/html/body/div[13]/div[1]/div/div/div[1]/div
+    should be equal	 ${title}  ClearOverlap
+    log to console  Popup title is "${title}"
+
+verifyMsgOfClearOverlapPopUp
+    ${message}=  get text  xpath=/html/body/div[13]/div[2]/div[1]/div/div/div[1]/div/div/div[2]/div/div/div[1]
+    should be equal	 ${message}  ClearOverlap
+    log to console  Save popup message is "${message}"
 
 
+startBrowserAndLoginToVXWebUI
+    startBrowserAndAccessVXWebUI
+    loginByEnteringUsernameAndPasswordVX
+
+startBrowserAndAccessVXWebUI
+    #[Arguments]    ${url}    ${browser}    ${expectedTitle}
+    open browser    ${url_vx}    ${browser}    options=add_argument("--disable-popup-blocking"); add_argument("--ignore-certificate-errors"); add_argument("--no-sandbox"); add_argument("--disable-extensions"); add_argument("--disable-dev-shm-usage"); add_argument("--window-size=1200,1100"); add_argument("--allow-running-insecure-content")
+    maximize browser window
+    set browser implicit wait    ${short_wait_time}
+    log to console    Accessed VX Web UI
+
+accessVXWebUI_Guard5
+    startBrowserAndLoginToVXWebUI
+    set selenium timeout    ${long_wait_time}
+    selectAndClickGroupNameVX
+
+    sleep    ${load_time}
+    close browser
+
+# Select and click Group Name and click on 'All Properties' button to display all properties
+selectAndClickGroupNameVX
+    log to console  '${group_name}' group selection
+    set selenium timeout    ${long_wait_time}
+    sleep  ${short_wait_time}
+    # Group drop down list
+    click element  ${group_dropdown_list_vx}
+    sleep  ${short_wait_time}
+    # Select a Group from drop down list
+    ${select_group}=  set variable  xpath=//li[contains(text(),'${group_name}')]
+    click element  ${select_group}
+    sleep  ${short_wait_time}
+    # Click a Group Name
+    #${select_and_click_group}=  set variable  xpath=//span[contains(.,'${group_name}')]
+
+    #Equipment tab
+    ${equipment_tab}=  set variable  xpath=//span[@id='tab-1311-btnEl']/span[2]
+    click element  ${equipment_tab}
+    sleep  ${load_time}
+    set selenium timeout    ${short_wait_time}
+    press keys  xpath=//table[@id='gridview-1142-record-75']/tbody/tr/td[2]/div  SHIFT
+    #click element  xpath=//table[@id='gridview-1142-record-75']/tbody/tr/td[2]/div
+    #press keys  SHIFT
+#    click element  xpath=//table[@id='gridview-1142-record-76']/tbody/tr/td[2]/div
+#    click element  xpath=//table[@id='gridview-1142-record-77']/tbody/tr/td[2]/div
+#    click element  xpath=//table[@id='gridview-1142-record-78']/tbody/tr/td[2]/div
+#    click element  xpath=//table[@id='gridview-1142-record-79']/tbody/tr/td[2]/div
+#    click element  xpath=//table[@id='gridview-1142-record-80']/tbody/tr/td[2]/div
+#    click element  xpath=//table[@id='gridview-1142-record-81']/tbody/tr/td[2]/div
+#    click element  xpath=//table[@id='gridview-1142-record-82']/tbody/tr/td[2]/div
+    sleep  ${load_time}
+    #Clear Override button
+    click element  xpath=//span[@id='button-1138-btnInnerEl']
+    log to console  Clear Override button
+    sleep  ${load_time}
+    #set selenium timeout    ${short_wait_time}
+
+
+    #Ok button on Clear Override popup
+    click element  xpath=//span[@id='button-1006-btnInnerEl']
+    log to console  OK button on Clear Override popup
+
+
+loginByEnteringUsernameAndPasswordVX
+    #[Arguments]    ${username}    ${password}
+    log to console    Entering user name and password
+    input text    ${uname}    ${ui_username}
+    input text    ${upwd}    ${ui_password}
+    takeScreenshot  InputUserNameAndPwd
+    click element    ${login_button}
+    wait until page contains element   ${banner}
+    log to console    Logged in successfully
