@@ -94,11 +94,12 @@ if (pabot_count <=2):
         with open(log_file, "a") as logfile:
             for line in output_report[1]:
                 fileout = logfile.write(line)
+    # Execute send email
+    file_name = se_path + "/sendemail.py"
+    print(file_name)
+    call(["python3", file_name, suite_name])
 else:
     print("Automated test are running so the test execution is aborted")
 
-#Execute send email
-file_name=se_path+"/sendemail.py"
-print(file_name)
-call(["python3", file_name, suite_name])
+
 
