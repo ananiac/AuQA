@@ -6,6 +6,7 @@ Resource    ${EXECDIR}/Inputs/testInputs.robot
 Variables    ${EXECDIR}/PageObjects/siteEditorHomePage.py
 Variables   ${EXECDIR}/PageObjects/toolsConfigsPage.py
 Resource    apiresources.robot
+Variables    ${EXECDIR}/PageObjects/vxEquipmentTabHomePage.py
 
 
 *** Variables ***
@@ -118,4 +119,88 @@ setGroupPropertyToEmpty
     set selenium timeout    ${short_wait_time}
 
 
+###################################################################################################
+# Dt. 25 Oct 2021
 
+accessVXWebUI_Guard5
+    startBrowserAndLoginToVXWebUI
+    set selenium timeout    ${long_wait_time}
+    # working
+    #selectAndClickGroupNameVX
+    setOverrideValue
+    sleep    ${load_time}
+    close browser
+
+startBrowserAndLoginToVXWebUI
+    startBrowserAndAccessVXWebUI
+    loginByEnteringUsernameAndPasswordVX
+
+startBrowserAndAccessVXWebUI
+    #[Arguments]    ${url}    ${browser}    ${expectedTitle}
+    open browser    ${url_vx}    ${browser}    options=add_argument("--disable-popup-blocking"); add_argument("--ignore-certificate-errors"); add_argument("--no-sandbox"); add_argument("--disable-extensions"); add_argument("--disable-dev-shm-usage"); add_argument("--window-size=1200,1100"); add_argument("--allow-running-insecure-content")
+    maximize browser window
+    set browser implicit wait    ${short_wait_time}
+    log to console    Accessed VX Web UI
+
+loginByEnteringUsernameAndPasswordVX
+    #[Arguments]    ${username}    ${password}
+    log to console    Entering user name and password
+    input text    ${uname}    ${ui_username}
+    input text    ${upwd}    ${ui_password}
+    takeScreenshot  InputUserNameAndPwd
+    click element    ${login_button}
+    wait until page contains element   ${banner}
+    log to console    Logged in successfully
+
+setOverrideValue
+    log to console  '${group_name}' group selection
+    set selenium timeout    ${long_wait_time}
+    sleep  ${short_wait_time}
+    # Group drop down list
+    click element  ${group_dropdown_list_vx}
+    sleep  ${short_wait_time}
+    # Select a Group from drop down list
+    ${select_group}=  set variable  xpath=//li[contains(text(),'${group_name}')]
+    click element  ${select_group}
+    sleep  ${short_wait_time}
+    # Click on Equipment tab
+    wait until element is visible	${equipment_tab}
+    wait until element is enabled	${equipment_tab}
+    click element  ${equipment_tab}
+    set selenium timeout    ${short_wait_time}
+    setOverrides  CAC_10  ON  78
+    setOverrides  CAC_13  OFF  80
+    setOverrides  CAC_15  AUTO  82
+
+setOverrides
+    [Arguments]    ${ahu}  ${on_off_auto_value}  ${supply_fan_control_value}
+    ${ahu_record}=  set variable  xpath=//div[contains(text(),'${ahu}')]
+    wait until element is visible	${ahu_record}
+    wait until element is enabled	${ahu_record}
+    press keys  ${ahu_record}  SHIFT
+    set selenium timeout    ${long_wait_time}
+
+    wait until element is visible	${set_overrides_button}
+    wait until element is enabled	${set_overrides_button}
+    click element  ${set_overrides_button}
+    set selenium timeout    ${long_wait_time}
+
+    wait until element is visible	${on_off_auto_dropdown_list}
+    wait until element is enabled	${on_off_auto_dropdown_list}
+    click element  ${on_off_auto_dropdown_list}
+    set selenium timeout    ${long_wait_time}
+
+    ${on_off_auto_current_value}=  set variable  xpath=//li[contains(text(),'${on_off_auto_value}')]
+    wait until element is visible	${on_off_auto_current_value}
+    wait until element is enabled	${on_off_auto_current_value}
+    click element  ${on_off_auto_current_value}
+    set selenium timeout    ${long_wait_time}
+
+    wait until element is visible	${supply_fan_control_textbox}
+    wait until element is enabled	${supply_fan_control_textbox}
+    press keys  ${supply_fan_control_textbox}  ${supply_fan_control_value}
+    set selenium timeout    ${short_wait_time}
+
+    press keys  ${supply_fan_control_textbox}  TAB
+    set selenium timeout    ${long_wait_time}
+    click element  ${set_overrides_save_button}

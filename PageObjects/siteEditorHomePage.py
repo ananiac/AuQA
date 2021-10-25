@@ -18,5 +18,4 @@ close_button="xpath=//span[contains(text(),'Close')]"
 all_properties_button="xpath=//span[contains(text(),'All Properties')]"
 
 # Group drop down list
-group_dropdown_list="xpath=/html/body/div[1]/div/div[1]/div[2]/div/div[2]/div/div/div[2]"
-
+group_dropdown_list="xpath=//div[1]/div/div[1]/div[2]/div/div[2]/div/div/div[2]"
