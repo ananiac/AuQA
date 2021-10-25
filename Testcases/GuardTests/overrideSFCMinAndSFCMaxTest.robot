@@ -18,8 +18,8 @@ GuardOrderMixTest
 #    #4.Start the API Server (vx_server) and Script Launcher processes
 #    connection.establishConnectionAndStartRequiredProcesses    vx_server  facs_launcher
 #    #5.Load the DASHAM_MIX template in the CX configs (with overwrite) … or DASHAM_RSP_RESET template if using RSP-test group
-    uiresources.setSystemPropertiesSFCMinToBlank_Guard5
-    #uiresources.accessVXWebUI_Guard5
+    #uiresources.setSystemPropertiesSFCMinToBlank_Guard5
+    uiresources.accessVXWebUI_Guard5
     #6.Set group property GuardHotAbsTemp=99         #AllowNumExceedencesControl removed on 1st oct
 #    guardOrderMIXResource.setGroupPropertyGuardHotAbsTemp     ${test_input}[guard_hot_abs_temp_intial]
 #    #7.Write user event “set config DASHM::NumGuardUnits=1, NumMinutesGuardTimer=1 and SYSTEM::NumMinutesPast=20”

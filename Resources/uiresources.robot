@@ -226,12 +226,74 @@ startBrowserAndAccessVXWebUI
 accessVXWebUI_Guard5
     startBrowserAndLoginToVXWebUI
     set selenium timeout    ${long_wait_time}
-    selectAndClickGroupNameVX
-
+    # working
+    #selectAndClickGroupNameVX
+    setOverrideValue
     sleep    ${load_time}
     close browser
 
-# Select and click Group Name and click on 'All Properties' button to display all properties
+setOverrideValue
+    log to console  '${group_name}' group selection
+    set selenium timeout    ${long_wait_time}
+    sleep  ${short_wait_time}
+    # Group drop down list
+    click element  ${group_dropdown_list_vx}
+    sleep  ${short_wait_time}
+    # Select a Group from drop down list
+    ${select_group}=  set variable  xpath=//li[contains(text(),'${group_name}')]
+    click element  ${select_group}
+    sleep  ${short_wait_time}
+    # Click a Group Name
+    #${select_and_click_group}=  set variable  xpath=//span[contains(.,'${group_name}')]
+
+    #Equipment tab
+    ${equipment_tab}=  set variable  xpath=//span[@id='tab-1311-btnEl']/span[2]
+    click element  ${equipment_tab}
+    sleep  ${load_time}
+    set selenium timeout    ${short_wait_time}
+
+    press keys  xpath=//table[@id='gridview-1142-record-75']/tbody/tr/td[2]/div  SHIFT
+    sleep  ${load_time}
+    click element  xpath=//*[@id="button-1137-btnInnerEl"]
+    sleep  ${load_time}
+    click element  xpath=//*[@id="combo-1462-trigger-picker"]
+    sleep  ${load_time}
+    click element  xpath=//*[@id="combo-1462-inputEl"]
+    sleep  ${load_time}
+    press keys  //*[@id="textfield-1465-inputEl"]  77
+    sleep  ${load_time}
+    press keys  //*[@id="textfield-1465-inputEl"]  TAB
+    sleep  ${load_time}
+    click element  xpath=//*[@id="button-1460-btnInnerEl"]
+
+    press keys  xpath=//table[@id='gridview-1142-record-78']/tbody/tr/td[2]/div  SHIFT
+    sleep  ${load_time}
+    click element  xpath=//*[@id="button-1137-btnInnerEl"]
+    sleep  ${load_time}
+    click element  xpath=//*[@id="combo-1462-trigger-picker"]
+    sleep  ${load_time}
+    click element  xpath=//*[@id="combo-1462-inputEl"]
+    sleep  ${load_time}
+    press keys  //*[@id="textfield-1465-inputEl"]  79
+    sleep  ${load_time}
+    press keys  //*[@id="textfield-1465-inputEl"]  TAB
+    sleep  ${load_time}
+    click element  xpath=//*[@id="button-1460-btnInnerEl"]
+
+    press keys  xpath=//table[@id='gridview-1142-record-80']/tbody/tr/td[2]/div  SHIFT
+    sleep  ${load_time}
+    click element  xpath=//*[@id="button-1137-btnInnerEl"]
+    sleep  ${load_time}
+    click element  xpath=//*[@id="combo-1462-trigger-picker"]
+    sleep  ${load_time}
+    click element  xpath=//*[@id="combo-1462-inputEl"]
+    sleep  ${load_time}
+    press keys  //*[@id="textfield-1465-inputEl"]  81
+    sleep  ${load_time}
+    press keys  //*[@id="textfield-1465-inputEl"]  TAB
+    sleep  ${load_time}
+    click element  xpath=//*[@id="button-1460-btnInnerEl"]
+
 selectAndClickGroupNameVX
     log to console  '${group_name}' group selection
     set selenium timeout    ${long_wait_time}
