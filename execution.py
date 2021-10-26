@@ -2,27 +2,26 @@ import subprocess
 from subprocess import call
 import os
 from ExternalKeywords import readExcel
+from ExternalKeywords import common
 import datetime
 import sys
-import inspect, os
+# import inspect, os
+
 #Gets the current date and time
 date_format = datetime.datetime.now().strftime("%F_%X")
 
-
-auqa_dir= os.path.dirname(os.path.abspath('execution.py'))
-print(auqa_dir)
-
-
 # path variables
-tc_path=os.path.join(auqa_dir,'Testcases')
+# auqa_dir= os.path.dirname(os.path.abspath('execution.py')) #/home/fc/automation/AuQA/
+print(common.auqa_dir)
+tc_path=os.path.join(common.auqa_dir,'Testcases')
 print(tc_path)
-gt_path=os.path.join(auqa_dir,'Testcases','GuardTests')
+gt_path=os.path.join(common.auqa_dir,'Testcases','GuardTests')
 print(gt_path)
-rp_path=os.path.join(auqa_dir,'Reports')
+rp_path=os.path.join(common.auqa_dir,'Reports')
 print(rp_path)
-se_path=os.path.join(auqa_dir,'ExternalKeywords')
+se_path=os.path.join(common.auqa_dir,'ExternalKeywords')
 print(se_path)
-log_file=os.path.join(auqa_dir,'Reports','executionLog.txt')
+log_file=os.path.join(common.auqa_dir,'Reports','executionLog.txt')
 #Suitename sent from the command line which is same as the excel sheet name for suite
 suite_name = sys.argv[1]
 
@@ -53,7 +52,8 @@ for i in range(dic_row):
                     # print(output_xml)
                     xml_to_combine =""
                     for xml in output_xml:
-                        xml_to_combine = xml_to_combine+" "+rp_path+"/"+xml
+                        # xml_to_combine = xml_to_combine+" "+rp_path+"/"+xml
+                        xml_to_combine = xml_to_combine+" "+os.path.join(rp_path,xml)
                     # print("value of final xml"+ xml_to_combine)
                     execution_command = execution_command + " --output output.xml "+xml_to_combine
                 else:
@@ -67,9 +67,11 @@ for i in range(dic_row):
                     test_name=(command_input[i][h]).split("/",1)
                 if(command_input[i]['testcase'] !="cleanReports" and command_input[i]['testcase'] !="moveReports" ):
                     if("Guard" in command_input[i]['testcase']):
-                        execution_command = execution_command + " -T " + gt_path+"/"+test_name[0]+" "+tc_path+"/"+ test_name[1]
+                        # execution_command = execution_command + " -T " + gt_path+"/"+test_name[0]+" "+tc_path+"/"+ test_name[1]
+                        execution_command = execution_command + " -T " + os.path.join(gt_path ,test_name[0]) + " " + os.path.join(tc_path, test_name[1])
                 else:
-                    execution_command = execution_command + " "+tc_path+"/"+command_input[i][h]
+                    # execution_command = execution_command + " "+tc_path+"/"+command_input[i][h]
+                    execution_command = execution_command + " " + os.path.join(tc_path, command_input[i][h])
     command_for_execution.append(execution_command)
 # print(command_for_execution)
 
@@ -104,7 +106,8 @@ if (pabot_count <=2):
             for line in output_report[1]:
                 fileout = logfile.write(line)
     # Execute send email
-    file_name = se_path + "/sendemail.py"
+    # file_name = se_path + "/sendemail.py"
+    file_name = os.path.join(se_path, "sendemail.py")
     print(file_name)
     call(["python3", file_name, suite_name])
 else:

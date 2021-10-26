@@ -1,12 +1,13 @@
 import openpyxl
 import os
+from ExternalKeywords import common
 
 # fpath= os.path.abspath("Inputs/testInputs.xlsx")
 # print(fpath)
-auqa_dir= os.path.dirname(os.path.abspath('testInputs.xlsx'))
+# auqa_dir= os.path.dirname(os.path.abspath('testInputs.xlsx'))
 # print(auqa_dir)
-fpath= os.path.join(auqa_dir,'Inputs','testInputs.xlsx')
-# print(fpath)
+fpath= os.path.join(common.auqa_dir,'Inputs','testInputs.xlsx')
+print(fpath)
 
 workbook = openpyxl.load_workbook(fpath)
 
