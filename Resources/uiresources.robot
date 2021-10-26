@@ -153,7 +153,7 @@ loginByEnteringUsernameAndPasswordVX
     log to console    Logged in successfully
 
 setOverrideValue
-    log to console  '${group_name}' group selection
+    #log to console  '${group_name}' group selection
     set selenium timeout    ${long_wait_time}
     sleep  ${short_wait_time}
     # Group drop down list
@@ -162,6 +162,7 @@ setOverrideValue
     # Select a Group from drop down list
     ${select_group}=  set variable  xpath=//li[contains(text(),'${group_name}')]
     click element  ${select_group}
+    log to console  '${group_name}' group selected
     sleep  ${short_wait_time}
     # Click on Equipment tab
     wait until element is visible	${equipment_tab}
@@ -200,7 +201,8 @@ setOverrides
     wait until element is enabled	${supply_fan_control_textbox}
     press keys  ${supply_fan_control_textbox}  ${supply_fan_control_value}
     set selenium timeout    ${short_wait_time}
-
+    takeScreenshot  SetAHUToOverride-${ahu}
     press keys  ${supply_fan_control_textbox}  TAB
     set selenium timeout    ${long_wait_time}
     click element  ${set_overrides_save_button}
+    log to console  Set override for ${ahu} AHU with ON/OFF/AUTO value as ${on_off_auto_value} and Supply Fan Control value as ${supply_fan_control_value}
