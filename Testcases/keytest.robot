@@ -12,16 +12,6 @@ Resource    ../Inputs/testInputs.robot
 
 *** Test Cases ***
 Override_1
-#    setTemperatureForAllRATAndDATSensorPoints   68  53
-#    ${rat}=    getCurrentTemperatureOfFirstRATSensor
-#    ${dat}=    getCurrentTemperatureOfFirstDATSensor
-#    log to console    RAT->${rat}
-#    log to console    DAT->${dat}
-#    apiresources.setFanCtrlMaxAndMinValuesOfNamedAHU    CAC_10    96    40
-#    apiresources.checkSupplyFanValueOfAllAHUs    88
-#    apiresources.checkSupplyFanValueOfSingleAHUUsingName    CAC_13    96
-#    apiresources.checkSupplyFanValueOfSingleAHUUsingName    CAC_10    96
-#    apiresources.checkSupplyFanValueOfSingleAHUUsingName    CAC_12    97
     common.setFlagValue    1    #to manage staleState
 #    #2.Stop ALL processes including the API Server (vx_server) and Script Launcher
     connection.establishConnectionAndStopAllProcessesExcept
