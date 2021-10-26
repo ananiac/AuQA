@@ -55,3 +55,8 @@ getOverrideDetailsOfAHUsInGroup
     [Arguments]    ${group_name}
     ${query}=    set variable    query overrideGet {site {groups: children(selector: {type: Group,name:"${group_name}"}) {oid name ahus: children(selector: {type: AHU}) {oid name controls: search(selector: {target: CONTROL}) {oid type name point:pointCurrent(unit:percent100){ value } targetStatus(target: CONTROL,unit:percent100) {requests {status origin priority value unit}}}}}}}
     return from keyword  ${query}
+
+getRatDatSensorPointsOfGroupQuery
+    [Arguments]    ${group_name}
+    ${query}=  set variable  query getRATDATDetails{site {name groups: children(selector: {type: Group,name:"${group_name}"}) { name sensors: search(selector: {types: [RAT, DAT]}, maxResults: 9999) { name type oid pathName(details: true) pointCurrent(units:[degF]) { unit value tstamp }}}}}
+    return from keyword    ${query}

@@ -28,6 +28,10 @@ writeTemperatureToSensors
     IF  '${flg}'!='${test_entry_flag}'
         ${current_temperature}=    apiresources.getCurrentTemperatureOfSensorsAandB
     END
+    IF    '${flg}'=='${current_temp_to_racks_RAT_DAT}'
+        ${DAT_current_temp}=    getCurrentTemperatureOfFirstDATSensor
+        ${RAT_current_temp}=    getCurrentTemperatureOfFirstRATSensor
+    END
     IF  '${flg}'=='${test_entry_flag}'     #Setup where application is getting ready for test
         log to console    Test started.Waiting for temperature changes
     ELSE IF    '${flg}'=='${current_temp_to_all_flag}'      #Writing current temperature to all sensor points
@@ -41,6 +45,11 @@ writeTemperatureToSensors
     ELSE IF    '${flg}'=='${exclude_dead_rack_flag}'        #Writing to all sensor points except the last rack sensors
         log to console    Inside Flag Block 4
         apiresources.setTemperatureForAllExceptDeadSensor    ${current_temperature}
+        writingCycleCalculation
+    ELSE IF    '${flg}'=='${current_temp_to_racks_RAT_DAT}'        #Writing current temperature to all 3 types sensors->racks,RAT and DAT
+        log to console    Inside Flag Block 5
+        apiresources.setTemperatureForAllRackSensorPoints    ${current_temperature}
+        setTemperatureForAllRATAndDATSensorPoints    ${RAT_current_temp}    ${DAT_current_temp}
         writingCycleCalculation
     ELSE IF  '${flg}'=='${test_exit_flag}'      #Tear down
         ${current_time}  get current date

@@ -5,6 +5,7 @@ ahu_control_targetStatus_value="$.data.site.groups[0].ahus[0].controls[0].target
 
 ahus_list_path="$.data.site.groups[0].ahus"
 ahu_control_status_origin_value_path="$.data.site.groups[0].ahus[0].controls[0].status.origin"
+rat_dat_sensors="$.data.site.groups[0].sensors"
 
 time_at_sensor_is_100F=""
 increment_counter=1

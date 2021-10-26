@@ -667,9 +667,66 @@ verifyOriginOfSpecificControlInOverriddenAHU
     ${field_value}=    getValueFieldOfSpecificControlInOverriddenAHUUsingJsonPath    $.data.site.groups[0].ahus[?(@.name=="${ahu_name}")].controls[?(@.type=="${control_type}")].targetStatus.requests[?(@.status=="ACTIVE")].origin
     should be equal as strings    ${field_value}   ${expected_value}    Verification of Origin for ${ahu_name}->${control_type}->expected->${expected_value}
 
+    #Created by Greeshma on 25 Oct 2021
 verifyValueOfSpecificControlInOverriddenAHU
     [Arguments]    ${ahu_name}    ${control_type}   ${expected_value}
     ${field_value}=    getValueFieldOfSpecificControlInOverriddenAHUUsingJsonPath    $.data.site.groups[0].ahus[?(@.name=="${ahu_name}")].controls[?(@.type=="${control_type}")].point.value
     should be equal as strings    ${field_value}   ${expected_value}    Verification of Value for ${ahu_name}->${control_type}->expected->${expected_value}
 
+    #Created by Greeshma on 26 Oct 2021
+setTemperatureForAllRATAndDATSensorPoints    #Contain both query and mutation
+    [Arguments]    ${rat_tempF}    ${dat_tempF}
+    log to console    Fetch the number of RAT and DAT sensors ----------------->
+    ${json_dict}    queryToFetchJsonResponseContainingTheRATAndDATSensorsFromGroup
+    ${total}=    fetchTheNumberOfItemsInDictionary    ${json_dict}    ${rat_dat_sensors}
+    log to console  No: of RAT and DAT sensors->${total}
+    log to console    Setting temperature for all RAT and DAT sensor points----------------->
+    FOR    ${i}    IN RANGE    0    ${total}
+        log to console    ${i} Sensor
+        ${sensor_type}    fetchValueOfFieldFromJsonDictionary    ${json_dict}    $.data.site.groups[0].sensors[${i}].type
+        ${sensor_oid}    fetchValueOfFieldFromJsonDictionary    ${json_dict}    $.data.site.groups[0].sensors[${i}].oid
+        run keyword if    '${sensor_type}'=='RAT'    setRackPointSensorTemperature    ${sensor_oid}    ${rat_tempF}
+        run keyword if    '${sensor_type}'=='DAT'     setRackPointSensorTemperature    ${sensor_oid}    ${dat_tempF}
+    END
+    log to console    ******************************Temperature set for all RAT and DAT sensors*********************************
 
+    #Created by Greeshma on 26 OCt 2021
+queryToFetchJsonResponseContainingTheRATAndDATSensorsFromGroup
+    ${query}=    gqlQueries.getRatDatSensorPointsOfGroupQuery  ${group_name}
+    ${json_dictionary}=  gqlFetchJsonResponseFromQuery     ${query}
+    return from keyword    ${json_dictionary}
+
+    #Created by Greeshma on 26 Oct 2021
+setDefaultTempForAllRATandDATSensorPoints
+    [Arguments]    ${rat_tempF}    ${dat_tempF}
+    setTemperatureForAllRATAndDATSensorPoints    ${rat_tempF}    ${dat_tempF}
+    common.setFlagValue    ${current_temp_to_racks_RAT_DAT}
+
+    #Created by Greeshma on 26 Oct 2021
+getCurrentTemperatureOfFirstSensorPoint
+    [Arguments]    ${type}
+    ${json_dict}    queryToFetchJsonResponseContainingTheRATAndDATSensorsFromGroup
+    ${total}=    fetchTheNumberOfItemsInDictionary    ${json_dict}    ${rat_dat_sensors}
+    FOR    ${i}    IN RANGE    0    ${total}
+        ${sensor_type}    fetchValueOfFieldFromJsonDictionary    ${json_dict}    $.data.site.groups[0].sensors[${i}].type
+        ${sensor_oid}    fetchValueOfFieldFromJsonDictionary    ${json_dict}    $.data.site.groups[0].sensors[${i}].oid
+        ${current_temp}    fetchValueOfFieldFromJsonDictionary    ${json_dict}    $.data.site.groups[0].sensors[${i}].pointCurrent.value
+        IF   '${sensor_type}'=='${type}'
+            ${type_current_temp}=    set variable    ${current_temp}
+            exit for loop
+        END
+    END
+    log to console    Current temperature of first ${type} Sensor point is:${type_current_temp}
+    return from keyword    ${type_current_temp}
+
+    #Created by Greeshma on 26 Oct 2021
+getCurrentTemperatureOfFirstRATSensor
+    log to console    Getting temperature of first RAT Sensor point----------------->
+    ${temp}=    getCurrentTemperatureOfFirstSensorPoint    RAT
+    return from keyword    ${temp}
+
+    #Created by Greeshma on 26 Oct 2021
+getCurrentTemperatureOfFirstDATSensor
+    log to console    Getting temperature of first DAT Sensor point----------------->
+    ${temp}=    getCurrentTemperatureOfFirstSensorPoint    DAT
+    return from keyword    ${temp}
