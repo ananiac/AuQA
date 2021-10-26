@@ -638,33 +638,38 @@ setFanCtrlMaxAndMinValuesOfNamedAHU
     setFanCtrlMaxValueOfAHU    ${ahu_oid}    ${max_value}
     setFanCtrlMinValueOfAHU    ${ahu_oid}    ${min_value}
 
-    #Created by Greeshma on 13 Oct 2021.
-queryToFetchJsonResponseContainingTheSFCValueOfAHUs
-    ${query}=    gqlQueries.getSFCValueOfAllAHUsQuery  ${group_name}
+    #Created by Greeshma on 25 Oct 2021.Return the value of specific field in the json response of overridden AHU target status query
+getValueFieldOfSpecificControlInOverriddenAHUUsingJsonPath
+    [Arguments]    ${json_path}
+    ${query}=    gqlQueries.getOverrideDetailsOfAHUsInGroup  ${group_name}
     ${json_dictionary}=  gqlFetchJsonResponseFromQuery     ${query}
-    return from keyword    ${json_dictionary}
+    ${field_value}=    fetchValueOfFieldFromJsonDictionary    ${json_dictionary}    ${json_path}
+    return from keyword    ${field_value}
 
-    #Created by Greeshma on 13 Oct 2021.
-checkSupplyFanValueOfAllAHUs
-    [Arguments]    ${expected_supply_fan_value}
-    ${total_no_of_ahus}=    apiresources.getAHUCount
-    ${json_dictionary}=    queryToFetchJsonResponseContainingTheSFCValueOfAHUs
-    FOR    ${i}   IN RANGE    0    ${total_no_of_ahus}
-        ${ahu_name}=    fetchValueOfFieldFromJsonDictionary    ${json_dictionary}    $.data.site.groups[0].ahus[${i}].name
-        ${actual_sfc_value}=    fetchValueOfFieldFromJsonDictionary    ${json_dictionary}    $.data.site.groups[0].ahus[${i}].SFC[0].point.value
-        log to console    !!---Checking SFC value of ahu-${ahu_name} with actual sfc:${actual_sfc_value}---!!
-        should be equal as strings    ${actual_sfc_value}    ${expected_supply_fan_value}    Supply Fan value verification expected ${expected_supply_fan_value}
+    #Created by Greeshma on 25 Oct 2021. For On/Off [BOP] -AUTO option,On/Off->Override value will be blank.
+    #In the JSON response 'MANUAL' category will be absent and no mapping to override filed of AHU
+verifyOverrideValueOfSpecificControlInOverriddenAHU
+    [Arguments]    ${ahu_name}    ${control_type}   ${expected_value}
+    IF    '${expected_value}'!='blank'
+        ${field_value}=    getValueFieldOfSpecificControlInOverriddenAHUUsingJsonPath    $.data.site.groups[0].ahus[?(@.name=="${ahu_name}")].controls[?(@.type=="${control_type}")].targetStatus.requests[?(@.origin=="MANUAL")].value
+        should be equal as strings    ${field_value}   ${expected_value}    Verification of Override for ${ahu_name}->${control_type}->expected->${expected_value}
+    ELSE
+        ${query}=    gqlQueries.getOverrideDetailsOfAHUsInGroup  ${group_name}
+        ${json_dictionary}=  gqlFetchJsonResponseFromQuery     ${query}
+        ${field_value}=    fetchValueOfFieldFromJsonDictionary    ${json_dictionary}    $.data.site.groups[0].ahus[?(@.name=="${ahu_name}")].controls[?(@.type=="${control_type}")].targetStatus.requests
+        log to console    ${field_value}
+        should not contain any    '${field_value}'    MANUAL    Verification of blank value for Override field(MANUAL should not be present)
     END
-    log to console    *********All AHUS are verified for the sfc value->${expected_supply_fan_value}*****************
 
-    #Created by Greeshma on 18 Oct 2021.
-checkSupplyFanValueOfSingleAHUUsingName
-    [Arguments]    ${ahu_name}    ${expected_supply_fan_value}
-    ${total_no_of_ahus}=    apiresources.getAHUCount
-    ${json_dictionary}=    queryToFetchJsonResponseContainingTheSFCValueOfAHUs
-    ${actual_sfc_value}=    fetchValueOfFieldFromJsonDictionary    ${json_dictionary}    $.data.site.groups[0].ahus[?(@.name=="${ahu_name}")]..SFC[0].point.value
-    log to console    !!---Checking SFC value of ahu-${ahu_name} with actual sfc:${actual_sfc_value}---!!
-    should be equal as strings    ${actual_sfc_value}    ${expected_supply_fan_value}    Supply Fan value verification expected ${expected_supply_fan_value}
-    log to console    *********AHU-${ahu_name} is verified for the sfc value->${expected_supply_fan_value}*****************
+    #Created by Greeshma on 25 Oct 2021
+verifyOriginOfSpecificControlInOverriddenAHU
+    [Arguments]    ${ahu_name}    ${control_type}   ${expected_value}
+    ${field_value}=    getValueFieldOfSpecificControlInOverriddenAHUUsingJsonPath    $.data.site.groups[0].ahus[?(@.name=="${ahu_name}")].controls[?(@.type=="${control_type}")].targetStatus.requests[?(@.status=="ACTIVE")].origin
+    should be equal as strings    ${field_value}   ${expected_value}    Verification of Origin for ${ahu_name}->${control_type}->expected->${expected_value}
+
+verifyValueOfSpecificControlInOverriddenAHU
+    [Arguments]    ${ahu_name}    ${control_type}   ${expected_value}
+    ${field_value}=    getValueFieldOfSpecificControlInOverriddenAHUUsingJsonPath    $.data.site.groups[0].ahus[?(@.name=="${ahu_name}")].controls[?(@.type=="${control_type}")].point.value
+    should be equal as strings    ${field_value}   ${expected_value}    Verification of Value for ${ahu_name}->${control_type}->expected->${expected_value}
 
 
