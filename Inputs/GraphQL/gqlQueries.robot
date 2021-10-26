@@ -50,3 +50,8 @@ getComponentDetailsUsingName
     ${query}=  set variable  query getComponentDetailsUsingName{site{group:children(selector:{type:Group,name:"${group_name}"}){ oid name component:children(selector:{name:"${component_name}"}){ oid name type }}}}
     return from keyword  ${query}
 
+    #Created by Greeshma on 25 Oct 2021. This query returns the details of override such as value,origin,status and also the current value of each control getracksensorpointsofgroupquery
+getOverrideDetailsOfAHUsInGroup
+    [Arguments]    ${group_name}
+    ${query}=    set variable    query overrideGet {site {groups: children(selector: {type: Group,name:"${group_name}"}) {oid name ahus: children(selector: {type: AHU}) {oid name controls: search(selector: {target: CONTROL}) {oid type name point:pointCurrent(unit:percent100){ value } targetStatus(target: CONTROL,unit:percent100) {requests {status origin priority value unit}}}}}}}
+    return from keyword  ${query}
