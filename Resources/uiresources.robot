@@ -6,7 +6,7 @@ Resource    ${EXECDIR}/Inputs/testInputs.robot
 Variables    ${EXECDIR}/PageObjects/siteEditorHomePage.py
 Variables   ${EXECDIR}/PageObjects/toolsConfigsPage.py
 Resource    apiresources.robot
-Variables    ${EXECDIR}/PageObjects/vxEquipmentTabHomePage.py
+Variables    ${EXECDIR}/PageObjects/vxEquipmentTab.py
 
 
 *** Variables ***
@@ -118,17 +118,11 @@ setGroupPropertyToEmpty
     END
     set selenium timeout    ${short_wait_time}
 
-
-###################################################################################################
-# Dt. 25 Oct 2021
-
-accessVXWebUI_Guard5
+accessVXWebUI
     startBrowserAndLoginToVXWebUI
-    set selenium timeout    ${long_wait_time}
-    # working
-    #selectAndClickGroupNameVX
+    set selenium timeout  ${short_wait_time}
     setOverrideValue
-    sleep    ${load_time}
+    set selenium timeout  ${short_wait_time}
     close browser
 
 startBrowserAndLoginToVXWebUI
@@ -153,56 +147,45 @@ loginByEnteringUsernameAndPasswordVX
     log to console    Logged in successfully
 
 setOverrideValue
-    #log to console  '${group_name}' group selection
-    set selenium timeout    ${long_wait_time}
-    sleep  ${short_wait_time}
-    # Group drop down list
+    sleep  ${load_time}
+    checkWebElementIsVisibleAndIsEnabled  ${group_dropdown_list_vx}
     click element  ${group_dropdown_list_vx}
-    sleep  ${short_wait_time}
-    # Select a Group from drop down list
     ${select_group}=  set variable  xpath=//li[contains(text(),'${group_name}')]
+    checkWebElementIsVisibleAndIsEnabled  ${select_group}
     click element  ${select_group}
     log to console  '${group_name}' group selected
-    sleep  ${short_wait_time}
-    # Click on Equipment tab
-    wait until element is visible	${equipment_tab}
-    wait until element is enabled	${equipment_tab}
+    sleep  ${load_time}
+    checkWebElementIsVisibleAndIsEnabled  ${equipment_tab}
     click element  ${equipment_tab}
-    set selenium timeout    ${short_wait_time}
-    setOverrides  CAC_10  ON  78
-    setOverrides  CAC_13  OFF  80
-    setOverrides  CAC_15  AUTO  82
+    sleep  ${load_time}
+    setOverrides  CAC_10  ON  77
+    setOverrides  CAC_13  OFF  79
+    setOverrides  CAC_15  AUTO  81
 
 setOverrides
     [Arguments]    ${ahu}  ${on_off_auto_value}  ${supply_fan_control_value}
     ${ahu_record}=  set variable  xpath=//div[contains(text(),'${ahu}')]
-    wait until element is visible	${ahu_record}
-    wait until element is enabled	${ahu_record}
+    checkWebElementIsVisibleAndIsEnabled  ${ahu_record}
     press keys  ${ahu_record}  SHIFT
-    set selenium timeout    ${long_wait_time}
-
-    wait until element is visible	${set_overrides_button}
-    wait until element is enabled	${set_overrides_button}
+    checkWebElementIsVisibleAndIsEnabled  ${set_overrides_button}
     click element  ${set_overrides_button}
-    set selenium timeout    ${long_wait_time}
-
-    wait until element is visible	${on_off_auto_dropdown_list}
-    wait until element is enabled	${on_off_auto_dropdown_list}
+    checkWebElementIsVisibleAndIsEnabled  ${on_off_auto_dropdown_list}
     click element  ${on_off_auto_dropdown_list}
-    set selenium timeout    ${long_wait_time}
-
     ${on_off_auto_current_value}=  set variable  xpath=//li[contains(text(),'${on_off_auto_value}')]
-    wait until element is visible	${on_off_auto_current_value}
-    wait until element is enabled	${on_off_auto_current_value}
+    checkWebElementIsVisibleAndIsEnabled  ${on_off_auto_current_value}
     click element  ${on_off_auto_current_value}
-    set selenium timeout    ${long_wait_time}
-
-    wait until element is visible	${supply_fan_control_textbox}
-    wait until element is enabled	${supply_fan_control_textbox}
+    checkWebElementIsVisibleAndIsEnabled  ${supply_fan_control_textbox}
     press keys  ${supply_fan_control_textbox}  ${supply_fan_control_value}
-    set selenium timeout    ${short_wait_time}
+    checkWebElementIsVisibleAndIsEnabled  ${supply_fan_control_textbox}
     takeScreenshot  SetAHUToOverride-${ahu}
     press keys  ${supply_fan_control_textbox}  TAB
-    set selenium timeout    ${long_wait_time}
+    checkWebElementIsVisibleAndIsEnabled  ${set_overrides_save_button}
     click element  ${set_overrides_save_button}
     log to console  Set override for ${ahu} AHU with ON/OFF/AUTO value as ${on_off_auto_value} and Supply Fan Control value as ${supply_fan_control_value}
+
+checkWebElementIsVisibleAndIsEnabled
+    [Arguments]    ${webElement}
+    set selenium timeout  ${long_wait_time}
+    wait until element is visible  ${webElement}
+    wait until element is enabled  ${webElement}
+    set selenium timeout  ${long_wait_time}
