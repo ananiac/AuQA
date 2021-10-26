@@ -4,19 +4,28 @@ import os
 from ExternalKeywords import readExcel
 import datetime
 import sys
-
+import inspect, os
 #Gets the current date and time
 date_format = datetime.datetime.now().strftime("%F_%X")
 
+
+auqa_dir= os.path.dirname(os.path.abspath('execution.py'))
+print(auqa_dir)
+
+
 # path variables
-dir_path=os.getcwd()
-tc_path=dir_path+'/Testcases'
-gt_path=dir_path+'/Testcases/GuardTests'
-rp_path=dir_path+'/Reports'
-se_path=dir_path+'/ExternalKeywords'
-log_file=rp_path+'/executionLog.txt'
+tc_path=os.path.join(auqa_dir,'Testcases')
+print(tc_path)
+gt_path=os.path.join(auqa_dir,'Testcases','GuardTests')
+print(gt_path)
+rp_path=os.path.join(auqa_dir,'Reports')
+print(rp_path)
+se_path=os.path.join(auqa_dir,'ExternalKeywords')
+print(se_path)
+log_file=os.path.join(auqa_dir,'Reports','executionLog.txt')
 #Suitename sent from the command line which is same as the excel sheet name for suite
 suite_name = sys.argv[1]
+
 
 # Reading the excel as dictionary and fetching the rows and column header as key value pair
 command_input={}
