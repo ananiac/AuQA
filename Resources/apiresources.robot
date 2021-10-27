@@ -673,7 +673,6 @@ verifyValueOfSpecificControlInOverriddenAHU
     ${field_value}=    getValueFieldOfSpecificControlInOverriddenAHUUsingJsonPath    $.data.site.groups[0].ahus[?(@.name=="${ahu_name}")].controls[?(@.type=="${control_type}")].point.value
     should be equal as strings    ${field_value}   ${expected_value}    Verification of Value for ${ahu_name}->${control_type}->expected->${expected_value}
 
-
     #Created by Greeshma on 27 Oct 2021.Oid of a specific control of AHU is returned, if AHU name and Control name are passed as Arguments.
 getSpecificControlOidOfNamedAHU
     [Arguments]    ${ahu_name}    ${ctrl_name}
