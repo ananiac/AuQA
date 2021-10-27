@@ -681,7 +681,7 @@ getSpecificControlOidOfNamedAHU
     return from keyword    ${ahu_ctrl_oid}
 
     #Created by Greeshma on 27 Oct 2021.List of Names of AHUs are taken as Argument.
-releaseOverrideOfNameSpecifiedAHUs
+releaseOverrideOfNamedAHUs
     [Arguments]    @{ahu_name_list}
     ${length}=    get length    ${ahu_name_list}
     @{ctrl_oid_list}    create list
