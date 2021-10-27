@@ -667,9 +667,39 @@ verifyOriginOfSpecificControlInOverriddenAHU
     ${field_value}=    getValueFieldOfSpecificControlInOverriddenAHUUsingJsonPath    $.data.site.groups[0].ahus[?(@.name=="${ahu_name}")].controls[?(@.type=="${control_type}")].targetStatus.requests[?(@.status=="ACTIVE")].origin
     should be equal as strings    ${field_value}   ${expected_value}    Verification of Origin for ${ahu_name}->${control_type}->expected->${expected_value}
 
+    #Created by Greeshma on 25 Oct 2021
 verifyValueOfSpecificControlInOverriddenAHU
     [Arguments]    ${ahu_name}    ${control_type}   ${expected_value}
     ${field_value}=    getValueFieldOfSpecificControlInOverriddenAHUUsingJsonPath    $.data.site.groups[0].ahus[?(@.name=="${ahu_name}")].controls[?(@.type=="${control_type}")].point.value
     should be equal as strings    ${field_value}   ${expected_value}    Verification of Value for ${ahu_name}->${control_type}->expected->${expected_value}
 
 
+    #Created by Greeshma on 27 Oct 2021.Oid of a specific control of AHU is returned, if AHU name and Control name are passed as Arguments.
+getSpecificControlOidOfNamedAHU
+    [Arguments]    ${ahu_name}    ${ctrl_name}
+    &{json_dict}=  apiresources.queryToFetchJsonResponseContaingTheCurrentAHUStatus
+    ${ahu_ctrl_oid}=    fetchValueOfFieldFromJsonDictionary    ${json_dict}    $.data.site.groups[0].ahus[?(@.name=="${ahu_name}")].controls[?(@.type=="${ctrl_name}")].oid
+    return from keyword    ${ahu_ctrl_oid}
+
+    #Created by Greeshma on 27 Oct 2021.List of Names of AHUs are taken as Argument.
+releaseOverrideOfNameSpecifiedAHUs
+    [Arguments]    @{ahu_name_list}
+    ${length}=    get length    ${ahu_name_list}
+    @{ctrl_oid_list}    create list
+    IF    ${length}==0
+        log to console    AHU names not recieved!!!
+    ELSE
+        ${num}    evaluate    1 * 1
+        FOR    ${ahu}    IN    @{ahu_name_list}
+            log to console    ${num}-Getting Control Oids of ${ahu} for clearing Override---->
+            ${BOP_oid}=    getSpecificControlOidOfNamedAHU    ${ahu}    BOP
+            ${SFC_oid}=    getSpecificControlOidOfNamedAHU    ${ahu}    SFC
+            append to list    ${ctrl_oid_list}    ${BOP_oid}
+            append to list    ${ctrl_oid_list}    ${SFC_oid}
+            ${num}    evaluate   ${num} + 1
+        END
+    END
+    ${graphql_mutation}=    gqlMutation.releaseOverrideOfAllAHUsMutation  @{ctrl_oid_list}
+    ${json_dictionary}=  gqlFetchJsonResponseFromMutation     ${graphql_mutation}
+    should be equal as strings  ${json_dictionary}  ${clearOverRideOfAllAHUsResponse}
+    log to console   !!=======*********Override released for Name Specified AHUs-@{ahu_name_list}*******=========!!
