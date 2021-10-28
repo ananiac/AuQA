@@ -4,7 +4,7 @@ import sys
 import subprocess
 import pathlib
 from email.message import EmailMessage
-from ExternalKeywords import common
+import common
 
 # report_path = os.path.abspath("Reports/report.html")
 # auqa_dir= os.path.dirname(os.path.abspath('report.html'))
