@@ -4,7 +4,7 @@ import sys
 import subprocess
 import pathlib
 from email.message import EmailMessage
-import common
+# import common
 
 auqa_dir= os.path.dirname(os.path.abspath('/home/fc/automation/AuQA/execution.py'))
 print(auqa_dir)

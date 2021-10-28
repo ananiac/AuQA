@@ -1,6 +1,6 @@
 import openpyxl
 import os
-from ExternalKeywords import common
+# from ExternalKeywords import common
 
 auqa_dir= os.path.dirname(os.path.abspath('/home/fc/automation/AuQA/execution.py'))
 print(auqa_dir)

@@ -2,7 +2,7 @@ import subprocess
 from subprocess import call
 import os
 from ExternalKeywords import readExcel
-from ExternalKeywords import common
+# from ExternalKeywords import common
 import datetime
 import sys
 # import inspect, os
