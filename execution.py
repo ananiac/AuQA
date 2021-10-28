@@ -11,17 +11,18 @@ import sys
 date_format = datetime.datetime.now().strftime("%F_%X")
 
 # path variables
-# auqa_dir= os.path.dirname(os.path.abspath('execution.py')) #/home/fc/automation/AuQA/
-print(common.auqa_dir)
-tc_path=os.path.join(common.auqa_dir,'Testcases')
+auqa_dir= os.path.dirname(os.path.abspath('/home/fc/automation/AuQA/execution.py'))
+print(auqa_dir)
+tc_path=os.path.join(auqa_dir,'Testcases')
 print(tc_path)
-gt_path=os.path.join(common.auqa_dir,'Testcases','GuardTests')
+gt_path=os.path.join(auqa_dir,'Testcases','GuardTests')
 print(gt_path)
-rp_path=os.path.join(common.auqa_dir,'Reports')
+rp_path=os.path.join(auqa_dir,'Reports')
 print(rp_path)
-se_path=os.path.join(common.auqa_dir,'ExternalKeywords')
+se_path=os.path.join(auqa_dir,'ExternalKeywords')
 print(se_path)
-log_file=os.path.join(common.auqa_dir,'Reports','executionLog.txt')
+log_file=os.path.join(auqa_dir,'Reports','executionLog.txt')
+
 #Suitename sent from the command line which is same as the excel sheet name for suite
 suite_name = sys.argv[1]
 

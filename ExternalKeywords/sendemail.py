@@ -6,10 +6,9 @@ import pathlib
 from email.message import EmailMessage
 import common
 
-# report_path = os.path.abspath("Reports/report.html")
-# auqa_dir= os.path.dirname(os.path.abspath('report.html'))
-# print(auqa_dir)
-report_path= os.path.join(common.auqa_dir,'Reports','report.html')
+auqa_dir= os.path.dirname(os.path.abspath('/home/fc/automation/AuQA/execution.py'))
+print(auqa_dir)
+report_path= os.path.join(auqa_dir,'Reports','report.html')
 print(report_path)
 
 
