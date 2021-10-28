@@ -26,7 +26,8 @@ ${current_temp_to_all_flag}    2
 ${two_sets_of_temp_flag}    3
 #Flag to write temp to all sensor points except the last two sensor points
 ${exclude_dead_rack_flag}    4
-
+#Flag to write current temp to 3 types of sensors ->rack sensors,RAT and DAT
+${current_temp_to_racks_RAT_DAT}   5
 
 *** Keywords ***
 readingInputsFromExcel

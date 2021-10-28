@@ -77,29 +77,6 @@ setTemperatureForSensorsAandB
     setRackPointSensorTemperature  ${sensor_B_oid}    ${temp}
     common.setFlagValue    ${two_sets_of_temp_flag}
 
-
-getCurrentTemperatureOfSensorsAandB
-    ${json_dict}    queryToFetchJsonResponseContainingTheRackSensorsFromGroup
-    #First two sensor points are picked as Sensor A and Sensor B if they are Rack Top or Rack Bottom
-    ${total}=    fetchTheNumberOfItemsInDictionary    ${json_dict}    ${racks_in_group}
-    log to console    Getting temperature of Sensor A----------------->
-    FOR    ${i}    IN RANGE    0    ${total}
-        ${rack_type1}    fetchValueOfFieldFromJsonDictionary    ${json_dict}    $.data.site.groups[0].racks[${i}].points[0].type
-        ${rack_type2}    fetchValueOfFieldFromJsonDictionary    ${json_dict}    $.data.site.groups[0].racks[${i}].points[1].type
-        ${oid1}    fetchValueOfFieldFromJsonDictionary    ${json_dict}    $.data.site.groups[0].racks[${i}].points[0].oid
-        ${oid2}     fetchValueOfFieldFromJsonDictionary    ${json_dict}    $.data.site.groups[0].racks[${i}].points[1].oid
-        ${current_temp}    fetchValueOfFieldFromJsonDictionary    ${json_dict}    $.data.site.groups[0].racks[${i}].points[0].pointCurrent.value
-        IF   '${rack_type1}'=='CBot'
-            IF    '${rack_type2}'=='CTop'    #Excluding RHUM and ZNT
-                 ${sensor_A_oid}=    set variable    ${oid1}
-                 ${sensor_B_oid}=    set variable    ${oid2}
-                 exit for loop
-            END
-        END
-    END
-    log to console    Current temperature of Sensor A is:${current_temp}
-    return from keyword    ${current_temp}
-
 setTwoSetOfSensorTemperatureForRack
     [Arguments]    ${tempH}    ${tempC}
     ${json_dict}    queryToFetchJsonResponseContainingTheRackSensorsFromGroup
@@ -702,3 +679,48 @@ releaseOverrideOfNamedAHUs
     ${json_dictionary}=  gqlFetchJsonResponseFromMutation     ${graphql_mutation}
     should be equal as strings  ${json_dictionary}  ${clearOverRideOfAllAHUsResponse}
     log to console   !!=======*********Override released for Name Specified AHUs-@{ahu_name_list}*******=========!!
+
+    #Created by Greeshma on 28 Oct 2021.
+queryToFetchJsonResponseContainingTheSpecificTypeOfSensorsFromGroup
+    [Arguments]    ${type}
+    ${query}=    gqlQueries.getSpecificSensorPointsOfGroupQuery  ${group_name}    ${type}
+    ${json_dictionary}=  gqlFetchJsonResponseFromQuery     ${query}
+    return from keyword    ${json_dictionary}
+
+    #Created by Greeshma on 28 Oct 2021. This will fetch the current temperature of Rack,PWR,RAT or DAT sensor points.
+    #It takes the type of sensor point as Argument.
+getCurrentTemperatureOfFirstSensorPointSpecified
+    [Arguments]    ${type}
+    ${json_dict}    queryToFetchJsonResponseContainingTheSpecificTypeOfSensorsFromGroup    ${type}
+    ${total}=    fetchTheNumberOfItemsInDictionary    ${json_dict}    ${sensors_in_group}
+    IF    '${total}'!=0
+        ${current_temp}    fetchValueOfFieldFromJsonDictionary    ${json_dict}    ${first_sensor_point_current_value}
+    END
+    log to console    Current temperature of first ${type} Sensor point is:${current_temp}
+    return from keyword    ${current_temp}
+
+     #Created by Greeshma on 28 Oct 2021.Set the temperature of RAT and DAT sensor points in the group.
+     #Arguments passed to the keyword are RAT temperature and DAT temperature
+setTemperatureForAllRATAndDATSensorPoints    #Contain both query and mutation
+    [Arguments]    ${rat_tempF}    ${dat_tempF}
+    log to console    Fetch the number of RAT and DAT sensors ----------------->
+    ${json_dict}    queryToFetchJsonResponseContainingTheSpecificTypeOfSensorsFromGroup    RAT,DAT
+    ${total}=    fetchTheNumberOfItemsInDictionary    ${json_dict}    ${sensors_in_group}
+    log to console  No: of RAT and DAT sensors->${total}
+    log to console    Setting temperature for all RAT and DAT sensor points----------------->
+    FOR    ${i}    IN RANGE    0    ${total}
+        log to console    ${i} Sensor Point
+        ${sensor_type}    fetchValueOfFieldFromJsonDictionary    ${json_dict}    $.data.site.groups[0].sensors[${i}].type
+        ${sensor_oid}    fetchValueOfFieldFromJsonDictionary    ${json_dict}    $.data.site.groups[0].sensors[${i}].oid
+        run keyword if    '${sensor_type}'=='RAT'    setRackPointSensorTemperature    ${sensor_oid}    ${rat_tempF}
+        run keyword if    '${sensor_type}'=='DAT'     setRackPointSensorTemperature    ${sensor_oid}    ${dat_tempF}
+    END
+    log to console    ******************************Temperature set for all RAT and DAT sensors*********************************
+
+     #Created by Greeshma on 28 Oct 2021.
+     #Arguments passed to the keyword are rack temperature,RAT temperature and DAT temperature
+setTemperatureForAllRacksRATandDATSensorPointsEveryMinute
+    [Arguments]    ${rack_temp}    ${rat_tempF}    ${dat_tempF}
+    apiresources.setTemperatureForAllRackSensorPoints  ${rack_temp}
+    apiresources.setTemperatureForAllRATAndDATSensorPoints    ${rat_tempF}    ${dat_tempF}
+    common.setFlagValue    ${current_temp_to_racks_RAT_DAT}

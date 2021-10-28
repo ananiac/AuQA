@@ -26,7 +26,7 @@ StaleStatePreventionForSensors
 writeTemperatureToSensors
     ${flg}=    common.getFlagValue
     IF  '${flg}'!='${test_entry_flag}'
-        ${current_temperature}=    apiresources.getCurrentTemperatureOfSensorsAandB
+        ${current_temperature}=    apiresources.getCurrentTemperatureOfFirstSensorPointSpecified    CTop,CBot
     END
     IF  '${flg}'=='${test_entry_flag}'     #Setup where application is getting ready for test
         log to console    Test started.Waiting for temperature changes
@@ -41,6 +41,13 @@ writeTemperatureToSensors
     ELSE IF    '${flg}'=='${exclude_dead_rack_flag}'        #Writing to all sensor points except the last rack sensors
         log to console    Inside Flag Block 4
         apiresources.setTemperatureForAllExceptDeadSensor    ${current_temperature}
+        writingCycleCalculation
+    ELSE IF    '${flg}'=='${current_temp_to_racks_RAT_DAT}'        #Writing temperature to all 4 types of sensor points->Ctop and CBot[racks],RAT and DAT
+        log to console    Inside Flag Block 5
+        ${DAT_current_temp}=    apiresources.getCurrentTemperatureOfFirstSensorPointSpecified    DAT
+        ${RAT_current_temp}=    apiresources.getCurrentTemperatureOfFirstSensorPointSpecified    RAT
+        apiresources.setTemperatureForAllRackSensorPoints    ${current_temperature}
+        apiresources.setTemperatureForAllRATAndDATSensorPoints    ${RAT_current_temp}    ${DAT_current_temp}
         writingCycleCalculation
     ELSE IF  '${flg}'=='${test_exit_flag}'      #Tear down
         ${current_time}  get current date
