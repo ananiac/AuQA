@@ -1,5 +1,3 @@
-# import os
-
 def incrementByOne(counter):
     counter= int(counter)
     counter +=1
@@ -15,6 +13,3 @@ def get_keys_list_after_sorting_dict_by_value(dic):
                 sorted_dict[k] = dic[k]
                 break
     return sorted_dict.keys()
-
-# global auqa_dir
-# auqa_dir= os.path.dirname(os.path.abspath('/home/fc/automation/AuQA/execution.py')) #/home/fc/automation/AuQA/
