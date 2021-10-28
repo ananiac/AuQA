@@ -80,14 +80,11 @@ selectAndClickGroupName
     log to console  '${group_name}' group selection
     set selenium timeout    ${long_wait_time}
     sleep  ${short_wait_time}
-    # Group drop down list
     click element  ${group_dropdown_list}
     sleep  ${short_wait_time}
-    # Select a Group from drop down list
     ${select_group}=  set variable  xpath=//li[contains(text(),'${group_name}')]
     click element  ${select_group}
     sleep  ${short_wait_time}
-    # Click a Group Name
     ${select_and_click_group}=  set variable  xpath=//span[contains(.,'${group_name}')]
     click element  ${select_and_click_group}
     sleep  ${load_time}
@@ -118,14 +115,14 @@ setGroupPropertyToEmpty
     END
     set selenium timeout    ${short_wait_time}
 
-accessVXWebUI
-    startBrowserAndLoginToVXWebUI
+setOverrideValueForAHU
+    startBrowserAndLoginToAIEngineVX
     set selenium timeout  ${short_wait_time}
-    setOverrideValue
+    selectNamedAHUAndClickSetOverridesButton
     set selenium timeout  ${short_wait_time}
     close browser
 
-startBrowserAndLoginToVXWebUI
+startBrowserAndLoginToAIEngineVX
     startBrowserAndAccessVXWebUI
     loginByEnteringUsernameAndPasswordVX
 
@@ -146,7 +143,8 @@ loginByEnteringUsernameAndPasswordVX
     wait until page contains element   ${banner}
     log to console    Logged in successfully
 
-setOverrideValue
+# Move this keyword to resource file of override1
+selectNamedAHUAndClickSetOverridesButton
     sleep  ${load_time}
     checkWebElementIsVisibleAndIsEnabled  ${group_dropdown_list_vx}
     click element  ${group_dropdown_list_vx}
@@ -158,11 +156,11 @@ setOverrideValue
     checkWebElementIsVisibleAndIsEnabled  ${equipment_tab}
     click element  ${equipment_tab}
     sleep  ${load_time}
-    setOverrides  CAC_10  ON  77
-    setOverrides  CAC_13  OFF  79
-    setOverrides  CAC_15  AUTO  81
+    setOverrideValueOfNamedAHU  CAC_10  ON  77
+    setOverrideValueOfNamedAHU  CAC_13  OFF  79
+    setOverrideValueOfNamedAHU  CAC_15  AUTO  81
 
-setOverrides
+setOverrideValueOfNamedAHU
     [Arguments]    ${ahu}  ${on_off_auto_value}  ${supply_fan_control_value}
     ${ahu_record}=  set variable  xpath=//div[contains(text(),'${ahu}')]
     checkWebElementIsVisibleAndIsEnabled  ${ahu_record}
@@ -189,3 +187,16 @@ checkWebElementIsVisibleAndIsEnabled
     wait until element is visible  ${webElement}
     wait until element is enabled  ${webElement}
     set selenium timeout  ${long_wait_time}
+
+#listOfAHUsForWhichValuesSet
+#    [Arguments]    @{ahu_list}
+#    ${length}    get length    ${ahu_list}
+#    IF    ${length}==0
+#        log to console    AHU name not recieved
+#    ELSE
+#        FOR    ${ahu}    IN    @{ahu_list}
+#            log to console    Setting ${ahu} value
+#                setOverrideValueOfNamedAHU  CAC_10  ON  77
+#            sleep    ${short_wait_time}
+#        END
+#    END
