@@ -644,8 +644,8 @@ verifyOriginOfSpecificControlInOverriddenAHU
     ${field_value}=    getValueFieldOfSpecificControlInOverriddenAHUUsingJsonPath    $.data.site.groups[0].ahus[?(@.name=="${ahu_name}")].controls[?(@.type=="${control_type}")].targetStatus.requests[?(@.status=="ACTIVE")].origin
     should be equal as strings    ${field_value}   ${expected_value}    Verification of Origin for ${ahu_name}->${control_type}->expected->${expected_value}
 
-    #Created by Greeshma on 25 Oct 2021
-verifyValueOfSpecificControlInOverriddenAHU
+    #Created by Greeshma on 25 Oct 2021.Renamed on 29 Oct as this keyword is equally useful for AHU in CONTROL,Overridden and GUARD
+verifyValueOfSpecificControlofNamedAHU
     [Arguments]    ${ahu_name}    ${control_type}   ${expected_value}
     ${field_value}=    getValueFieldOfSpecificControlInOverriddenAHUUsingJsonPath    $.data.site.groups[0].ahus[?(@.name=="${ahu_name}")].controls[?(@.type=="${control_type}")].point.value
     should be equal as strings    ${field_value}   ${expected_value}    Verification of Value for ${ahu_name}->${control_type}->expected->${expected_value}
@@ -724,3 +724,27 @@ setTemperatureForAllRacksRATandDATSensorPointsEveryMinute
     apiresources.setTemperatureForAllRackSensorPoints  ${rack_temp}
     apiresources.setTemperatureForAllRATAndDATSensorPoints    ${rat_tempF}    ${dat_tempF}
     common.setFlagValue    ${current_temp_to_racks_RAT_DAT}
+
+    #Copied from GuardOrderMixResources to apiresource on 29 Oct 2021
+setGroupPropertyGuardHotAbsTemp
+    [Arguments]    ${guard_hot_abs_temp_value}
+    apiresources.changeGroupPropertiesParameterValue    GuardHotAbsTemp  int  ${guard_hot_abs_temp_value}
+
+    #Copied from GuardOrderMixResources to apiresource on 29 Oct 2021
+setFanCtrlMinMaxValueOfAllAHUs
+    [Arguments]    ${fan_ctlr_min_value}    ${fan_ctrl_max_value}
+    ${total_no_of_ahus}=    apiresources.getAHUCount
+    ${json_dictionary}=    apiresources.queryToFetchJsonResponseContaingTheCurrentAHUStatus
+    FOR    ${i}   IN RANGE    0    ${total_no_of_ahus}
+        ${ahu_name}=    fetchValueOfFieldFromJsonDictionary    ${json_dictionary}    $.data.site.groups[0].ahus[${i}].name
+        apiresources.setFanCtrlMaxAndMinValuesOfNamedAHU    ${ahu_name}    ${fan_ctrl_max_value}    ${fan_ctlr_min_value}
+        log to console    !!---Done for the ahu-${ahu_name} with FanCtrlMin:${fan_ctlr_min_value} FanCtrlMax:${fan_ctrl_max_value}---!!
+     END
+    log to console    *********All AHUS are set with FanCtrlMin:${fan_ctlr_min_value} FanCtrlMax:${fan_ctrl_max_value}*****************
+
+    #Copied from GuardOrderMixResources to apiresource on 29 Oct 2021
+setconfigNumGuardUnitsNumMinutesGuardTimerAndNumMinutesPast
+    [Arguments]    ${config_num_guard_units_value}    ${config_num_minutes_guard_timer_value}    ${config_system_num_minutes_past_value}
+    apiresources.changeCxConfigsTabModuleFieldValues  DASHM  NumGuardUnits  ${config_num_guard_units_value}
+    apiresources.changeCxConfigsTabModuleFieldValues  DASHM  NumMinutesGuardTimer  ${config_num_minutes_guard_timer_value}
+    apiresources.changeCxConfigsTabModuleFieldValues  SYSTEM  NumMinutesPast  ${config_system_num_minutes_past_value}
