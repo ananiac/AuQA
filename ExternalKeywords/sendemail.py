@@ -5,7 +5,8 @@ import subprocess
 import pathlib
 from email.message import EmailMessage
 
-report_path = os.path.abspath("Reports/report.html")
+auqa_dir= os.path.dirname(os.path.abspath('/home/fc/automation/AuQA/execution.py'))
+report_path= os.path.join(auqa_dir,'Reports','report.html')
 
 #Fetch the ip address of host machine
 ipaddress= (subprocess.check_output(['hostname', '-s', '-I']).decode('utf-8')[:-1]).strip()
