@@ -115,10 +115,12 @@ setGroupPropertyToEmpty
     END
     set selenium timeout    ${short_wait_time}
 
+# Move this keyword to resource file of override1
+# This is called from Testcase Override1 for setting AHU override value
 setOverrideValueForAHU
     startBrowserAndLoginToAIEngineVX
     set selenium timeout  ${short_wait_time}
-    selectNamedAHUAndClickSetOverridesButton
+    setOverrodeValuesOfSpecifiedAHU
     set selenium timeout  ${short_wait_time}
     close browser
 
@@ -144,7 +146,8 @@ loginByEnteringUsernameAndPasswordVX
     log to console    Logged in successfully
 
 # Move this keyword to resource file of override1
-selectNamedAHUAndClickSetOverridesButton
+# Specified AHU name & values are hard coded currently [AHU name, ON/OFF/AUTO value and Supply Fan Control value]
+setOverrodeValuesOfSpecifiedAHU
     sleep  ${load_time}
     checkWebElementIsVisibleAndIsEnabled  ${group_dropdown_list_vx}
     click element  ${group_dropdown_list_vx}
@@ -156,11 +159,11 @@ selectNamedAHUAndClickSetOverridesButton
     checkWebElementIsVisibleAndIsEnabled  ${equipment_tab}
     click element  ${equipment_tab}
     sleep  ${load_time}
-    setOverrideValueOfNamedAHU  CAC_10  ON  77
-    setOverrideValueOfNamedAHU  CAC_13  OFF  79
-    setOverrideValueOfNamedAHU  CAC_15  AUTO  81
+    setOverrideValueOfSingleAHU  CAC_10  ON  77
+    setOverrideValueOfSingleAHU  CAC_13  OFF  79
+    setOverrideValueOfSingleAHU  CAC_15  AUTO  81
 
-setOverrideValueOfNamedAHU
+setOverrideValueOfSingleAHU
     [Arguments]    ${ahu}  ${on_off_auto_value}  ${supply_fan_control_value}
     ${ahu_record}=  set variable  xpath=//div[contains(text(),'${ahu}')]
     checkWebElementIsVisibleAndIsEnabled  ${ahu_record}
@@ -187,16 +190,3 @@ checkWebElementIsVisibleAndIsEnabled
     wait until element is visible  ${webElement}
     wait until element is enabled  ${webElement}
     set selenium timeout  ${long_wait_time}
-
-#listOfAHUsForWhichValuesSet
-#    [Arguments]    @{ahu_list}
-#    ${length}    get length    ${ahu_list}
-#    IF    ${length}==0
-#        log to console    AHU name not recieved
-#    ELSE
-#        FOR    ${ahu}    IN    @{ahu_list}
-#            log to console    Setting ${ahu} value
-#                setOverrideValueOfNamedAHU  CAC_10  ON  77
-#            sleep    ${short_wait_time}
-#        END
-#    END
