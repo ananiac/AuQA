@@ -6,6 +6,7 @@ Resource    ${EXECDIR}/Inputs/testInputs.robot
 Variables    ${EXECDIR}/PageObjects/siteEditorHomePage.py
 Variables   ${EXECDIR}/PageObjects/toolsConfigsPage.py
 Resource    apiresources.robot
+Variables    ${EXECDIR}/PageObjects/vxEquipmentTab.py
 
 
 *** Variables ***
@@ -79,14 +80,11 @@ selectAndClickGroupName
     log to console  '${group_name}' group selection
     set selenium timeout    ${long_wait_time}
     sleep  ${short_wait_time}
-    # Group drop down list
     click element  ${group_dropdown_list}
     sleep  ${short_wait_time}
-    # Select a Group from drop down list
     ${select_group}=  set variable  xpath=//li[contains(text(),'${group_name}')]
     click element  ${select_group}
     sleep  ${short_wait_time}
-    # Click a Group Name
     ${select_and_click_group}=  set variable  xpath=//span[contains(.,'${group_name}')]
     click element  ${select_and_click_group}
     sleep  ${load_time}
@@ -117,5 +115,78 @@ setGroupPropertyToEmpty
     END
     set selenium timeout    ${short_wait_time}
 
+# Move this keyword to resource file of override1
+# This is called from Testcase Override1 for setting AHU override value
+setOverrideValueForAHU
+    startBrowserAndLoginToAIEngineVX
+    set selenium timeout  ${short_wait_time}
+    setOverrodeValuesOfSpecifiedAHU
+    set selenium timeout  ${short_wait_time}
+    close browser
 
+startBrowserAndLoginToAIEngineVX
+    startBrowserAndAccessVXWebUI
+    loginByEnteringUsernameAndPasswordVX
 
+startBrowserAndAccessVXWebUI
+    #[Arguments]    ${url}    ${browser}    ${expectedTitle}
+    open browser    ${url_vx}    ${browser}    options=add_argument("--disable-popup-blocking"); add_argument("--ignore-certificate-errors"); add_argument("--no-sandbox"); add_argument("--disable-extensions"); add_argument("--disable-dev-shm-usage"); add_argument("--window-size=1200,1100"); add_argument("--allow-running-insecure-content")
+    maximize browser window
+    set browser implicit wait    ${short_wait_time}
+    log to console    Accessed VX Web UI
+
+loginByEnteringUsernameAndPasswordVX
+    #[Arguments]    ${username}    ${password}
+    log to console    Entering user name and password
+    input text    ${uname}    ${ui_username}
+    input text    ${upwd}    ${ui_password}
+    takeScreenshot  InputUserNameAndPwd
+    click element    ${login_button}
+    wait until page contains element   ${banner}
+    log to console    Logged in successfully
+
+# Move this keyword to resource file of override1
+# Specified AHU name & values are hard coded currently [AHU name, ON/OFF/AUTO value and Supply Fan Control value]
+setOverrodeValuesOfSpecifiedAHU
+    sleep  ${load_time}
+    checkWebElementIsVisibleAndIsEnabled  ${group_dropdown_list_vx}
+    click element  ${group_dropdown_list_vx}
+    ${select_group}=  set variable  xpath=//li[contains(text(),'${group_name}')]
+    checkWebElementIsVisibleAndIsEnabled  ${select_group}
+    click element  ${select_group}
+    log to console  '${group_name}' group selected
+    sleep  ${load_time}
+    checkWebElementIsVisibleAndIsEnabled  ${equipment_tab}
+    click element  ${equipment_tab}
+    sleep  ${load_time}
+    setOverrideValueOfSingleAHU  CAC_10  ON  77
+    setOverrideValueOfSingleAHU  CAC_13  OFF  79
+    setOverrideValueOfSingleAHU  CAC_15  AUTO  81
+
+setOverrideValueOfSingleAHU
+    [Arguments]    ${ahu}  ${on_off_auto_value}  ${supply_fan_control_value}
+    ${ahu_record}=  set variable  xpath=//div[contains(text(),'${ahu}')]
+    checkWebElementIsVisibleAndIsEnabled  ${ahu_record}
+    press keys  ${ahu_record}  SHIFT
+    checkWebElementIsVisibleAndIsEnabled  ${set_overrides_button}
+    click element  ${set_overrides_button}
+    checkWebElementIsVisibleAndIsEnabled  ${on_off_auto_dropdown_list}
+    click element  ${on_off_auto_dropdown_list}
+    ${on_off_auto_current_value}=  set variable  xpath=//li[contains(text(),'${on_off_auto_value}')]
+    checkWebElementIsVisibleAndIsEnabled  ${on_off_auto_current_value}
+    click element  ${on_off_auto_current_value}
+    checkWebElementIsVisibleAndIsEnabled  ${supply_fan_control_textbox}
+    press keys  ${supply_fan_control_textbox}  ${supply_fan_control_value}
+    checkWebElementIsVisibleAndIsEnabled  ${supply_fan_control_textbox}
+    takeScreenshot  SetAHUToOverride-${ahu}
+    press keys  ${supply_fan_control_textbox}  TAB
+    checkWebElementIsVisibleAndIsEnabled  ${set_overrides_save_button}
+    click element  ${set_overrides_save_button}
+    log to console  Set override for ${ahu} AHU with ON/OFF/AUTO value as ${on_off_auto_value} and Supply Fan Control value as ${supply_fan_control_value}
+
+checkWebElementIsVisibleAndIsEnabled
+    [Arguments]    ${webElement}
+    set selenium timeout  ${long_wait_time}
+    wait until element is visible  ${webElement}
+    wait until element is enabled  ${webElement}
+    set selenium timeout  ${long_wait_time}
