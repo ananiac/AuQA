@@ -5,7 +5,7 @@ Library    Collections
 Library    OperatingSystem
 Library    DateTime
 Variables    ${EXECDIR}/Configurations/${environment}.py
-Variables    ${EXECDIR}/JsonPath/basicHotAbsoluteGuardJsonpath.py
+Variables    ${EXECDIR}/JsonPath/jsonpathForGraphQL.py
 Variables    ${EXECDIR}/Inputs/expectedMutationJsonResponses.py
 Resource    ${EXECDIR}/Inputs/testInputs.robot
 Resource    common.robot
@@ -48,8 +48,8 @@ setTemperatureForAllRackSensorPoints    #Contain both query and mutation
         ${rack_type2}    fetchValueOfFieldFromJsonDictionary    ${json_dict}    $.data.site.groups[0].racks[${i}].points[1].type
         ${oid1}    fetchValueOfFieldFromJsonDictionary    ${json_dict}    $.data.site.groups[0].racks[${i}].points[0].oid
         ${oid2}     fetchValueOfFieldFromJsonDictionary    ${json_dict}    $.data.site.groups[0].racks[${i}].points[1].oid
-        run keyword if    '${rack_type1}'=='CBot'    setRackPointSensorTemperature    ${oid1}    ${tempF}
-        run keyword if    '${rack_type2}'=='CTop'     setRackPointSensorTemperature    ${oid2}    ${tempF}
+        run keyword if    '${rack_type1}'=='CBot'    setSensorPointTemperature    ${oid1}    ${tempF}
+        run keyword if    '${rack_type2}'=='CTop'     setSensorPointTemperature    ${oid2}    ${tempF}
     END
     log to console    ******************************Temperature set for all rack sensors*********************************
 
@@ -73,8 +73,8 @@ setTemperatureForSensorsAandB
             END
         END
     END
-    setRackPointSensorTemperature  ${sensor_A_oid}    ${temp}
-    setRackPointSensorTemperature  ${sensor_B_oid}    ${temp}
+    setSensorPointTemperature  ${sensor_A_oid}    ${temp}
+    setSensorPointTemperature  ${sensor_B_oid}    ${temp}
     common.setFlagValue    ${two_sets_of_temp_flag}
 
 setTwoSetOfSensorTemperatureForRack
@@ -97,8 +97,8 @@ setTwoSetOfSensorTemperatureForRack
             END
         END
     END
-    setRackPointSensorTemperature  ${sensor_A_oid}    ${tempH}
-    setRackPointSensorTemperature  ${sensor_B_oid}    ${tempH}
+    setSensorPointTemperature  ${sensor_A_oid}    ${tempH}
+    setSensorPointTemperature  ${sensor_B_oid}    ${tempH}
     log to console    Setting temperature for other Sensors----------------->
     FOR    ${i}    IN RANGE    0    ${total}
         ${rack_type1}    fetchValueOfFieldFromJsonDictionary    ${json_dict}    $.data.site.groups[0].racks[${i}].points[0].type
@@ -106,9 +106,9 @@ setTwoSetOfSensorTemperatureForRack
         ${oid1}    fetchValueOfFieldFromJsonDictionary    ${json_dict}    $.data.site.groups[0].racks[${i}].points[0].oid
         ${oid2}     fetchValueOfFieldFromJsonDictionary    ${json_dict}    $.data.site.groups[0].racks[${i}].points[1].oid
         run keyword if
-        ...    ('${rack_type1}'=='CBot' and '${oid1}'!='${sensor_A_oid}')   setRackPointSensorTemperature    ${oid1}    ${tempC}
+        ...    ('${rack_type1}'=='CBot' and '${oid1}'!='${sensor_A_oid}')   setSensorPointTemperature    ${oid1}    ${tempC}
         run keyword if
-        ...   ('${rack_type2}'=='CTop' and '${oid2}'!='${sensor_B_oid}')   setRackPointSensorTemperature    ${oid2}    ${tempC}
+        ...   ('${rack_type2}'=='CTop' and '${oid2}'!='${sensor_B_oid}')   setSensorPointTemperature    ${oid2}    ${tempC}
     END
 
 fetchTheNumberOfItemsInDictionary
@@ -230,8 +230,8 @@ setTemperatureForAllExceptDeadSensor    #Contain both query and mutation, 25% of
         ${rack_type2}    fetchValueOfFieldFromJsonDictionary    ${json_dict}    $.data.site.groups[0].racks[${i}].points[1].type
         ${oid1}    fetchValueOfFieldFromJsonDictionary    ${json_dict}    $.data.site.groups[0].racks[${i}].points[0].oid
         ${oid2}     fetchValueOfFieldFromJsonDictionary    ${json_dict}    $.data.site.groups[0].racks[${i}].points[1].oid
-        run keyword if    '${rack_type1}'=='CBot'    setRackPointSensorTemperature    ${oid1}    ${tempF}
-        run keyword if    '${rack_type2}'=='CTop'     setRackPointSensorTemperature    ${oid2}    ${tempF}
+        run keyword if    '${rack_type1}'=='CBot'    setSensorPointTemperature    ${oid1}    ${tempF}
+        run keyword if    '${rack_type2}'=='CTop'     setSensorPointTemperature    ${oid2}    ${tempF}
     END
     log to console    ******************************Temperature set for all, except ${stale_sensor_count} rack/racks*********************************
 
@@ -489,7 +489,7 @@ changeCxConfigsTabModuleFieldValues
     log to console    Config module :${module_name}->Field:${field_name}->Value:${value}-is updated
     apiresources.writeUserEventsEntryToNotificationEventLog    AuQA test->${group_name}->Config->${module_name}->${field_name}=${value}-is updated.
 
-setRackPointSensorTemperature
+setSensorPointTemperature
     [Arguments]    ${oid}    ${temp}
     ${graphql_mutation}=  gqlMutation.pointWriteMutation    ${oid}    ${temp}
     ${json_dictionary}=  gqlFetchJsonResponseFromMutation     ${graphql_mutation}
@@ -712,8 +712,8 @@ setTemperatureForAllRATAndDATSensorPoints    #Contain both query and mutation
         log to console    ${i} Sensor Point
         ${sensor_type}    fetchValueOfFieldFromJsonDictionary    ${json_dict}    $.data.site.groups[0].sensors[${i}].type
         ${sensor_oid}    fetchValueOfFieldFromJsonDictionary    ${json_dict}    $.data.site.groups[0].sensors[${i}].oid
-        run keyword if    '${sensor_type}'=='RAT'    setRackPointSensorTemperature    ${sensor_oid}    ${rat_tempF}
-        run keyword if    '${sensor_type}'=='DAT'     setRackPointSensorTemperature    ${sensor_oid}    ${dat_tempF}
+        run keyword if    '${sensor_type}'=='RAT'    setSensorPointTemperature    ${sensor_oid}    ${rat_tempF}
+        run keyword if    '${sensor_type}'=='DAT'     setSensorPointTemperature    ${sensor_oid}    ${dat_tempF}
     END
     log to console    ******************************Temperature set for all RAT and DAT sensors*********************************
 
