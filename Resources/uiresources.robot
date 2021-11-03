@@ -115,15 +115,6 @@ setGroupPropertyToEmpty
     END
     set selenium timeout    ${short_wait_time}
 
-# Move this keyword to resource file of override1
-# This is called from Testcase Override1 for setting AHU override value
-setOverrideValueForAHU
-    startBrowserAndLoginToAIEngineVX
-    set selenium timeout  ${short_wait_time}
-    setOverrodeValuesOfSpecifiedAHU
-    set selenium timeout  ${short_wait_time}
-    close browser
-
 startBrowserAndLoginToAIEngineVX
     startBrowserAndAccessVXWebUI
     loginByEnteringUsernameAndPasswordVX
@@ -145,9 +136,7 @@ loginByEnteringUsernameAndPasswordVX
     wait until page contains element   ${banner}
     log to console    Logged in successfully
 
-# Move this keyword to resource file of override1
-# Specified AHU name & values are hard coded currently [AHU name, ON/OFF/AUTO value and Supply Fan Control value]
-setOverrodeValuesOfSpecifiedAHU
+selectGroupUnderTestInVx
     sleep  ${load_time}
     checkWebElementIsVisibleAndIsEnabled  ${group_dropdown_list_vx}
     click element  ${group_dropdown_list_vx}
@@ -155,13 +144,12 @@ setOverrodeValuesOfSpecifiedAHU
     checkWebElementIsVisibleAndIsEnabled  ${select_group}
     click element  ${select_group}
     log to console  '${group_name}' group selected
+
+gotoEquipmentTabInVx
     sleep  ${load_time}
     checkWebElementIsVisibleAndIsEnabled  ${equipment_tab}
     click element  ${equipment_tab}
     sleep  ${load_time}
-    setOverrideValueOfSingleAHU  CAC_10  ON  77
-    setOverrideValueOfSingleAHU  CAC_13  OFF  79
-    setOverrideValueOfSingleAHU  CAC_15  AUTO  81
 
 setOverrideValueOfSingleAHU
     [Arguments]    ${ahu}  ${on_off_auto_value}  ${supply_fan_control_value}
@@ -182,11 +170,33 @@ setOverrideValueOfSingleAHU
     press keys  ${supply_fan_control_textbox}  TAB
     checkWebElementIsVisibleAndIsEnabled  ${set_overrides_save_button}
     click element  ${set_overrides_save_button}
-    log to console  Set override for ${ahu} AHU with ON/OFF/AUTO value as ${on_off_auto_value} and Supply Fan Control value as ${supply_fan_control_value}
+    log to console  !---AHU->${ahu} is overridden from UI with ON/OFF=${on_off_auto_value} ,Supply Fan Control=${supply_fan_control_value}--!
 
 checkWebElementIsVisibleAndIsEnabled
     [Arguments]    ${webElement}
     set selenium timeout  ${long_wait_time}
     wait until element is visible  ${webElement}
     wait until element is enabled  ${webElement}
-    set selenium timeout  ${long_wait_time}
+    set selenium timeout  ${short_wait_time}
+
+overrideNamedAHUWithSpecifiedBOPAndSFCValuesFromUI
+    [Arguments]    ${ahu_name}    ${bop_value}    ${sfc_value}
+    startBrowserAndLoginToAIEngineVX
+    selectGroupUnderTestInVx
+    gotoEquipmentTabInVx
+    setOverrideValueOfSingleAHU  ${ahu_name}  ${bop_value}  ${sfc_value}
+    set selenium timeout  ${short_wait_time}
+    close browser
+
+    #Created by Greeshma on 3rd Non 2021
+setListedGroupPropertiesToEmpty
+    [Arguments]    @{properties_list}
+    sleep  ${load_time}
+    uiresources.startBrowserAndLoginToAIEngine
+    sleep  ${load_time}
+    uiresources.selectAndClickGroupName
+    uiresources.clickAllPropertiesButton
+    FOR    ${property}    IN    @{properties_list}
+        uiresources.setGroupPropertyToEmpty  ${property}
+    END
+    close browser

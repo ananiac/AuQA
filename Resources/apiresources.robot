@@ -637,18 +637,21 @@ verifyOverrideValueOfSpecificControlInOverriddenAHU
         log to console    ${field_value}
         should not contain any    '${field_value}'    MANUAL    Verification of blank value for Override field(MANUAL should not be present)
     END
+    log to console    !============Verified->${ahu_name}->${control_type}->Override=${expected_value}=successfully==========!
 
     #Created by Greeshma on 25 Oct 2021
 verifyOriginOfSpecificControlInOverriddenAHU
     [Arguments]    ${ahu_name}    ${control_type}   ${expected_value}
     ${field_value}=    getValueFieldOfSpecificControlInOverriddenAHUUsingJsonPath    $.data.site.groups[0].ahus[?(@.name=="${ahu_name}")].controls[?(@.type=="${control_type}")].targetStatus.requests[?(@.status=="ACTIVE")].origin
     should be equal as strings    ${field_value}   ${expected_value}    Verification of Origin for ${ahu_name}->${control_type}->expected->${expected_value}
+    log to console    !============Verified->${ahu_name}->${control_type}->Origin=${expected_value}=successfully==========!
 
-    #Created by Greeshma on 25 Oct 2021
-verifyValueOfSpecificControlInOverriddenAHU
+    #Created by Greeshma on 25 Oct 2021.Renamed on 29 Oct as this keyword is equally useful for AHU in CONTROL,Overridden and GUARD
+verifyValueOfSpecificControlofNamedAHU
     [Arguments]    ${ahu_name}    ${control_type}   ${expected_value}
     ${field_value}=    getValueFieldOfSpecificControlInOverriddenAHUUsingJsonPath    $.data.site.groups[0].ahus[?(@.name=="${ahu_name}")].controls[?(@.type=="${control_type}")].point.value
     should be equal as strings    ${field_value}   ${expected_value}    Verification of Value for ${ahu_name}->${control_type}->expected->${expected_value}
+    log to console    !============Verified->${ahu_name}->${control_type}->Value=${expected_value}=successfully==========!
 
     #Created by Greeshma on 27 Oct 2021.Oid of a specific control of AHU is returned, if AHU name and Control name are passed as Arguments.
 getSpecificControlOidOfNamedAHU
@@ -724,3 +727,55 @@ setTemperatureForAllRacksRATandDATSensorPointsEveryMinute
     apiresources.setTemperatureForAllRackSensorPoints  ${rack_temp}
     apiresources.setTemperatureForAllRATAndDATSensorPoints    ${rat_tempF}    ${dat_tempF}
     common.setFlagValue    ${current_temp_to_racks_RAT_DAT}
+
+    #Copied from GuardOrderMixResources to apiresource on 29 Oct 2021
+setGroupPropertyGuardHotAbsTemp
+    [Arguments]    ${guard_hot_abs_temp_value}
+    apiresources.changeGroupPropertiesParameterValue    GuardHotAbsTemp  int  ${guard_hot_abs_temp_value}
+
+    #Copied from GuardOrderMixResources to apiresource on 29 Oct 2021
+setFanCtrlMinMaxValueOfAllAHUs
+    [Arguments]    ${fan_ctlr_min_value}    ${fan_ctrl_max_value}
+    ${total_no_of_ahus}=    apiresources.getAHUCount
+    ${json_dictionary}=    apiresources.queryToFetchJsonResponseContaingTheCurrentAHUStatus
+    FOR    ${i}   IN RANGE    0    ${total_no_of_ahus}
+        ${ahu_name}=    fetchValueOfFieldFromJsonDictionary    ${json_dictionary}    $.data.site.groups[0].ahus[${i}].name
+        apiresources.setFanCtrlMaxAndMinValuesOfNamedAHU    ${ahu_name}    ${fan_ctrl_max_value}    ${fan_ctlr_min_value}
+        log to console    !!---Done for the ahu-${ahu_name} with FanCtrlMin:${fan_ctlr_min_value} FanCtrlMax:${fan_ctrl_max_value}---!!
+     END
+    log to console    *********All AHUS are set with FanCtrlMin:${fan_ctlr_min_value} FanCtrlMax:${fan_ctrl_max_value}*****************
+
+    #Copied from GuardOrderMixResources to apiresource on 29 Oct 2021
+setconfigNumGuardUnitsNumMinutesGuardTimerAndNumMinutesPast
+    [Arguments]    ${config_num_guard_units_value}    ${config_num_minutes_guard_timer_value}    ${config_system_num_minutes_past_value}
+    apiresources.changeCxConfigsTabModuleFieldValues  DASHM  NumGuardUnits  ${config_num_guard_units_value}
+    apiresources.changeCxConfigsTabModuleFieldValues  DASHM  NumMinutesGuardTimer  ${config_num_minutes_guard_timer_value}
+    apiresources.changeCxConfigsTabModuleFieldValues  SYSTEM  NumMinutesPast  ${config_system_num_minutes_past_value}
+
+    #Created by Greeshma on 3rd Non 2021
+verifySupplyFanOverrideValueOfListedAHUsAreBlank
+    [Arguments]    @{ahu_list}
+    FOR  ${ahu_name}  IN  @{ahu_list}
+        apiresources.verifyOverrideValueOfSpecificControlInOverriddenAHU     ${ahu_name}    SFC    blank
+    END
+
+    #Created by Greeshma on 3rd Non 2021
+verifyBOPOverrideValueOfListedAHUsAreBlank
+    [Arguments]    @{ahu_list}
+    FOR  ${ahu_name}  IN  @{ahu_list}
+        apiresources.verifyOverrideValueOfSpecificControlInOverriddenAHU     ${ahu_name}    BOP    blank
+    END
+
+    #Created by Greeshma on 3rd Non 2021
+verifyBOPOriginOfListedAHUsAreControl
+    [Arguments]    @{ahu_list}
+    FOR  ${ahu_name}  IN  @{ahu_list}
+         apiresources.verifyOriginOfSpecificControlInOverriddenAHU    ${ahu_name}    BOP    CONTROL
+    END
+
+    #Created by Greeshma on 3rd Non 2021
+verifyBOPValueOfListedAHUsAreON
+    [Arguments]    @{ahu_list}
+    FOR  ${ahu_name}  IN  @{ahu_list}
+        apiresources.verifyValueOfSpecificControlofNamedAHU    ${ahu_name}   BOP    1
+    END
