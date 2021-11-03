@@ -5,6 +5,9 @@ from ExternalKeywords import readExcel
 import datetime
 import sys
 
+#Variables
+global execute_flag
+
 #Gets the current date and time
 date_format = datetime.datetime.now().strftime("%F_%X")
 
@@ -71,6 +74,7 @@ print("count of pabot process is: "+str(pabot_count))
 
 #check if the pabot process is not running and execute the commands
 if (pabot_count <=2):
+    execute_flag = 1
     print("No automated tests are running so starting the test execution")
     # Executing the testcases and redirecting the output to executionLog.txt
     for i in range(dic_row - 2):
@@ -98,6 +102,7 @@ if (pabot_count <=2):
     print(file_name)
     call(["python3", file_name, suite_name])
 else:
+    execute_flag = 0
     print("Automated test are running so the test execution is aborted")
 
 

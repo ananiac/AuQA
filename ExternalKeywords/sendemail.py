@@ -4,6 +4,7 @@ import sys
 import subprocess
 import pathlib
 from email.message import EmailMessage
+import execution
 
 auqa_dir= os.path.dirname(os.path.abspath('/home/fc/automation/AuQA/execution.py'))
 report_path= os.path.join(auqa_dir,'Reports','report.html')
@@ -23,14 +24,23 @@ msg = EmailMessage()
 msg['Subject'] = 'AuQA test run result of '+suite_name
 msg['From'] = 'auqa@vigilent.com'
 msg['To'] = 'AuQaTeam@vigilent.com'
-msg.set_content("""
-		Hello Team,
+if (execution.execute_flag==1):
+    msg.set_content("""
+            Hello Team,
+    
+                    Automation suite execution of """+suite_name+""" is completed.Please find attached Report.
+                    Detailed test run results are placed in the folder """+latest_folder+" at location http://"+ipaddress+"""/testReports/
+    
+            Thanks,
+            AuQA Team""")
+elif(execution.execute_flag==0):
+    msg.set_content("""
+            Hello Team,
+                    
+                    Automated test are running so the test execution of """ + suite_name + """ is aborted
 
-                Automation suite execution of """+suite_name+""" is completed.Please find attached Report.
-                Detailed test run results are placed in the folder """+latest_folder+" at location http://"+ipaddress+"""/testReports/
-
-		Thanks,
-		AuQA Team""")
+            Thanks,
+            AuQA Team""")
 
 with open(report_path, "rb") as file:
     file_content = file.read()
