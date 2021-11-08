@@ -4,7 +4,7 @@ import sys
 import subprocess
 import pathlib
 from email.message import EmailMessage
-import execution
+import common
 
 auqa_dir= os.path.dirname(os.path.abspath('/home/fc/automation/AuQA/execution.py'))
 report_path= os.path.join(auqa_dir,'Reports','report.html')
@@ -21,10 +21,11 @@ latest_folder = os.path.split(latest)[1]
 
 #Sending email with the message and attachment
 msg = EmailMessage()
-msg['Subject'] = 'AuQA test run result of '+suite_name
+msg['Subject'] = 'Test Email- pLz ignore-AuQA test run result of '+suite_name
 msg['From'] = 'auqa@vigilent.com'
 msg['To'] = 'AuQaTeam@vigilent.com'
-if (execution.execute_flag==1):
+print("value of execute_flag is :"+ str(common.execute_flag))
+if (common.execute_flag==1):
     msg.set_content("""
             Hello Team,
     
@@ -33,7 +34,7 @@ if (execution.execute_flag==1):
     
             Thanks,
             AuQA Team""")
-elif(execution.execute_flag==0):
+else:
     msg.set_content("""
             Hello Team,
                     
