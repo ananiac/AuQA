@@ -114,7 +114,7 @@ SFCMinMaxCheck
     #55)Verify On/Off Value = ON for AHUs CAC_10, CAC_13, and CAC_15
     apiresources.verifyBOPValueOfListedAHUsAreON  ${test_input}[ahu_1]  ${test_input}[ahu_2]  ${test_input}[ahu_3]
     #56)Wait 5 minutes
-    common.waitForMinutes    5
+#    common.waitForMinutes    5
     #57)Verify Supply Fan Value = 72.0% for AHUs CAC_10, CAC_13, and CAC_15
 #    override1TestResources.verifySupplyFanValueOfListedAHUsAreSFCMinValue  ${test_input}[ahu_1]  ${test_input}[ahu_2]  ${test_input}[ahu_3]
     #58)(Clean up)
