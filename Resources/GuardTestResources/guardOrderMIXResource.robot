@@ -1,6 +1,7 @@
 *** Settings ***
 Documentation          This resource file provides the keyword definition specific to Dead Sensor Guard testsuite
 #...                    Created by Greeshma on 28th July 2021
+#Use the apiresources.robot keywords->setGroupPropertyGuardHotAbsTemp,setFanCtrlMinMaxValueOfAllAHUs,setconfigNumGuardUnitsNumMinutesGuardTimerAndNumMinutesPas
 Library    RequestsLibrary
 Library    JSONLibrary
 Library    Collections

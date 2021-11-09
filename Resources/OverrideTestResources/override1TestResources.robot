@@ -5,15 +5,15 @@ Library    RequestsLibrary
 Library    JSONLibrary
 Library    Collections
 Library     String
+Library    SeleniumLibrary
+Library    ${EXECDIR}/ExternalKeywords/common.py
+Variables    ${EXECDIR}/Configurations/${environment}.py
+Variables    ${EXECDIR}/PageObjects/siteEditorHomePage.py
 Resource    ${EXECDIR}/Resources/apiresources.robot
 Resource    ${EXECDIR}/Resources/uiresources.robot
 Resource    ${EXECDIR}/Resources/connection.robot
-Library    SeleniumLibrary
-Variables    ${EXECDIR}/Configurations/${environment}.py
-Variables    ${EXECDIR}/PageObjects/siteEditorHomePage.py
 Resource    ${EXECDIR}/Resources/common.robot
 Resource    ${EXECDIR}/Inputs/testInputs.robot
-Library    ${EXECDIR}/ExternalKeywords/common.py
 
 
 *** Keywords ***

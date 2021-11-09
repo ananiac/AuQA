@@ -751,7 +751,7 @@ setconfigNumGuardUnitsNumMinutesGuardTimerAndNumMinutesPast
     apiresources.changeCxConfigsTabModuleFieldValues  DASHM  NumMinutesGuardTimer  ${config_num_minutes_guard_timer_value}
     apiresources.changeCxConfigsTabModuleFieldValues  SYSTEM  NumMinutesPast  ${config_system_num_minutes_past_value}
 
-    #Created by Greeshma on 3rd Non 2021
+    #Created by Greeshma on 3rd Nov 2021
 verifySupplyFanOverrideValueOfListedAHUsAreBlank
     [Arguments]    @{ahu_list}
     FOR  ${ahu_name}  IN  @{ahu_list}
