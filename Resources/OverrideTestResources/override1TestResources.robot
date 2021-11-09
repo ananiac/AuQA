@@ -33,7 +33,7 @@ setConfigSFCMinAndSFCMaxValues
     apiresources.changeCxConfigsTabModuleFieldValues  SYSTEM  SFCMin  ${sfc_min_value}
     apiresources.changeCxConfigsTabModuleFieldValues  SYSTEM  SFCMax  ${sfc_max_value}
 
-    #Created by Greeshma on 3rd Non 2021
+    #Created by Greeshma on 3rd Nov 2021
 verifySupplyFanValueOfListedAHUsAreSFCMinValue
     [Arguments]    @{ahu_list}
     FOR  ${ahu_name}  IN  @{ahu_list}
