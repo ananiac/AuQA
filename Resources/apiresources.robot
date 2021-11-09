@@ -758,21 +758,21 @@ verifySupplyFanOverrideValueOfListedAHUsAreBlank
         apiresources.verifyOverrideValueOfSpecificControlInOverriddenAHU     ${ahu_name}    SFC    blank
     END
 
-    #Created by Greeshma on 3rd Non 2021
+    #Created by Greeshma on 3rd Nov 2021
 verifyBOPOverrideValueOfListedAHUsAreBlank
     [Arguments]    @{ahu_list}
     FOR  ${ahu_name}  IN  @{ahu_list}
         apiresources.verifyOverrideValueOfSpecificControlInOverriddenAHU     ${ahu_name}    BOP    blank
     END
 
-    #Created by Greeshma on 3rd Non 2021
+    #Created by Greeshma on 3rd Nov 2021
 verifyBOPOriginOfListedAHUsAreControl
     [Arguments]    @{ahu_list}
     FOR  ${ahu_name}  IN  @{ahu_list}
          apiresources.verifyOriginOfSpecificControlInOverriddenAHU    ${ahu_name}    BOP    CONTROL
     END
 
-    #Created by Greeshma on 3rd Non 2021
+    #Created by Greeshma on 3rd Nov 2021
 verifyBOPValueOfListedAHUsAreON
     [Arguments]    @{ahu_list}
     FOR  ${ahu_name}  IN  @{ahu_list}
