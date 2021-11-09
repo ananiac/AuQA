@@ -188,7 +188,7 @@ overrideNamedAHUWithSpecifiedBOPAndSFCValuesFromUI
     set selenium timeout  ${short_wait_time}
     close browser
 
-    #Created by Greeshma on 3rd Non 2021
+    #Created by Greeshma on 3rd Nov 2021
 setListedGroupPropertiesToEmpty
     [Arguments]    @{properties_list}
     sleep  ${load_time}
