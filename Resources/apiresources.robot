@@ -634,7 +634,6 @@ verifyOverrideValueOfSpecificControlInOverriddenAHU
         ${query}=    gqlQueries.getOverrideDetailsOfAHUsInGroup  ${group_name}
         ${json_dictionary}=  gqlFetchJsonResponseFromQuery     ${query}
         ${field_value}=    fetchValueOfFieldFromJsonDictionary    ${json_dictionary}    $.data.site.groups[0].ahus[?(@.name=="${ahu_name}")].controls[?(@.type=="${control_type}")].targetStatus.requests
-        log to console    ${field_value}
         should not contain any    '${field_value}'    MANUAL    Verification of blank value for Override field(MANUAL should not be present)
     END
     log to console    !============Verified->${ahu_name}->${control_type}->Override=${expected_value}=successfully==========!

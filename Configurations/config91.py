@@ -5,9 +5,9 @@ graphql_base_url="https://10.252.9.91/api"
 
 
 #use headlessmode to run in ubuntu
-# browser="headlesschrome"
+browser="headlesschrome"
 #use this to run on windows
-browser="chrome"
+# browser="chrome"
 
 
 #Credentials to login
