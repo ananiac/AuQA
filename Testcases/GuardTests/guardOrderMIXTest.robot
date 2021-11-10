@@ -59,7 +59,7 @@ GuardOrderMixTest
     #CAC_16,15, 14, 10, 17, 13, 12, 11
     #CAC_13, 16, 15, 14, 10, 17, 13, 12, 11 is also OK (AuQA51)
     #27.Confirm the turn on order is correct
-#    guardOrderMIXResource.confirmTheOrderOfAHUsGoingIntoGuardIsIncrementalCoolEffortEstimateExceptFirstAHU    ${test_input}
+    guardOrderMIXResource.confirmTheOrderOfAHUsGoingIntoGuardIsIncrementalCoolEffortEstimateExceptFirstAHU    ${test_input}
     #28.Stop all processes except vx_server, facs_launcher and facs_trend
     connection.establishConnectionAndStopAllProcessesExcept    vx_server    facs_launcher    facs_trend
     #29.Clean up
