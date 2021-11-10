@@ -114,10 +114,10 @@ OverrideCombinationCheck
     apiresources.verifyBOPOriginOfListedAHUsAreControl  ${test_input}[ahu_1]  ${test_input}[ahu_2]  ${test_input}[ahu_3]
     #55)Verify On/Off Value = ON for AHUs CAC_10, CAC_13, and CAC_15
     apiresources.verifyBOPValueOfListedAHUsAreON  ${test_input}[ahu_1]  ${test_input}[ahu_2]  ${test_input}[ahu_3]
-    #56)Wait 5 minutes <Strike through in Confluence>
-#    common.waitForMinutes    5
-    #57)Verify Supply Fan Value = 72.0% for AHUs CAC_10, CAC_13, and CAC_15 <Strike through in Confluence>
-#    override1TestResources.verifySupplyFanValueOfListedAHUsAreSFCMinValue  ${test_input}[ahu_1]  ${test_input}[ahu_2]  ${test_input}[ahu_3]
+    #56)Wait 5 minutes <Post the decision on 9 Nov 2021 meeting the step has been removed from testcases and Strikethrough in Confluence>
+    #common.waitForMinutes    5
+    #57)Verify Supply Fan Value = 72.0% for AHUs CAC_10, CAC_13, and CAC_15 <Post the decision on 9 Nov 2021 meeting the step has been removed from testcases and Strikethrough in Confluence>
+    #override1TestResources.verifySupplyFanValueOfListedAHUsAreSFCMinValue  ${test_input}[ahu_1]  ${test_input}[ahu_2]  ${test_input}[ahu_3]
     #58)(Clean up)
 CleanUp
     apiresources.writeUserEventsEntryToNotificationEventLog    AuQA test->${group_name}->Finished Test->Override-1 test
