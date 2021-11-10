@@ -624,7 +624,7 @@ getValueFieldOfSpecificControlInOverriddenAHUUsingJsonPath
     return from keyword    ${field_value}
 
     #Created by Greeshma on 25 Oct 2021. For On/Off [BOP] -AUTO option,On/Off->Override value will be blank.
-    #In the JSON response 'MANUAL' category will be absent and no mapping to override filed of AHU
+    #Also when it is blank, the JSON response 'MANUAL' category will be absent and no mapping to override filed of AHU
 verifyOverrideValueOfSpecificControlInOverriddenAHU
     [Arguments]    ${ahu_name}    ${control_type}   ${expected_value}
     IF    '${expected_value}'!='blank'

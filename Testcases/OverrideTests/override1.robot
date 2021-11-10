@@ -15,7 +15,7 @@ Resource    ${EXECDIR}/Inputs/testInputs.robot
 
 
 *** Test Cases ***
-SFCMinMaxCheck
+OverrideCombinationCheck
     #1)Start system with the AuQa DB on it (e.g., 10.252.9.118)
     #2)Stop all processes including the API Server (vx_server) and Script Launcher
     #3)Wait 2 minutes
@@ -28,6 +28,7 @@ SFCMinMaxCheck
     #7)Start all Plugins (Bacnet, Dust, Smartmesh)
     #8)Start all other processes except Calibration (facs_cp), Learning (facs_cl), and Simulation (dcsim)
     connection.establishConnectionAndStartRequiredProcesses    vems-plugin-smart-mesh-ip  vems-plugin-dust  vems-plugin-modbus  vems-plugin-bacnet    facs_dash    facs_sift    facs_trend  facs_cleanup  vems-snmp
+    apiresources.writeUserEventsEntryToNotificationEventLog    AuQA test->${group_name}->Started Test->Override-1 test
     #9)Set group property GuardHotAbsTemp=99
     apiresources.setGroupPropertyGuardHotAbsTemp     ${test_input}[guard_hot_abs_temp_intial]
     #10)Set AHU Properties FanCtrlMin = 50% and FanCtrlMax = 100%
@@ -113,12 +114,13 @@ SFCMinMaxCheck
     apiresources.verifyBOPOriginOfListedAHUsAreControl  ${test_input}[ahu_1]  ${test_input}[ahu_2]  ${test_input}[ahu_3]
     #55)Verify On/Off Value = ON for AHUs CAC_10, CAC_13, and CAC_15
     apiresources.verifyBOPValueOfListedAHUsAreON  ${test_input}[ahu_1]  ${test_input}[ahu_2]  ${test_input}[ahu_3]
-    #56)Wait 5 minutes
-#    common.waitForMinutes    5
-    #57)Verify Supply Fan Value = 72.0% for AHUs CAC_10, CAC_13, and CAC_15
-#    override1TestResources.verifySupplyFanValueOfListedAHUsAreSFCMinValue  ${test_input}[ahu_1]  ${test_input}[ahu_2]  ${test_input}[ahu_3]
+    #56)Wait 5 minutes <Post the decision on 9 Nov 2021 meeting the step has been removed from testcases and Strikethrough in Confluence>
+    #common.waitForMinutes    5
+    #57)Verify Supply Fan Value = 72.0% for AHUs CAC_10, CAC_13, and CAC_15 <Post the decision on 9 Nov 2021 meeting the step has been removed from testcases and Strikethrough in Confluence>
+    #override1TestResources.verifySupplyFanValueOfListedAHUsAreSFCMinValue  ${test_input}[ahu_1]  ${test_input}[ahu_2]  ${test_input}[ahu_3]
     #58)(Clean up)
 CleanUp
+    apiresources.writeUserEventsEntryToNotificationEventLog    AuQA test->${group_name}->Finished Test->Override-1 test
     #59)Load default template
     uiresources.resetSystemPropertiesUsingLoadTemplateOptionWithOverwrite
     #60)Clear all RAT & DAT settings (they will go stale)

@@ -1,7 +1,6 @@
 *** Settings ***
 Documentation          This resource file provides the keyword definition specific to Dead Sensor Guard testsuite
 #...                    Created by Greeshma on 28th July 2021
-#Use the apiresources.robot keywords->setGroupPropertyGuardHotAbsTemp,setFanCtrlMinMaxValueOfAllAHUs,setconfigNumGuardUnitsNumMinutesGuardTimerAndNumMinutesPas
 Library    RequestsLibrary
 Library    JSONLibrary
 Library    Collections
@@ -32,16 +31,6 @@ guardOrderMIXTestPreconditionSetup
     connection.establishConnectionAndStopAllProcessesExcept
     common.waitForMinutes    2
     apiresources.writeTestEntryTemperatureToSensorsAfterVXServerStarted
-
-setconfigNumGuardUnitsNumMinutesGuardTimerAndNumMinutesPast
-    [Arguments]    ${config_num_guard_units_value}    ${config_num_minutes_guard_timer_value}    ${config_system_num_minutes_past_value}
-    apiresources.changeCxConfigsTabModuleFieldValues  DASHM  NumGuardUnits  ${config_num_guard_units_value}
-    apiresources.changeCxConfigsTabModuleFieldValues  DASHM  NumMinutesGuardTimer  ${config_num_minutes_guard_timer_value}
-    apiresources.changeCxConfigsTabModuleFieldValues  SYSTEM  NumMinutesPast  ${config_system_num_minutes_past_value}
-
-setGroupPropertyGuardHotAbsTemp
-    [Arguments]    ${guard_hot_abs_temp_value}
-    apiresources.changeGroupPropertiesParameterValue    GuardHotAbsTemp  int  ${guard_hot_abs_temp_value}
 
 setGuardOrderMixPropertiesToEmpty
     setGroupPropertiesForGuardOrderMixToSomeValue
@@ -128,14 +117,3 @@ getExpectedListOfAHUsGoingIntoGuard
     @{ahus_expected_order_list}    get_keys_list_after_sorting_dict_by_value    ${ahu_sfc_input_dict}
     return from keyword    ${ahus_expected_order_list}
 
-    #Created by Greeshma on 20-Oct-2021.
-setFanCtrlMinMaxValueOfAllAHUs
-    [Arguments]    ${fan_ctlr_min_value}    ${fan_ctrl_max_value}
-    ${total_no_of_ahus}=    apiresources.getAHUCount
-    ${json_dictionary}=    apiresources.queryToFetchJsonResponseContaingTheCurrentAHUStatus
-    FOR    ${i}   IN RANGE    0    ${total_no_of_ahus}
-        ${ahu_name}=    fetchValueOfFieldFromJsonDictionary    ${json_dictionary}    $.data.site.groups[0].ahus[${i}].name
-        apiresources.setFanCtrlMaxAndMinValuesOfNamedAHU    ${ahu_name}    ${fan_ctrl_max_value}    ${fan_ctlr_min_value}
-        log to console    !!---Done for the ahu-${ahu_name} with FanCtrlMin:${fan_ctlr_min_value} FanCtrlMax:${fan_ctrl_max_value}---!!
-     END
-    log to console    *********All AHUS are set with FanCtrlMin:${fan_ctlr_min_value} FanCtrlMax:${fan_ctrl_max_value}*****************
