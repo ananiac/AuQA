@@ -21,12 +21,12 @@ GuardOrderMixTest
     #6.Load the DASHAM_MIX template in the CX configs (with overwrite) … or DASHAM_RSP_RESET template if using RSP-test group
     uiresources.resetSystemPropertiesUsingLoadTemplateOptionWithOverwrite
     #7.Set Group >  AHU > FanCtrlMin =  50% and FanCtrlMax = 100%
-    guardOrderMIXResource.setFanCtrlMinMaxValueOfAllAHUs    ${test_input}[fan_ctlr_min_value]    ${test_input}[fan_ctrl_max_value]
+    apiresources.setFanCtrlMinMaxValueOfAllAHUs    ${test_input}[fan_ctlr_min_value]    ${test_input}[fan_ctrl_max_value]
     #8.Set group property GuardHotAbsTemp=99         #AllowNumExceedencesControl removed on 1st oct
-    guardOrderMIXResource.setGroupPropertyGuardHotAbsTemp     ${test_input}[guard_hot_abs_temp_intial]
+    apiresources.setGroupPropertyGuardHotAbsTemp     ${test_input}[guard_hot_abs_temp_intial]
     #9.Write user event “set config DASHM::NumGuardUnits=1, NumMinutesGuardTimer=1 and SYSTEM::NumMinutesPast=20”
     #10.Set config DASHM::NumGuardUnits=1, NumMinutesGuardTimer=1 and SYSTEM::NumMinutesPast=20
-    guardOrderMIXResource.setconfigNumGuardUnitsNumMinutesGuardTimerAndNumMinutesPast    ${test_input}[config_num_guard_units_value]    ${test_input}[config_num_minutes_guard_timer_value]  ${test_input}[config_system_num_minutes_past]
+    apiresources.setconfigNumGuardUnitsNumMinutesGuardTimerAndNumMinutesPast    ${test_input}[config_num_guard_units_value]    ${test_input}[config_num_minutes_guard_timer_value]  ${test_input}[config_system_num_minutes_past]
     #11.Set all rack Setpoints to  80.6/64.4
     apiresources.setAllHighAndLowSetPointLimits    ${test_input}[high_set_point_limit]    ${test_input}[low_set_point_limit]
     #12.set all rack temperature sensor points every minute at say 66 F
@@ -52,14 +52,14 @@ GuardOrderMixTest
     #22.Wait 30 seconds
     common.waitForSeconds    30
     #23.Now set the group into guard by setting the group property GuardHotAbsTemp=9
-    guardOrderMIXResource.setGroupPropertyGuardHotAbsTemp    9
+    apiresources.setGroupPropertyGuardHotAbsTemp    9
     #24.We expect the first AHU that goes into guard should be CAC_16, but it may be CAC_13- this is ok
     #25.Wait until all AHUs have gone onto guard
     #26.The remaining AHUs should enter guard in order of increasing CoolEffortEstimate ie in this order
     #CAC_16,15, 14, 10, 17, 13, 12, 11
     #CAC_13, 16, 15, 14, 10, 17, 13, 12, 11 is also OK (AuQA51)
     #27.Confirm the turn on order is correct
-    confirmTheOrderOfAHUsGoingIntoGuardIsIncrementalCoolEffortEstimateExceptFirstAHU    ${test_input}
+#    guardOrderMIXResource.confirmTheOrderOfAHUsGoingIntoGuardIsIncrementalCoolEffortEstimateExceptFirstAHU    ${test_input}
     #28.Stop all processes except vx_server, facs_launcher and facs_trend
     connection.establishConnectionAndStopAllProcessesExcept    vx_server    facs_launcher    facs_trend
     #29.Clean up
