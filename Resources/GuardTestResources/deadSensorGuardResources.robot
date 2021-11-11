@@ -71,7 +71,6 @@ setDeadSensorGuardGroupPropertiesToEmpty
     uiresources.setGroupPropertyToEmpty  ControlDeadSensorThreshold
     uiresources.setGroupPropertyToEmpty  AlarmDeadSensorHysteresis
     uiresources.setGroupPropertyToEmpty  AlarmDeadSensorThreshold
-#    reload page
     close browser
 
 setGroupPropertiesForDeadSensorToZero
