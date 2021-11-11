@@ -2,7 +2,6 @@ import subprocess
 from subprocess import call
 import os
 from ExternalKeywords import readExcel
-from ExternalKeywords import common
 import datetime
 import sys
 
@@ -71,13 +70,13 @@ for i in range(dic_row):
 #Fetch the count of pabot process
 cmd = 'ps -ef | grep pabot | wc -l'
 pabot_output = subprocess.getstatusoutput(cmd)
-pabot_count = int(pabot_output[0])
+pabot_count = int(pabot_output[1])
 print("count of pabot process is: "+str(pabot_count))
 global execute_flag
 
-execute_flag = ''
+# execute_flag = ''
 #check if the pabot process is not running and execute the commands
-if (pabot_count <=255):
+if (pabot_count <=2):
     execute_flag = 1
     print("value of execute_flag is:"+str(execute_flag))
     print("No automated tests are running so starting the test execution")
@@ -107,8 +106,8 @@ if (pabot_count <=255):
     print(file_name)
     call(["python3", file_name, suite_name])
 else:
-    common.execute_flag = 0
     print("Automated test are running so the test execution is aborted")
+    execute_flag = 0
     print("value of common.execute_flag is:"+str(execute_flag))
     # Execute send email
     file_name = os.path.join(se_path, "sendemail.py")
