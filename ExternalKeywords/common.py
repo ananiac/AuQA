@@ -14,5 +14,5 @@ def get_keys_list_after_sorting_dict_by_value(dic):
                 break
     return sorted_dict.keys()
 
-global execute_flag
-execute_flag = 0
+# global execute_flag
+# execute_flag = 0
