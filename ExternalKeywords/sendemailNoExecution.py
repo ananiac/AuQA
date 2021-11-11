@@ -1,23 +1,9 @@
 import smtplib
-# import os
 import sys
-import subprocess
-# import pathlib
 from email.message import EmailMessage
-
-
-# auqa_dir= os.path.dirname(os.path.abspath('/home/fc/automation/AuQA/execution.py'))
-# report_path= os.path.join(auqa_dir,'Reports','report.html')
-
-# #Fetch the ip address of host machine
-# ipaddress= (subprocess.check_output(['hostname', '-s', '-I']).decode('utf-8')[:-1]).strip()
 
 #Suitename sent from the command line
 suite_name = sys.argv[1]
-
-# # Fetch the latest folder in testReports folder
-# latest= max(pathlib.Path("/home/fc/automation/testReports").glob('*/'), key=os.path.getmtime)
-# latest_folder = os.path.split(latest)[1]
 
 #Sending email with the message and attachment
 msg = EmailMessage()
@@ -31,11 +17,6 @@ msg.set_content("""
 
         Thanks,
         AuQA Team""")
-
-# with open(report_path, "rb") as file:
-#     file_content = file.read()
-#     file_name = file.name
-#     msg.add_attachment(file_content, maintype="application", subtype=".html", filename=file_name)
 
 try:
     smtpObj = smtplib.SMTP('172.17.1.70', 25)
