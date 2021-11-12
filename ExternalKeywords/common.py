@@ -13,6 +13,3 @@ def get_keys_list_after_sorting_dict_by_value(dic):
                 sorted_dict[k] = dic[k]
                 break
     return sorted_dict.keys()
-
-# global execute_flag
-# execute_flag = 0

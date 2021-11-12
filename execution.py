@@ -5,7 +5,6 @@ from ExternalKeywords import readExcel
 import datetime
 import sys
 
-
 #Gets the current date and time
 date_format = datetime.datetime.now().strftime("%F_%X")
 
@@ -20,7 +19,6 @@ log_file=os.path.join(auqa_dir,'Reports','executionLog.txt')
 
 #Suitename sent from the command line which is same as the excel sheet name for suite
 suite_name = sys.argv[1]
-
 
 # Reading the excel as dictionary and fetching the rows and column header as key value pair
 command_input={}
@@ -73,8 +71,6 @@ pabot_output = subprocess.getstatusoutput(cmd)
 pabot_count = int(pabot_output[1])
 print("count of pabot process is: "+str(pabot_count))
 
-
-# execute_flag = ''
 #check if the pabot process is not running and execute the commands
 if (pabot_count <=2):
     print("No automated tests are running so starting the test execution")
