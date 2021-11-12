@@ -49,6 +49,15 @@ writeTemperatureToSensors
         apiresources.setTemperatureForAllRackSensorPoints    ${current_temperature}
         apiresources.setTemperatureForAllRATAndDATSensorPoints    ${RAT_current_temp}    ${DAT_current_temp}
         writingCycleCalculation
+    ELSE IF    '${flg}'=='${current_value_to_racks_RAT_DAT_PWR}'        #Writing temperature to all 5 types of sensor points->Ctop and CBot[racks],RAT,DAT and PWRs
+        log to console    Inside Flag Block 6
+        ${DAT_current_temp}=    apiresources.getCurrentTemperatureOfFirstSensorPointSpecified    DAT
+        ${RAT_current_temp}=    apiresources.getCurrentTemperatureOfFirstSensorPointSpecified    RAT
+        ${PWR_current_value}=    apiresources.getCurrentTemperatureOfFirstSensorPointSpecified    PWR
+        apiresources.setTemperatureForAllRackSensorPoints    ${current_temperature}
+        apiresources.setTemperatureForAllRATAndDATSensorPoints    ${RAT_current_temp}    ${DAT_current_temp}
+        apiresources.setPowerValuesForAllPowerMonitorPoints  ${PWR_current_value}
+        writingCycleCalculation
     ELSE IF  '${flg}'=='${test_exit_flag}'      #Tear down
         ${current_time}  get current date
         log to console    Stale state prevention program exit- Exit temperature ${test_exit_sensor_temp} detected
