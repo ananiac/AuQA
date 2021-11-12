@@ -7,7 +7,7 @@ suite_name = sys.argv[1]
 
 #Sending email with the message and attachment
 msg = EmailMessage()
-msg['Subject'] = 'Test Email- pLz ignore-AuQA test run result of '+suite_name
+msg['Subject'] = 'AuQA test run result of '+suite_name
 msg['From'] = 'auqa@vigilent.com'
 msg['To'] = 'AuQaTeam@vigilent.com'
 msg.set_content("""
