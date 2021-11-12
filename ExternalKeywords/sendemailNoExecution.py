@@ -13,7 +13,7 @@ msg['To'] = 'AuQaTeam@vigilent.com'
 msg.set_content("""
         Hello Team,
                     
-                Automated test are running so the test execution of """ + suite_name + """ is aborted
+                Automated tests are running so the current test execution of """ + suite_name + """ is aborted
 
         Thanks,
         AuQA Team""")
