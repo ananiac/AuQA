@@ -31,8 +31,10 @@ command_for_execution =[]
 for i in range(dic_row):
     execution_command =""
     for h in header:
-        if (command_input[i][h] != None) and  h !="testcase":
-            if(h == "command"):
+        if (command_input[i][h] != None) and h != "runmode":
+            if (h == "testcase"):
+                    execution_command = execution_command + command_input[i][h]
+            elif(h == "command"):
                 execution_command = execution_command + command_input[i][h]
             elif(h == "name" ):
                 execution_command = execution_command + " --name"+" '"+command_input[i][h]+"_"+date_format+"' "
