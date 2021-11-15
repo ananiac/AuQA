@@ -6,7 +6,8 @@ dir_path=$(dirname $full_path)
 
 #suite Execution using the python script
 cd $dir_path
-python3 execution.py tuesdaysuite
+#python3 execution.py tuesdaysuite
+python3 executionRunmode.py tuesdaysuite
 
 #Uncomment the below for suite execution using below command. Note the command added here will only be executed
 #tc_path=$dir_path/Testcases
