@@ -63,7 +63,8 @@ for i in range(dic_row):
                         execution_command = execution_command + " -T " + os.path.join(gt_path ,test_name[0]) + " " + os.path.join(tc_path, test_name[1])
                 else:
                     execution_command = execution_command + " " + os.path.join(tc_path, command_input[i][h])
-    command_for_execution.append(execution_command)
+    if (command_input[i]['runmode'] == "Yes"):
+        command_for_execution.append(execution_command)
 
 #Fetch the count of pabot process
 cmd = 'ps -ef | grep pabot | wc -l'
