@@ -12,6 +12,7 @@ date_format = datetime.datetime.now().strftime("%F_%X")
 auqa_dir= os.path.dirname(os.path.abspath('/home/fc/automation/AuQA/execution.py'))
 tc_path=os.path.join(auqa_dir,'Testcases')
 gt_path=os.path.join(auqa_dir,'Testcases','GuardTests')
+ot_path=os.path.join(auqa_dir,'Testcases','OverrideTests')
 rp_path=os.path.join(auqa_dir,'Reports')
 se_path=os.path.join(auqa_dir,'ExternalKeywords')
 log_file=os.path.join(auqa_dir,'Reports','executionLog.txt')
@@ -31,10 +32,8 @@ command_for_execution =[]
 for i in range(dic_row):
     execution_command =""
     for h in header:
-        if (command_input[i][h] != None) and h != "runmode":
-            if (h == "testcase"):
-                    execution_command = execution_command + command_input[i][h]
-            elif(h == "command"):
+        if (command_input[i][h] != None) and  h !="testcase":
+            if(h == "command"):
                 execution_command = execution_command + command_input[i][h]
             elif(h == "name" ):
                 execution_command = execution_command + " --name"+" '"+command_input[i][h]+"_"+date_format+"' "
@@ -61,11 +60,12 @@ for i in range(dic_row):
                 if(command_input[i]['testcase'] !="cleanReports" and command_input[i]['testcase'] !="moveReports" ):
                     if("Guard" in command_input[i]['testcase']):
                         execution_command = execution_command + " -T " + os.path.join(gt_path ,test_name[0]) + " " + os.path.join(tc_path, test_name[1])
+                    elif ("Override" in command_input[i]['testcase']):
+                        execution_command = execution_command + " -T " + os.path.join(ot_path, test_name[0]) + " " + os.path.join(tc_path, test_name[1])
                 else:
                     execution_command = execution_command + " " + os.path.join(tc_path, command_input[i][h])
-    if (command_input[i]['runmode'] == "Yes"):
-        command_for_execution.append(execution_command)
-
+    command_for_execution.append(execution_command)
+    # print(execution_command)
 #Fetch the count of pabot process
 cmd = 'ps -ef | grep pabot | wc -l'
 pabot_output = subprocess.getstatusoutput(cmd)
