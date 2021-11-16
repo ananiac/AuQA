@@ -7,7 +7,7 @@ Documentation          To verify the abillity to override individual AHUs with t
 Resource    ${EXECDIR}/Resources/apiresources.robot
 Resource    ${EXECDIR}/Resources/uiresources.robot
 Resource    ${EXECDIR}/Resources/connection.robot
-Resource    ${EXECDIR}/Resources/OverrideTestResources/override1TestResources.robot
+Resource    ${EXECDIR}/Resources/OverrideTestResources/vxOverrideUIvaluesResources.robot
 Resource    ${EXECDIR}/Inputs/testInputs.robot
 
 
