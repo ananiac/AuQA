@@ -778,3 +778,29 @@ verifyBOPValueOfListedAHUsAreON
     FOR  ${ahu_name}  IN  @{ahu_list}
         apiresources.verifyValueOfSpecificControlofNamedAHU    ${ahu_name}   BOP    1
     END
+
+     #Created by Greeshma on 12 Nov 2021.Set the power of all PWR Monitor points
+     #Arguments passed to the keyword is PWR power value in kWe
+setPowerValuesForAllPowerMonitorPoints    #Contain both query and mutation
+    [Arguments]    ${pwr_kWe}
+    log to console    Fetch the number of PWR points ----------------->
+    ${json_dict}    queryToFetchJsonResponseContainingTheSpecificTypeOfSensorsFromGroup    PWR
+    ${total}=    fetchTheNumberOfItemsInDictionary    ${json_dict}    ${sensors_in_group}
+    log to console  No: of PWR points->${total}
+    log to console    Setting power for all Power Monitor points----------------->
+    FOR    ${i}    IN RANGE    0    ${total}
+        log to console    ${i} PWR Point
+        ${sensor_type}    fetchValueOfFieldFromJsonDictionary    ${json_dict}    $.data.site.groups[0].sensors[${i}].type
+        ${sensor_oid}    fetchValueOfFieldFromJsonDictionary    ${json_dict}    $.data.site.groups[0].sensors[${i}].oid
+        run keyword if    '${sensor_type}'=='PWR'    setSensorPointTemperature    ${sensor_oid}    ${pwr_kWe}
+    END
+    log to console    ******************************Power set for all PWR sensor points*********************************
+
+     #Created by Greeshma on 12 Nov 2021.
+     #Arguments passed to the keyword are rack temperature,RAT temperature,DAT temperature and PWR value
+setTemperatureForAllRacksRATandDATAndPowerForPWRMonitorPointsEveryMinute
+    [Arguments]    ${rack_temp}    ${rat_tempF}    ${dat_tempF}  ${pwr_kWe}
+    apiresources.setTemperatureForAllRackSensorPoints  ${rack_temp}
+    apiresources.setTemperatureForAllRATAndDATSensorPoints    ${rat_tempF}    ${dat_tempF}
+    apiresources.setPowerValuesForAllPowerMonitorPoints  ${pwr_kWe}
+    common.setFlagValue    ${current_value_to_racks_RAT_DAT_PWR}
