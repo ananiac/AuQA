@@ -28,8 +28,10 @@ ${two_sets_of_temp_flag}    3
 ${exclude_dead_rack_flag}    4
 #Flag to write current temp to 3 types of sensors ->rack sensors,RAT and DAT
 ${current_temp_to_racks_RAT_DAT}   5
-#Flag to write current temp to 4 types of sensors ->rack sensors,RAT and DAT
+#Flag to write current temp to 4 types of sensors ->rack sensors,RAT,DAT and PWR
 ${current_value_to_racks_RAT_DAT_PWR}   6
+
+
 *** Keywords ***
 readingInputsFromExcel
     [Documentation]    sheet_index starts with 0
