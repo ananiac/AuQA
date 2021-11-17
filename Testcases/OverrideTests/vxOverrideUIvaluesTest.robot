@@ -19,7 +19,7 @@ OverrideCombinationCheck
     #1)Start system with the AuQa DB on it (e.g., 10.252.9.118)
     #2)Stop all processes including the API Server (vx_server) and Script Launcher
     #3)Wait 2 minutes
-    override1TestResources.override1TestPreconditionSetup
+    vxOverrideUIvaluesResources.vxOverrideUIvaluesTestPreconditionSetup
     #4)Use the General-test group
     #5)Start the API Server (vx_server) and Script Launcher processes
     connection.establishConnectionAndStartRequiredProcesses    vx_server  facs_launcher
@@ -45,7 +45,7 @@ OverrideCombinationCheck
     apiresources.setTemperatureForAllRacksRATandDATSensorPointsEveryMinute     ${test_input}[rack_temp]    ${test_input}[rat_tempF]    ${test_input}[dat_tempF]
     #18)Go to CX > Tools > Configs
     #19)Set Configs > System::SFCMin = 72% and SFCMax = 88%
-    override1TestResources.setConfigSFCMinAndSFCMaxValues    ${test_input}[SFCMinValue]    ${test_input}[SFCMaxValue]
+    vxOverrideUIvaluesResources.setConfigSFCMinAndSFCMaxValues    ${test_input}[SFCMinValue]    ${test_input}[SFCMaxValue]
     #20)Wait 3 minutes
     common.waitForMinutes    3
     #21)Make sure no AHUs are in Guard or Overridden

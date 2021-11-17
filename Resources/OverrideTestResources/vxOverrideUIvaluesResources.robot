@@ -17,7 +17,7 @@ Resource    ${EXECDIR}/Inputs/testInputs.robot
 
 
 *** Keywords ***
-override1TestPreconditionSetup
+vxOverrideUIvaluesTestPreconditionSetup
     [Documentation]    Stop all VEM processes and wait for 2 minutes
     ...                Also write test entry temperature for the parallel staleStatePrevention program
     log to console    !-----Reading the inputs from the excel and storing in dictionary------!
