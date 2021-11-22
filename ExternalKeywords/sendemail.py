@@ -26,7 +26,7 @@ msg['To'] = 'AuQaTeam@vigilent.com'
 msg.set_content("""
 		Hello Team,
 
-                Automation suite execution of """+suite_name+""" is completed.Please find attached Report.
+                Automation suite execution of """+suite_name+""" is completed.Please find the attached Report.
                 Detailed test run results are placed in the folder """+latest_folder+" at location http://"+ipaddress+"""/testReports/
 
 		Thanks,

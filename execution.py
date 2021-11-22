@@ -101,7 +101,11 @@ if (pabot_count <=2):
     print(file_name)
     call(["python3", file_name, suite_name])
 else:
-    print("Automated test are running so the test execution is aborted")
+    print("Automated tests are running so the current test execution is aborted")
+    # Execute send email
+    file_name = os.path.join(se_path, "sendemailNoExecution.py")
+    print(file_name)
+    call(["python3", file_name, suite_name])
 
 
 

@@ -59,5 +59,5 @@ getOverrideDetailsOfAHUsInGroup
     #Created by Greeshma on 28 Oct 2021
 getSpecificSensorPointsOfGroupQuery
     [Arguments]    ${group_name}    ${type}
-    ${query}=  set variable  query getSpecificSensorPointDetails{site {name groups: children(selector: {type: Group,name:"${group_name}"}) { name sensors: search(selector: {types: [${type}]}, maxResults: 9999) { name type oid pathName(details: true) pointCurrent(units:[degF]) { unit value tstamp }}}}}
+    ${query}=  set variable  query getSpecificSensorPointDetails{site {name groups: children(selector: {type: Group,name:"${group_name}"}) { name sensors: search(selector: {types: [${type}]}, maxResults: 9999) { name type oid pathName(details: true) pointCurrent(units:[degF,kWe]) { unit value tstamp }}}}}
     return from keyword    ${query}
