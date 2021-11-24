@@ -32,7 +32,7 @@ command_for_execution =[]
 for i in range(dic_row):
     execution_command =""
     for h in header:
-        if (command_input[i][h] != None) and  h !="testcase":
+        if (command_input[i][h] != None) and  h !="testcase" and command_input[i]['runmode'] == "yes":
             if(h == "command"):
                 execution_command = execution_command + command_input[i][h]
             elif(h == "name" ):
