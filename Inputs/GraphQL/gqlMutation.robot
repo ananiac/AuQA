@@ -48,8 +48,8 @@ setSFCMutation
 
     #Created by Abhijit
 setBOPMutation
-    [Arguments]  ${oid_bop}
-    ${mutationBOP}=    set variable    mutation targetSetBOP {targetSet(requests: [{oid: ${oidBOP}, value: 1, target: CONTROL, origin: "MANUAL", priority: 70}]) { index reason }}
+    [Arguments]  ${oid_bop}  ${oid_bop_value}
+    ${mutationBOP}=    set variable    mutation targetSetBOP {targetSet(requests: [{oid: ${oidBOP}, value: ${oid_bop_value}, target: CONTROL, origin: "MANUAL", priority: 70}]) { index reason }}
     return from keyword    ${mutationBOP}
 
     #Created by Greeshma on 27 Sep 2021

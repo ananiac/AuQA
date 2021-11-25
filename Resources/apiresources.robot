@@ -48,8 +48,8 @@ setTemperatureForAllRackSensorPoints    #Contain both query and mutation
         ${rack_type2}    fetchValueOfFieldFromJsonDictionary    ${json_dict}    $.data.site.groups[0].racks[${i}].points[1].type
         ${oid1}    fetchValueOfFieldFromJsonDictionary    ${json_dict}    $.data.site.groups[0].racks[${i}].points[0].oid
         ${oid2}     fetchValueOfFieldFromJsonDictionary    ${json_dict}    $.data.site.groups[0].racks[${i}].points[1].oid
-        run keyword if    '${rack_type1}'=='CBot'    setSensorPointTemperature    ${oid1}    ${tempF}
-        run keyword if    '${rack_type2}'=='CTop'     setSensorPointTemperature    ${oid2}    ${tempF}
+        run keyword if    '${rack_type1}'=='CBot'    setSensorPointValue    ${oid1}    ${tempF}
+        run keyword if    '${rack_type2}'=='CTop'     setSensorPointValue    ${oid2}    ${tempF}
     END
     log to console    ******************************Temperature set for all rack sensors*********************************
 
@@ -73,8 +73,8 @@ setTemperatureForSensorsAandB
             END
         END
     END
-    setSensorPointTemperature  ${sensor_A_oid}    ${temp}
-    setSensorPointTemperature  ${sensor_B_oid}    ${temp}
+    setSensorPointValue  ${sensor_A_oid}    ${temp}
+    setSensorPointValue  ${sensor_B_oid}    ${temp}
     common.setFlagValue    ${two_sets_of_temp_flag}
 
 setTwoSetOfSensorTemperatureForRack
@@ -97,8 +97,8 @@ setTwoSetOfSensorTemperatureForRack
             END
         END
     END
-    setSensorPointTemperature  ${sensor_A_oid}    ${tempH}
-    setSensorPointTemperature  ${sensor_B_oid}    ${tempH}
+    setSensorPointValue  ${sensor_A_oid}    ${tempH}
+    setSensorPointValue  ${sensor_B_oid}    ${tempH}
     log to console    Setting temperature for other Sensors----------------->
     FOR    ${i}    IN RANGE    0    ${total}
         ${rack_type1}    fetchValueOfFieldFromJsonDictionary    ${json_dict}    $.data.site.groups[0].racks[${i}].points[0].type
@@ -106,9 +106,9 @@ setTwoSetOfSensorTemperatureForRack
         ${oid1}    fetchValueOfFieldFromJsonDictionary    ${json_dict}    $.data.site.groups[0].racks[${i}].points[0].oid
         ${oid2}     fetchValueOfFieldFromJsonDictionary    ${json_dict}    $.data.site.groups[0].racks[${i}].points[1].oid
         run keyword if
-        ...    ('${rack_type1}'=='CBot' and '${oid1}'!='${sensor_A_oid}')   setSensorPointTemperature    ${oid1}    ${tempC}
+        ...    ('${rack_type1}'=='CBot' and '${oid1}'!='${sensor_A_oid}')   setSensorPointValue    ${oid1}    ${tempC}
         run keyword if
-        ...   ('${rack_type2}'=='CTop' and '${oid2}'!='${sensor_B_oid}')   setSensorPointTemperature    ${oid2}    ${tempC}
+        ...   ('${rack_type2}'=='CTop' and '${oid2}'!='${sensor_B_oid}')   setSensorPointValue    ${oid2}    ${tempC}
     END
 
 fetchTheNumberOfItemsInDictionary
@@ -230,8 +230,8 @@ setTemperatureForAllExceptDeadSensor    #Contain both query and mutation, 25% of
         ${rack_type2}    fetchValueOfFieldFromJsonDictionary    ${json_dict}    $.data.site.groups[0].racks[${i}].points[1].type
         ${oid1}    fetchValueOfFieldFromJsonDictionary    ${json_dict}    $.data.site.groups[0].racks[${i}].points[0].oid
         ${oid2}     fetchValueOfFieldFromJsonDictionary    ${json_dict}    $.data.site.groups[0].racks[${i}].points[1].oid
-        run keyword if    '${rack_type1}'=='CBot'    setSensorPointTemperature    ${oid1}    ${tempF}
-        run keyword if    '${rack_type2}'=='CTop'     setSensorPointTemperature    ${oid2}    ${tempF}
+        run keyword if    '${rack_type1}'=='CBot'    setSensorPointValue    ${oid1}    ${tempF}
+        run keyword if    '${rack_type2}'=='CTop'     setSensorPointValue    ${oid2}    ${tempF}
     END
     log to console    ******************************Temperature set for all, except ${stale_sensor_count} rack/racks*********************************
 
@@ -349,7 +349,7 @@ getAHUCount
     ${total_no_ahus}=    fetchTheNumberOfItemsInDictionary    ${json_dict}    ${ahus_list_path}
     return from keyword    ${total_no_ahus}
 
-    #Created by Greeshma on 30 Sep 2021.Set the AHUs into override as per the sfc values provided in the Test input.
+    #Created by Greeshma on 30 Sep 2021.Set the AHUs into override as per the sfc values mapped against each ahu_name in the Test input.
 overrideAllAHUsWithSFCValuesAsPerList
     [Arguments]    ${test_input}
     &{json_dict}=  apiresources.queryToFetchJsonResponseContaingTheCurrentAHUStatus
@@ -358,7 +358,7 @@ overrideAllAHUsWithSFCValuesAsPerList
         ${ahu_bop_oid}=    fetchValueOfFieldFromJsonDictionary    ${json_dict}    $.data.site.groups[0].ahus[?(@.name=="${ahu}")].controls[?(@.type=="BOP")].oid
         ${ahu_sfc_oid}=    fetchValueOfFieldFromJsonDictionary    ${json_dict}    $.data.site.groups[0].ahus[?(@.name=="${ahu}")].controls[?(@.type=="SFC")].oid
         log to console    !---Overriding AHU:${ahu}->ahu_bop_oid ${ahu_bop_oid}->ahu_sfc_oid ${ahu_sfc_oid}-----!
-        settingBOPValueOfAHU    ${ahu_bop_oid}
+        settingBOPValueOfAHU    ${ahu_bop_oid}  1
         settingSFCValueOfAHU    ${ahu_sfc_oid}    ${test_input}[${ahu}]
     END
     log to console    !!*****************==============All AHUs in the list are overridden==================****************!!
@@ -489,12 +489,12 @@ changeCxConfigsTabModuleFieldValues
     log to console    Config module :${module_name}->Field:${field_name}->Value:${value}-is updated
     apiresources.writeUserEventsEntryToNotificationEventLog    AuQA test->${group_name}->Config->${module_name}->${field_name}=${value}-is updated.
 
-setSensorPointTemperature
-    [Arguments]    ${oid}    ${temp}
-    ${graphql_mutation}=  gqlMutation.pointWriteMutation    ${oid}    ${temp}
+setSensorPointValue
+    [Arguments]    ${oid}    ${value}
+    ${graphql_mutation}=  gqlMutation.pointWriteMutation    ${oid}    ${value}
     ${json_dictionary}=  gqlFetchJsonResponseFromMutation     ${graphql_mutation}
     should be equal as strings  ${json_dictionary}  ${pointWriteResponse}
-    log to console   Temperature ${temp} F set for ${oid}
+    log to console   Value->${value} F/kwe set for ${oid}
 
 setHighAndLowSetPointValues
     [Arguments]    ${ctop_oid}    ${high_value}    ${low_value}
@@ -519,8 +519,8 @@ writeUserEventsEntryToNotificationEventLog
 
     #Mutation for setting BOP value as 'ON' for a AHU
 settingBOPValueOfAHU
-    [Arguments]    ${ahu_bop_oid}
-    ${graphql_mutation}=  gqlMutation.setBOPMutation  ${ahu_bop_oid}
+    [Arguments]    ${ahu_bop_oid}  ${oid_bop_value}
+    ${graphql_mutation}=  gqlMutation.setBOPMutation  ${ahu_bop_oid}  ${oid_bop_value}
     ${json_dictionary}=  gqlFetchJsonResponseFromMutation     ${graphql_mutation}
     should be equal as strings  ${json_dictionary}  ${setSetPointLimitsResponse}
     log to console   !!===========BOP ON->done===========!!
@@ -714,8 +714,8 @@ setTemperatureForAllRATAndDATSensorPoints    #Contain both query and mutation
         log to console    ${i} Sensor Point
         ${sensor_type}    fetchValueOfFieldFromJsonDictionary    ${json_dict}    $.data.site.groups[0].sensors[${i}].type
         ${sensor_oid}    fetchValueOfFieldFromJsonDictionary    ${json_dict}    $.data.site.groups[0].sensors[${i}].oid
-        run keyword if    '${sensor_type}'=='RAT'    setSensorPointTemperature    ${sensor_oid}    ${rat_tempF}
-        run keyword if    '${sensor_type}'=='DAT'     setSensorPointTemperature    ${sensor_oid}    ${dat_tempF}
+        run keyword if    '${sensor_type}'=='RAT'    setSensorPointValue    ${sensor_oid}    ${rat_tempF}
+        run keyword if    '${sensor_type}'=='DAT'     setSensorPointValue    ${sensor_oid}    ${dat_tempF}
     END
     log to console    ******************************Temperature set for all RAT and DAT sensors*********************************
 
@@ -792,7 +792,7 @@ setPowerValuesForAllPowerMonitorPoints    #Contain both query and mutation
         log to console    ${i} PWR Point
         ${sensor_type}    fetchValueOfFieldFromJsonDictionary    ${json_dict}    $.data.site.groups[0].sensors[${i}].type
         ${sensor_oid}    fetchValueOfFieldFromJsonDictionary    ${json_dict}    $.data.site.groups[0].sensors[${i}].oid
-        run keyword if    '${sensor_type}'=='PWR'    setSensorPointTemperature    ${sensor_oid}    ${pwr_kWe}
+        run keyword if    '${sensor_type}'=='PWR'    setSensorPointValue    ${sensor_oid}    ${pwr_kWe}
     END
     log to console    ******************************Power set for all PWR sensor points*********************************
 
