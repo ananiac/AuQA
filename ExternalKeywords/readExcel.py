@@ -3,7 +3,7 @@ import os
 
 auqa_dir= os.path.dirname(os.path.abspath('/home/fc/automation/AuQA/execution.py'))
 fpath= os.path.join(auqa_dir,'Inputs','testInputs.xlsx')
-workbook = openpyxl.load_workbook(fpath)
+workbook = openpyxl.load_workbook(fpath,data_only=True)
 
 def read_inputs_from_excel(sheet_name, key_column, value_column):
     ws_column = workbook.get_sheet_by_name(sheet_name)
