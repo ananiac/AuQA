@@ -11,10 +11,13 @@ Resource    ${EXECDIR}/Inputs/testInputs.robot
 
 *** Test Cases ***
 VXPopupMessages
-    [Setup]    popupResources.popupTestSetup
-    popupResources.suppressAlarmPopup
+    [Setup]    uiPopupResources.popupTestSetup
+    uiPopupResources.suppressAlarmPopup
+#    uiPopupResources.suppressedAlarmPopup
+#    uiPopupResources.overridesPopup
+#    uiPopupResources.claerOverridePopup
 
-CXPopupMessages
-    log to console  override
-    #popupResources.suppressAlarm
+#CXPopupMessages
+#    log to console  CXPopupMessages
+#    #popupResources.suppressAlarm
 
