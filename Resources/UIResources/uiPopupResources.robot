@@ -10,7 +10,7 @@ Resource    ${EXECDIR}/Resources/connection.robot
 Resource    ${EXECDIR}/Resources/common.robot
 Library    SeleniumLibrary
 Variables    ${EXECDIR}/Configurations/${environment}.py
-Variables    ${EXECDIR}/PageObjects/vxNotificationsTab.py
+Variables    ${EXECDIR}/PageObjects/systemconsole.py
 Resource    ${EXECDIR}/Inputs/testInputs.robot
 
 *** Keywords ***
