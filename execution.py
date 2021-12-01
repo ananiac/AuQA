@@ -64,7 +64,7 @@ for i in range(dic_row):
                     elif ("Override" in command_input[i]['testcase']):
                         execution_command = execution_command + " -T " + os.path.join(ot_path, test_name[0]) + " " + os.path.join(tc_path, test_name[1])
                     elif ("Popup" in command_input[i]['testcase']):
-                        execution_command = execution_command + " -T " + os.path.join(pt_path, test_name[0])
+                        execution_command = execution_command + " -T " + os.path.join(pt_path, test_name[0]) + " " + os.path.join(tc_path, test_name[1])
                 else:
                     execution_command = execution_command + " " + os.path.join(tc_path, command_input[i][h])
     command_for_execution.append(execution_command)
