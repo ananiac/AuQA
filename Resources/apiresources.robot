@@ -813,7 +813,6 @@ overrideNamedAHUsWithSpecifiedBOPValue
         ${ahu_bop_oid}=    fetchValueOfFieldFromJsonDictionary    ${json_dict}    $.data.site.groups[0].ahus[?(@.name=="${ahu}")].controls[?(@.type=="BOP")].oid
         log to console    !---Overriding AHU:${ahu}->ahu_bop_oid ${ahu_bop_oid}->${bop_value}-----!
         apiresources.settingBOPValueOfAHU  ${ahu_bop_oid}  ${bop_value}
-        log to console   !!===========BOP =${bop_value}->done===========!!
     END
     log to console    !!*****************==============${ahu_set_to_override} are overridden with OFF values==================****************!!
 
