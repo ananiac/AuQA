@@ -12,10 +12,21 @@ suppress_alarm_button="xpath=//span[contains(text(),'Suppress Alarm')]"
 suppress_alarm_ok_button="xpath=//span[contains(text(),'OK')]"
 suppress_alarm_title="""xpath=//*[@id="messagebox-1001_header-title-textEl"]"""
 suppress_alarm_popup_message="""xpath=//*[@id="messagebox-1001-msg"]"""
+selected_suppress_alarm_popup_message="""xpath=//*[@id="messagebox-1001-msg"]"""
 
-suppressed_alarm_button="xpath=//span[contains(text(),'Suppress Alarm')]"
+#suppress_alarm_no_button="xpath=//span[contains(text(),'No')]"
+suppress_alarm_no_button="xpath=//span[@id='button-1007-btnEl']"
+
+suppressed_alarms_button="xpath=//span[contains(text(),'Suppressed Alarms')]"
 suppressed_alarm_ok_button="xpath=//span[contains(text(),'OK')]"
-suppressed_alarm_title="""xpath=//*[@id="messagebox-1001_header-title-textEl"]"""
+suppressed_alarms_title="""xpath=//*[@id="window-1404_header-title-textEl"]"""
+unsuppress_button="xpath=//span[contains(text(),'Unsuppress')]"
+restore_suppressed_alarm_title="""//*[@id="messagebox-1001_header-title-textEl"]"""
+unsuppress_all_button="xpath=//span[contains(text(),'Unsuppress All')]"
+restore_all_suppress_alarm_button="""xpath=//*[@id="button-1007-btnEl"]"""
+#restore_all_suppress_alarm_button="xpath=//span[contains(text(),'No')]"
+
+
 suppressed_alarm_popup_message="""xpath=//*[@id="messagebox-1001-msg"]"""
 
 override_button="xpath=//span[contains(text(),'Suppress Alarm')]"
