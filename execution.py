@@ -64,51 +64,51 @@ for i in range(dic_row):
                     elif ("Override" in command_input[i]['testcase']):
                         execution_command = execution_command + " -T " + os.path.join(ot_path, test_name[0]) + " " + os.path.join(tc_path, test_name[1])
                     elif ("Popup" in command_input[i]['testcase']):
-                        execution_command = execution_command + " -T " + os.path.join(pt_path, test_name[0]) + " " + os.path.join(tc_path, test_name[1])
+                        execution_command = execution_command + " " + os.path.join(pt_path, command_input[i][h])
                 else:
                     execution_command = execution_command + " " + os.path.join(tc_path, command_input[i][h])
     command_for_execution.append(execution_command)
-    # print(execution_command)
-#Fetch the count of pabot process
-cmd = 'ps -ef | grep pabot | wc -l'
-pabot_output = subprocess.getstatusoutput(cmd)
-pabot_count = int(pabot_output[1])
-print("count of pabot process is: "+str(pabot_count))
-
-#check if the pabot process is not running and execute the commands
-if (pabot_count <=2):
-    print("No automated tests are running so starting the test execution")
-    # Executing the testcases and redirecting the output to executionLog.txt
-    for i in range(dic_row - 2):
-        print("executing the command: " + command_for_execution[i])
-        try:
-            output_report = subprocess.getstatusoutput(command_for_execution[i])
-        except Exception:
-            print("Error in testcase execution")
-        with open(log_file, "a") as logfile:
-            for line in output_report[1]:
-                fileout = logfile.write(line)
-    #rebot command has to be separated from the loop of test execution else creates issue while combining the xml
-    #Executing the rebot to combine the output xml  and move the reports folder to testReports
-    for x in range(dic_row-2, dic_row):
-        print("executing the command: " + command_for_execution[x])
-        try:
-            output_report = subprocess.getstatusoutput(command_for_execution[x])
-        except Exception:
-            print("Error in command execution")
-        with open(log_file, "a") as logfile:
-            for line in output_report[1]:
-                fileout = logfile.write(line)
-    # Execute send email
-    file_name = os.path.join(se_path, "sendemail.py")
-    print(file_name)
-    call(["python3", file_name, suite_name])
-else:
-    print("Automated tests are running so the current test execution is aborted")
-    # Execute send email
-    file_name = os.path.join(se_path, "sendemailNoExecution.py")
-    print(file_name)
-    call(["python3", file_name, suite_name])
-
-
-
+    print(execution_command)
+# #Fetch the count of pabot process
+# cmd = 'ps -ef | grep pabot | wc -l'
+# pabot_output = subprocess.getstatusoutput(cmd)
+# pabot_count = int(pabot_output[1])
+# print("count of pabot process is: "+str(pabot_count))
+#
+# #check if the pabot process is not running and execute the commands
+# if (pabot_count <=2):
+#     print("No automated tests are running so starting the test execution")
+#     # Executing the testcases and redirecting the output to executionLog.txt
+#     for i in range(dic_row - 2):
+#         print("executing the command: " + command_for_execution[i])
+#         try:
+#             output_report = subprocess.getstatusoutput(command_for_execution[i])
+#         except Exception:
+#             print("Error in testcase execution")
+#         with open(log_file, "a") as logfile:
+#             for line in output_report[1]:
+#                 fileout = logfile.write(line)
+#     #rebot command has to be separated from the loop of test execution else creates issue while combining the xml
+#     #Executing the rebot to combine the output xml  and move the reports folder to testReports
+#     for x in range(dic_row-2, dic_row):
+#         print("executing the command: " + command_for_execution[x])
+#         try:
+#             output_report = subprocess.getstatusoutput(command_for_execution[x])
+#         except Exception:
+#             print("Error in command execution")
+#         with open(log_file, "a") as logfile:
+#             for line in output_report[1]:
+#                 fileout = logfile.write(line)
+#     # Execute send email
+#     file_name = os.path.join(se_path, "sendemail.py")
+#     print(file_name)
+#     call(["python3", file_name, suite_name])
+# else:
+#     print("Automated tests are running so the current test execution is aborted")
+#     # Execute send email
+#     file_name = os.path.join(se_path, "sendemailNoExecution.py")
+#     print(file_name)
+#     call(["python3", file_name, suite_name])
+#
+#
+#
