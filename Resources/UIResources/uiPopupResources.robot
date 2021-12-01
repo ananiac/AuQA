@@ -88,7 +88,7 @@ suppressedAlarmPopup
     click element  ${unsuppress_button}
     log to console  'Unsuppressed' button clicked
 
-    verifyTitleOfPopUp  ${restore_suppressed_alarm_title}  ${test_input}[restore_all_suppressed_alarms_title]
+#    verifyTitleOfPopUp  ${restore_suppressed_alarm_title}  ${test_input}[restore_all_suppressed_alarms_title]
 #    # verify 'Restore Suppressed Alarm' popup title
 #    ${verify_restore_suppressed_alarm_title}=  get text  ${restore_suppressed_alarm_title}
 #    should be equal	 ${verify_restore_suppressed_alarm_title}  ${test_input}[restore_suppressed_alarm_title]
@@ -122,12 +122,12 @@ suppressedAlarmPopup
 #    log to console  restore_all_suppress_alarm_button clicked
 #    sleep  ${load_time}
 
-verifyTitleOfPopUp
-    [Arguments]    ${restore_suppressed_alarm_title}  ${test_input}[restore_all_suppressed_alarms_title]
-    ${verify_popup_title}=  get text  ${restore_suppressed_alarm_title}
-    should be equal	 ${verify_popup_title}  ${test_input}[restore_suppressed_alarm_title]
-    log to console  Popup title is "${verify_popup_title}"
-    sleep  ${load_time}
+#verifyTitleOfPopUp
+#    [Arguments]    ${restore_suppressed_alarm_title}  ${test_input}[restore_all_suppressed_alarms_title]
+#    ${verify_popup_title}=  get text  ${restore_suppressed_alarm_title}
+#    should be equal	 ${verify_popup_title}  ${test_input}[restore_suppressed_alarm_title]
+#    log to console  Popup title is "${verify_popup_title}"
+#    sleep  ${load_time}
 
 #    ${verify_restore_suppressed_alarm_title}=  get text  ${restore_suppressed_alarm_title}
 #    should be equal	 ${verify_restore_suppressed_alarm_title}  ${test_input}[restore_suppressed_alarm_title]
