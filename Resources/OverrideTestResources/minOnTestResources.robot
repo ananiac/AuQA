@@ -30,15 +30,6 @@ minOnTestOnNoBindingsPrecondition
     common.waitForMinutes    2
     apiresources.writeTestEntryTemperatureToSensorsAfterVXServerStarted
 
-    #Created by Greeshma on 29th Nov 2021
-minOnTestOnNormalBindingsPrecondition
-    [Documentation]    Stop all VEM processes and wait for 2 minutes
-    log to console    !-----Reading the inputs from the excel and storing in dictionary------!
-    testInputs.readingInputsFromExcel  overrideTest  G  H
-    log to console    !-----PreCondition for the MinOn test-No Bindings is been executed------!
-    connection.establishConnectionAndStopAllProcessesExcept
-    common.waitForMinutes    2
-
     #Created by Greeshma on 26th Nov 2021
 checkTheOrderOfAHUsTurningON
     [Arguments]    ${expected_ahu_turn_ON_order}
