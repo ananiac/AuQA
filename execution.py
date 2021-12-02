@@ -13,6 +13,7 @@ auqa_dir= os.path.dirname(os.path.abspath('/home/fc/automation/AuQA/execution.py
 tc_path=os.path.join(auqa_dir,'Testcases')
 gt_path=os.path.join(auqa_dir,'Testcases','GuardTests')
 ot_path=os.path.join(auqa_dir,'Testcases','OverrideTests')
+ut_path=os.path.join(auqa_dir,'Testcases','UITests')
 rp_path=os.path.join(auqa_dir,'Reports')
 se_path=os.path.join(auqa_dir,'ExternalKeywords')
 log_file=os.path.join(auqa_dir,'Reports','executionLog.txt')
@@ -62,10 +63,12 @@ for i in range(dic_row):
                         execution_command = execution_command + " -T " + os.path.join(gt_path ,test_name[0]) + " " + os.path.join(tc_path, test_name[1])
                     elif ("Override" in command_input[i]['testcase']):
                         execution_command = execution_command + " -T " + os.path.join(ot_path, test_name[0]) + " " + os.path.join(tc_path, test_name[1])
+                    elif ("UITest" in command_input[i]['testcase']):
+                        execution_command = execution_command + " " + os.path.join(ut_path, command_input[i][h])
                 else:
                     execution_command = execution_command + " " + os.path.join(tc_path, command_input[i][h])
     command_for_execution.append(execution_command)
-    # print(execution_command)
+   # print(execution_command)
 #Fetch the count of pabot process
 cmd = 'ps -ef | grep pabot | wc -l'
 pabot_output = subprocess.getstatusoutput(cmd)
