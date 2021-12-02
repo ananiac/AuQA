@@ -85,7 +85,7 @@ MinONTestOnNoBindingsGroup
     #36.Release overridden AHUs
     apiresources.releaseOverrideOfNamedAHUs  ${test_input}[ahu_name_0]  ${test_input}[ahu_name_1]
     #37.Wait 2 minute
-    common.waitForMinutes    2
+    common.waitForMinutes    3
     #38.CAC_11 & CAC_10 should turn ON
     minOnTestResources.checkBOPValueOfNamedAHUsAreON  ${test_input}[ahu_name_0]  ${test_input}[ahu_name_1]
     #39.Write User event “Test 4: Manual overrides OFF force other AHUs ON”
