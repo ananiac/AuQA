@@ -523,7 +523,7 @@ settingBOPValueOfAHU
     ${graphql_mutation}=  gqlMutation.setBOPMutation  ${ahu_bop_oid}  ${oid_bop_value}
     ${json_dictionary}=  gqlFetchJsonResponseFromMutation     ${graphql_mutation}
     should be equal as strings  ${json_dictionary}  ${setSetPointLimitsResponse}
-    log to console   !!===========BOP ON->done===========!!
+    log to console   !!===========BOP=${oid_bop_value}->done===========!!
 
     #Mutation for setting SFC value as 'ON' for an AHU
 settingSFCValueOfAHU
@@ -804,3 +804,21 @@ setTemperatureForAllRacksRATandDATAndPowerForPWRMonitorPointsEveryMinute
     apiresources.setTemperatureForAllRATAndDATSensorPoints    ${rat_tempF}    ${dat_tempF}
     apiresources.setPowerValuesForAllPowerMonitorPoints  ${pwr_kWe}
     common.setFlagValue    ${current_value_to_racks_RAT_DAT_PWR}
+
+    #Created by Greeshma on 26 Nov 2021. Ahu names are passed to this keyword as a list.
+overrideNamedAHUsWithSpecifiedBOPValue
+    [Arguments]  ${ahu_set_to_override}  ${bop_value}
+    &{json_dict}=  apiresources.queryToFetchJsonResponseContaingTheCurrentAHUStatus
+    FOR    ${ahu}    IN    @{ahu_set_to_override}
+        ${ahu_bop_oid}=    fetchValueOfFieldFromJsonDictionary    ${json_dict}    $.data.site.groups[0].ahus[?(@.name=="${ahu}")].controls[?(@.type=="BOP")].oid
+        log to console    !---Overriding AHU:${ahu}->ahu_bop_oid ${ahu_bop_oid}->${bop_value}-----!
+        apiresources.settingBOPValueOfAHU  ${ahu_bop_oid}  ${bop_value}
+    END
+    log to console    !!*****************==============${ahu_set_to_override} are overridden with OFF values==================****************!!
+
+    #Created by Greeshma on 26 Nov 2021
+checkBOPValueForNamedAHUs
+    [Arguments]  ${ahu_name_list_to_check}  ${exp_bop_value}
+    FOR  ${ahu_name}  IN  @{ahu_name_list_to_check}
+        apiresources.verifyValueOfSpecificControlofNamedAHU    ${ahu_name}   BOP    ${exp_bop_value}
+    END
