@@ -11,5 +11,6 @@ Resource    ${EXECDIR}/Inputs/testInputs.robot
 
 *** Test Cases ***
 VXPopupMessagesVerification
-    [Setup]    uiPopupResources.popupTestSetup
-    uiPopupResources.suppressAlarmPopup
+    log to console  test1
+#    [Setup]    uiPopupResources.popupTestSetup
+#    uiPopupResources.suppressAlarmPopup
