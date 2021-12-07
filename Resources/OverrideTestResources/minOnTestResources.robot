@@ -79,18 +79,3 @@ getActualOrderListOfAllAHUsTurningONAtRegularInterval
         common.waitForMinutes  1
     END
      return from keyword    ${actual_order_of_ahu_turns_ON}
-
-    #Created by Greeshma on 26th Nov 2021
-checkBOPValueOfNamedAHUsAreOFF
-    [Arguments]  @{ahu_name_list_to_check}
-    apiresources.checkBOPValueForNamedAHUs  ${ahu_name_list_to_check}  0
-
-    #Created by Greeshma on 26th Nov 2021
-checkBOPValueOfNamedAHUsAreON
-    [Arguments]  @{ahu_name_list_to_check}
-    apiresources.checkBOPValueForNamedAHUs  ${ahu_name_list_to_check}  1
-
-    #Created by Greeshma on 2nd Dec 2021
-overrideNamedAHUsWithBOPValueOFF
-    [Arguments]  @{ahu_names_list}
-    apiresources.overrideNamedAHUsWithSpecifiedBOPValue  ${ahu_names_list}  0
