@@ -23,6 +23,7 @@ popupTestSetup
 suppressAlarmPopup
     startBrowserAndLoginToAIEngineVX
     sleep  ${load_time}
+    log to console  Verifying title & message of 'Suppress Alarm' popup
     click element   ${notifications_tab}
     log to console  'Notifications' tab clicked
     sleep  ${load_time}
@@ -38,9 +39,11 @@ suppressAlarmPopup
     sleep  ${load_time}
     selectAlarm
     sleep  ${load_time}
+    log to console  Title & message of 'Suppress Alarm' popup verified successfully
     close browser
 
 selectAlarm
+    log to console  Verifying title & message of 'Suppress Alarm' popup  after selecting first record
     click element  ${first_alarm_to_suppress}
     sleep  ${load_time}
     click element  ${suppress_alarm_button}
@@ -54,9 +57,10 @@ selectAlarm
     click element  ${no_button}
     log to console  'No' button clicked
 
-suppressedAlarmPopup
+suppressedAlarmsPopup
     startBrowserAndLoginToAIEngineVX
     sleep  ${load_time}
+    log to console  Verifying title & message of 'Suppressed Alarms' popup
     click element   ${notifications_tab}
     log to console  'Notifications' tab clicked
     sleep  ${load_time}
@@ -75,10 +79,12 @@ suppressedAlarmPopup
     log to console  'No' button clicked
     click element  ${close_button}
     log to console  'Close' button clicked
+    log to console  Title & message of 'Suppressed Alarms' popup verified successfully
     close browser
 
 setOverridesPopup
     startBrowserAndLoginToAIEngineVX
+    log to console  Verifying title & message of 'Set Overrides' popup
     gotoEquipmentTabInVx
     checkWebElementIsVisibleAndIsEnabled  ${set_overrides_button}
     click element  ${set_overrides_button}
@@ -89,10 +95,12 @@ setOverridesPopup
     verifyPopupMessage  ${popup_message}  ${expected_message}
     click element  ${ok_button}
     sleep  ${load_time}
+    log to console  Title & message of 'Set Overrides' popup verified successfully
     close browser
 
 clearOverridesPopup
     startBrowserAndLoginToAIEngineVX
+    log to console  Verifying title & message of 'Clear Overrides' popup
     gotoEquipmentTabInVx
     checkWebElementIsVisibleAndIsEnabled  ${clear_overrides_button}
     click element  ${clear_overrides_button}
@@ -103,6 +111,7 @@ clearOverridesPopup
     verifyPopupMessage  ${popup_message}  ${expected_message}
     click element  ${ok_button}
     sleep  ${load_time}
+    log to console  Title & message of 'Clear Overrides' popup verified successfully
     close browser
 
 verifyPopupTitle
@@ -121,6 +130,7 @@ verifyPopupMessage
 
 showTrendsPopup
     startBrowserAndLoginToAIEngineVX
+    log to console  Verifying title & message of 'Show Trends' popup
     gotoEquipmentTabInVx
     checkWebElementIsVisibleAndIsEnabled  ${show_trends_button}
     click element  ${show_trends_button}
@@ -131,10 +141,12 @@ showTrendsPopup
     verifyPopupMessage  ${popup_message}  ${expected_message}
     click element  ${ok_button}
     sleep  ${load_time}
+    log to console  Title & message of 'Show Trends' popup verified successfully
     close browser
 
 bypassPopup
     startBrowserAndLoginToAIEngineVX
+    log to console  Verifying title & message of 'Bypass' popup
     gotoEquipmentTabInVx
     log to console  'Equipment' tab clicked
     checkWebElementIsVisibleAndIsEnabled  ${bypass_button}
@@ -147,4 +159,5 @@ bypassPopup
     verifyPopupMessage  ${popup_message}  ${expected_message}
     click element  ${no_button}
     sleep  ${load_time}
+    log to console  Title & message of 'Bypass' popup verified successfully
     close browser
