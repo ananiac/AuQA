@@ -68,7 +68,7 @@ setNullValueForGuardHotAbsTempAndAlmHotAbsTemp
 getActualOrderListOfAllAHUsTurningONAtRegularInterval
     @{actual_order_of_ahu_turns_ON}  create list
     @{group_ahu_name_list}=    apiresources.getAHUNamesListOfGroup
-    waitForSeconds    40
+    waitForSeconds    50
     &{json_dict}=  apiresources.queryToFetchJsonResponseContaingTheCurrentAHUStatus
     FOR    ${reps}  IN RANGE    1    9999
         log to console    XX----------Entering--${reps}-Cycle of Checking AHU ON----------------XX
