@@ -29,12 +29,14 @@ AHUFailedToTurnOFFAlarm
     #4)Confirm config DASHM::AllowNumExceedencesGuard=1 and CATGuardBandRange=4 and for AHU NB-AHU-13 set the OnPwrLvl property to 0.5
     #5)Write User event - “confirmed config DASHM::AllowNumExceedencesGuard=1, CATGuardBandRange=4 AHU NB-AHU-13 OnPwrLvl =0.5”
     #6)Set all Setpoint to 80.6/64.4
+#    common.setFlagValue     2
     #7)Set all rack temperature sensor points every minute at say 80.6 F
 #    apiresources.setCoolingTemperatureForAllSensorPoints    80.6
     #8)Override all AHUs in NoBindings Group to OFF
     #9)Wait 2 minutes
     #10)Set AHU PWR to 0.1kW
-    apiresources.setPowerValuesForAllPowerMonitorPoints  0.1
+    apiresources.setTemperatureForAllRacksRATandDATAndPowerForPWRMonitorPointsEveryMinute  80.6  86     76      0.1
+#    common.setFlagValue    6
     #11)Clear Overrides
     #12)Run for 5 minutes
     #13)Run The PublicAPI call to check for alarms
