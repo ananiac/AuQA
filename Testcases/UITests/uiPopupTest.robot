@@ -13,3 +13,8 @@ Resource    ${EXECDIR}/Inputs/testInputs.robot
 VXPopupMessagesVerification
     [Setup]    uiPopupResources.popupTestSetup
     uiPopupResources.suppressAlarmPopup
+    uiPopupResources.suppressedAlarmPopup
+    uiPopupResources.setOverridesPopup
+    uiPopupResources.clearOverridesPopup
+    uiPopupResources.showTrendsPopup
+    uiPopupResources.bypassPopup
