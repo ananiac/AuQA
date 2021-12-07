@@ -127,6 +127,8 @@ CleanUp
     apiresources.changeCxConfigsTabModuleFieldValues  DASHM  NumMinutesStartTimer  ${test_input}[config_num_minutes_start_timer_default]
     #55.Stop all processes except vx_server and facs_launche
     connection.establishConnectionAndStopAllProcessesExcept    vx_server    facs_launcher    facs_trend
+    #Release overrides
+    apiresources.releaseOverrideOfAllAHUs
     [Teardown]   apiresources.setTestExitTemperatureToAllSensorPoints
 
 
