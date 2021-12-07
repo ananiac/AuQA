@@ -824,3 +824,13 @@ checkBOPValueForNamedAHUs
     FOR  ${ahu_name}  IN  @{ahu_name_list_to_check}
         apiresources.verifyValueOfSpecificControlofNamedAHU    ${ahu_name}   BOP    ${exp_bop_value}
     END
+
+    #Created by Greeshma on 26th Nov 2021
+overrideAllAHUsWithBOPValueOFF
+    @{group_ahu_name_list}=    apiresources.getAHUNamesListOfGroup
+    apiresources.overrideNamedAHUsWithSpecifiedBOPValue  ${group_ahu_name_list}  0
+
+    #Created by Greeshma on 26th Nov 2021
+checkBOPValueOfAllAHUsAreOFF
+    @{group_ahu_name_list}=    apiresources.getAHUNamesListOfGroup
+    apiresources.checkBOPValueForNamedAHUs  ${group_ahu_name_list}  0

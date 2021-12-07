@@ -54,7 +54,7 @@ MinONTestOnNoBindingsGroup
     #19.Set Group property MinRequiredAHUOn = 0
     apiresources.changeGroupPropertiesParameterValue    MinRequiredAhuOn  int  ${test_input}[min_required_ahu_on_0]
     #20.Override all AHUs OFF
-    minOnTestResources.overrideAllAHUsWithBOPValueOFF
+    apiresources.overrideAllAHUsWithBOPValueOFF
     #21.Wait 2 minutes
     common.waitForMinutes    2
     #22.Release overrides
@@ -62,7 +62,7 @@ MinONTestOnNoBindingsGroup
     #23.Wait 2 minutes
     common.waitForMinutes    2
     #24.No AHUs should turn ON (all should remain OFF)
-    minOnTestResources.checkBOPValueOfAllAHUsAreOFF
+    apiresources.checkBOPValueOfAllAHUsAreOFF
     #25.Write User event “Test 2: MinOn AHU turn on order”
     apiresources.writeUserEventsEntryToNotificationEventLog  AuQA test->${group_name}->Test 2:MinOn AHU turn on order
     #26.Set Group property MinRequiredAhuOn = 9

@@ -48,16 +48,6 @@ checkTheOrderOfAHUsTurningON
     log to console    ------------------------------------All AHUs are ON in expected order--------------------------------
 
     #Created by Greeshma on 26th Nov 2021
-overrideAllAHUsWithBOPValueOFF
-    @{group_ahu_name_list}=    apiresources.getAHUNamesListOfGroup
-    overrideNamedAHUsWithSpecifiedBOPValue  ${group_ahu_name_list}  0
-
-    #Created by Greeshma on 26th Nov 2021
-checkBOPValueOfAllAHUsAreOFF
-    @{group_ahu_name_list}=    apiresources.getAHUNamesListOfGroup
-    apiresources.checkBOPValueForNamedAHUs  ${group_ahu_name_list}  0
-
-    #Created by Greeshma on 26th Nov 2021
 setNullValueForGuardHotAbsTempAndAlmHotAbsTemp
     apiresources.changeGroupPropertiesParameterValue    GuardHotAbsTemp  float  90
     apiresources.changeGroupPropertiesParameterValue    AlmHotAbsTemp  float  90
