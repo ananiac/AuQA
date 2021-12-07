@@ -470,6 +470,7 @@ gqlFetchJsonResponseFromQuery
     create session    AIEngine    ${base_url}     disable_warnings=1
     ${result}=  post on session    AIEngine  /public/graphql  headers=${headers}    json=${body}
     ${json_dictionary}=     set variable    ${result.json()}
+    delete all sessions
     return from keyword    ${json_dictionary}
 
 gqlFetchJsonResponseFromMutation
@@ -479,6 +480,7 @@ gqlFetchJsonResponseFromMutation
     create session    AIEngine    ${base_url}     disable_warnings=1
     ${result}=  post on session    AIEngine  /public/graphql  headers=${headers}    json=${body}
     ${json_dictionary}=     set variable    ${result.json()}
+    delete all sessions
     return from keyword    ${json_dictionary}
 
 changeCxConfigsTabModuleFieldValues
