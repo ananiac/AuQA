@@ -17,7 +17,7 @@ MinONTestOnNoBindingsGroup
     #1.Start system with the AuQa DB on it (e.g., 10.252.9.118)
     #2.Stop ALL processes including the API Server (vx_server) and Script Launcher (facs_launcher)
     #3.Wait 2 minutes
-    minOnTestOnNoBindingsPrecondition
+    minOnTestResources.minOnTestOnNoBindingsPrecondition
     #4.Use the NoBindings group
     #5.Start the API Server (vx_server) and Script Launcher processes
     #6.Start the simulator (dcsim) and Trend (facs_trends) processes
