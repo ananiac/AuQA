@@ -17,7 +17,7 @@ MinONTestOnNoBindingsGroup
     #1.Start system with the AuQa DB on it (e.g., 10.252.9.118)
     #2.Stop ALL processes including the API Server (vx_server) and Script Launcher (facs_launcher)
     #3.Wait 2 minutes
-    minOnTestOnNoBindingsPrecondition
+    minOnTestResources.minOnTestOnNoBindingsPrecondition
     #4.Use the NoBindings group
     #5.Start the API Server (vx_server) and Script Launcher processes
     #6.Start the simulator (dcsim) and Trend (facs_trends) processes
@@ -54,7 +54,7 @@ MinONTestOnNoBindingsGroup
     #19.Set Group property MinRequiredAHUOn = 0
     apiresources.changeGroupPropertiesParameterValue    MinRequiredAhuOn  int  ${test_input}[min_required_ahu_on_0]
     #20.Override all AHUs OFF
-    minOnTestResources.overrideAllAHUsWithBOPValueOFF
+    apiresources.overrideAllAHUsWithBOPValueOFF
     #21.Wait 2 minutes
     common.waitForMinutes    2
     #22.Release overrides
@@ -62,7 +62,7 @@ MinONTestOnNoBindingsGroup
     #23.Wait 2 minutes
     common.waitForMinutes    2
     #24.No AHUs should turn ON (all should remain OFF)
-    minOnTestResources.checkBOPValueOfAllAHUsAreOFF
+    apiresources.checkBOPValueOfAllAHUsAreOFF
     #25.Write User event “Test 2: MinOn AHU turn on order”
     apiresources.writeUserEventsEntryToNotificationEventLog  AuQA test->${group_name}->Test 2:MinOn AHU turn on order
     #26.Set Group property MinRequiredAhuOn = 9
@@ -78,45 +78,45 @@ MinONTestOnNoBindingsGroup
     #33.Write User event “Test 3: Manual overrides force MinOn violation”
     apiresources.writeUserEventsEntryToNotificationEventLog  Test 3:Manual overrides force MinOn violation
     #34.Override CAC_11 and CAC_10 OFF & SFC = NULL
-    minOnTestResources.overrideNamedAHUsWithBOPValueOFF  ${test_input}[ahu_name_0]  ${test_input}[ahu_name_1]
+    apiresources.overrideNamedAHUsWithBOPValueOFF  ${test_input}[ahu_name_0]  ${test_input}[ahu_name_1]
     common.waitForSeconds  60
     #35.AHUs CAC_11 and CAC_10 should be OFF
-    minOnTestResources.checkBOPValueOfNamedAHUsAreOFF  ${test_input}[ahu_name_0]  ${test_input}[ahu_name_1]
+    apiresources.checkBOPValueOfNamedAHUsAreOFF  ${test_input}[ahu_name_0]  ${test_input}[ahu_name_1]
     #36.Release overridden AHUs
     apiresources.releaseOverrideOfNamedAHUs  ${test_input}[ahu_name_0]  ${test_input}[ahu_name_1]
     #37.Wait 2 minute
     common.waitForMinutes    3
     #38.CAC_11 & CAC_10 should turn ON
-    minOnTestResources.checkBOPValueOfNamedAHUsAreON  ${test_input}[ahu_name_0]  ${test_input}[ahu_name_1]
+    apiresources.checkBOPValueOfNamedAHUsAreON  ${test_input}[ahu_name_0]  ${test_input}[ahu_name_1]
     #39.Write User event “Test 4: Manual overrides OFF force other AHUs ON”
     apiresources.writeUserEventsEntryToNotificationEventLog  Test 4:Manual OFF overrides can turn other AHUs ON
     #40.Set Group property MinRequiredAhuOn = 2
     apiresources.changeGroupPropertiesParameterValue    MinRequiredAhuOn  int  ${test_input}[min_required_ahu_on_2]
     #41.Override AHUs CAC_12, CAC_13, CAC_14, CAC_15, CAC_16, & CAC_17 OFF
-    minOnTestResources.overrideNamedAHUsWithBOPValueOFF  ${test_input}[ahu_name_2]  ${test_input}[ahu_name_3]  ${test_input}[ahu_name_4]  ${test_input}[ahu_name_5]  ${test_input}[ahu_name_6]  ${test_input}[ahu_name_7]
+    apiresources.overrideNamedAHUsWithBOPValueOFF  ${test_input}[ahu_name_2]  ${test_input}[ahu_name_3]  ${test_input}[ahu_name_4]  ${test_input}[ahu_name_5]  ${test_input}[ahu_name_6]  ${test_input}[ahu_name_7]
     common.waitForSeconds  60
     #42.The 6 AHUs should turn OFF
-    minOnTestResources.checkBOPValueOfNamedAHUsAreOFF  ${test_input}[ahu_name_2]  ${test_input}[ahu_name_3]  ${test_input}[ahu_name_4]  ${test_input}[ahu_name_5]  ${test_input}[ahu_name_6]  ${test_input}[ahu_name_7]
+    apiresources.checkBOPValueOfNamedAHUsAreOFF  ${test_input}[ahu_name_2]  ${test_input}[ahu_name_3]  ${test_input}[ahu_name_4]  ${test_input}[ahu_name_5]  ${test_input}[ahu_name_6]  ${test_input}[ahu_name_7]
     #43.Release the overrides
     apiresources.releaseOverrideOfNamedAHUs  ${test_input}[ahu_name_2]  ${test_input}[ahu_name_3]  ${test_input}[ahu_name_4]  ${test_input}[ahu_name_5]  ${test_input}[ahu_name_6]  ${test_input}[ahu_name_7]
     #44.Wait 2 minute
     common.waitForMinutes    2
     #45.The 6 AHUs should stay OFF
-    minOnTestResources.checkBOPValueOfNamedAHUsAreOFF  ${test_input}[ahu_name_2]  ${test_input}[ahu_name_3]  ${test_input}[ahu_name_4]  ${test_input}[ahu_name_5]  ${test_input}[ahu_name_6]  ${test_input}[ahu_name_7]
+    apiresources.checkBOPValueOfNamedAHUsAreOFF  ${test_input}[ahu_name_2]  ${test_input}[ahu_name_3]  ${test_input}[ahu_name_4]  ${test_input}[ahu_name_5]  ${test_input}[ahu_name_6]  ${test_input}[ahu_name_7]
     #46.Override CAC_10 & CAC_11 OFF
-    minOnTestResources.overrideNamedAHUsWithBOPValueOFF  ${test_input}[ahu_name_0]  ${test_input}[ahu_name_1]
+    apiresources.overrideNamedAHUsWithBOPValueOFF  ${test_input}[ahu_name_0]  ${test_input}[ahu_name_1]
     #47.Wait 60-90 seconds
     common.waitForSeconds  90
     #48.AHU CAC_14 should turn ON
-    minOnTestResources.checkBOPValueOfNamedAHUsAreON  ${test_input}[ahu_name_4]
+    apiresources.checkBOPValueOfNamedAHUsAreON  ${test_input}[ahu_name_4]
     #49.Wait 60 seconds
     common.waitForMinutes    1
     #50.AHU CAC_13 should turn ON
-    minOnTestResources.checkBOPValueOfNamedAHUsAreON  ${test_input}[ahu_name_3]
+    apiresources.checkBOPValueOfNamedAHUsAreON  ${test_input}[ahu_name_3]
     #51.Wait 120 seconds
     common.waitForMinutes    2
     #52.All other AHUs remain OFF
-    minOnTestResources.checkBOPValueOfNamedAHUsAreOFF  ${test_input}[ahu_name_0]  ${test_input}[ahu_name_1]  ${test_input}[ahu_name_2]  ${test_input}[ahu_name_5]  ${test_input}[ahu_name_6]  ${test_input}[ahu_name_7]
+    apiresources.checkBOPValueOfNamedAHUsAreOFF  ${test_input}[ahu_name_0]  ${test_input}[ahu_name_1]  ${test_input}[ahu_name_2]  ${test_input}[ahu_name_5]  ${test_input}[ahu_name_6]  ${test_input}[ahu_name_7]
 CleanUp
     apiresources.writeUserEventsEntryToNotificationEventLog    AuQA test->${group_name}->Finished Test->MinOn test
     #53.Reset group configs AllowNumExceedencesGuard=null, AllowNumExceedencesControl=null, GuardHotAbsTemp=90, AlmHotAbsTemp=90
@@ -127,6 +127,8 @@ CleanUp
     apiresources.changeCxConfigsTabModuleFieldValues  DASHM  NumMinutesStartTimer  ${test_input}[config_num_minutes_start_timer_default]
     #55.Stop all processes except vx_server and facs_launche
     connection.establishConnectionAndStopAllProcessesExcept    vx_server    facs_launcher    facs_trend
+    #Release overrides
+    apiresources.releaseOverrideOfAllAHUs
     [Teardown]   apiresources.setTestExitTemperatureToAllSensorPoints
 
 

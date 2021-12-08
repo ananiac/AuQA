@@ -48,16 +48,6 @@ checkTheOrderOfAHUsTurningON
     log to console    ------------------------------------All AHUs are ON in expected order--------------------------------
 
     #Created by Greeshma on 26th Nov 2021
-overrideAllAHUsWithBOPValueOFF
-    @{group_ahu_name_list}=    apiresources.getAHUNamesListOfGroup
-    overrideNamedAHUsWithSpecifiedBOPValue  ${group_ahu_name_list}  0
-
-    #Created by Greeshma on 26th Nov 2021
-checkBOPValueOfAllAHUsAreOFF
-    @{group_ahu_name_list}=    apiresources.getAHUNamesListOfGroup
-    apiresources.checkBOPValueForNamedAHUs  ${group_ahu_name_list}  0
-
-    #Created by Greeshma on 26th Nov 2021
 setNullValueForGuardHotAbsTempAndAlmHotAbsTemp
     apiresources.changeGroupPropertiesParameterValue    GuardHotAbsTemp  float  90
     apiresources.changeGroupPropertiesParameterValue    AlmHotAbsTemp  float  90
@@ -68,7 +58,7 @@ setNullValueForGuardHotAbsTempAndAlmHotAbsTemp
 getActualOrderListOfAllAHUsTurningONAtRegularInterval
     @{actual_order_of_ahu_turns_ON}  create list
     @{group_ahu_name_list}=    apiresources.getAHUNamesListOfGroup
-    waitForSeconds    40
+    waitForSeconds    50
     &{json_dict}=  apiresources.queryToFetchJsonResponseContaingTheCurrentAHUStatus
     FOR    ${reps}  IN RANGE    1    9999
         log to console    XX----------Entering--${reps}-Cycle of Checking AHU ON----------------XX
@@ -89,18 +79,3 @@ getActualOrderListOfAllAHUsTurningONAtRegularInterval
         common.waitForMinutes  1
     END
      return from keyword    ${actual_order_of_ahu_turns_ON}
-
-    #Created by Greeshma on 26th Nov 2021
-checkBOPValueOfNamedAHUsAreOFF
-    [Arguments]  @{ahu_name_list_to_check}
-    apiresources.checkBOPValueForNamedAHUs  ${ahu_name_list_to_check}  0
-
-    #Created by Greeshma on 26th Nov 2021
-checkBOPValueOfNamedAHUsAreON
-    [Arguments]  @{ahu_name_list_to_check}
-    apiresources.checkBOPValueForNamedAHUs  ${ahu_name_list_to_check}  1
-
-    #Created by Greeshma on 2nd Dec 2021
-overrideNamedAHUsWithBOPValueOFF
-    [Arguments]  @{ahu_names_list}
-    apiresources.overrideNamedAHUsWithSpecifiedBOPValue  ${ahu_names_list}  0
