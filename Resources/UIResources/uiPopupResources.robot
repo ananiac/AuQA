@@ -85,7 +85,6 @@ setOverridesPopup
     uiresources.startBrowserAndLoginToAIEngineVX
     log to console  Verifying title & message of 'Set Overrides' popup
     uiresources.gotoEquipmentTabInVx
-    checkWebElementIsVisibleAndIsEnabled  ${set_overrides_button}
     click element  ${set_overrides_button}
     sleep  ${load_time}
     ${expected_title}=  set variable  ${test_input}[set_overrides_popup_title]
@@ -101,7 +100,6 @@ clearOverridesPopup
     uiresources.startBrowserAndLoginToAIEngineVX
     log to console  Verifying title & message of 'Clear Overrides' popup
     uiresources.gotoEquipmentTabInVx
-    checkWebElementIsVisibleAndIsEnabled  ${clear_overrides_button}
     click element  ${clear_overrides_button}
     sleep  ${load_time}
     ${expected_title}=  set variable  ${test_input}[clear_overrides_popup_title]
@@ -131,7 +129,6 @@ showTrendsPopup
     uiresources.startBrowserAndLoginToAIEngineVX
     log to console  Verifying title & message of 'Show Trends' popup
     uiresources.gotoEquipmentTabInVx
-    checkWebElementIsVisibleAndIsEnabled  ${show_trends_button}
     click element  ${show_trends_button}
     sleep  ${load_time}
     ${expected_title}=  set variable  ${test_input}[show_trends_popup_title]
@@ -148,7 +145,6 @@ bypassPopup
     log to console  Verifying title & message of 'Bypass' popup
     uiresources.gotoEquipmentTabInVx
     log to console  'Equipment' tab clicked
-    checkWebElementIsVisibleAndIsEnabled  ${bypass_button}
     click element  ${bypass_button}
     log to console  'Bypass' button clicked
     sleep  ${load_time}
