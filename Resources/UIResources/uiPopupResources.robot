@@ -18,10 +18,9 @@ popupTestSetup
     [Documentation]    As a setup read all popup titles and messages/popup contents through excel sheet
     log to console    !-----Reading the inputs from the excel and storing in dictionary------!
     testInputs.readingInputsFromExcel  uitest  A  B
-    log to console    !-----PreCondition for the popup verification------!
 
 suppressAlarmPopup
-    startBrowserAndLoginToAIEngineVX
+    uiresources.startBrowserAndLoginToAIEngineVX
     sleep  ${load_time}
     log to console  Verifying title & message of 'Suppress Alarm' popup
     click element   ${notifications_tab}
@@ -58,7 +57,7 @@ selectAlarm
     log to console  'No' button clicked
 
 suppressedAlarmsPopup
-    startBrowserAndLoginToAIEngineVX
+    uiresources.startBrowserAndLoginToAIEngineVX
     sleep  ${load_time}
     log to console  Verifying title & message of 'Suppressed Alarms' popup
     click element   ${notifications_tab}
@@ -83,9 +82,9 @@ suppressedAlarmsPopup
     close browser
 
 setOverridesPopup
-    startBrowserAndLoginToAIEngineVX
+    uiresources.startBrowserAndLoginToAIEngineVX
     log to console  Verifying title & message of 'Set Overrides' popup
-    gotoEquipmentTabInVx
+    uiresources.gotoEquipmentTabInVx
     checkWebElementIsVisibleAndIsEnabled  ${set_overrides_button}
     click element  ${set_overrides_button}
     sleep  ${load_time}
@@ -99,9 +98,9 @@ setOverridesPopup
     close browser
 
 clearOverridesPopup
-    startBrowserAndLoginToAIEngineVX
+    uiresources.startBrowserAndLoginToAIEngineVX
     log to console  Verifying title & message of 'Clear Overrides' popup
-    gotoEquipmentTabInVx
+    uiresources.gotoEquipmentTabInVx
     checkWebElementIsVisibleAndIsEnabled  ${clear_overrides_button}
     click element  ${clear_overrides_button}
     sleep  ${load_time}
@@ -129,9 +128,9 @@ verifyPopupMessage
     sleep  ${load_time}
 
 showTrendsPopup
-    startBrowserAndLoginToAIEngineVX
+    uiresources.startBrowserAndLoginToAIEngineVX
     log to console  Verifying title & message of 'Show Trends' popup
-    gotoEquipmentTabInVx
+    uiresources.gotoEquipmentTabInVx
     checkWebElementIsVisibleAndIsEnabled  ${show_trends_button}
     click element  ${show_trends_button}
     sleep  ${load_time}
@@ -145,9 +144,9 @@ showTrendsPopup
     close browser
 
 bypassPopup
-    startBrowserAndLoginToAIEngineVX
+    uiresources.startBrowserAndLoginToAIEngineVX
     log to console  Verifying title & message of 'Bypass' popup
-    gotoEquipmentTabInVx
+    uiresources.gotoEquipmentTabInVx
     log to console  'Equipment' tab clicked
     checkWebElementIsVisibleAndIsEnabled  ${bypass_button}
     click element  ${bypass_button}
