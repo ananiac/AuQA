@@ -470,6 +470,7 @@ gqlFetchJsonResponseFromQuery
     create session    AIEngine    ${base_url}     disable_warnings=1
     ${result}=  post on session    AIEngine  /public/graphql  headers=${headers}    json=${body}
     ${json_dictionary}=     set variable    ${result.json()}
+    delete all sessions
     return from keyword    ${json_dictionary}
 
 gqlFetchJsonResponseFromMutation
@@ -479,6 +480,7 @@ gqlFetchJsonResponseFromMutation
     create session    AIEngine    ${base_url}     disable_warnings=1
     ${result}=  post on session    AIEngine  /public/graphql  headers=${headers}    json=${body}
     ${json_dictionary}=     set variable    ${result.json()}
+    delete all sessions
     return from keyword    ${json_dictionary}
 
 changeCxConfigsTabModuleFieldValues
@@ -822,3 +824,28 @@ checkBOPValueForNamedAHUs
     FOR  ${ahu_name}  IN  @{ahu_name_list_to_check}
         apiresources.verifyValueOfSpecificControlofNamedAHU    ${ahu_name}   BOP    ${exp_bop_value}
     END
+
+    #Created by Greeshma on 26th Nov 2021
+overrideAllAHUsWithBOPValueOFF
+    @{group_ahu_name_list}=    apiresources.getAHUNamesListOfGroup
+    apiresources.overrideNamedAHUsWithSpecifiedBOPValue  ${group_ahu_name_list}  0
+
+    #Created by Greeshma on 26th Nov 2021
+checkBOPValueOfAllAHUsAreOFF
+    @{group_ahu_name_list}=    apiresources.getAHUNamesListOfGroup
+    apiresources.checkBOPValueForNamedAHUs  ${group_ahu_name_list}  0
+
+    #Created by Greeshma on 26th Nov 2021
+checkBOPValueOfNamedAHUsAreOFF
+    [Arguments]  @{ahu_name_list_to_check}
+    apiresources.checkBOPValueForNamedAHUs  ${ahu_name_list_to_check}  0
+
+    #Created by Greeshma on 26th Nov 2021
+checkBOPValueOfNamedAHUsAreON
+    [Arguments]  @{ahu_name_list_to_check}
+    apiresources.checkBOPValueForNamedAHUs  ${ahu_name_list_to_check}  1
+
+    #Created by Greeshma on 2nd Dec 2021
+overrideNamedAHUsWithBOPValueOFF
+    [Arguments]  @{ahu_names_list}
+    apiresources.overrideNamedAHUsWithSpecifiedBOPValue  ${ahu_names_list}  0
