@@ -849,3 +849,9 @@ checkBOPValueOfNamedAHUsAreON
 overrideNamedAHUsWithBOPValueOFF
     [Arguments]  @{ahu_names_list}
     apiresources.overrideNamedAHUsWithSpecifiedBOPValue  ${ahu_names_list}  0
+
+    #Created by Greeshma on 8th Dec 2021
+fetchJsonRespContainingAHUPropertiesOfSpecificGroup
+    ${query}=    gqlQueries.getAHUsPropertiesOfSpecificGroup  ${group_name}
+    ${json_dictionary}=  gqlFetchJsonResponseFromQuery     ${query}
+    return from keyword    ${json_dictionary}
