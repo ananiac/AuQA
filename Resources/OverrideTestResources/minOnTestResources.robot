@@ -36,10 +36,10 @@ minOnTestOnGeneralTestPrecondition
     ...                Also write test entry temperature for the parallel staleStatePrevention program
     log to console    !-----Reading the inputs from the excel and storing in dictionary------!
     testInputs.readingInputsFromExcel  overrideTest  G  H
+    log to console    !-----PreCondition for the MinOn-General test is been executed------!
     checkAHUPropertiesPrecondition  ${test_input}
-#    log to console    !-----PreCondition for the MinOn test-General test is been executed------!
-#    connection.establishConnectionAndStopAllProcessesExcept
-#    common.waitForMinutes    2
+    connection.establishConnectionAndStopAllProcessesExcept
+    common.waitForMinutes    2
 
     #Created by Greeshma on 26th Nov 2021
 checkTheOrderOfAHUsTurningON
@@ -103,7 +103,7 @@ checkAHUPropertiesPrecondition
         ${ahu_design_cop}=  evaluate  "%.2f" % ${ahu_design_cop}
         log to console  Actual properties of ${ahu} are->CoolSource=${ahu_cool_source},DesignCapacity=${ahu_design_capacity},DesignCop=${ahu_design_cop}
         @{expected_ahu_prop}  split string  ${test_input}[${ahu}]  ,
-        log to console  Expected properties of ${ahu} are->CoolSource=${expected_ahu_prop}[0],DesignCapacity=${expected_ahu_prop}[1],DesignCop=${expected_ahu_prop}[1]
+        log to console  Expected properties of ${ahu} are->CoolSource=${expected_ahu_prop}[0],DesignCapacity=${expected_ahu_prop}[1],DesignCop=${expected_ahu_prop}[2]
         should be equal as strings    ${ahu_cool_source}    ${expected_ahu_prop}[0]  Validation for ${ahu}->CoolSource
         should be equal as strings    ${ahu_design_capacity}    ${expected_ahu_prop}[1]  Validation for ${ahu}->DesignCapacity
         should be equal as strings    ${ahu_design_cop}    ${expected_ahu_prop}[2]  Validation for ${ahu}->DesignCop
