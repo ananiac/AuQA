@@ -42,8 +42,15 @@ suppressAlarmPopup
     close browser
 
 selectAlarm
-    log to console  Verifying title & message of 'Suppress Alarm' popup  after selecting first record
+    log to console  Verifying title & message of 'Suppress Alarm' popup after selecting first record
     click element  ${first_alarm_to_suppress}
+    sleep  ${load_time}
+    ${expected_title1}=  set variable  ${test_input}[suppress_alarm_popup_title]
+    ${expected_title2}=  set variable  ${test_input}[dustmotelinepower_popup_title]
+    verifyFirstPopupTitle  ${expected_title1}  ${expected_title2}  ${popup_title}
+    ${expected_message1}=  set variable  ${test_input}[suppress_alarm_popup_message]
+    ${expected_message2}=  set variable  ${test_input}[dustmotelinepower_popup_message]
+    verifyFirstPopupMessage  ${expected_message1}  ${expected_message2}  ${popup_message}
     sleep  ${load_time}
     click element  ${suppress_alarm_button}
     log to console  'Suppress Alarm' button clicked
@@ -156,3 +163,29 @@ bypassPopup
     sleep  ${load_time}
     log to console  Title & message of 'Bypass' popup verified successfully
     close browser
+
+verifyFirstPopupTitle
+    [Arguments]      ${expected_title1}  ${expected_title2}  ${popup_title}
+    ${verify_popup_title}=  get text  ${popup_title}
+    ${expected_title1}=  convert to string  ${expected_title1}
+    ${expected_title2}=  convert to string  ${expected_title2}
+    IF  """${verify_popup_title}""" == ""
+        log to console  Normal alarm
+    ELSE
+        log to console  Dust alarm
+        click element  ${ok_button}
+        log to console  'OK' button clicked
+    END
+
+verifyFirstPopupMessage
+    [Arguments]      ${expected_message1}  ${expected_message2}  ${popup_message}
+    ${verify_popup_message}=  get text  ${popup_message}
+    ${expected_message1}=  convert to string  ${expected_message1}
+    ${expected_message2}=  convert to string  ${expected_message2}
+    IF  """${verify_popup_message}""" == ""
+        log to console  Normal alarm
+    ELSE
+        log to console  Dust alarm
+        click element  ${ok_button}
+        log to console  'OK' button clicked
+    END
