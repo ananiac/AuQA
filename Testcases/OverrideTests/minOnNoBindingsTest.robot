@@ -35,7 +35,7 @@ MinONTestOnNoBindingsGroup
     #d.AllowNumExceedencesControl = 0
     apiresources.changeGroupPropertiesParameterValue    AllowNumExceedencesControl  int  ${test_input}[config_allow_num_exceedences_control]
     #e.AlgName = DASHM_MIX
-    apiresources.changeGroupPropertiesParameterValue    AlgName  string  ${test_input}[grp_property_alg_name]
+    apiresources.changeGroupPropertiesParameterValue    AlgName  string  "${test_input}[grp_property_alg_name]"
     #10.Set system config property NumMinutesStartTimer = 1
     apiresources.changeCxConfigsTabModuleFieldValues  DASHM  NumMinutesStartTimer  ${test_input}[config_num_minutes_start_timer]
     #11.Set all rack temperature sensor points every minute to 50
