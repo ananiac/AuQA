@@ -32,7 +32,7 @@ MinONGeneralTest
     #AllowNumExceedencesControl=0
     apiresources.changeGroupPropertiesParameterValue    AllowNumExceedencesControl  int  ${test_input}[config_allow_num_exceedences_control]
     #AlgName=DASHM_MIX
-    apiresources.changeGroupPropertiesParameterValue    AlgName  string  ${test_input}[grp_property_alg_name]
+    apiresources.changeGroupPropertiesParameterValue    AlgName  string  "${test_input}[grp_property_alg_name]"
     #7. Load default DASHM_MIX template under Site config
     uiresources.resetSystemPropertiesUsingLoadTemplateOptionWithOverwrite
     #8. Set system config NumMinutesStartTimer=1 so we don’t have to wait long for AHUs to turn ON
