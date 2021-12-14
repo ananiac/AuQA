@@ -3,7 +3,8 @@ Documentation         This is test the encrypt and decrypt function
 Library    SeleniumLibrary
 #Library    SSHLibrary
 #Library     CryptoLibrary    %{private_key_password}    variable_decryption=True
-Library     CryptoLibrary  variable_decryption=True
+#Library     CryptoLibrary  variable_decryption=True  key_path=C:\\home\\fc\\automation\\AuQA\\venv\\Lib\\site-packages\\CryptoLibrary\\keys
+Library     CryptoLibrary  variable_decryption=True  key_path=C:\\home\\fc\\automation\\AuQA\\Inputs\\keys
 Variables    ../PageObjects/loginPage.py                #${EXECDIR}
 Resource    ../Resources/connection.robot
 
