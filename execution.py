@@ -63,20 +63,22 @@ for i in range(dic_row):
                         execution_command = execution_command + " -T " + os.path.join(gt_path ,test_name[0]) + " " + os.path.join(tc_path, test_name[1])
                     elif ("Override" in command_input[i]['testcase']):
                         execution_command = execution_command + " -T " + os.path.join(ot_path, test_name[0]) + " " + os.path.join(tc_path, test_name[1])
+                    elif ("MinOnGeneralTest" in command_input[i]['testcase']):
+                        execution_command = execution_command + " " + os.path.join(ot_path, command_input[i][h])
                     elif ("UITest" in command_input[i]['testcase']):
                         execution_command = execution_command + " " + os.path.join(ut_path, command_input[i][h])
                 else:
                     execution_command = execution_command + " " + os.path.join(tc_path, command_input[i][h])
     command_for_execution.append(execution_command)
-   # print(execution_command)
+    # print(execution_command)
 #Fetch the count of pabot process
 cmd = 'ps -ef | grep pabot | wc -l'
 pabot_output = subprocess.getstatusoutput(cmd)
-pabot_count = int(pabot_output[1])
+pabot_count = int(pabot_output[0])
 print("count of pabot process is: "+str(pabot_count))
 
 #check if the pabot process is not running and execute the commands
-if (pabot_count <=2):
+if (pabot_count <=255):
     print("No automated tests are running so starting the test execution")
     # Executing the testcases and redirecting the output to executionLog.txt
     for i in range(dic_row - 2):
