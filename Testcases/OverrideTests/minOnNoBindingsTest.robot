@@ -17,7 +17,7 @@ MinONTestOnNoBindingsGroup
     #1.Start system with the AuQa DB on it (e.g., 10.252.9.118)
     #2.Stop ALL processes including the API Server (vx_server) and Script Launcher (facs_launcher)
     #3.Wait 2 minutes
-    minOnTestResources.minOnTestOnNoBindingsPrecondition
+    [Setup]  minOnTestResources.minOnTestOnNoBindingsPrecondition
     #4.Use the NoBindings group
     #5.Start the API Server (vx_server) and Script Launcher processes
     #6.Start the simulator (dcsim) and Trend (facs_trends) processes
@@ -35,7 +35,7 @@ MinONTestOnNoBindingsGroup
     #d.AllowNumExceedencesControl = 0
     apiresources.changeGroupPropertiesParameterValue    AllowNumExceedencesControl  int  ${test_input}[config_allow_num_exceedences_control]
     #e.AlgName = DASHM_MIX
-    apiresources.changeGroupPropertiesParameterValue    AlgName  string  ${test_input}[grp_property_alg_name]
+    apiresources.changeGroupPropertiesParameterValue    AlgName  string  "${test_input}[grp_property_alg_name]"
     #10.Set system config property NumMinutesStartTimer = 1
     apiresources.changeCxConfigsTabModuleFieldValues  DASHM  NumMinutesStartTimer  ${test_input}[config_num_minutes_start_timer]
     #11.Set all rack temperature sensor points every minute to 50
