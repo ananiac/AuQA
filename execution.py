@@ -74,11 +74,11 @@ for i in range(dic_row):
 #Fetch the count of pabot process
 cmd = 'ps -ef | grep pabot | wc -l'
 pabot_output = subprocess.getstatusoutput(cmd)
-pabot_count = int(pabot_output[0])
+pabot_count = int(pabot_output[1])
 print("count of pabot process is: "+str(pabot_count))
 
 #check if the pabot process is not running and execute the commands
-if (pabot_count <=255):
+if (pabot_count <=2):
     print("No automated tests are running so starting the test execution")
     # Executing the testcases and redirecting the output to executionLog.txt
     for i in range(dic_row - 2):
