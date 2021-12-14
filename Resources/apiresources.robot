@@ -822,3 +822,29 @@ checkBOPValueForNamedAHUs
     FOR  ${ahu_name}  IN  @{ahu_name_list_to_check}
         apiresources.verifyValueOfSpecificControlofNamedAHU    ${ahu_name}   BOP    ${exp_bop_value}
     END
+
+#=======added
+queryToFetchJsonResponseAlarmMsgAHUFailToTurOff
+    ${query}=    gqlQueries.getAlarmMsgAHUFailToTurOff
+    ${json_dictionary}=  gqlFetchJsonResponseFromQuery     ${query}
+    log to console  ${json_dictionary}
+    log to console  ${json_dictionary["data"]}
+    return from keyword    ${json_dictionary["data"]}
+
+queryToFetchAlarmMsgAHUFailToTurOff
+    ${query}=    gqlQueries.getAlarmMsgAHUFailToTurOff
+    ${json_dictionary}=  gqlFetchJsonResponseFromQuery     ${query}
+    log to console  ${json_dictionary}
+    log to console  =============test=============
+    log to console  ${json_dictionary['data']['alarms']}
+#    log to console  ${json_dictionary['data']['alarms'][0]['message']}
+    #fetching the count messages
+    ${total}=    get length   ${json_dictionary['data']['alarms']}
+    log to console  ${total}
+    FOR    ${i}    IN RANGE   ${total}
+        log to console  ${i}
+        log to console  ${json_dictionary['data']['alarms'][${i}]['message']}
+    END
+    return from keyword    ${json_dictionary}
+
+

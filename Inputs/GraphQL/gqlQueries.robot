@@ -61,3 +61,8 @@ getSpecificSensorPointsOfGroupQuery
     [Arguments]    ${group_name}    ${type}
     ${query}=  set variable  query getSpecificSensorPointDetails{site {name groups: children(selector: {type: Group,name:"${group_name}"}) { name sensors: search(selector: {types: [${type}]}, maxResults: 9999) { name type oid pathName(details: true) pointCurrent(units:[degF,kWe]) { unit value tstamp }}}}}
     return from keyword    ${query}
+
+#========addded
+getAlarmMsgAHUFailToTurOff
+    ${query}=   set variable   query getAlarmMsgAHUFailTotest { alarms(selector:{type:AhuFailToTurnOff}){ message } }
+    return from keyword    ${query}
