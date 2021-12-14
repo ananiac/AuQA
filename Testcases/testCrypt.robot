@@ -11,7 +11,7 @@ Resource    ../Resources/connection.robot
 
 *** Variables ***
 ${url_cx}   https://10.252.9.64/vems/vx.php
-${browser}  chrome
+${browser}  headlesschrome
 ${ui_username}  crypt:PivxJYkx5umkvqnPiMh/xS5pn5Q5EmQ3/ck3NKZeBkY4mCG9hhFSAbup8pJxPSkVZvPb4C4yAA==
 ${ui_password}  crypt:RpB9EdeyivijyVeDqJk8EpDp50ZrnZsQxFTRW/WUPRM5CCcgUYPU00x9vhp0+Bfixb2hp4QIAfs=
 ${host}               10.252.9.64
