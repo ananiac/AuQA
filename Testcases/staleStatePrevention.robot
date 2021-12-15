@@ -14,11 +14,12 @@ ${writing_cycle}    0
 
 *** Test Cases ***
 StaleStatePreventionForSensors
-    waitForOneMinuteAndPrintCurrentTimeToConsole
-    FOR    ${i}    IN RANGE    0    9999
-        writeTemperatureToSensors
-        common.waitForMinutes    1
-    END
+    log to console  StaleStatePreventionForSensors
+#    waitForOneMinuteAndPrintCurrentTimeToConsole
+#    FOR    ${i}    IN RANGE    0    9999
+#        writeTemperatureToSensors
+#        common.waitForMinutes    1
+#    END
 
 
 *** Keywords ***
