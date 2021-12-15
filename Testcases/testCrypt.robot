@@ -4,7 +4,7 @@ Library    SeleniumLibrary
 #Library    SSHLibrary
 #Library     CryptoLibrary    %{private_key_password}    variable_decryption=True
 #Library     CryptoLibrary  variable_decryption=True  key_path=C:\\home\\fc\\automation\\AuQA\\venv\\Lib\\site-packages\\CryptoLibrary\\keys
-Library     ${EXECDIR}/venv/Lib/site-packages/CryptoLibrary  variable_decryption=True  key_path=${EXECDIR}/Inputs/keys
+Library    CryptoLibrary  variable_decryption=True  key_path=${EXECDIR}/Inputs/keys
 Variables    ../PageObjects/loginPage.py                #${EXECDIR}
 Resource    ../Resources/connection.robot
 
