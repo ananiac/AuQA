@@ -13,8 +13,6 @@ browser="headlesschrome"
 #Credentials to login
 ui_username="crypt:PivxJYkx5umkvqnPiMh/xS5pn5Q5EmQ3/ck3NKZeBkY4mCG9hhFSAbup8pJxPSkVZvPb4C4yAA=="
 ui_password="crypt:RpB9EdeyivijyVeDqJk8EpDp50ZrnZsQxFTRW/WUPRM5CCcgUYPU00x9vhp0+Bfixb2hp4QIAfs="
-# ui_username="ideavat"
-# ui_password="Crick3t!"
 #Other username and password is vx/vx,admin/admin
 
 
@@ -27,9 +25,8 @@ query_api_token="EnT4yUynyr2ckUMPfHaSzzwK"
 #Terminal Configuration
 host_ip="10.252.9.118"
 ssh_username="crypt:bq+rmd3qe/Nx07amLAQZKhSzV0SlfDVjIUm3sq7IACuPqgdm/sDZ2PkdsDWO8jcqDKY="
-ssh_password="crypt:d8ykbAczunPwNqXg4ZWFuz+rPcl2Bkef10xaEK6/MxbzaPH3ke7yJ+2y4dw2axmTUAZpiwMZtR5vSHZZlg==" #Id3aV@tAcc3ss
-# ssh_username="fc"
-# ssh_password="Id3aV@tAcc3ss" #Id3aV@tAcc3ss
+ssh_password="crypt:d8ykbAczunPwNqXg4ZWFuz+rPcl2Bkef10xaEK6/MxbzaPH3ke7yJ+2y4dw2axmTUAZpiwMZtR5vSHZZlg=="
+
 
 #Expected duration Of test
 duration_of_test="0 hours 20 minutes"
