@@ -38,19 +38,69 @@ setAllowNumExceedencesGuardCATGuardBandRangeOnPwrLvl
 
 noFailedToTurnOffAlarms
     ${noalarm}=     apiresources.queryToFetchJsonResponseAlarmMsgAHUFailToTurOff
-#    log to console  from ahuresourcefile ${noalarm}
     should be equal as strings  ${noalarm}  None
     log to console  ================No Alarms are found===========================
 
-#Delete if not requit=tred
-#setConfigSFCMinAndSFCMaxValues
-#    [arguments]    ${sfc_min_value}    ${sfc_max_value}
-#    apiresources.changeCxConfigsTabModuleFieldValues  SYSTEM  SFCMin  ${sfc_min_value}
-#    apiresources.changeCxConfigsTabModuleFieldValues  SYSTEM  SFCMax  ${sfc_max_value}
-#
-#    #Created by Greeshma on 3rd Nov 2021
-#verifySupplyFanValueOfListedAHUsAreSFCMinValue
-#    [Arguments]    @{ahu_list}
-#    FOR  ${ahu_name}  IN  @{ahu_list}
-#        apiresources.verifyValueOfSpecificControlofNamedAHU    ${ahu_name}   SFC    ${test_input}[SFCMinValue]
+failedToTurnOffAlarmsRaised
+    #creating the expected list of messages for the AHU
+    @{alarm_message_list_expected}=    Create List      14  15  16  17  10  11  12  13
+    @{alarmraisedforallAhu}=    apiresources.queryToFetchAlarmMsgAHUFailToTurOff
+    #fetch the count of messages for Ahu
+    ${total}=    get length   ${alarmraisedforallAhu}
+    log to console     ================Comaparing the actuall Alarm message with expected=================
+#    FOR    ${i}    IN RANGE   ${total}
+#        should be equal as strings  ${alarmraisedforallAhu[${i}]}   AHU NB-AHU-${alarm_message_list_expected[${i}]} in Control Group NoBindings is not turning OFF when commanded.
+#        log to console  actual message ${alarmraisedforallAhu[${i}]} matches with expected AHU NB-AHU-${alarm_message_list_expected[${i}]} in Control Group NoBindings is not turning OFF when commanded.
 #    END
+    FOR    ${i}    IN RANGE   ${total}
+        ${alarm_raised}=    Run Keyword And Return Status   should be equal as strings  ${alarmraisedforallAhu[${i}]}   AHU NB-AHU-${alarm_message_list_expected[${i}]} in Control Group NoBindings is not turning OFF when commanded.
+        log to console   ${alarm_raised}
+        IF  ${alarm_raised}
+           log to console  actual message ${alarmraisedforallAhu[${i}]} matches with expected AHU NB-AHU-${alarm_message_list_expected[${i}]} in Control Group NoBindings is not turning OFF when commanded.
+        ELSE
+            log to console  actual message ${alarmraisedforallAhu[${i}]} does not match with expected AHU NB-AHU-${alarm_message_list_expected[${i}]} in Control Group NoBindings is not turning OFF when commanded.
+            apiresources.writeUserEventsEntryToNotificationEventLog    AuQA test->${group_name}->AHUFailedToTurnOFFAlarmTest-> Failed to Turn OFF alarm is not raised
+            exit for loop
+        END
+    END
+    IF  ${alarm_raised}
+        apiresources.writeUserEventsEntryToNotificationEventLog    AuQA test->${group_name}->AHUFailedToTurnOFFAlarmTest-> Failed to Turn OFF alarm is raised
+    END
+
+verifyAHUMismatchForAHUFailToTurOffAlarm
+    #creating the expected list of messages for the AHU
+    @{alarm_mismatch_list_expected}=    Create List      10  11  12  13  14  15  16  17
+    @{alarmismatchforallAhu}=    apiresources.queryToFetchAHUMismatchForAHUFailToTurOffAlarm
+    #fetch the count of messages for Ahu
+    ${total}=    get length   ${alarmismatchforallAhu}
+    log to console     ================Comaparing the actuall Alarm message with expected=================
+    FOR    ${i}    IN RANGE   ${total}
+        should be equal as strings  ${alarmismatchforallAhu[${i}]}   NoBindings / NB-AHU-${alarm_mismatch_list_expected[${i}]}
+        log to console  actual ahu with mismatch ${alarmismatchforallAhu[${i}]} matches with expected ahu NoBindings / NB-AHU-${alarm_mismatch_list_expected[${i}]}
+    END
+#    FOR    ${i}    IN RANGE   ${total}
+#        ${alarm_raised}=    Run Keyword And Return Status   should be equal as strings  ${alarmraisedforallAhu[${i}]}   AHU NB-AHU-${alarm_message_list_expected[${i}]} in Control Group NoBindings is not turning OFF when commanded.
+#        log to console   ${alarm_raised}
+#        IF  ${alarm_raised}
+#           log to console  actual message ${alarmraisedforallAhu[${i}]} matches with expected AHU NB-AHU-${alarm_message_list_expected[${i}]} in Control Group NoBindings is not turning OFF when commanded.
+#        ELSE
+#            log to console  actual message ${alarmraisedforallAhu[${i}]} does not match with expected AHU NB-AHU-${alarm_message_list_expected[${i}]} in Control Group NoBindings is not turning OFF when commanded.
+#            apiresources.writeUserEventsEntryToNotificationEventLog    AuQA test->${group_name}->AHUFailedToTurnOFFAlarmTest-> Failed to Turn OFF alarm is not raised
+#            exit for loop
+#        END
+#    END
+#    IF  ${alarm_raised}
+#        apiresources.writeUserEventsEntryToNotificationEventLog    AuQA test->${group_name}->AHUFailedToTurnOFFAlarmTest-> Failed to Turn OFF alarm is raised
+#    END
+
+verifyAhuStateForAHUFailToTurOffAlarm
+    #creating the expected list of messages for the AHU
+    ##@{alarm_mismatch_list_expected}=    Create List      10  11  12  13  14  15  16  17
+    @{ahustate_list}=    apiresources.getAhuStateOfAllAhuInGroupInList
+    #fetch the count of messages for Ahu
+    ${total}=    get length   ${ahustate_list}
+    log to console     ================Comaparing the actuall Alarm message with expected=================
+    FOR    ${i}    IN RANGE   ${total}
+        should be equal as strings  ${ahustate_list[${i}]}   Off
+        log to console  actual ahu state ${ahustate_list[${i}]} matches with expected Off
+    END

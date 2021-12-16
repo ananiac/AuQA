@@ -66,3 +66,12 @@ getSpecificSensorPointsOfGroupQuery
 getAlarmMsgAHUFailToTurOff
     ${query}=   set variable   query getAlarmMsgAHUFailTotest { alarms(selector:{type:AhuFailToTurnOff}){ message } }
     return from keyword    ${query}
+
+getAHUMismatchForAHUFailToTurOffAlarm
+    ${query}=   set variable   query AHUMismatchForAHU { pointCurrent(selector: {name: "SyncFaultStatus"}, filter: {any: [{value: 1}, {value: 2}]}) {SyncFaultStatus: value point { AHU: parent { pathName }}}}
+    return from keyword    ${query}
+
+#======query to fetch the AhuState of Ahu's in the group
+getAHUStateofAhuInGroupQuery
+    ${query}=   set variable   query getAHUStateofAhuInGroup { site { groups: children(selector: {type: Group, oid: 35109}) { ahus: children(selector: {type: AHU}) { AHUState: prop(name: "AhuState") { name string }}}}}
+    return from keyword    ${query}

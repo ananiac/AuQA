@@ -831,20 +831,68 @@ queryToFetchJsonResponseAlarmMsgAHUFailToTurOff
     log to console  ${json_dictionary["data"]}
     return from keyword    ${json_dictionary["data"]}
 
+#queryToFetchAlarmMsgAHUFailToTurOff
+#    ${query}=    gqlQueries.getAlarmMsgAHUFailToTurOff
+#    ${json_dictionary}=  gqlFetchJsonResponseFromQuery     ${query}
+#    log to console  ${json_dictionary}
+#    log to console  =============test=============
+#    log to console  ${json_dictionary['data']['alarms']}
+##    log to console  ${json_dictionary['data']['alarms'][0]['message']}
+#    #fetching the count messages
+#    ${total}=    get length   ${json_dictionary['data']['alarms']}
+#    log to console  ${total}
+#    FOR    ${i}    IN RANGE   ${total}
+#        log to console  ${i}
+#        log to console  ${json_dictionary['data']['alarms'][${i}]['message']}
+#    END
+#    return from keyword    ${json_dictionary}
+
 queryToFetchAlarmMsgAHUFailToTurOff
     ${query}=    gqlQueries.getAlarmMsgAHUFailToTurOff
     ${json_dictionary}=  gqlFetchJsonResponseFromQuery     ${query}
-    log to console  ${json_dictionary}
-    log to console  =============test=============
-    log to console  ${json_dictionary['data']['alarms']}
-#    log to console  ${json_dictionary['data']['alarms'][0]['message']}
-    #fetching the count messages
+    #fetching the Alarm  message for Ahu and putting in list
     ${total}=    get length   ${json_dictionary['data']['alarms']}
-    log to console  ${total}
+    @{alarm_message_list}=    Create List
     FOR    ${i}    IN RANGE   ${total}
-        log to console  ${i}
-        log to console  ${json_dictionary['data']['alarms'][${i}]['message']}
+        Append To List    ${alarm_message_list}    ${json_dictionary['data']['alarms'][${i}]['message']}
     END
-    return from keyword    ${json_dictionary}
+    return from keyword    ${alarm_message_list}
+
+    #Gets the list of the Ahu-pathname(ex:"NoBindings / NB-AHU-10") that are in mistmatch
+queryToFetchAHUMismatchForAHUFailToTurOffAlarm
+    ${query}=    gqlQueries.getAHUMismatchForAHUFailToTurOffAlarm
+    ${json_dictionary}=  gqlFetchJsonResponseFromQuery     ${query}
+    log to console  =====================fulll response
+    log to console  ${json_dictionary}
+    log to console  =====================pointcurrent response
+    log to console      ${json_dictionary['data']['pointCurrent'][0]['point']['AHU']['pathName']}
+    #fetching the Alarm  message for Ahu and putting in list
+    ${total}=    get length   ${json_dictionary['data']['pointCurrent']}
+    log to console  ==================${total}
+    @{alarm_mismatch_list}=    Create List
+    FOR    ${i}    IN RANGE   ${total}
+#        Append To List    ${alarm_mismatch_list}    ${json_dictionary['data']['alarms'][${i}]['message']}
+        Append To List    ${alarm_mismatch_list}    ${json_dictionary['data']['pointCurrent'][${i}]['point']['AHU']['pathName']}
+    END
+    log to console    ==============ahu mismatch list${alarm_mismatch_list}
+    return from keyword    @{alarm_mismatch_list}
 
 
+    #check the Ahu state of all Ahu in the group
+getAhuStateOfAllAhuInGroupInList
+    ${query}=    gqlQueries.getAHUStateofAhuInGroupQuery
+    ${json_dictionary}=  gqlFetchJsonResponseFromQuery     ${query}
+    log to console  ===================== ahu state - full reponse
+    log to console  ${json_dictionary}
+    log to console  =====================pointcurrent response
+    log to console      ${json_dictionary['data']['site']['groups'][0]['ahus'][0]['AHUState']['string']}
+    #fetching the Alarm  message for Ahu and putting in list
+    ${total}=    get length   ${json_dictionary['data']['site']['groups'][0]['ahus']}
+    log to console  ==================${total}
+    @{ahustate_list}=    Create List
+    FOR    ${i}    IN RANGE   ${total}
+#        Append To List    ${alarm_mismatch_list}    ${json_dictionary['data']['alarms'][${i}]['message']}
+        Append To List    ${ahustate_list}    ${json_dictionary['data']['site']['groups'][0]['ahus'][${i}]['AHUState']['string']}
+    END
+    log to console    ==============ahu state list${ahustate_list}
+    return from keyword    @{ahustate_list}
