@@ -855,3 +855,46 @@ fetchJsonRespContainingAHUPropertiesOfSpecificGroup
     ${query}=    gqlQueries.getAHUsPropertiesOfSpecificGroup  ${group_name}
     ${json_dictionary}=  gqlFetchJsonResponseFromQuery     ${query}
     return from keyword    ${json_dictionary}
+
+    #=======added for Alarm testcases
+    #Gets the list of message for alaram AHUFailToTurOff
+queryToFetchAlarmMsgAHUFailToTurOff
+    ${query}=    gqlQueries.getAlarmMsgAHUFailToTurOff
+    ${json_dictionary}=  gqlFetchJsonResponseFromQuery     ${query}
+    #fetching the Alarm  message for Ahu and putting in list
+    ${total}=    get length   ${json_dictionary['data']['alarms']}
+    @{alarm_message_list}=    Create List
+    FOR    ${i}    IN RANGE   ${total}
+        Append To List    ${alarm_message_list}    ${json_dictionary['data']['alarms'][${i}]['message']}
+    END
+    return from keyword    ${alarm_message_list}
+
+    #Gets the list of the Ahu-pathname(ex:"NoBindings / NB-AHU-10") that are in mistmatch
+queryToFetchAHUMismatchForAHUFailToTurOffAlarm
+    ${query}=    gqlQueries.getAHUMismatchForAHUFailToTurOffAlarm
+    ${json_dictionary}=  gqlFetchJsonResponseFromQuery     ${query}
+    #fetching the Alarm  message for Ahu and putting in list
+    ${total}=    get length   ${json_dictionary['data']['pointCurrent']}
+    log to console  ==================No of Ahu in Mismatch${total}
+    @{alarm_mismatch_list}=    Create List
+    FOR    ${i}    IN RANGE   ${total}
+        Append To List    ${alarm_mismatch_list}    ${json_dictionary['data']['pointCurrent'][${i}]['point']['AHU']['pathName']}
+    END
+    log to console    ==============List of Ahu in mismatch${alarm_mismatch_list}
+    return from keyword    @{alarm_mismatch_list}
+
+    #Gets the list of Ahu state of all Ahu in the group
+getAhuStateOfAllAhuInGroupInList
+    [Arguments]  ${group_name}
+    ${group_oid} = 	getOid  ${group_name}
+    ${query}=    gqlQueries.getAHUStateofAhuInGroupQuery    ${group_oid}
+    ${json_dictionary}=  gqlFetchJsonResponseFromQuery     ${query}
+    #fetching the Alarm  message for Ahu and putting in list
+    ${total}=    get length   ${json_dictionary['data']['site']['groups'][0]['ahus']}
+    log to console  ==================No of Ahu ${total}
+    @{ahustate_list}=    Create List
+    FOR    ${i}    IN RANGE   ${total}
+        Append To List    ${ahustate_list}    ${json_dictionary['data']['site']['groups'][0]['ahus'][${i}]['AHUState']['string']}
+    END
+    log to console    ==============List of ahu state ${ahustate_list}
+    return from keyword    @{ahustate_list}

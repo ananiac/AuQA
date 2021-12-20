@@ -67,3 +67,18 @@ getAHUsPropertiesOfSpecificGroup
     [Arguments]    ${group_name}
     ${query}=  set variable  query getGroupsAHUProperties{site{groups: children(selector: {type: Group, name: "General-test"}){name ahus:children(selector: {type: AHU}){ name CoolSource: propString(name: "CoolSource") DesignCapacity: propFloat(name: "DesignCapacity") DesignCop: propFloat(name: "DesignCop")}}}}
     return from keyword    ${query}
+
+#========Queries related to Alarm testcases
+
+getAlarmMsgAHUFailToTurOff
+    ${query}=   set variable   query getAlarmMsgAHUFailTotest { alarms(selector:{type:AhuFailToTurnOff}){ message } }
+    return from keyword    ${query}
+
+getAHUMismatchForAHUFailToTurOffAlarm
+    ${query}=   set variable   query AHUMismatchForAHU { pointCurrent(selector: {name: "SyncFaultStatus"}, filter: {any: [{value: 1}, {value: 2}]}) {SyncFaultStatus: value point { AHU: parent { pathName }}}}
+    return from keyword    ${query}
+
+getAHUStateofAhuInGroupQuery
+    [Arguments]    ${group_oid}
+    ${query}=   set variable   query getAHUStateofAhuInGroup { site { groups: children(selector: {type: Group, oid: ${group_oid}}) { ahus: children(selector: {type: AHU}) { AHUState: prop(name: "AhuState") { name string }}}}}
+    return from keyword    ${query}
