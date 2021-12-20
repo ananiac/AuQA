@@ -1,5 +1,6 @@
 *** Settings ***
 Library    SeleniumLibrary
+Library    CryptoLibrary  variable_decryption=True  key_path=${EXECDIR}/Inputs/keys
 Variables    ${EXECDIR}/PageObjects/loginPage.py
 Variables    ${EXECDIR}/Configurations/${environment}.py
 Resource    ${EXECDIR}/Inputs/testInputs.robot

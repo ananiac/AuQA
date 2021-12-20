@@ -7,3 +7,4 @@ sudo pip install robotframework-jsonlibrary
 sudo pip install robotframework-sshlibrary
 sudo pip install -U robotframework-pabot
 sudo pip install openpyxl
+sudo pip install robotframework-crypto

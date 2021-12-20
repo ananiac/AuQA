@@ -4,6 +4,7 @@ Documentation          This demonstrates executing a command on a remote machine
 Library                SSHLibrary
 Library                Process
 Library                Collections
+Library    CryptoLibrary  variable_decryption=True  key_path=${EXECDIR}/Inputs/keys
 Variables    ${EXECDIR}/Configurations/${environment}.py
 Resource    ${EXECDIR}/Inputs/testInputs.robot
 
