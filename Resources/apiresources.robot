@@ -824,12 +824,12 @@ checkBOPValueForNamedAHUs
     END
 
 #=======added
-queryToFetchJsonResponseAlarmMsgAHUFailToTurOff
-    ${query}=    gqlQueries.getAlarmMsgAHUFailToTurOff
-    ${json_dictionary}=  gqlFetchJsonResponseFromQuery     ${query}
-    log to console  ${json_dictionary}
-    log to console  ${json_dictionary["data"]}
-    return from keyword    ${json_dictionary["data"]}
+#queryToFetchJsonResponseAlarmMsgAHUFailToTurOff
+#    ${query}=    gqlQueries.getAlarmMsgAHUFailToTurOff
+#    ${json_dictionary}=  gqlFetchJsonResponseFromQuery     ${query}
+#    log to console  ${json_dictionary}
+#    log to console  ${json_dictionary["data"]}
+#    return from keyword    ${json_dictionary["data"]}
 
 #queryToFetchAlarmMsgAHUFailToTurOff
 #    ${query}=    gqlQueries.getAlarmMsgAHUFailToTurOff
@@ -880,7 +880,11 @@ queryToFetchAHUMismatchForAHUFailToTurOffAlarm
 
     #check the Ahu state of all Ahu in the group
 getAhuStateOfAllAhuInGroupInList
-    ${query}=    gqlQueries.getAHUStateofAhuInGroupQuery
+    [Arguments]  ${group_name}
+    #NoBindings
+    ${group_oid} = 	getOid  ${group_name}
+     #35109
+    ${query}=    gqlQueries.getAHUStateofAhuInGroupQuery    ${group_oid}
     ${json_dictionary}=  gqlFetchJsonResponseFromQuery     ${query}
     log to console  ===================== ahu state - full reponse
     log to console  ${json_dictionary}

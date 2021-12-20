@@ -72,6 +72,11 @@ getAHUMismatchForAHUFailToTurOffAlarm
     return from keyword    ${query}
 
 #======query to fetch the AhuState of Ahu's in the group
+#getAHUStateofAhuInGroupQuery
+#    ${query}=   set variable   query getAHUStateofAhuInGroup { site { groups: children(selector: {type: Group, oid: 35109}) { ahus: children(selector: {type: AHU}) { AHUState: prop(name: "AhuState") { name string }}}}}
+#    return from keyword    ${query}
+
 getAHUStateofAhuInGroupQuery
-    ${query}=   set variable   query getAHUStateofAhuInGroup { site { groups: children(selector: {type: Group, oid: 35109}) { ahus: children(selector: {type: AHU}) { AHUState: prop(name: "AhuState") { name string }}}}}
+    [Arguments]    ${group_oid}
+    ${query}=   set variable   query getAHUStateofAhuInGroup { site { groups: children(selector: {type: Group, oid: ${group_oid}}) { ahus: children(selector: {type: AHU}) { AHUState: prop(name: "AhuState") { name string }}}}}
     return from keyword    ${query}
