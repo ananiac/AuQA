@@ -34,39 +34,33 @@ setAllowNumExceedencesGuardCATGuardBandRangeOnPwrLvl
     log to console     ${ahuoid}
     apiresources.setComponentPropertyValue   ${ahuoid}     OnPwrLvl    float      ${test_input}[ahu_property_onpwrlvl]
 
-verifyNoAlarmAHUFailedToTurnOffRaised
-    ${query}=    gqlQueries.getAlarmMsgAHUFailToTurOff
-    ${json_dictionary}=  gqlFetchJsonResponseFromQuery     ${query}
-    log to console  verify no alarm is raised i.e no message ${json_dictionary}
-    should be equal as strings  ${json_dictionary["data"]}  None
-    log to console  ================No Alarm-AHUFailedToTurnOff- found===========================
-
-
-ahuFailedToTurnOffAlarmsRaised
-    @{alarmraisedforallAhu}=    apiresources.queryToFetchAlarmMsgAHUFailToTurOff
-    #fetch the count of messages for Ahu
+    #Checks the given message in the alarm message of the specified alarm type
+verifyAllAlarmMessageOfSpecifiedAlarmType
+    [Arguments]  ${alarm_type}  ${alarm_message}
+    @{alarmraisedforallAhu}=    apiresources.getAllAlarmMessagesOfSpecifiedAlarmType    ${alarm_type}
+    #fetch the count of messages
     ${total}=    get length   ${alarmraisedforallAhu}
-    log to console     ================Comaparing the actuall Alarm message with expected=================
+    log to console     ================Comparing the actuall Alarm message to contain expected message=================
     FOR    ${i}    IN RANGE   ${total}
-        should contain   ${alarmraisedforallAhu[${i}]}    in Control Group NoBindings is not turning OFF when commanded.
-        log to console  actual message ${alarmraisedforallAhu[${i}]} contains the expected AHU NB-AHU in Control Group NoBindings is not turning OFF when commanded.
+        should contain   ${alarmraisedforallAhu[${i}]}    ${alarm_message}
+        log to console  actual message ${alarmraisedforallAhu[${i}]} contains the expected AHU NB-AHU ${alarm_message}
     END
 
-verifyAHUMismatchForAHUFailToTurOffAlarm
+verifyAllAHUInGroupInMismatchState
     #creating the expected list of messages for the AHU
-    @{alarm_mismatch_list_expected}=    Create List      10  11  12  13  14  15  16  17
-    @{alarmismatchforallAhu}=    apiresources.queryToFetchAHUMismatchForAHUFailToTurOffAlarm
+    @{ahu_list}=    apiresources.getAHUNamesListOfGroup
+    @{alarmismatchforallAhu}=    apiresources.getAllAHUInGroupInMismatchState
     #fetch the count of messages for Ahu
     ${total}=    get length   ${alarmismatchforallAhu}
-    log to console     ================verify the Ahu sate to be Mismatch=================
+    log to console     ================verify the Ahu's go into the mismatch state=================
     FOR    ${i}    IN RANGE   ${total}
-        should be equal as strings  ${alarmismatchforallAhu[${i}]}   NoBindings / NB-AHU-${alarm_mismatch_list_expected[${i}]}
-        log to console  actual ahu with mismatch ${alarmismatchforallAhu[${i}]} matches with expected ahu NoBindings / NB-AHU-${alarm_mismatch_list_expected[${i}]}
+        should contain   ${alarmismatchforallAhu[${i}]}    NoBindings / ${ahu_list}[${i}] / SyncFaultStatus
+        log to console  actual ahu with mismatch ${alarmismatchforallAhu[${i}]} matches with expected NoBindings / ${ahu_list}[${i}] / SyncFaultStatus
     END
 
 verifyAhuStateForAHUInGroup
-    [Arguments]  ${group_name}  ${expected_ahu_state}
-    @{ahustate_list}=    apiresources.getAhuStateOfAllAhuInGroupInList  ${group_name}
+    [Arguments]   ${expected_ahu_state}
+    @{ahustate_list}=    apiresources.getAhuStateOfAllAhuInGroupInList
     #fetch the count of messages for Ahu
     ${total}=    get length   ${ahustate_list}
     log to console     ================Comaparing the actuall ahu state with expected=================
@@ -77,10 +71,12 @@ verifyAhuStateForAHUInGroup
            log to console  actual ahu state ${ahustate_list[${i}]} matches with expected ${expected_ahu_state}
         ELSE
             log to console  actual ahu state ${ahustate_list[${i}]} does not matches with expected ${expected_ahu_state}
-            apiresources.writeUserEventsEntryToNotificationEventLog    AuQA test->${group_name}->AHUFailedToTurnOFFAlarmTest->Failed to Turn OFF Alarms is not Cleared Successfully
+            apiresources.writeUserEventsEntryToNotificationEventLog    AuQA test->${group_name}->AHUFailedToTurnOFFAlarmTest->AHUFailedtoTurnOFF Alarms is Unsuccessfull to Clear
+            #Checking the status to be true to make keyword be marked as fail in case of mismatch
+            ${ahu_state_check}  should be true
             exit for loop
         END
     END
     IF  ${ahu_state_check}
-        apiresources.writeUserEventsEntryToNotificationEventLog    AuQA test->${group_name}->AHUFailedToTurnOFFAlarmTest->Failed to Turn OFF Alarms Cleared Successfully
+        apiresources.writeUserEventsEntryToNotificationEventLog    AuQA test->${group_name}->AHUFailedToTurnOFFAlarmTest->AHUFailedtoTurnOFF Alarms Cleared Successfully
     END

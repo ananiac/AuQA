@@ -25,11 +25,9 @@ getRackSensorPointsOfGroupQuery
     ${query}=  set variable  query rackSensorPoints {site {groups: children(selector: {type: Group,name: "${group_name}"}) @skip(if:false) {oid name racks: children(selector:{type: Rack},){oid displayName points: children{oid name type pointCurrent{value}}}}}}
     return from keyword    ${query}
 
-# Query queryToFetchJsonResponseForSpecificAlarmType
-    #Created by Greeshma on 19 Aug 2021
 getAlarmStatusQuery
     [Arguments]   ${group_name}    ${alarm_name}
-    ${getAlarmStatusOfGroupQuery}=  set variable  query alarmStatus{ alarms(selector:{subjectName: "${group_name}", type : ${alarm_name}}) { type severity status }}
+    ${getAlarmStatusOfGroupQuery}=  set variable  query alarmStatus{ alarms(selector:{subjectName: "${group_name}", type : ${alarm_name}}) { type severity status message }}
     return from keyword  ${getAlarmStatusOfGroupQuery}
 
 # Query queryToFetchJsonResponseContainingTheCoolEffortEstimateOfAHUs
@@ -69,16 +67,11 @@ getAHUsPropertiesOfSpecificGroup
     return from keyword    ${query}
 
 #========Queries related to Alarm testcases
-
-getAlarmMsgAHUFailToTurOff
-    ${query}=   set variable   query getAlarmMsgAHUFailTotest { alarms(selector:{type:AhuFailToTurnOff}){ message } }
+getAHUsInMismatchState
+    ${query}=   set variable   query AHUMismatchInGroup {site{groups: children(selector: {type: Group, name: "${group_name}"}){nameahus:children(selector: {type: AHU}){name pointCurrent: children(selector: {name: "SyncFaultStatus"}){type name pathName SyncFaultStatus:pointCurrent{value}}}}}}
     return from keyword    ${query}
 
-getAHUMismatchForAHUFailToTurOffAlarm
-    ${query}=   set variable   query AHUMismatchForAHU { pointCurrent(selector: {name: "SyncFaultStatus"}, filter: {any: [{value: 1}, {value: 2}]}) {SyncFaultStatus: value point { AHU: parent { pathName }}}}
-    return from keyword    ${query}
-
-getAHUStateofAhuInGroupQuery
+getAHUStateofAhuInGroup
     [Arguments]    ${group_oid}
     ${query}=   set variable   query getAHUStateofAhuInGroup { site { groups: children(selector: {type: Group, oid: ${group_oid}}) { ahus: children(selector: {type: AHU}) { AHUState: prop(name: "AhuState") { name string }}}}}
     return from keyword    ${query}

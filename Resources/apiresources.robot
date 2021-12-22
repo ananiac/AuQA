@@ -856,38 +856,43 @@ fetchJsonRespContainingAHUPropertiesOfSpecificGroup
     ${json_dictionary}=  gqlFetchJsonResponseFromQuery     ${query}
     return from keyword    ${json_dictionary}
 
-    #=======added for Alarm testcases
-    #Gets the list of message for alaram AHUFailToTurOff
-queryToFetchAlarmMsgAHUFailToTurOff
-    ${query}=    gqlQueries.getAlarmMsgAHUFailToTurOff
-    ${json_dictionary}=  gqlFetchJsonResponseFromQuery     ${query}
+#=======added for Alarm testcases
+    #Gets the list of message for specified alram tpye
+getAllAlarmMessagesOfSpecifiedAlarmType
+    [Arguments]  ${alarm_type}
+    @{ahu_list}=    apiresources.getAHUNamesListOfGroup
+    log to console  ==================List of Ahu in the grpup is ${ahu_list}
+    ${ahu_count}=      apiresources.getAHUCount
+    log to console  ===================Count of Ahu in the Group ${ahu_count}
     #fetching the Alarm  message for Ahu and putting in list
-    ${total}=    get length   ${json_dictionary['data']['alarms']}
     @{alarm_message_list}=    Create List
-    FOR    ${i}    IN RANGE   ${total}
-        Append To List    ${alarm_message_list}    ${json_dictionary['data']['alarms'][${i}]['message']}
+    FOR    ${i}    IN RANGE   ${ahu_count}
+        ${query}=    gqlQueries.getAlarmStatusQuery     ${ahu_list}[${i}]   ${alarm_type}
+        ${json_dictionary}=  gqlFetchJsonResponseFromQuery     ${query}
+        Append To List    ${alarm_message_list}    ${json_dictionary['data']['alarms'][0]['message']}
     END
+    log to console      ==================List of message each ahu for the alarm ${alarm_message_list}
     return from keyword    ${alarm_message_list}
 
-    #Gets the list of the Ahu-pathname(ex:"NoBindings / NB-AHU-10") that are in mistmatch
-queryToFetchAHUMismatchForAHUFailToTurOffAlarm
-    ${query}=    gqlQueries.getAHUMismatchForAHUFailToTurOffAlarm
+    #Gets the list of the Ahu-pathname(ex:NoBindings / NB-AHU-10 / SyncFaultStatus) that are in mistmatch
+getAllAHUInGroupInMismatchState
+    ${query}=    gqlQueries.getAHUsInMismatchState
     ${json_dictionary}=  gqlFetchJsonResponseFromQuery     ${query}
-    #fetching the Alarm  message for Ahu and putting in list
-    ${total}=    get length   ${json_dictionary['data']['pointCurrent']}
-    log to console  ==================No of Ahu in Mismatch${total}
-    @{alarm_mismatch_list}=    Create List
+    log to console  ========full response ${json_dictionary}
+    #fetching the pathname that has groupname, Ahuname and putting in list
+    ${total}=    get length   ${json_dictionary['data']['site']['groups'][0]['nameahus']}
+    log to console  ==================No of Ahu in Mismatch are ${total}
+    @{ahu_mismatch_list}=    Create List
     FOR    ${i}    IN RANGE   ${total}
-        Append To List    ${alarm_mismatch_list}    ${json_dictionary['data']['pointCurrent'][${i}]['point']['AHU']['pathName']}
+        Append To List    ${ahu_mismatch_list}    ${json_dictionary['data']['site']['groups'][0]['nameahus'][${i}]['pointCurrent'][0]['pathName']}
     END
-    log to console    ==============List of Ahu in mismatch${alarm_mismatch_list}
-    return from keyword    @{alarm_mismatch_list}
+    log to console    ==============List of Ahu in mismatch ${ahu_mismatch_list}
+    return from keyword    @{ahu_mismatch_list}
 
     #Gets the list of Ahu state of all Ahu in the group
 getAhuStateOfAllAhuInGroupInList
-    [Arguments]  ${group_name}
     ${group_oid} = 	getOid  ${group_name}
-    ${query}=    gqlQueries.getAHUStateofAhuInGroupQuery    ${group_oid}
+    ${query}=    gqlQueries.getAHUStateofAhuInGroup    ${group_oid}
     ${json_dictionary}=  gqlFetchJsonResponseFromQuery     ${query}
     #fetching the Alarm  message for Ahu and putting in list
     ${total}=    get length   ${json_dictionary['data']['site']['groups'][0]['ahus']}
