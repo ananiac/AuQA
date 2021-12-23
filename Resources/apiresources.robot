@@ -861,9 +861,9 @@ fetchJsonRespContainingAHUPropertiesOfSpecificGroup
 getAllAlarmMessagesOfSpecifiedAlarmType
     [Arguments]  ${alarm_type}
     @{ahu_list}=    apiresources.getAHUNamesListOfGroup
-    log to console  ==================List of Ahu in the grpup is ${ahu_list}
+    log to console  ==================List of Ahu in the group is: ${ahu_list}
     ${ahu_count}=      apiresources.getAHUCount
-    log to console  ===================Count of Ahu in the Group ${ahu_count}
+    log to console  ===================Count of Ahu in the Group: ${ahu_count}
     #fetching the Alarm  message for Ahu and putting in list
     @{alarm_message_list}=    Create List
     FOR    ${i}    IN RANGE   ${ahu_count}
@@ -871,22 +871,25 @@ getAllAlarmMessagesOfSpecifiedAlarmType
         ${json_dictionary}=  gqlFetchJsonResponseFromQuery     ${query}
         Append To List    ${alarm_message_list}    ${json_dictionary['data']['alarms'][0]['message']}
     END
-    log to console      ==================List of message each ahu for the alarm ${alarm_message_list}
+    log to console      ==================List of each ahu message for the alarm: ${alarm_message_list}
     return from keyword    ${alarm_message_list}
 
     #Gets the list of the Ahu-pathname(ex:NoBindings / NB-AHU-10 / SyncFaultStatus) that are in mistmatch
 getAllAHUInGroupInMismatchState
     ${query}=    gqlQueries.getAHUsInMismatchState
     ${json_dictionary}=  gqlFetchJsonResponseFromQuery     ${query}
-    log to console  ========full response ${json_dictionary}
-    #fetching the pathname that has groupname, Ahuname and putting in list
+    #fetching the pathname that has groupname, Ahuname and putting in list if the syncfaultstatus value is 2 or 1
     ${total}=    get length   ${json_dictionary['data']['site']['groups'][0]['nameahus']}
-    log to console  ==================No of Ahu in Mismatch are ${total}
+    log to console  ==================No of Ahu in Mismatch are: ${total}
     @{ahu_mismatch_list}=    Create List
+    log to console  ==================syncfaultstatus value of first ahu: ${json_dictionary['data']['site']['groups'][0]['nameahus'][0]['pointCurrent'][0]['SyncFaultStatus']['value']}
     FOR    ${i}    IN RANGE   ${total}
-        Append To List    ${ahu_mismatch_list}    ${json_dictionary['data']['site']['groups'][0]['nameahus'][${i}]['pointCurrent'][0]['pathName']}
+        ${syncfaultstatus_check}=    Run Keyword And Return Status   should be equal as strings     ${json_dictionary['data']['site']['groups'][0]['nameahus'][${i}]['pointCurrent'][0]['SyncFaultStatus']['value']}  2  or  ${json_dictionary['data']['site']['groups'][0]['nameahus'][${i}]['pointCurrent'][0]['SyncFaultStatus']['value']}   1
+        IF  (${syncfaultstatus_check})
+            Append To List    ${ahu_mismatch_list}    ${json_dictionary['data']['site']['groups'][0]['nameahus'][${i}]['pointCurrent'][0]['pathName']}
+        END
     END
-    log to console    ==============List of Ahu in mismatch ${ahu_mismatch_list}
+    log to console    ==============List of Ahu in mismatch: ${ahu_mismatch_list}
     return from keyword    @{ahu_mismatch_list}
 
     #Gets the list of Ahu state of all Ahu in the group
@@ -903,3 +906,18 @@ getAhuStateOfAllAhuInGroupInList
     END
     log to console    ==============List of ahu state ${ahustate_list}
     return from keyword    @{ahustate_list}
+
+checkAlarmStatusForAllAHUsInGroup
+    [Arguments]  ${alarm_type}     ${expected_status}
+    log to console  ==================Checking alaram status of each Ahu in the group
+    @{ahu_list}=    apiresources.getAHUNamesListOfGroup
+    log to console  ==================List of Ahu in the group is: ${ahu_list}
+    ${ahu_count}=      apiresources.getAHUCount
+    log to console  ==================Count of Ahu in the Group: ${ahu_count}
+    FOR    ${i}    IN RANGE   ${ahu_count}
+        ${query}=    gqlQueries.getAlarmStatusQuery     ${ahu_list}[${i}]     ${alarm_type}
+        ${json_dictionary}=  gqlFetchJsonResponseFromQuery     ${query}
+        should be equal as strings  ${json_dictionary["data"]}  ${expected_status}
+        #log to console  ${json_dictionary["data"]}
+        log to console  ==================${alarm_type} Alarm Cleared for ahu ${ahu_list}[${i}]====================
+    END

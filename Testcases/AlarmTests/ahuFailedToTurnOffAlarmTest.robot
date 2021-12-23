@@ -42,9 +42,9 @@ AHUFailedToTurnOFFAlarm
     common.waitForMinutes    2
     #17)Run The PublicAPI call to check for alarms
     #a)Ensure there are no Failed to Turn Off Alarms
-    apiresources.checkingAlarmStatusForGroup    ${test_input}[alarm_ahu_failed_toturnoff]  ${test_input}[alarm_status]
+    apiresources.checkAlarmStatusForAllAHUsInGroup  ${test_input}[alarm_ahu_failed_toturnoff]  ${test_input}[alarm_status]
     #18)Set the all AHU to 10kW
-    apiresources.setTemperatureForAllRacksRATandDATAndPowerForPWRMonitorPointsEveryMinute  ${test_input}[rack_tempF]  ${test_input}[rat_tempF]    ${test_input}[dat_tempF]      ${test_input}[power_monitor_pwr2_kW]
+    apiresources.setTemperatureForAllRacksRATandDATAndPowerForPWRMonitorPointsEveryMinute  ${test_input}[rack_tempF]  ${test_input}[rat_tempF]    ${test_input}[dat_tempF]  ${test_input}[power_monitor_pwr2_kW]
     #a)Wait 3 minutes
     common.waitForMinutes    2
     #b)Expect all AHU  to go into Mismatch on the Equipment Tab and Failed to Turn OFF alarm is produced
@@ -59,7 +59,7 @@ AHUFailedToTurnOFFAlarm
     common.waitForMinutes    2
     #22)Run The PublicAPI call to check for alarms
     #a)Ensure there are no Failed to Turn OFF Alarms
-    apiresources.checkingAlarmStatusForGroup    ${test_input}[alarm_ahu_failed_toturnoff]  ${test_input}[alarm_status]
+    apiresources.checkAlarmStatusForAllAHUsInGroup  ${test_input}[alarm_ahu_failed_toturnoff]  ${test_input}[alarm_status]
     #23)Expect 'Mismatch' in the State Column of the Equipment Tab Changes to 'off' and Failed to Turn OFF ends
     #24)Write User event “Failed to Turn OFF Alarms Cleared Successfully” or Unsuccessfully, whichever is the case.
     alarmResources.verifyAhuStateForAHUInGroup  ${test_input}[expected_ahu_state_off]
@@ -69,7 +69,7 @@ AHUFailedToTurnOFFAlarm
     #27)Clean up
 CleanUp
     #Set OnPwrLvl to 0.4kW
-    apiresources.setTemperatureForAllRacksRATandDATAndPowerForPWRMonitorPointsEveryMinute  ${test_input}[rack_tempF]  ${test_input}[rat_tempF]    ${test_input}[dat_tempF]      ${test_input}[power_monitor_pwr_kW_default]
+    alarmResources.setAhuPropertyOnPwrLvlOfFirstAhu  ${test_input}[ahu_property_onpwrlvl_default]
     #Stop all processes except vx_server, facs_launcher, and facs_trend
     connection.establishConnectionAndStopAllProcessesExcept    vx_server    facs_launcher    facs_trend
     [Teardown]   apiresources.setTestExitTemperatureToAllSensorPoints

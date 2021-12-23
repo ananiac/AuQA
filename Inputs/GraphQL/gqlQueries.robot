@@ -25,9 +25,13 @@ getRackSensorPointsOfGroupQuery
     ${query}=  set variable  query rackSensorPoints {site {groups: children(selector: {type: Group,name: "${group_name}"}) @skip(if:false) {oid name racks: children(selector:{type: Rack},){oid displayName points: children{oid name type pointCurrent{value}}}}}}
     return from keyword    ${query}
 
+# Query queryToFetchJsonResponseForSpecificAlarmType
+    #Created by Greeshma on 19 Aug 2021
+    #Updated on 22Dec to add message in the query.
+    #component_name can be group name or the ahu name
 getAlarmStatusQuery
-    [Arguments]   ${group_name}    ${alarm_name}
-    ${getAlarmStatusOfGroupQuery}=  set variable  query alarmStatus{ alarms(selector:{subjectName: "${group_name}", type : ${alarm_name}}) { type severity status message }}
+    [Arguments]   ${component_name}    ${alarm_name}
+    ${getAlarmStatusOfGroupQuery}=  set variable  query alarmStatus{ alarms(selector:{subjectName: "${component_name}", type : ${alarm_name}}) { type severity status message }}
     return from keyword  ${getAlarmStatusOfGroupQuery}
 
 # Query queryToFetchJsonResponseContainingTheCoolEffortEstimateOfAHUs

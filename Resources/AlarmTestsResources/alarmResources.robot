@@ -30,9 +30,7 @@ ahuFailedToTurnOffAlarmTestPreconditionSetup
 setAllowNumExceedencesGuardCATGuardBandRangeOnPwrLvl
     apiresources.changeCxConfigsTabModuleFieldValues  DASHM  AllowNumExceedencesGuard  ${test_input}[allow_num_exceedences_guard]
     apiresources.changeCxConfigsTabModuleFieldValues  DASHM  CATGuardBandRange  ${test_input}[cat_guard_band_range]
-    ${ahuoid}=    apiresources.getOidOfComponentUsingComponentName   ${test_input}[ahu_change_onpwrlvl]
-    log to console     ${ahuoid}
-    apiresources.setComponentPropertyValue   ${ahuoid}     OnPwrLvl    float      ${test_input}[ahu_property_onpwrlvl]
+    alarmResources.setAhuPropertyOnPwrLvlOfFirstAhu     ${test_input}[ahu_property_onpwrlvl]
 
     #Checks the given message in the alarm message of the specified alarm type
 verifyAllAlarmMessageOfSpecifiedAlarmType
@@ -80,3 +78,11 @@ verifyAhuStateForAHUInGroup
     IF  ${ahu_state_check}
         apiresources.writeUserEventsEntryToNotificationEventLog    AuQA test->${group_name}->AHUFailedToTurnOFFAlarmTest->AHUFailedtoTurnOFF Alarms Cleared Successfully
     END
+
+setAhuPropertyOnPwrLvlOfFirstAhu
+    [Arguments]   ${property_value}
+    @{ahu_list}=    apiresources.getAHUNamesListOfGroup
+    log to console  ==================setting the OnPwrLvl value of first Ahu(${ahu_list}) in the group to: ${property_value}
+    ${ahuoid}=    apiresources.getOidOfComponentUsingComponentName   ${ahu_list}[0]
+    log to console     ${ahuoid}
+    apiresources.setComponentPropertyValue   ${ahuoid}     OnPwrLvl    float       ${property_value}
