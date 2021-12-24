@@ -857,7 +857,7 @@ fetchJsonRespContainingAHUPropertiesOfSpecificGroup
     return from keyword    ${json_dictionary}
 
 #=======added for Alarm testcases
-    #Gets the list of message for specified alram tpye
+    #Gets the list of message for specified alram tpye - Created by Anania
 getAllAlarmMessagesOfSpecifiedAlarmType
     [Arguments]  ${alarm_type}
     @{ahu_list}=    apiresources.getAHUNamesListOfGroup
@@ -874,7 +874,7 @@ getAllAlarmMessagesOfSpecifiedAlarmType
     log to console      ==================List of each ahu message for the alarm: ${alarm_message_list}
     return from keyword    ${alarm_message_list}
 
-    #Gets the list of the Ahu-pathname(ex:NoBindings / NB-AHU-10 / SyncFaultStatus) that are in mistmatch
+    #Gets the list of the Ahu-pathname(ex:NoBindings / NB-AHU-10 / SyncFaultStatus) that are in mistmatch -- Created by Anania
 getAllAHUInGroupInMismatchState
     ${query}=    gqlQueries.getAHUsInMismatchState
     ${json_dictionary}=  gqlFetchJsonResponseFromQuery     ${query}
@@ -892,7 +892,7 @@ getAllAHUInGroupInMismatchState
     log to console    ==============List of Ahu in mismatch: ${ahu_mismatch_list}
     return from keyword    @{ahu_mismatch_list}
 
-    #Gets the list of Ahu state of all Ahu in the group
+    #Gets the list of Ahu state of all Ahu in the group - - Created by Anania
 getAhuStateOfAllAhuInGroupInList
     ${group_oid} = 	getOid  ${group_name}
     ${query}=    gqlQueries.getAHUStateofAhuInGroup    ${group_oid}
@@ -907,6 +907,7 @@ getAhuStateOfAllAhuInGroupInList
     log to console    ==============List of ahu state ${ahustate_list}
     return from keyword    @{ahustate_list}
 
+    #Checks Alarm status(ex:None) for each AHU in the group for the specified Alarm type(ex:AhuFailToTurnOff) - Created by Anania
 checkAlarmStatusForAllAHUsInGroup
     [Arguments]  ${alarm_type}     ${expected_status}
     log to console  ==================Checking alaram status of each Ahu in the group

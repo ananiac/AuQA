@@ -2,7 +2,7 @@
 Documentation          This testcase validates Alarm-01 AHU Failed to Turn OFF Alarm Automated Test Steps
 ...                     Environment: ${host_ip}
 ...                     Group Name: ${group_name}
-#...                    Created on 20th Dec 2021
+#...                    Created on 20th Dec 2021 by Anania
 Resource    ${EXECDIR}/Resources/apiresources.robot
 Resource    ${EXECDIR}/Resources/uiresources.robot
 Resource    ${EXECDIR}/Resources/connection.robot
@@ -22,10 +22,10 @@ AHUFailedToTurnOFFAlarm
     connection.establishConnectionAndStartRequiredProcesses    vx_server  facs_launcher     vems-plugin-bacnet     facs_dash   facs_sift
     #6)Load the DASHAM_MIX template in the CX configs (with overwrite)
     uiresources.resetSystemPropertiesUsingLoadTemplateOptionWithOverwrite
-    #7)Confirm config DASHM::AllowNumExceedencesGuard=1 and CATGuardBandRange=4 and for AHU NB-AHU-13 set the OnPwrLvl property to 0.5
+    #7)Confirm config DASHM::AllowNumExceedencesGuard=1 and CATGuardBandRange=4 and for first Ahu in the group set the OnPwrLvl property to 0.5
     alarmResources.setAllowNumExceedencesGuardCATGuardBandRangeOnPwrLvl
-    #8)Write User event - “confirmed config DASHM::AllowNumExceedencesGuard=1, CATGuardBandRange=4 AHU NB-AHU-13 OnPwrLvl =0.5”
-    apiresources.writeUserEventsEntryToNotificationEventLog    AuQA test->${group_name}->AHUFailedToTurnOFFAlarmTest-> confirmed config DASHM::AllowNumExceedencesGuard=1, CATGuardBandRange=4 AHU NB-AHU-13 OnPwrLvl =0.5
+    #8)Write User event - “confirmed config DASHM::AllowNumExceedencesGuard=1, CATGuardBandRange=4 first AHU OnPwrLvl =0.5”
+    apiresources.writeUserEventsEntryToNotificationEventLog    AuQA test->${group_name}->AHUFailedToTurnOFFAlarmTest-> confirmed config DASHM::AllowNumExceedencesGuard=1, CATGuardBandRange=4 first AHU OnPwrLvl =0.5
     #9)Set all rack temperature sensor points every minute at say 80.6 F
     #10)Set AHU PWR to 0.1kW
     #11)Set AHUs PWR to 0.1kW RAT=86F and DAT=76F
@@ -65,7 +65,7 @@ AHUFailedToTurnOFFAlarm
     alarmResources.verifyAhuStateForAHUInGroup  ${test_input}[expected_ahu_state_off]
     #25)Write User event “Ending Failed to turn OFF test”
     #26)End test
-    apiresources.writeUserEventsEntryToNotificationEventLog    AuQA test->${group_name}->AHUFailedToTurnOFFAlarmTest->Ending Failed to turn OFF test
+    apiresources.writeUserEventsEntryToNotificationEventLog    AuQA test->${group_name}->AHUFailedToTurnOFFAlarmTest->Ending AHUFailedtoturnOFF test
     #27)Clean up
 CleanUp
     #Set OnPwrLvl to 0.4kW

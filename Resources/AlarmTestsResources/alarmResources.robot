@@ -1,6 +1,6 @@
 *** Settings ***
-Documentation          This resource file provides the keyword definition specific to Alram1-1 testsuite
-#...                    Created on 8th Dec 2021
+Documentation          This resource file provides the keyword definition specific to Alram testcases
+#...                    Created on 8th Dec 2021 by Anania
 Library    RequestsLibrary
 Library    JSONLibrary
 Library    Collections
@@ -61,10 +61,9 @@ verifyAhuStateForAHUInGroup
     @{ahustate_list}=    apiresources.getAhuStateOfAllAhuInGroupInList
     #fetch the count of messages for Ahu
     ${total}=    get length   ${ahustate_list}
-    log to console     ================Comaparing the actuall ahu state with expected=================
+    log to console     ================Comparing the actuall AHU state with expected for all AHU=================
     FOR    ${i}    IN RANGE   ${total}
         ${ahu_state_check}=    Run Keyword And Return Status   should be equal as strings  ${ahustate_list[${i}]}   ${expected_ahu_state}
-        log to console   ${ahu_state_check}
         IF  ${ahu_state_check}
            log to console  actual ahu state ${ahustate_list[${i}]} matches with expected ${expected_ahu_state}
         ELSE
@@ -84,5 +83,4 @@ setAhuPropertyOnPwrLvlOfFirstAhu
     @{ahu_list}=    apiresources.getAHUNamesListOfGroup
     log to console  ==================setting the OnPwrLvl value of first Ahu(${ahu_list}) in the group to: ${property_value}
     ${ahuoid}=    apiresources.getOidOfComponentUsingComponentName   ${ahu_list}[0]
-    log to console     ${ahuoid}
     apiresources.setComponentPropertyValue   ${ahuoid}     OnPwrLvl    float       ${property_value}
