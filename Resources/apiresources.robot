@@ -271,11 +271,11 @@ checkingAlarmStatusForGroup
     ${json_response}=    apiresources.queryToFetchJsonResponseForSpecificAlarmType    ${alarm_name}
     IF  '${exepected_alarm_status}'=='ALARM_ON'
         ${no_of_alarms}    apiresources.fetchTheNumberOfItemsInDictionary   ${json_response}    $.data.alarms
-        should be equal as integers  ${no_of_alarms}  1
+        should be equal as integers  ${no_of_alarms}  1  Validation of ${alarm_name} to be ${exepected_alarm_status}
         log to console    =================${alarm_name} Alarm raised=======================
     ELSE
         ${actual_value}    apiresources.fetchValueOfFieldFromJsonDictionary   ${json_response}  $.data
-        should be equal as strings   ${actual_value}  None
+        should be equal as strings   ${actual_value}  None  Validation of ${alarm_name} to be ${exepected_alarm_status}
         log to console    ===============${alarm_name} Alarm Cleared====================
     END
 
