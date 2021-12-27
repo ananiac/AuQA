@@ -20,6 +20,7 @@ VXPopupMessagesVerification
     uiPopupResources.bypassPopup
 
 CXPopupMessagesVerification
+    [Setup]    uiPopupResources.popupTestSetup
     uiPopupResources.verifySystemPropertySFCMinSetToBlank
     uiPopupResources.savePopup
     uiPopupResources.validationErrorForTurnOffLimit24Hr

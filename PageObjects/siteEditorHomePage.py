@@ -15,8 +15,8 @@ save_button="xpath=//span[contains(text(),'Save')]"
 close_button="xpath=//span[contains(text(),'Close')]"
 all_properties_button="xpath=//span[contains(text(),'All Properties')]"
 group_dropdown_list="xpath=//div[1]/div/div[1]/div[2]/div/div[2]/div/div/div[2]"
-tools_configs_system = 'xpath=//div[4]/div/div/div/div/div[2]'
-sfc_min = 'xpath=//table[25]/tbody/tr/td[2]/div'
-tools_configs_dashm = 'xpath=//div[1]/div[3]/div[2]/div/div/div/div[2]/div/div/div[2]/div[1]/div/div/div[1]/div[2]'
-turn_off_limit_24_hr = 'xpath=//div[1]/div[3]/div[2]/div/div/div/div[2]/div/div/div[2]/div[2]/div[2]/div/div[2]/table[23]/tbody/tr/td[2]/div'
+tools_configs_system= "xpath=//div[contains(text(),'SYSTEM')]"
+tools_configs_dashm= "xpath=//div[contains(text(),'DASHM') and @unselectable='on']"
 yes_button = "xpath=//span[contains(text(),'Yes')]"
+sfc_min= "xpath=//div[contains(text(),'SFCMin')]//following::td"
+turn_off_limit_24_hr= "xpath=//div[contains(text(),'TurnOffLimit24H')]//following::td"
