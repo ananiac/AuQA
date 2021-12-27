@@ -43,12 +43,12 @@ for i in range(dic_row):
             elif (h == "output dir"):
                 execution_command = execution_command + " --outputdir " + command_input[i][h]
             elif (h == "output"):
-                if (command_input[i]['testcase'] =="combinereport") and (".xml/" in command_input[i][h]):
-                    output_xml = (command_input[i][h]).split("/")
+                if str(command_input[i][h]) == "combinexml":
                     xml_to_combine =""
-                    for xml in output_xml:
-                        xml_to_combine = xml_to_combine+" "+os.path.join(rp_path,xml)
-                    execution_command = execution_command + " --output output.xml "+xml_to_combine
+                    for j in range(dic_row):
+                        if (command_input[j]['runmode'] == "yes" and command_input[j]['testcase'] != "cleanReports" and command_input[j]['testcase'] != "moveReports" and command_input[j]['testcase'] != "combinereport"):
+                            xml_to_combine = xml_to_combine + " " + os.path.join(rp_path,str(command_input[j][h]))
+                    execution_command = execution_command + " --output output.xml " + xml_to_combine
                 else:
                     execution_command = execution_command + " --output " + command_input[i][h]
             elif (h == "environment"):
