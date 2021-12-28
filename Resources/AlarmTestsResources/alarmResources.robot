@@ -99,6 +99,7 @@ groupColdAlarmTestPreconditionSetup
     common.waitForMinutes    2
     apiresources.writeTestEntryTemperatureToSensorsAfterVXServerStarted
 
+    #Created by Greeshma on 27th Dec 2021
 setAllowNumExceedencesGuardAndCATGuardBandRange
     [Arguments]  ${allow_num_exceedences_guard_value}  ${cat_guard_band_range_value}
     apiresources.changeCxConfigsTabModuleFieldValues  DASHM  AllowNumExceedencesGuard  ${allow_num_exceedences_guard_value}
@@ -120,9 +121,38 @@ groupDeadSensorAlarmTestPreconditionSetup
     connection.establishConnectionAndStartRequiredProcesses    vx_server  facs_launcher  facs_trend  facs_sift  facs_dash
     common.waitForMinutes    1
 
+    #Created by Greeshma on 28th Dec 2021
 setAllowNumExceedencesGuardCATGuardBandRangeAndNumMinutesPast
     [Arguments]  ${allow_num_exceedences_guard_value}  ${cat_guard_band_range_value}  ${num_minutes_past_value}
     apiresources.changeCxConfigsTabModuleFieldValues  DASHM  AllowNumExceedencesGuard  ${allow_num_exceedences_guard_value}
     apiresources.changeCxConfigsTabModuleFieldValues  DASHM  CATGuardBandRange  ${cat_guard_band_range_value}
     apiresources.changeCxConfigsTabModuleFieldValues  SYSTEM  NumMinutesPast  ${num_minutes_past_value}
 
+    #Created by Greeshma on 28th Dec 2021 . This can replace the checkingAlarmStatusForGroup in apiresources
+checkAlarmStatusForGroup
+    [Arguments]    ${alarm_name}    ${exepected_alarm_status}
+    log to console    !--------Checking for the ${alarm_name} Alarm status to be:${exepected_alarm_status}-------!
+    ${json_response}=    apiresources.queryToFetchJsonResponseForSpecificAlarmType    ${alarm_name}
+    IF  '${exepected_alarm_status}'=='ALARM_ON'
+        ${no_of_alarms}    apiresources.fetchTheNumberOfItemsInDictionary   ${json_response}    $.data.alarms
+        ${alarm_check_status}=  run keyword and return status  should be equal as integers  ${no_of_alarms}  1
+        IF  ${alarm_check_status}
+            apiresources.writeUserEventsEntryToNotificationEventLog    AuQA test->${group_name}->Group Dead Sensor alarm is raised
+            log to console    =================${alarm_name} Alarm raised=======================
+        ELSE
+           apiresources.writeUserEventsEntryToNotificationEventLog    AuQA test->${group_name}->Group Dead Sensor alarm test fails as alarm is not raised.
+           log to console    =================${alarm_name} Alarm not raised as expected-test fails=======================
+           should be true  ${alarm_check_status}
+        END
+    ELSE
+        ${actual_value}    apiresources.fetchValueOfFieldFromJsonDictionary   ${json_response}  $.data
+        ${alarm_check_status}=  run keyword and return status  should be equal as strings   ${actual_value}  None
+        IF  ${alarm_check_status}
+            apiresources.writeUserEventsEntryToNotificationEventLog    AuQA test->${group_name}->Group Dead Sensor alarm is cleared succesfully.
+            log to console    ===============${alarm_name} Alarm Cleared====================
+        ELSE
+            apiresources.writeUserEventsEntryToNotificationEventLog    AuQA test->${group_name}->Group Dead Sensor alarm is unsuccesful to clear-test fails.
+            log to console    ===============${alarm_name} Alarm not Cleared as expected-test fails====================
+            should be true  ${alarm_check_status}
+        END
+    END

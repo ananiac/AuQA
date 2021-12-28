@@ -33,7 +33,7 @@ GroupColdAlarmTest
     common.waitForMinutes    5
     #9. Run The PublicAPI call to check for alarms
     #a. Ensure there are no GroupCold Alarms
-    apiresources.checkingAlarmStatusForGroup    ${test_input}[group_cold_alarm]    ${test_input}[alarm_off]
+    alarmResources.checkAlarmStatusForGroup    ${test_input}[group_cold_alarm]    ${test_input}[alarm_off]
     #10. Make sure no AHUs are in Guard or Overridden
     apiresources.releaseOverrideOfAllAHUsAndConfirmAHUsAreGuardCleared
     #11. Set the temps to 34.0
@@ -42,9 +42,8 @@ GroupColdAlarmTest
     #Wait 2 minutes
     common.waitForMinutes    2
     #12. Run The PublicAPI call to check for GroupCold alarms
-    apiresources.checkingAlarmStatusForGroup    ${test_input}[group_cold_alarm]    ${test_input}[alarm_on]
     #13. Write User event whether or not the Group Cold alarm is raised
-    apiresources.writeUserEventsEntryToNotificationEventLog    AuQA test->${group_name}->Group Cold alarm is raised.
+    alarmResources.checkAlarmStatusForGroup    ${test_input}[group_cold_alarm]    ${test_input}[alarm_on]
     #14. Set temps 80.6
     apiresources.setTemperatureForAllRacksRATandDATAndPowerForPWRMonitorPointsEveryMinute  ${test_input}[rack_intial_tempF]  ${test_input}[rat_tempF]    ${test_input}[dat_tempF]      ${test_input}[power_monitor_on_pwr_kW]
     #Wait 5 Minutes
@@ -52,9 +51,8 @@ GroupColdAlarmTest
     #Expect the GroupCold alarm to clear
     #15. Run The PublicAPI call to check for alarms
     #Ensure there are no group cold
-    apiresources.checkingAlarmStatusForGroup    ${test_input}[group_cold_alarm]    ${test_input}[alarm_off]
     #16. Write User event “Alarms Cleared Successfully” or Unsuccessfully, whichever is the case.
-    apiresources.writeUserEventsEntryToNotificationEventLog    AuQA test->${group_name}->GroupCold Alarm Cleared Successfully
+    alarmResources.checkAlarmStatusForGroup    ${test_input}[group_cold_alarm]    ${test_input}[alarm_off]
 Cleanup
     #17. Write User event “Ending Group Cold test”
     apiresources.writeUserEventsEntryToNotificationEventLog    AuQA test->${group_name}->Ending Group Cold alarm test
