@@ -923,3 +923,13 @@ checkAlarmStatusForAllAHUsInGroup
         #log to console  ${json_dictionary["data"]}
         log to console  ==================${alarm_type} Alarm Cleared for ahu ${ahu_list}[${i}]====================
     END
+
+    #Created by Greeshma on 28th Dec 2021
+overrideAllAHUsWithBOPValueON
+    @{group_ahu_name_list}=    apiresources.getAHUNamesListOfGroup
+    apiresources.overrideNamedAHUsWithSpecifiedBOPValue  ${group_ahu_name_list}  1
+
+    #Created by Greeshma on 28th Dec 2021
+stopWritingToAllSensorPoints
+    log to console  !-------------------Stop writing to all sensor points-------------------!
+    common.setFlagValue    ${test_entry_flag}

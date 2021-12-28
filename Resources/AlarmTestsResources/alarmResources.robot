@@ -86,6 +86,7 @@ setAhuPropertyOnPwrLvlOfFirstAhu
     apiresources.setComponentPropertyValue   ${ahuoid}     OnPwrLvl    float       ${property_value}
 
 #-------------GroupColdAlarm---------------#
+    #Created by Greeshma on 27th Dec 2021
 groupColdAlarmTestPreconditionSetup
     [Documentation]        Make sure no VEMS processes are running except vx_server, facs_launcher, and facs_trends
     ...                    Make sure the simulator is NOT running
@@ -93,12 +94,35 @@ groupColdAlarmTestPreconditionSetup
     log to console    !-----Reading the inputs from the excel and storing in dictionary------!
     testInputs.readingInputsFromExcel  alarmTest  D  E
     common.setFlagValue    ${test_entry_flag}
-    log to console    !-----PreCondition for the Alarm-8 test is been executed------!
+    log to console    !-----PreCondition for the Alarm-8 GroupColdAlarm test is been executed------!
     connection.establishConnectionAndStopAllProcessesExcept  vx_server  facs_launcher  facs_trend
     common.waitForMinutes    2
     apiresources.writeTestEntryTemperatureToSensorsAfterVXServerStarted
 
 setAllowNumExceedencesGuardAndCATGuardBandRange
-    [Arguments]  ${allow_num_exceedences_guard_value}  ${allow_num_exceedences_guard_value}
+    [Arguments]  ${allow_num_exceedences_guard_value}  ${cat_guard_band_range_value}
     apiresources.changeCxConfigsTabModuleFieldValues  DASHM  AllowNumExceedencesGuard  ${allow_num_exceedences_guard_value}
-    apiresources.changeCxConfigsTabModuleFieldValues  DASHM  CATGuardBandRange  ${allow_num_exceedences_guard_value}
+    apiresources.changeCxConfigsTabModuleFieldValues  DASHM  CATGuardBandRange  ${cat_guard_band_range_value}
+
+#-------------GroupDeadSensorAlarm---------------#
+    #Created by Greeshma on 28th Dec 2021
+groupDeadSensorAlarmTestPreconditionSetup
+    [Documentation]        Make sure no VEMS processes are running except vx_server, facs_launcher, and facs_trends facs_dash, facs_sift should be running
+    ...                    Make sure the simulator is NOT running
+    ...                    Also write test entry temperature for the parallel staleStatePrevention program
+    log to console    !-----Reading the inputs from the excel and storing in dictionary------!
+    testInputs.readingInputsFromExcel  alarmTest  G  H
+    common.setFlagValue    ${test_entry_flag}
+    log to console    !-----PreCondition for the Alarm-9 GroupDeadSensor test is been executed------!
+    connection.establishConnectionAndStopAllProcessesExcept
+    common.waitForMinutes    1
+    apiresources.writeTestEntryTemperatureToSensorsAfterVXServerStarted
+    connection.establishConnectionAndStartRequiredProcesses    vx_server  facs_launcher  facs_trend  facs_sift  facs_dash
+    common.waitForMinutes    1
+
+setAllowNumExceedencesGuardCATGuardBandRangeAndNumMinutesPast
+    [Arguments]  ${allow_num_exceedences_guard_value}  ${cat_guard_band_range_value}  ${num_minutes_past_value}
+    apiresources.changeCxConfigsTabModuleFieldValues  DASHM  AllowNumExceedencesGuard  ${allow_num_exceedences_guard_value}
+    apiresources.changeCxConfigsTabModuleFieldValues  DASHM  CATGuardBandRange  ${cat_guard_band_range_value}
+    apiresources.changeCxConfigsTabModuleFieldValues  SYSTEM  NumMinutesPast  ${num_minutes_past_value}
+
