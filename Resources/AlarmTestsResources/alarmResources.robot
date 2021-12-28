@@ -137,10 +137,10 @@ checkAlarmStatusForGroup
         ${no_of_alarms}    apiresources.fetchTheNumberOfItemsInDictionary   ${json_response}    $.data.alarms
         ${alarm_check_status}=  run keyword and return status  should be equal as integers  ${no_of_alarms}  1
         IF  ${alarm_check_status}
-            apiresources.writeUserEventsEntryToNotificationEventLog    AuQA test->${group_name}->Group Dead Sensor alarm is raised
+            apiresources.writeUserEventsEntryToNotificationEventLog    AuQA test->${group_name}->Group Dead Sensor alarm is raised successfully.
             log to console    =================${alarm_name} Alarm raised=======================
         ELSE
-           apiresources.writeUserEventsEntryToNotificationEventLog    AuQA test->${group_name}->Group Dead Sensor alarm test fails as alarm is not raised.
+           apiresources.writeUserEventsEntryToNotificationEventLog    AuQA test->${group_name}->Group Dead Sensor alarm is not raised--test fails.
            log to console    =================${alarm_name} Alarm not raised as expected-test fails=======================
            should be true  ${alarm_check_status}
         END
@@ -148,10 +148,10 @@ checkAlarmStatusForGroup
         ${actual_value}    apiresources.fetchValueOfFieldFromJsonDictionary   ${json_response}  $.data
         ${alarm_check_status}=  run keyword and return status  should be equal as strings   ${actual_value}  None
         IF  ${alarm_check_status}
-            apiresources.writeUserEventsEntryToNotificationEventLog    AuQA test->${group_name}->Group Dead Sensor alarm is cleared succesfully.
+            apiresources.writeUserEventsEntryToNotificationEventLog    AuQA test->${group_name}->Group Dead Sensor alarm is cleared successfully.
             log to console    ===============${alarm_name} Alarm Cleared====================
         ELSE
-            apiresources.writeUserEventsEntryToNotificationEventLog    AuQA test->${group_name}->Group Dead Sensor alarm is unsuccesful to clear-test fails.
+            apiresources.writeUserEventsEntryToNotificationEventLog    AuQA test->${group_name}->Group Dead Sensor alarm is unsuccessful to clear-->test fails.
             log to console    ===============${alarm_name} Alarm not Cleared as expected-test fails====================
             should be true  ${alarm_check_status}
         END
