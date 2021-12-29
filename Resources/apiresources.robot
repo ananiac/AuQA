@@ -826,7 +826,7 @@ checkBOPValueForNamedAHUs
         apiresources.verifyValueOfSpecificControlofNamedAHU    ${ahu_name}   BOP    ${exp_bop_value}
     END
 
-    #Created by Greeshma on 26th Nov 2021
+    #Created by Greeshma on 26th Nov 2021.overrideAllAHUsWithBOPValueOFF can be parameterized for BOP value 0 or 1
 overrideAllAHUsWithBOPValueOFF
     @{group_ahu_name_list}=    apiresources.getAHUNamesListOfGroup
     apiresources.overrideNamedAHUsWithSpecifiedBOPValue  ${group_ahu_name_list}  0
@@ -924,7 +924,7 @@ checkAlarmStatusForAllAHUsInGroup
         log to console  ==================${alarm_type} Alarm Cleared for ahu ${ahu_list}[${i}]====================
     END
 
-    #Created by Greeshma on 28th Dec 2021
+    #Created by Greeshma on 28th Dec 2021.
 overrideAllAHUsWithBOPValueON
     @{group_ahu_name_list}=    apiresources.getAHUNamesListOfGroup
     apiresources.overrideNamedAHUsWithSpecifiedBOPValue  ${group_ahu_name_list}  1
