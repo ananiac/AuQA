@@ -13,7 +13,6 @@ Resource    ${EXECDIR}/Resources/common.robot
 
 *** Test Cases ***
 GroupColdAlarmTest
-    #Steps
     #1. Start system with the AuQa DB on it (e.g., 10.252.9.118)
     apiresources.writeUserEventsEntryToNotificationEventLog    AuQA test->${group_name}->Group Cold alarm test started.
     #2. Use the NoBinding group
