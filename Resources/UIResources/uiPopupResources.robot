@@ -209,7 +209,7 @@ verifySystemPropertySFCMinSetToBlank
     log to console  Title & message of 'Validation Error' popup verified successfully
     close browser
 
-savePopup
+verifySavePopup
     uiresources.startBrowserAndLoginToAIEngine
     toolsDropDownListClick
     configsOptionInToolsClick
@@ -224,7 +224,7 @@ savePopup
     log to console  Title & message of 'Save' popup verified successfully
     close browser
 
-validationErrorForTurnOffLimit24Hr
+verifyValidationErrorForTurnOffLimit24HrsettoNegativeNo
     uiresources.startBrowserAndLoginToAIEngine
     toolsDropDownListClick
     configsOptionInToolsClick
@@ -241,7 +241,7 @@ validationErrorForTurnOffLimit24Hr
     log to console  Title & message of 'Validation Error' (for 'TurnOffLimit24Hr' field) popup verified successfully
     close browser
 
-unsavedChanges
+verifyPopupUnsavedChanges
     uiresources.startBrowserAndLoginToAIEngine
     toolsDropDownListClick
     configsOptionInToolsClick

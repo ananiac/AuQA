@@ -21,6 +21,6 @@ VXPopupMessagesVerification
 
 CXPopupMessagesVerification
     uiPopupResources.verifySystemPropertySFCMinSetToBlank
-    uiPopupResources.savePopup
-    uiPopupResources.validationErrorForTurnOffLimit24Hr
-    uiPopupResources.unsavedChanges
+    uiPopupResources.verifySavePopup
+    uiPopupResources.verifyValidationErrorForTurnOffLimit24HrsettoNegativeNo
+    uiPopupResources.verifyPopupUnsavedChanges
