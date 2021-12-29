@@ -67,7 +67,7 @@ getSpecificSensorPointsOfGroupQuery
     #Created by Greeshma on 08 Dec 2021
 getAHUsPropertiesOfSpecificGroup
     [Arguments]    ${group_name}
-    ${query}=  set variable  query getGroupsAHUProperties{site{groups: children(selector: {type: Group, name: "General-test"}){name ahus:children(selector: {type: AHU}){ name CoolSource: propString(name: "CoolSource") DesignCapacity: propFloat(name: "DesignCapacity") DesignCop: propFloat(name: "DesignCop")}}}}
+    ${query}=  set variable  query getGroupsAHUProperties{site{groups: children(selector: {type: Group, name: "${group_name}"}){name ahus:children(selector: {type: AHU}){ name CoolSource: propString(name: "CoolSource") DesignCapacity: propFloat(name: "DesignCapacity") DesignCop: propFloat(name: "DesignCop")}}}}
     return from keyword    ${query}
 
 #========Queries related to Alarm testcases
