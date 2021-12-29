@@ -128,22 +128,16 @@ setAllowNumExceedencesGuardCATGuardBandRangeAndNumMinutesPast
     apiresources.changeCxConfigsTabModuleFieldValues  DASHM  CATGuardBandRange  ${cat_guard_band_range_value}
     apiresources.changeCxConfigsTabModuleFieldValues  SYSTEM  NumMinutesPast  ${num_minutes_past_value}
 
-    #Created by Greeshma on 28th Dec 2021 . This can replace the checkingAlarmStatusForGroup in apiresources
+    #Created by Greeshma on 28th Dec 2021 .
 checkAlarmStatusForGroup
     [Arguments]    ${alarm_name}    ${exepected_alarm_status}
     log to console    !--------Checking for the ${alarm_name} Alarm status to be:${exepected_alarm_status}-------!
     ${json_response}=    apiresources.queryToFetchJsonResponseForSpecificAlarmType    ${alarm_name}
     IF  '${exepected_alarm_status}'=='ALARM_ON'
         ${no_of_alarms}    apiresources.fetchTheNumberOfItemsInDictionary   ${json_response}    $.data.alarms
-        ${alarm_check_status}=  run keyword and return status  should be equal as integers  ${no_of_alarms}  1
-        IF  ${alarm_check_status}
-            apiresources.writeUserEventsEntryToNotificationEventLog    AuQA test->${group_name}->Group Dead Sensor alarm is raised successfully.
-            log to console    =================${alarm_name} Alarm raised=======================
-        ELSE
-           apiresources.writeUserEventsEntryToNotificationEventLog    AuQA test->${group_name}->Group Dead Sensor alarm is not raised--test fails.
-           log to console    =================${alarm_name} Alarm not raised as expected-test fails=======================
-           should be true  ${alarm_check_status}
-        END
+        should be equal as integers  ${no_of_alarms}  1
+        apiresources.writeUserEventsEntryToNotificationEventLog    AuQA test->${group_name}->Group Dead Sensor alarm is raised successfully.
+        log to console    =================${alarm_name} Alarm raised=======================
     ELSE
         ${actual_value}    apiresources.fetchValueOfFieldFromJsonDictionary   ${json_response}  $.data
         ${alarm_check_status}=  run keyword and return status  should be equal as strings   ${actual_value}  None
