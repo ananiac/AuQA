@@ -95,7 +95,7 @@ groupColdAlarmTestPreconditionSetup
     testInputs.readingInputsFromExcel  alarmTest  D  E
     common.setFlagValue    ${test_entry_flag}
     log to console    !-----PreCondition for the Alarm-8 GroupColdAlarm test is been executed------!
-    connection.establishConnectionAndStopAllProcessesExcept  vx_server  facs_launcher  facs_trend
+    connection.establishConnectionAndStopAllProcessesExcept
     common.waitForMinutes    2
     apiresources.writeTestEntryTemperatureToSensorsAfterVXServerStarted
 
