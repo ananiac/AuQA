@@ -1,5 +1,5 @@
 *** Settings ***
-Documentation          This testcase validates the popup messages of VX
+Documentation          This testcase validates the popup messages of VX and CX
 ...                     Environment: ${host_ip}
 ...                     Group Name: ${group_name}
 Resource    ${EXECDIR}/Resources/apiresources.robot
@@ -18,3 +18,9 @@ VXPopupMessagesVerification
     uiPopupResources.clearOverridesPopup
     uiPopupResources.showTrendsPopup
     uiPopupResources.bypassPopup
+
+CXPopupMessagesVerification
+    uiPopupResources.verifySystemPropertySFCMinSetToBlank
+    uiPopupResources.verifySavePopup
+    uiPopupResources.verifyValidationErrorForTurnOffLimit24HrsettoNegativeNo
+    uiPopupResources.verifyPopupUnsavedChanges

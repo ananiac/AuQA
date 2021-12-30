@@ -12,6 +12,7 @@ Library    SeleniumLibrary
 Variables    ${EXECDIR}/Configurations/${environment}.py
 Variables    ${EXECDIR}/PageObjects/systemConsole.py
 Resource    ${EXECDIR}/Inputs/testInputs.robot
+Variables    ${EXECDIR}/PageObjects/siteEditorHomePage.py
 
 *** Keywords ***
 popupTestSetup
@@ -189,3 +190,118 @@ verifySupressAlramPopupMessageOfFirstRecord
         click element  ${ok_button}
         log to console  'OK' button clicked
     END
+
+verifySystemPropertySFCMinSetToBlank
+    uiresources.startBrowserAndLoginToAIEngine
+    toolsDropDownListClick
+    configsOptionInToolsClick
+    systemOptionInConfigsOptionInToolsClick
+    press keys  ${sfc_min}  CTRL+a+BACKSPACE+DELETE+ENTER
+    log to console  Set 'SFCMin' system property to blank
+    sleep    ${load_time}
+    ${expected_title}=  set variable  ${test_input}[validation_error_popup_title]
+    verifyPopupTitle  ${popup_title}  ${expected_title}
+    ${expected_message}=  set variable  ${test_input}[sfcmin_popup_message]
+    verifyPopupMessage  ${popup_message}  ${expected_message}
+    click element  ${ok_button}
+    log to console  'OK' button clicked of 'Validation Error' popup
+    sleep  ${load_time}
+    log to console  Title & message of 'Validation Error' popup verified successfully
+    close browser
+
+verifySavePopup
+    uiresources.startBrowserAndLoginToAIEngine
+    toolsDropDownListClick
+    configsOptionInToolsClick
+    systemOptionInConfigsOptionInToolsClick
+    press keys  ${sfc_min}  ENTER
+    saveButtonClick
+    ${expected_title}=  set variable  ${test_input}[save_popup_title]
+    verifyPopupTitle  ${popup_title}  ${expected_title}
+    ${expected_message}=  set variable  ${test_input}[save_popup_message]
+    verifyPopupMessage  ${popup_message}  ${expected_message}
+    okButtonClick
+    log to console  Title & message of 'Save' popup verified successfully
+    close browser
+
+verifyValidationErrorForTurnOffLimit24HrsettoNegativeNo
+    uiresources.startBrowserAndLoginToAIEngine
+    toolsDropDownListClick
+    configsOptionInToolsClick
+    dashmOptionInConfigsOptionInToolsClick
+    press keys  ${turn_off_limit_24_hr}  CTRL+a+BACKSPACE+DELETE
+    press keys  ${turn_off_limit_24_hr}  -2+TAB
+    log to console  Set 'TurnOffLimit24Hr' system property to -2
+    sleep    ${load_time}
+    ${expected_title}=  set variable  ${test_input}[validation_error_popup_title]
+    verifyPopupTitle  ${popup_title}  ${expected_title}
+    ${expected_message}=  set variable  ${test_input}[turn_off_limit_24_hr_popup_message]
+    verifyPopupMessage  ${popup_message}  ${expected_message}
+    okButtonClick
+    log to console  Title & message of 'Validation Error' (for 'TurnOffLimit24Hr' field) popup verified successfully
+    close browser
+
+verifyPopupUnsavedChanges
+    uiresources.startBrowserAndLoginToAIEngine
+    toolsDropDownListClick
+    configsOptionInToolsClick
+    dashmOptionInConfigsOptionInToolsClick
+    press keys  ${turn_off_limit_24_hr}  CTRL+a+2
+    press keys  ${turn_off_limit_24_hr}  2
+    log to console  Set 'TurnOffLimit24Hr' system property to 2
+    closeButtonClick
+    ${expected_title}=  set variable  ${test_input}[unsaved_changes_popup_title]
+    verifyPopupTitle  ${popup_title}  ${expected_title}
+    ${expected_message}=  set variable  ${test_input}[unsaved_changes_popup_message]
+    verifyPopupMessage  ${popup_message}  ${expected_message}
+    yesButtonClick
+    log to console  Title & message of 'Validation Error' (for 'TurnOffLimit24Hr' field) popup verified successfully
+    close browser
+
+toolsDropDownListClick
+    sleep    ${load_time}
+    wait until element is visible	${tools_button}
+    wait until element is enabled	${tools_button}
+    click element    ${tools_button}
+    log to console  'Tools' drop down list clicked
+
+configsOptionInToolsClick
+    sleep    ${load_time}
+    wait until element is visible	 ${configs_option_in_tools}
+    wait until element is enabled	 ${configs_option_in_tools}
+    click element    ${configs_option_in_tools}
+    log to console  'Configs' option clicked
+
+systemOptionInConfigsOptionInToolsClick
+    sleep    ${load_time}
+    wait until element is visible	 ${tools_configs_system}
+    wait until element is enabled	 ${tools_configs_system}
+    click element  ${tools_configs_system}
+    log to console  'SYSTEM' option clicked
+
+dashmOptionInConfigsOptionInToolsClick
+    sleep    ${load_time}
+    wait until element is visible	 ${tools_configs_dashm}
+    wait until element is enabled	 ${tools_configs_dashm}
+    click element  ${tools_configs_dashm}
+    log to console  'DASHM' option clicked
+
+okButtonClick
+    sleep    ${load_time}
+    click element  ${ok_button}
+    log to console  'OK' button clicked
+
+closeButtonClick
+    sleep    ${load_time}
+    click element  ${close_button}
+    log to console  'Close' button clicked
+
+saveButtonClick
+    sleep  ${load_time}
+    click element  ${save_button}
+    log to console  'Save' button clicked
+
+yesButtonClick
+    sleep  ${load_time}
+    click element  ${yes_button}
+    log to console  'Yes' button clicked
