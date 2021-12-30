@@ -27,9 +27,11 @@ getRackSensorPointsOfGroupQuery
 
 # Query queryToFetchJsonResponseForSpecificAlarmType
     #Created by Greeshma on 19 Aug 2021
+    #Updated on 22Dec to add message in the query.
+    #component_name can be group name or the ahu name
 getAlarmStatusQuery
-    [Arguments]   ${group_name}    ${alarm_name}
-    ${getAlarmStatusOfGroupQuery}=  set variable  query alarmStatus{ alarms(selector:{subjectName: "${group_name}", type : ${alarm_name}}) { type severity status }}
+    [Arguments]   ${component_name}    ${alarm_name}
+    ${getAlarmStatusOfGroupQuery}=  set variable  query alarmStatus{ alarms(selector:{subjectName: "${component_name}", type : ${alarm_name}}) { type severity status message }}
     return from keyword  ${getAlarmStatusOfGroupQuery}
 
 # Query queryToFetchJsonResponseContainingTheCoolEffortEstimateOfAHUs
@@ -65,5 +67,15 @@ getSpecificSensorPointsOfGroupQuery
     #Created by Greeshma on 08 Dec 2021
 getAHUsPropertiesOfSpecificGroup
     [Arguments]    ${group_name}
-    ${query}=  set variable  query getGroupsAHUProperties{site{groups: children(selector: {type: Group, name: "General-test"}){name ahus:children(selector: {type: AHU}){ name CoolSource: propString(name: "CoolSource") DesignCapacity: propFloat(name: "DesignCapacity") DesignCop: propFloat(name: "DesignCop")}}}}
+    ${query}=  set variable  query getGroupsAHUProperties{site{groups: children(selector: {type: Group, name: "${group_name}"}){name ahus:children(selector: {type: AHU}){ name CoolSource: propString(name: "CoolSource") DesignCapacity: propFloat(name: "DesignCapacity") DesignCop: propFloat(name: "DesignCop")}}}}
+    return from keyword    ${query}
+
+#========Queries related to Alarm testcases
+getAHUsInMismatchState
+    ${query}=   set variable   query AHUMismatchInGroup {site{groups: children(selector: {type: Group, name: "${group_name}"}){nameahus:children(selector: {type: AHU}){name pointCurrent: children(selector: {name: "SyncFaultStatus"}){type name pathName SyncFaultStatus:pointCurrent{value}}}}}}
+    return from keyword    ${query}
+
+getAHUStateofAhuInGroup
+    [Arguments]    ${group_oid}
+    ${query}=   set variable   query getAHUStateofAhuInGroup { site { groups: children(selector: {type: Group, oid: ${group_oid}}) { ahus: children(selector: {type: AHU}) { AHUState: prop(name: "AhuState") { name string }}}}}
     return from keyword    ${query}

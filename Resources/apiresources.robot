@@ -805,6 +805,7 @@ setTemperatureForAllRacksRATandDATAndPowerForPWRMonitorPointsEveryMinute
     apiresources.setTemperatureForAllRackSensorPoints  ${rack_temp}
     apiresources.setTemperatureForAllRATAndDATSensorPoints    ${rat_tempF}    ${dat_tempF}
     apiresources.setPowerValuesForAllPowerMonitorPoints  ${pwr_kWe}
+    common.waitForSeconds   10
     common.setFlagValue    ${current_value_to_racks_RAT_DAT_PWR}
 
     #Created by Greeshma on 26 Nov 2021. Ahu names are passed to this keyword as a list.
@@ -825,7 +826,7 @@ checkBOPValueForNamedAHUs
         apiresources.verifyValueOfSpecificControlofNamedAHU    ${ahu_name}   BOP    ${exp_bop_value}
     END
 
-    #Created by Greeshma on 26th Nov 2021
+    #Created by Greeshma on 26th Nov 2021.overrideAllAHUsWithBOPValueOFF can be parameterized for BOP value 0 or 1
 overrideAllAHUsWithBOPValueOFF
     @{group_ahu_name_list}=    apiresources.getAHUNamesListOfGroup
     apiresources.overrideNamedAHUsWithSpecifiedBOPValue  ${group_ahu_name_list}  0
@@ -855,3 +856,80 @@ fetchJsonRespContainingAHUPropertiesOfSpecificGroup
     ${query}=    gqlQueries.getAHUsPropertiesOfSpecificGroup  ${group_name}
     ${json_dictionary}=  gqlFetchJsonResponseFromQuery     ${query}
     return from keyword    ${json_dictionary}
+
+#=======added for Alarm testcases
+    #Gets the list of message for specified alram tpye - Created by Anania
+getAllAlarmMessagesOfSpecifiedAlarmType
+    [Arguments]  ${alarm_type}
+    @{ahu_list}=    apiresources.getAHUNamesListOfGroup
+    log to console  ==================List of Ahu in the group is: ${ahu_list}
+    ${ahu_count}=      apiresources.getAHUCount
+    log to console  ===================Count of Ahu in the Group: ${ahu_count}
+    #fetching the Alarm  message for Ahu and putting in list
+    @{alarm_message_list}=    Create List
+    FOR    ${i}    IN RANGE   ${ahu_count}
+        ${query}=    gqlQueries.getAlarmStatusQuery     ${ahu_list}[${i}]   ${alarm_type}
+        ${json_dictionary}=  gqlFetchJsonResponseFromQuery     ${query}
+        Append To List    ${alarm_message_list}    ${json_dictionary['data']['alarms'][0]['message']}
+    END
+    log to console      ==================List of each ahu message for the alarm: ${alarm_message_list}
+    return from keyword    ${alarm_message_list}
+
+    #Gets the list of the Ahu-pathname(ex:NoBindings / NB-AHU-10 / SyncFaultStatus) that are in mistmatch -- Created by Anania
+getAllAHUInGroupInMismatchState
+    ${query}=    gqlQueries.getAHUsInMismatchState
+    ${json_dictionary}=  gqlFetchJsonResponseFromQuery     ${query}
+    #fetching the pathname that has groupname, Ahuname and putting in list if the syncfaultstatus value is 2 or 1
+    ${total}=    get length   ${json_dictionary['data']['site']['groups'][0]['nameahus']}
+    log to console  ==================No of Ahu in Mismatch are: ${total}
+    @{ahu_mismatch_list}=    Create List
+    log to console  ==================syncfaultstatus value of first ahu: ${json_dictionary['data']['site']['groups'][0]['nameahus'][0]['pointCurrent'][0]['SyncFaultStatus']['value']}
+    FOR    ${i}    IN RANGE   ${total}
+        ${syncfaultstatus_check}=    Run Keyword And Return Status   should be equal as strings     ${json_dictionary['data']['site']['groups'][0]['nameahus'][${i}]['pointCurrent'][0]['SyncFaultStatus']['value']}  2  or  ${json_dictionary['data']['site']['groups'][0]['nameahus'][${i}]['pointCurrent'][0]['SyncFaultStatus']['value']}   1
+        IF  (${syncfaultstatus_check})
+            Append To List    ${ahu_mismatch_list}    ${json_dictionary['data']['site']['groups'][0]['nameahus'][${i}]['pointCurrent'][0]['pathName']}
+        END
+    END
+    log to console    ==============List of Ahu in mismatch: ${ahu_mismatch_list}
+    return from keyword    @{ahu_mismatch_list}
+
+    #Gets the list of Ahu state of all Ahu in the group - - Created by Anania
+getAhuStateOfAllAhuInGroupInList
+    ${group_oid} = 	getOid  ${group_name}
+    ${query}=    gqlQueries.getAHUStateofAhuInGroup    ${group_oid}
+    ${json_dictionary}=  gqlFetchJsonResponseFromQuery     ${query}
+    #fetching the Alarm  message for Ahu and putting in list
+    ${total}=    get length   ${json_dictionary['data']['site']['groups'][0]['ahus']}
+    log to console  ==================No of Ahu ${total}
+    @{ahustate_list}=    Create List
+    FOR    ${i}    IN RANGE   ${total}
+        Append To List    ${ahustate_list}    ${json_dictionary['data']['site']['groups'][0]['ahus'][${i}]['AHUState']['string']}
+    END
+    log to console    ==============List of ahu state ${ahustate_list}
+    return from keyword    @{ahustate_list}
+
+    #Checks Alarm status(ex:None) for each AHU in the group for the specified Alarm type(ex:AhuFailToTurnOff) - Created by Anania
+checkAlarmStatusForAllAHUsInGroup
+    [Arguments]  ${alarm_type}     ${expected_status}
+    log to console  ==================Checking alaram status of each Ahu in the group
+    @{ahu_list}=    apiresources.getAHUNamesListOfGroup
+    log to console  ==================List of Ahu in the group is: ${ahu_list}
+    ${ahu_count}=      apiresources.getAHUCount
+    log to console  ==================Count of Ahu in the Group: ${ahu_count}
+    FOR    ${i}    IN RANGE   ${ahu_count}
+        ${query}=    gqlQueries.getAlarmStatusQuery     ${ahu_list}[${i}]     ${alarm_type}
+        ${json_dictionary}=  gqlFetchJsonResponseFromQuery     ${query}
+        should be equal as strings  ${json_dictionary["data"]}  ${expected_status}
+        #log to console  ${json_dictionary["data"]}
+        log to console  ==================${alarm_type} Alarm Cleared for ahu ${ahu_list}[${i}]====================
+    END
+
+    #Created by Greeshma on 28th Dec 2021.
+overrideAllAHUsWithBOPValueON
+    @{group_ahu_name_list}=    apiresources.getAHUNamesListOfGroup
+    apiresources.overrideNamedAHUsWithSpecifiedBOPValue  ${group_ahu_name_list}  1
+
+    #Created by Greeshma on 28th Dec 2021
+stopWritingToAllSensorPoints
+    log to console  !-------------------Stop writing to all sensor points-------------------!
+    common.setFlagValue    ${test_entry_flag}
