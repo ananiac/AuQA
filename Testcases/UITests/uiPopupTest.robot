@@ -11,11 +11,10 @@ Resource    ${EXECDIR}/Inputs/testInputs.robot
 
 *** Test Cases ***
 VXPopupMessagesVerification
-        log to console  test2
-#    [Setup]    uiPopupResources.popupTestSetup
-#    uiPopupResources.suppressAlarmPopup
-#    uiPopupResources.suppressedAlarmsPopup
-#    uiPopupResources.setOverridesPopup
-#    uiPopupResources.clearOverridesPopup
-#    uiPopupResources.showTrendsPopup
-#    uiPopupResources.bypassPopup
+    [Setup]    uiPopupResources.popupTestSetup
+    uiPopupResources.suppressAlarmPopup
+    uiPopupResources.suppressedAlarmsPopup
+    uiPopupResources.setOverridesPopup
+    uiPopupResources.clearOverridesPopup
+    uiPopupResources.showTrendsPopup
+    uiPopupResources.bypassPopup
