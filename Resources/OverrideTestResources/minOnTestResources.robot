@@ -33,7 +33,6 @@ minOnTestOnNoBindingsPrecondition
     #Created by Greeshma on 8th Dec 2021
 minOnTestOnGeneralTestPrecondition
     [Documentation]    Stop all VEM processes and wait for 2 minutes
-    ...                Also write test entry temperature for the parallel staleStatePrevention program
     log to console    !-----Reading the inputs from the excel and storing in dictionary------!
     testInputs.readingInputsFromExcel  overrideTest  G  H
     log to console    !-----PreCondition for the MinOn-General test is been executed------!
