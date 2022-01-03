@@ -2,7 +2,6 @@
 Library    RequestsLibrary
 Library    JSONLibrary
 Library    Collections
-Library    pabot.PabotLib
 Resource    ${EXECDIR}/Resources/connection.robot
 Resource    ${EXECDIR}/Resources/apiresources.robot
 Resource    ${EXECDIR}/Resources/common.robot
@@ -17,9 +16,7 @@ ${writing_cycle}    0
 StaleStatePreventionForSensors
     waitForOneMinuteAndPrintCurrentTimeToConsole
     FOR    ${i}    IN RANGE    0    9999
-        acquire lock  stale_conflict_prevent_lock
         writeTemperatureToSensors
-        release lock  stale_conflict_prevent_lock
         common.waitForMinutes    1
     END
 

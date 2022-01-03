@@ -4,7 +4,7 @@ Library    JSONLibrary
 Library    Collections
 Library    OperatingSystem
 Library    DateTime
-Library  pabot.PabotLib
+Library    pabot.PabotLib
 Variables    ${EXECDIR}/Configurations/${environment}.py
 Variables    ${EXECDIR}/JsonPath/jsonpathForGraphQL.py
 Variables    ${EXECDIR}/Inputs/expectedMutationJsonResponses.py
