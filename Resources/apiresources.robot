@@ -4,6 +4,7 @@ Library    JSONLibrary
 Library    Collections
 Library    OperatingSystem
 Library    DateTime
+Library  pabot.PabotLib
 Variables    ${EXECDIR}/Configurations/${environment}.py
 Variables    ${EXECDIR}/JsonPath/jsonpathForGraphQL.py
 Variables    ${EXECDIR}/Inputs/expectedMutationJsonResponses.py
@@ -802,11 +803,13 @@ setPowerValuesForAllPowerMonitorPoints    #Contain both query and mutation
      #Arguments passed to the keyword are rack temperature,RAT temperature,DAT temperature and PWR value
 setTemperatureForAllRacksRATandDATAndPowerForPWRMonitorPointsEveryMinute
     [Arguments]    ${rack_temp}    ${rat_tempF}    ${dat_tempF}  ${pwr_kWe}
+    acquire lock  stale_conflict_prevent_lock
     apiresources.setTemperatureForAllRackSensorPoints  ${rack_temp}
     apiresources.setTemperatureForAllRATAndDATSensorPoints    ${rat_tempF}    ${dat_tempF}
     apiresources.setPowerValuesForAllPowerMonitorPoints  ${pwr_kWe}
-    common.waitForSeconds   10
+#    common.waitForSeconds   10
     common.setFlagValue    ${current_value_to_racks_RAT_DAT_PWR}
+    release lock  stale_conflict_prevent_lock
 
     #Created by Greeshma on 26 Nov 2021. Ahu names are passed to this keyword as a list.
 overrideNamedAHUsWithSpecifiedBOPValue
