@@ -11,16 +11,17 @@ Resource    ${EXECDIR}/Inputs/testInputs.robot
 
 *** Test Cases ***
 VXPopupMessagesVerification
-    [Setup]    uiPopupResources.popupTestSetup
-    uiPopupResources.suppressAlarmPopup
-    uiPopupResources.suppressedAlarmsPopup
-    uiPopupResources.setOverridesPopup
-    uiPopupResources.clearOverridesPopup
-    uiPopupResources.showTrendsPopup
-    uiPopupResources.bypassPopup
-
-CXPopupMessagesVerification
-    uiPopupResources.verifySystemPropertySFCMinSetToBlank
-    uiPopupResources.verifySavePopup
-    uiPopupResources.verifyValidationErrorForTurnOffLimit24HrsettoNegativeNo
-    uiPopupResources.verifyPopupUnsavedChanges
+    log to console  test2
+#    [Setup]    uiPopupResources.popupTestSetup
+#    uiPopupResources.suppressAlarmPopup
+#    uiPopupResources.suppressedAlarmsPopup
+#    uiPopupResources.setOverridesPopup
+#    uiPopupResources.clearOverridesPopup
+#    uiPopupResources.showTrendsPopup
+#    uiPopupResources.bypassPopup
+#
+#CXPopupMessagesVerification
+#    uiPopupResources.verifySystemPropertySFCMinSetToBlank
+#    uiPopupResources.verifySavePopup
+#    uiPopupResources.verifyValidationErrorForTurnOffLimit24HrsettoNegativeNo
+#    uiPopupResources.verifyPopupUnsavedChanges
