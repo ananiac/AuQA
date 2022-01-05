@@ -35,7 +35,7 @@ GroupDeadSensorAlarmTest
     #11. Clear Overrides
     apiresources.releaseOverrideOfAllAHUs
     #12. Run for 5 minutes
-    common.waitForMinutes    3
+    common.waitForMinutes    5
     #13. Run The PublicAPI call to check for alarms
     #Ensure there are no GroupDeadSensor Alarms
     alarmResources.checkAlarmStatusForGroup    ${test_input}[group_dead_sensor_alarm]    ${test_input}[alarm_off]
