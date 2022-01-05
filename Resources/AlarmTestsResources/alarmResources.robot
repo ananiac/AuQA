@@ -136,16 +136,16 @@ checkAlarmStatusForGroup
     IF  '${exepected_alarm_status}'=='ALARM_ON'
         ${no_of_alarms}    apiresources.fetchTheNumberOfItemsInDictionary   ${json_response}    $.data.alarms
         should be equal as integers  ${no_of_alarms}  1
-        apiresources.writeUserEventsEntryToNotificationEventLog    AuQA test->${group_name}->Group Dead Sensor alarm is raised successfully.
+        apiresources.writeUserEventsEntryToNotificationEventLog    AuQA test->${group_name}->${alarm_name} alarm is raised successfully.
         log to console    =================${alarm_name} Alarm raised=======================
     ELSE
         ${actual_value}    apiresources.fetchValueOfFieldFromJsonDictionary   ${json_response}  $.data
         ${alarm_check_status}=  run keyword and return status  should be equal as strings   ${actual_value}  None
         IF  ${alarm_check_status}
-            apiresources.writeUserEventsEntryToNotificationEventLog    AuQA test->${group_name}->Group Dead Sensor alarm is cleared successfully.
+            apiresources.writeUserEventsEntryToNotificationEventLog    AuQA test->${group_name}->${alarm_name} alarm is cleared successfully.
             log to console    ===============${alarm_name} Alarm Cleared====================
         ELSE
-            apiresources.writeUserEventsEntryToNotificationEventLog    AuQA test->${group_name}->Group Dead Sensor alarm is unsuccessful to clear-->test fails.
+            apiresources.writeUserEventsEntryToNotificationEventLog    AuQA test->${group_name}->${alarm_name} alarm is unsuccessful to clear-->test fails.
             log to console    ===============${alarm_name} Alarm not Cleared as expected-test fails====================
             should be true  ${alarm_check_status}
         END
