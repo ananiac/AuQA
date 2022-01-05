@@ -819,7 +819,6 @@ setTemperatureForAllRacksRATandDATAndPowerForPWRMonitorPointsEveryMinute
     apiresources.setTemperatureForAllRackSensorPoints  ${rack_temp}
     apiresources.setTemperatureForAllRATAndDATSensorPoints    ${rat_tempF}    ${dat_tempF}
     apiresources.setPowerValuesForAllPowerMonitorPoints  ${pwr_kWe}
-#    common.waitForSeconds   10
     common.setFlagValue    ${current_value_to_racks_RAT_DAT_PWR}
     release lock  stale_conflict_prevent_lock
 
