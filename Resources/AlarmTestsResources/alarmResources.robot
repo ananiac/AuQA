@@ -150,3 +150,19 @@ checkAlarmStatusForGroup
             should be true  ${alarm_check_status}
         END
     END
+
+#================Keyword related to ahuFailedToTurnOnAlarm - Created by Anania 4Jan2022
+ahuFailedToTurnOnAlarmTestPreconditionSetup
+    [Documentation]    Make sure the simulator is NOT running
+    ...                Stop all VEM processes and wait for 2 minutes
+    ...                Also write test entry temperature for the parallel staleStatePrevention program
+    ...                Make sure no VEMS processes are running except. Only vx_server, facs_launcher, and facs_trends facs_dash, facs_sift and vems-plugin-bacnet should be running
+    log to console    !-----Reading the inputs from the excel and storing in dictionary------!
+    testInputs.readingInputsFromExcel  alarmTest  J  K
+    common.setFlagValue    ${test_entry_flag}
+    log to console    !-----PreCondition for the Alarm-2 test is been executed------!
+    connection.establishConnectionAndStopAllProcessesExcept
+    common.waitForMinutes    2
+    apiresources.writeTestEntryTemperatureToSensorsAfterVXServerStarted
+    connection.establishConnectionAndStartRequiredProcesses    vx_server  facs_launcher     vems-plugin-bacnet     facs_dash   facs_sift
+

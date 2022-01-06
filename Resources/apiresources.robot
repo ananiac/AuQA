@@ -4,6 +4,7 @@ Library    JSONLibrary
 Library    Collections
 Library    OperatingSystem
 Library    DateTime
+Library    pabot.PabotLib
 Variables    ${EXECDIR}/Configurations/${environment}.py
 Variables    ${EXECDIR}/JsonPath/jsonpathForGraphQL.py
 Variables    ${EXECDIR}/Inputs/expectedMutationJsonResponses.py
@@ -55,6 +56,7 @@ setTemperatureForAllRackSensorPoints    #Contain both query and mutation
 
 setTemperatureForSensorsAandB
     [Arguments]    ${temp}
+    acquire lock  stale_conflict_prevent_lock
     ${json_dict}    queryToFetchJsonResponseContainingTheRackSensorsFromGroup
     #First two sensor points are picked as Sensor A and Sensor B if they are Rack Top or Rack Bottom
     ${total}=    fetchTheNumberOfItemsInDictionary    ${json_dict}    ${racks_in_group}
@@ -76,6 +78,7 @@ setTemperatureForSensorsAandB
     setSensorPointValue  ${sensor_A_oid}    ${temp}
     setSensorPointValue  ${sensor_B_oid}    ${temp}
     common.setFlagValue    ${two_sets_of_temp_flag}
+    release lock  stale_conflict_prevent_lock
 
 setTwoSetOfSensorTemperatureForRack
     [Arguments]    ${tempH}    ${tempC}
@@ -183,6 +186,7 @@ setTestEntryTemperatureToSensorPoints
     apiresources.setTemperatureForAllRackSensorPoints  ${test_entry_sensor_temp}
 
 writeTestEntryTemperatureToSensorsAfterVXServerStarted
+    acquire lock  stale_conflict_prevent_lock
     common.setFlagValue    ${test_entry_flag}
     ${current_status_of_vx_server}=  connection.establishConnectionAndCheckVX_ServerProcesseStatus
     log to console  Current status of vx server is ${current_status_of_vx_server}
@@ -195,13 +199,16 @@ writeTestEntryTemperatureToSensorsAfterVXServerStarted
 
     END
     log to console  !!!--------------------Test Setup done------------------------------!!!
+    release lock  stale_conflict_prevent_lock
 
 setTestExitTemperatureToAllSensorPoints
+    acquire lock  stale_conflict_prevent_lock
     common.setFlagValue    ${test_exit_flag}
     log to console  *************Test finished and writing test_exit_sensor_temp ${test_exit_sensor_temp}************
     apiresources.setTemperatureForAllRackSensorPoints  ${test_exit_sensor_temp}
     log to console  !!!--------------------Test Teardown done------------------------------!!!
     connection.killChromeAndChromedriverProcessesAfterTest
+    release lock  stale_conflict_prevent_lock
 
     #Created by Greeshma on 19 Aug 2021
 setConfigAlarmGroupDeadSensorHysteresis
@@ -330,14 +337,18 @@ setAllowNumExceedencesGuardOfGroupProperties
     #Created by Greeshma on 30 August 2021
 setCoolingTemperatureForAllSensorPoints
     [Arguments]    ${temp}
+    acquire lock  stale_conflict_prevent_lock
     apiresources.setTemperatureForAllRackSensorPoints  ${temp}
     common.setFlagValue    ${current_temp_to_all_flag}
+    release lock  stale_conflict_prevent_lock
 
     #Created by Greeshma on 30 August 2021
 stopUpdatingTemperatureToLastRack
     [Arguments]    ${temp}
+    acquire lock  stale_conflict_prevent_lock
     common.setFlagValue    ${exclude_dead_rack_flag}
     apiresources.setTemperatureForAllExceptDeadSensor    ${temp}
+    release lock  stale_conflict_prevent_lock
 
     #Created by Greeshma and moved to apiresources on 7th Sep 2021
 setGroupPropertyFloatValue
@@ -725,9 +736,11 @@ setTemperatureForAllRATAndDATSensorPoints    #Contain both query and mutation
      #Arguments passed to the keyword are rack temperature,RAT temperature and DAT temperature
 setTemperatureForAllRacksRATandDATSensorPointsEveryMinute
     [Arguments]    ${rack_temp}    ${rat_tempF}    ${dat_tempF}
+    acquire lock  stale_conflict_prevent_lock
     apiresources.setTemperatureForAllRackSensorPoints  ${rack_temp}
     apiresources.setTemperatureForAllRATAndDATSensorPoints    ${rat_tempF}    ${dat_tempF}
     common.setFlagValue    ${current_temp_to_racks_RAT_DAT}
+    release lock  stale_conflict_prevent_lock
 
     #Copied from GuardOrderMixResources to apiresource on 29 Oct 2021
 setGroupPropertyGuardHotAbsTemp
@@ -802,11 +815,13 @@ setPowerValuesForAllPowerMonitorPoints    #Contain both query and mutation
      #Arguments passed to the keyword are rack temperature,RAT temperature,DAT temperature and PWR value
 setTemperatureForAllRacksRATandDATAndPowerForPWRMonitorPointsEveryMinute
     [Arguments]    ${rack_temp}    ${rat_tempF}    ${dat_tempF}  ${pwr_kWe}
+    acquire lock  stale_conflict_prevent_lock
     apiresources.setTemperatureForAllRackSensorPoints  ${rack_temp}
     apiresources.setTemperatureForAllRATAndDATSensorPoints    ${rat_tempF}    ${dat_tempF}
     apiresources.setPowerValuesForAllPowerMonitorPoints  ${pwr_kWe}
-    common.waitForSeconds   10
+#    common.waitForSeconds   10
     common.setFlagValue    ${current_value_to_racks_RAT_DAT_PWR}
+    release lock  stale_conflict_prevent_lock
 
     #Created by Greeshma on 26 Nov 2021. Ahu names are passed to this keyword as a list.
 overrideNamedAHUsWithSpecifiedBOPValue
@@ -931,5 +946,7 @@ overrideAllAHUsWithBOPValueON
 
     #Created by Greeshma on 28th Dec 2021
 stopWritingToAllSensorPoints
+    acquire lock  stale_conflict_prevent_lock
     log to console  !-------------------Stop writing to all sensor points-------------------!
     common.setFlagValue    ${test_entry_flag}
+    release lock  stale_conflict_prevent_lock
