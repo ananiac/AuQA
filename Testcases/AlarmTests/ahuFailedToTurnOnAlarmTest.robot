@@ -14,6 +14,7 @@ Resource    ${EXECDIR}/Resources/common.robot
 *** Test Cases ***
 AHUFailedToTurnONAlarm
     #1)Start system with the AuQa DB on it (e.g., 10.252.9.118)
+    apiresources.writeUserEventsEntryToNotificationEventLog    AuQA test->${group_name}->AHUFailedToTurnON Alarm test started.
     #2)Use the NoBinding group
     alarmResources.ahuFailedToTurnOnAlarmTestPreconditionSetup
     #3)Load the DASHAM_MIX template in the CX configs (with overwrite)
@@ -41,7 +42,7 @@ AHUFailedToTurnONAlarm
     #14)Set the all AHU to 0.1kW
     apiresources.setTemperatureForAllRacksRATandDATAndPowerForPWRMonitorPointsEveryMinute  ${test_input}[rack_tempF]  ${test_input}[rat_tempF]    ${test_input}[dat_tempF]  ${test_input}[power_monitor_pwr2_kW]
     #a)Wait 3 minutes
-    common.waitForMinutes    5
+    common.waitForMinutes    3
     #b)Expect all AHU  to go into Mismatch on the Equipment Tab and Failed to Turn ON alarm is produced
     alarmResources.verifyAllAHUInGroupInMismatchState
     #15)Run The PublicAPI call to check for alarms
@@ -57,12 +58,14 @@ AHUFailedToTurnONAlarm
     apiresources.checkAlarmStatusForAllAHUsInGroup  ${test_input}[alarm_ahu_failed_toturnon]  ${test_input}[alarm_status]
     #19)Expect 'Mismatch' in the State Column of the Equipment Tab Changes to 'Cooling' and Failed to Turn ON ends
     #20)Write User event “Failed to Turn ON Alarms Cleared Successfully” or Unsuccessfully, whichever is the case.
-    alarmResources.verifyAhuStateForAHUInGroup  ${test_input}[expected_ahu_state]
+    alarmResources.verifyAhuStateForAHUInGroup  ${test_input}[expected_ahu_state]   ${test_input}[alarm_ahu_failed_toturnon]
     #21)Write User event “Ending Failed to turn ON test”
     #22)End test
     apiresources.writeUserEventsEntryToNotificationEventLog    AuQA test->${group_name}->Ending AHUFailedToTurnON Alarm test
     #23)Clean up
 CleanUp
+    #Set the Pwr to 10.0kW
+    apiresources.setTemperatureForAllRacksRATandDATAndPowerForPWRMonitorPointsEveryMinute  ${test_input}[rack_tempF]  ${test_input}[rat_tempF]  ${test_input}[dat_tempF]  ${test_input}[power_monitor_pwr1_kW]
     #Set OnPwrLvl to 0.4kW
     alarmResources.setAhuPropertyOnPwrLvlOfFirstAhu  ${test_input}[ahu_property_onpwrlvl_default]
     #Stop all processes except vx_server, facs_launcher, and facs_trend

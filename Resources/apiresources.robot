@@ -890,6 +890,25 @@ getAllAlarmMessagesOfSpecifiedAlarmType
     log to console      ==================List of each ahu message for the alarm: ${alarm_message_list}
     return from keyword    ${alarm_message_list}
 
+#    #Gets the list of the Ahu-pathname(ex:NoBindings / NB-AHU-10 / SyncFaultStatus) that are in mistmatch -- Created by Anania
+#getAllAHUInGroupInMismatchState
+#    ${query}=    gqlQueries.getAHUsInMismatchState
+#    ${json_dictionary}=  gqlFetchJsonResponseFromQuery     ${query}
+#    #fetching the pathname that has groupname, Ahuname and putting in list if the syncfaultstatus value is 2 or 1
+#    ${total}=    get length   ${json_dictionary['data']['site']['groups'][0]['nameahus']}
+#    log to console  ==================No of Ahu in Mismatch are: ${total}
+#    @{ahu_mismatch_list}=    Create List
+#    log to console  ==================syncfaultstatus value of first ahu: ${json_dictionary['data']['site']['groups'][0]['nameahus'][0]['pointCurrent'][0]['SyncFaultStatus']['value']}
+#    FOR    ${i}    IN RANGE   ${total}
+#        ${syncfaultstatus_check}=    Run Keyword And Return Status   should be equal as strings     ${json_dictionary['data']['site']['groups'][0]['nameahus'][${i}]['pointCurrent'][0]['SyncFaultStatus']['value']}  2  or  ${json_dictionary['data']['site']['groups'][0]['nameahus'][${i}]['pointCurrent'][0]['SyncFaultStatus']['value']}   1
+#        IF  (${syncfaultstatus_check})
+#            Append To List    ${ahu_mismatch_list}    ${json_dictionary['data']['site']['groups'][0]['nameahus'][${i}]['pointCurrent'][0]['pathName']}
+#        END
+#    END
+#    log to console    ==============List of Ahu in mismatch: ${ahu_mismatch_list}
+#    return from keyword    @{ahu_mismatch_list}
+
+    ########updated
     #Gets the list of the Ahu-pathname(ex:NoBindings / NB-AHU-10 / SyncFaultStatus) that are in mistmatch -- Created by Anania
 getAllAHUInGroupInMismatchState
     ${query}=    gqlQueries.getAHUsInMismatchState
@@ -898,15 +917,20 @@ getAllAHUInGroupInMismatchState
     ${total}=    get length   ${json_dictionary['data']['site']['groups'][0]['nameahus']}
     log to console  ==================No of Ahu in Mismatch are: ${total}
     @{ahu_mismatch_list}=    Create List
-    log to console  ==================syncfaultstatus value of first ahu: ${json_dictionary['data']['site']['groups'][0]['nameahus'][0]['pointCurrent'][0]['SyncFaultStatus']['value']}
     FOR    ${i}    IN RANGE   ${total}
-        ${syncfaultstatus_check}=    Run Keyword And Return Status   should be equal as strings     ${json_dictionary['data']['site']['groups'][0]['nameahus'][${i}]['pointCurrent'][0]['SyncFaultStatus']['value']}  2  or  ${json_dictionary['data']['site']['groups'][0]['nameahus'][${i}]['pointCurrent'][0]['SyncFaultStatus']['value']}   1
-        IF  (${syncfaultstatus_check})
+        ${syncfaultstatus_value}=   Evaluate   "${json_dictionary['data']['site']['groups'][0]['nameahus'][${i}]['pointCurrent'][0]['SyncFaultStatus']['value']}"
+        log to console  ==================syncfaultstatus value of ahu${i}: ${syncfaultstatus_value}
+        ${syncfaultstatus_check_off}=    Run Keyword And Return Status   should be equal as strings  ${syncfaultstatus_value}   1
+        ${syncfaultstatus_check_on}=    Run Keyword And Return Status   should be equal as strings  ${syncfaultstatus_value}    2
+        IF  (${syncfaultstatus_check_off} or ${syncfaultstatus_check_on})
             Append To List    ${ahu_mismatch_list}    ${json_dictionary['data']['site']['groups'][0]['nameahus'][${i}]['pointCurrent'][0]['pathName']}
         END
     END
     log to console    ==============List of Ahu in mismatch: ${ahu_mismatch_list}
     return from keyword    @{ahu_mismatch_list}
+
+
+
 
     #Gets the list of Ahu state of all Ahu in the group - - Created by Anania
 getAhuStateOfAllAhuInGroupInList

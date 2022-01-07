@@ -14,6 +14,7 @@ Resource    ${EXECDIR}/Resources/common.robot
 *** Test Cases ***
 AHUFailedToTurnOFFAlarm
     #1)Start system with the AuQa DB on it (e.g., 10.252.9.118)
+    apiresources.writeUserEventsEntryToNotificationEventLog    AuQA test->${group_name}->AHUFailedToTurnOFF Alarm test started.
     #2)Stop all processes including the API Server (vx_server) and Script Launcher
     #3)Wait 2 minutes
     alarmResources.ahuFailedToTurnOffAlarmTestPreconditionSetup
@@ -62,7 +63,7 @@ AHUFailedToTurnOFFAlarm
     apiresources.checkAlarmStatusForAllAHUsInGroup  ${test_input}[alarm_ahu_failed_toturnoff]  ${test_input}[alarm_status]
     #23)Expect 'Mismatch' in the State Column of the Equipment Tab Changes to 'off' and Failed to Turn OFF ends
     #24)Write User event “Failed to Turn OFF Alarms Cleared Successfully” or Unsuccessfully, whichever is the case.
-    alarmResources.verifyAhuStateForAHUInGroup  ${test_input}[expected_ahu_state_off]
+    alarmResources.verifyAhuStateForAHUInGroup  ${test_input}[expected_ahu_state_off]   ${test_input}[alarm_ahu_failed_toturnoff]
     #25)Write User event “Ending Failed to turn OFF test”
     #26)End test
     apiresources.writeUserEventsEntryToNotificationEventLog    AuQA test->${group_name}->AHUFailedToTurnOFFAlarmTest->Ending AHUFailedtoturnOFF test

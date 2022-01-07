@@ -44,20 +44,62 @@ verifyAllAlarmMessageOfSpecifiedAlarmType
         log to console  actual message ${alarmraisedforallAhu[${i}]} contains the expected AHU NB-AHU ${alarm_message}
     END
 
+#verifyAllAHUInGroupInMismatchState
+#    #creating the expected list of messages for the AHU
+#    @{ahu_list}=    apiresources.getAHUNamesListOfGroup
+#    @{alarmismatchforallAhu}=    apiresources.getAllAHUInGroupInMismatchState
+#    #fetch the count of messages for Ahu
+#    ${total}=    get length   ${alarmismatchforallAhu}
+#    log to console     ================verify the Ahu's go into the mismatch state=================
+#    FOR    ${i}    IN RANGE   ${total}
+#        should contain   ${alarmismatchforallAhu[${i}]}    NoBindings / ${ahu_list}[${i}] / SyncFaultStatus
+#        log to console  actual ahu with mismatch ${alarmismatchforallAhu[${i}]} matches with expected NoBindings / ${ahu_list}[${i}] / SyncFaultStatus
+#    END
+
 verifyAllAHUInGroupInMismatchState
     #creating the expected list of messages for the AHU
     @{ahu_list}=    apiresources.getAHUNamesListOfGroup
     @{alarmismatchforallAhu}=    apiresources.getAllAHUInGroupInMismatchState
     #fetch the count of messages for Ahu
     ${total}=    get length   ${alarmismatchforallAhu}
-    log to console     ================verify the Ahu's go into the mismatch state=================
-    FOR    ${i}    IN RANGE   ${total}
-        should contain   ${alarmismatchforallAhu[${i}]}    NoBindings / ${ahu_list}[${i}] / SyncFaultStatus
-        log to console  actual ahu with mismatch ${alarmismatchforallAhu[${i}]} matches with expected NoBindings / ${ahu_list}[${i}] / SyncFaultStatus
+    log to console  ahu count ${total}
+    IF  ${total} > 0
+        log to console     ================verify the Ahu's go into the mismatch state=================
+        FOR    ${i}    IN RANGE   ${total}
+            should contain   ${alarmismatchforallAhu[${i}]}    NoBindings / ${ahu_list}[${i}] / SyncFaultStatus
+            log to console  actual ahu with mismatch ${alarmismatchforallAhu[${i}]} matches with expected NoBindings / ${ahu_list}[${i}] / SyncFaultStatus
+        END
+    ELSE
+        log to console  No ahu's in mismatch
+        should not be equal as integers    ${total}    0
+
     END
 
+
+#verifyAhuStateForAHUInGroup
+#    [Arguments]   ${expected_ahu_state}
+#    @{ahustate_list}=    apiresources.getAhuStateOfAllAhuInGroupInList
+#    #fetch the count of messages for Ahu
+#    ${total}=    get length   ${ahustate_list}
+#    log to console     ================Comparing the actuall AHU state with expected for all AHU=================
+#    FOR    ${i}    IN RANGE   ${total}
+#        ${ahu_state_check}=    Run Keyword And Return Status   should be equal as strings  ${ahustate_list[${i}]}   ${expected_ahu_state}
+#        IF  ${ahu_state_check}
+#           log to console  actual ahu state ${ahustate_list[${i}]} matches with expected ${expected_ahu_state}
+#        ELSE
+#            log to console  actual ahu state ${ahustate_list[${i}]} does not matches with expected ${expected_ahu_state}
+#            apiresources.writeUserEventsEntryToNotificationEventLog    AuQA test->${group_name}->AHUFailedToTurnOFFAlarmTest->AHUFailedtoTurnOFF Alarms is Unsuccessfull to Clear
+#            #Checking the status to be true to make keyword be marked as fail in case of mismatch
+#            ${ahu_state_check}  should be true
+#            exit for loop
+#        END
+#    END
+#    IF  ${ahu_state_check}
+#        apiresources.writeUserEventsEntryToNotificationEventLog    AuQA test->${group_name}->AHUFailedToTurnOFFAlarmTest->AHUFailedtoTurnOFF Alarms Cleared Successfully
+#    END
+
 verifyAhuStateForAHUInGroup
-    [Arguments]   ${expected_ahu_state}
+    [Arguments]   ${expected_ahu_state}     ${alarm_name}
     @{ahustate_list}=    apiresources.getAhuStateOfAllAhuInGroupInList
     #fetch the count of messages for Ahu
     ${total}=    get length   ${ahustate_list}
@@ -68,15 +110,16 @@ verifyAhuStateForAHUInGroup
            log to console  actual ahu state ${ahustate_list[${i}]} matches with expected ${expected_ahu_state}
         ELSE
             log to console  actual ahu state ${ahustate_list[${i}]} does not matches with expected ${expected_ahu_state}
-            apiresources.writeUserEventsEntryToNotificationEventLog    AuQA test->${group_name}->AHUFailedToTurnOFFAlarmTest->AHUFailedtoTurnOFF Alarms is Unsuccessfull to Clear
+            apiresources.writeUserEventsEntryToNotificationEventLog    AuQA test->${group_name}->${alarm_name} Alarm is Unsuccessfull to Clear
             #Checking the status to be true to make keyword be marked as fail in case of mismatch
             ${ahu_state_check}  should be true
             exit for loop
         END
     END
     IF  ${ahu_state_check}
-        apiresources.writeUserEventsEntryToNotificationEventLog    AuQA test->${group_name}->AHUFailedToTurnOFFAlarmTest->AHUFailedtoTurnOFF Alarms Cleared Successfully
+        apiresources.writeUserEventsEntryToNotificationEventLog    AuQA test->${group_name}->${alarm_name} Alarms Cleared Successfully
     END
+
 
 setAhuPropertyOnPwrLvlOfFirstAhu
     [Arguments]   ${property_value}
